@@ -1,4 +1,4 @@
-Last-Updated: March 16 2010)
+(Last-Updated: March 16 2010)
 
 MumbleKit - A Mumble client framework for iPhoneOS
 =================================================
@@ -12,8 +12,8 @@ systems. Visit its website at:
 
  <http://mumble.info/>
 
-Building it
-===========
+Fetching dependencies
+=====================
 
 To build this you need the iPhoneOS 3.0 SDK from Apple and an
 Intel Mac running Mac OS X 10.5 or later.
@@ -40,3 +40,43 @@ Building it (command line)
 To build from the command line, do something like this:
 
  $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator3.1.3 -target MumbleKit -configuration Debug
+
+How do I include this into my Xcode project?
+============================================
+
+The current versions of Xcode with iPhoneOS support has no built-in support for building
+frameworks (only static libraries).  Therefore, the MumbleKit Xcode project uses a few shellscripts
+to force Xcode into creating a framework for us.
+
+When building for a specific platform and configuration, say Debug-iphonesimulator, the default
+Xcode static library template will spit out a libMumbleKit.a library in
+
+ ${PROJECT_DIR}/build/Debug-iphonesimulator/libMumbleKit.a
+
+The shell scripts that run during the build process creates a iPhoneOS framework of MumbleKit in the same
+directory:
+
+ ${PROJECT_DIR}/build/Debug-iphonesimulator/MumbleKit.framework
+
+The best way to include this into your project is to drag the MumbleKit.xcodeproj somewhere into your own
+project, and add MumbleKit as a direct dependency of your own target. This will force Xcode to always build
+MumbleKit. (This is needed since we want to link against the MumbleKit.framework and not the libMumbleKit.a
+library)
+
+The primary consumer of this framework, the Mumble client for iPhoneOS, does the following to
+successfully link against MumbleKit:
+
+ * Mumble for iPhoneOS includes the MumbleKit git repo via a submodule
+
+ * The MumbleKit.xcodeproj from that submodule is then included into Mumble.xcodeproj
+
+ * MumbleKit is added a direct dependency of the Mumble application target
+
+ * Since MumbleKit will now be built using the same platform and configuration as the
+   Mumble client itself, we can use this to determine the framework search path we
+   should use to find the MumbleKit.framework. Mumble uses
+   ${PROJECT_DIR}/MumbleKit/build/${CONFIGURATION}-${PLATFORM_NAME}
+
+ * -framework MumbleKit is added both as a CFLAG and a LDFLAG
+
+ * The build should now work.
