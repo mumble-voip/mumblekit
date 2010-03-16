@@ -1,0 +1,8 @@
+build/*
+3rdparty/speexbuild/build/*
+3rdparty/speexdspbuild/build/*
+3rdparty/protobufbuild/build/*
+3rdparty/celtbuild/build/*
+.DS_Store
+*.pbxuser
+*.mode1v3

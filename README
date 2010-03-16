@@ -1,0 +1,42 @@
+Last-Updated: March 16 2010)
+
+MumbleKit - A Mumble client framework for iPhoneOS
+=================================================
+
+This is the source code of MumbleKit - a Mumble client framework
+for iPhoneOS-based devices.
+
+Mumble is gaming-focused social voice chat utility. The desktop
+version runs of Windows, Mac OS X, Linux and various other Unix-like
+systems. Visit its website at:
+
+ <http://mumble.info/>
+
+Building it
+===========
+
+To build this you need the iPhoneOS 3.0 SDK from Apple and an
+Intel Mac running Mac OS X 10.5 or later.
+
+Before starting your build, you will need to check out the re-
+quired submodules.
+
+ $ git submodule init
+ $ git submodule update
+
+This will fetch known "working" snapshot of CELT, Speex and
+Protocol Buffers for Objective C.
+
+Building it (Xcode.app)
+=======================
+
+To build using Xcode, simply open the MumbleKit Xcode project
+(MumbleKit.xcodeproj in the root of the source tree) and press
+Cmd-B to build.
+
+Building it (command line)
+=========================
+
+To build from the command line, do something like this:
+
+ $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator3.1.3 -target MumbleKit -configuration Debug
