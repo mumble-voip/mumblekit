@@ -28,7 +28,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "Mumble.pb.h"
+#import <MumbleKit/MumbleProtocol/Mumble.pb.h>
 
 #define MKConnectionPingInterval 5.0f
 
