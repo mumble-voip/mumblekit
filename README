@@ -1,4 +1,4 @@
-(Last-Updated: March 16 2010)
+(Last-Updated: April 7 2010)
 
 MumbleKit - A Mumble client framework for iPhoneOS
 =================================================
@@ -78,5 +78,10 @@ successfully link against MumbleKit:
    ${PROJECT_DIR}/MumbleKit/build/${CONFIGURATION}-${PLATFORM_NAME}
 
  * -framework MumbleKit is added both as a CFLAG and a LDFLAG
+
+ * MumbleKit dependencies are added as linked libraries to the executable target:
+     - AudioToolbox.framework
+     - CFNetwork.framework
+     - Security.framework
 
  * The build should now work.
