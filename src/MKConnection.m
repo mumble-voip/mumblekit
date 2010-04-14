@@ -344,6 +344,24 @@
 	NSLog(@"MKConnection: pingResponseFromServer");
 }
 
+- (void) _connectionRejected:(MPReject *)rejectMessage {
+	MKRejectReason reason = MKRejectReasonNone;
+	NSString *explanation = nil;
+
+	if ([rejectMessage hasType])
+		reason = (MKRejectReason) [rejectMessage type];
+	if ([rejectMessage hasReason])
+		explanation = [rejectMessage reason];
+
+	NSInvocation *invocation = [NSInvocation invocationWithTarget:_delegate selector:@selector(connection:rejectedWithReason:explanation:)];
+	[invocation setArgument:&self atIndex:2];
+	[invocation setArgument:&reason atIndex:3];
+	[invocation setArgument:&explanation atIndex:4];
+	[invocation invokeOnMainThread];
+
+	[self closeStreams];
+}
+
 - (void) handleError:(NSError *)streamError {
 	NSInteger errorCode = [streamError code];
 
@@ -417,13 +435,6 @@
 			MPAuthenticate *a = [MPAuthenticate parseFromData:data];
 			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleAuthenticateMessage:)];
 			[invocation setArgument:&a atIndex:2];
-			[invocation invokeOnMainThread];
-			break;
-		}
-		case RejectMessage: {
-			MPReject *r = [MPReject parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleRejectMessage:)];
-			[invocation setArgument:&r atIndex:2];
 			[invocation invokeOnMainThread];
 			break;
 		}
@@ -569,6 +580,11 @@
 		case PingMessage: {
 			MPPing *p = [MPPing parseFromData:data];
 			[self _pingResponseFromServer:p];
+			break;
+		}
+		case RejectMessage: {
+			MPReject *r = [MPReject parseFromData:data];
+			[self _connectionRejected:r];
 			break;
 		}
 		default: {

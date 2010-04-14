@@ -67,6 +67,17 @@ typedef enum {
 	CodecVersionMessage
 } MKMessageType;
 
+typedef enum {
+	MKRejectReasonNone = 0,
+	MKRejectReasonWrongVersion,
+	MKRejectReasonInvalidUsername,
+	MKRejectReasonWrongUserPassword,
+	MKRejectReasonWrongServerPassword,
+	MKRejectReasonUsernameInUse,
+	MKRejectReasonServerIsFull,
+	MKRejectReasonNoCertificate
+} MKRejectReason;
+
 /*
  * MKConnectionDelegate
  */
@@ -74,6 +85,7 @@ typedef enum {
 - (void) connectionOpened:(MKConnection *)conn;
 - (void) connectionClosed:(MKConnection *)conn;
 - (void) connection:(MKConnection *)conn trustFailureInCertificateChain:(NSArray *)chain;
+- (void) connection:(MKConnection *)conn rejectedWithReason:(MKRejectReason)reason explanation:(NSString *)explanation;
 @end
 
 /*
@@ -147,6 +159,7 @@ typedef enum {
 - (void) _pingTimerFired;
 - (void) _pingResponseFromServer:(MPPing *)pingMessage;
 
+- (void) _connectionRejected:(MPReject *)rejectMessage;
 
 - (void) handleError: (NSError *)streamError;
 - (void) handleSslError: (NSError *)streamError;
