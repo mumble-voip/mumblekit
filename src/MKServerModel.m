@@ -33,21 +33,6 @@
 #define STUB \
 	NSLog(@"%@: %s", [self class], __FUNCTION__)
 
-static NSInteger stringSort(NSString *str1, NSString *str2, void *reverse) {
-	if (reverse)
-		return [str2 compare:str1];
-	else
-		return [str1 compare:str2];
-}
-
-static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) {
-	if ([chan1 position] != [chan2 position]) {
-		return reverse ? ([chan1 position] > [chan2 position]) : ([chan2 position] > [chan1 position]);
-	} else {
-		return stringSort([chan1 channelName], [chan2 channelName], reverse);
-	}
-}
-
 @implementation MKServerModel
 
 - (id) init {
@@ -61,8 +46,6 @@ static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) 
 	channelMapLock = [[MKReadWriteLock alloc] init];
 	channelMap = [[NSMutableDictionary alloc] init];
 
-	array = [[NSMutableArray alloc] init];
-
 	root = [[MKChannel alloc] init];
 	[root setChannelId:0];
 	[root setChannelName:@"Root"];
@@ -72,35 +55,7 @@ static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) 
 }
 
 - (void) dealloc {
-	/* dealloc all. */
 	[super dealloc];
-}
-
-- (void) updateModelArray {
-	[array removeAllObjects];
-	[self addChannelTreeToArray:root depth:0];
-}
-
-- (void) addChannelTreeToArray:(MKChannel *)tree depth:(NSUInteger)currentDepth {
-	[array addObject:tree];
-	
-	for (MKChannel *c in tree->channelList) {
-		[c setTreeDepth:currentDepth+1];
-		[array addObject:c];
-		[self addChannelTreeToArray:c depth:currentDepth+1];
-	}
-	for (MKUser *u in tree->userList) {
-		[array addObject:u];
-		[u setTreeDepth:currentDepth+1];
-	}
-}
-
-- (NSUInteger) count {
-	return [array count];
-}
-
-- (id) objectAtIndex:(NSUInteger)idx {
-	return [array objectAtIndex:idx];
 }
 
 #pragma mark -
@@ -125,8 +80,6 @@ static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) 
 	[userMap setObject:user forKey:[NSNumber numberWithUnsignedInt:userSession]];
 	[userMapLock unlock];
 	[root addUser:user];
-
-	[self updateModelArray];
 
 	return user;
 }
@@ -195,19 +148,18 @@ static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) 
  * Add a channel.
  */
 - (MKChannel *) addChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent {
+
 	MKChannel *chan = [[MKChannel alloc] init];
 	[chan setChannelId:chanId];
 	[chan setChannelName:chanName];
 	[chan setParent:parent];
-	
+
 	[channelMapLock writeLock];
 	[channelMap setObject:chan forKey:[NSNumber numberWithUnsignedInt:chanId]];
 	[channelMapLock unlock];
 
 	[parent addChannel:chan];
-	
-	[self updateModelArray];
-	
+
 	return chan;
 }
 

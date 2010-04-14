@@ -33,6 +33,21 @@
 
 @implementation MKChannel
 
+static NSInteger stringSort(NSString *str1, NSString *str2, void *reverse) {
+	if (reverse)
+		return [str2 compare:str1];
+	else
+		return [str1 compare:str2];
+}
+
+static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) {
+	if ([chan1 position] != [chan2 position]) {
+		return reverse ? ([chan1 position] > [chan2 position]) : ([chan2 position] > [chan1 position]);
+	} else {
+		return stringSort([chan1 channelName], [chan2 channelName], reverse);
+	}
+}
+
 - (id) init {
 	self = [super init];
 	if (self == nil)
@@ -58,21 +73,20 @@
 
 #pragma mark -
 
-- (NSUInteger) treeDepth {
-	return depth;
+//
+// Add a child channel to this channel.
+// Returns the index into the channel's subchannel list that the child was inserted at.
+//
+- (NSUInteger) addChannel:(MKChannel *)newChild {
+	[newChild setParent:self];
+	[channelList addObject:newChild];
+	[channelList sortUsingFunction:channelSort context:nil];
+	return [channelList indexOfObject:newChild];
 }
 
-- (void) setTreeDepth:(NSUInteger)treeDepth {
-	depth = treeDepth;
-}
-
-#pragma mark -
-
-- (void) addChannel:(MKChannel *)chan {
-	[chan setParent:self];
-	[channelList addObject:chan];
-}
-
+//
+// Remove a child channel.
+//
 - (void) removeChannel:(MKChannel *)chan {
 	[chan setParent:nil];
 	[channelList removeObject:chan];
@@ -89,12 +103,20 @@
 	[userList removeObject:user];
 }
 
-- (NSUInteger) numChildren {
-	NSUInteger count = 0;
-	for (MKChannel *c in channelList) {
-		count += 1 + [c numChildren];
-	}
-	return count + [userList count];
+#pragma mark -
+
+/*
+ * Get a list of children of this channel.
+ */
+- (NSArray *) subchannels {
+	return channelList;
+}
+
+/*
+ * Get a list of the current users residing in this channel.
+ */
+- (NSArray *) users {
+	return userList;
 }
 
 #pragma mark -

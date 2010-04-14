@@ -34,8 +34,8 @@
 
 @interface MKServerModel : NSObject {
 	MKChannel *root;
-	NSMutableArray *array;
-	
+	NSMutableArray *channelArray;
+
 	MKReadWriteLock *userMapLock;
 	NSMutableDictionary *userMap;
 
@@ -45,12 +45,6 @@
 
 - (id) init;
 - (void) dealloc;
-
-- (void) updateModelArray;
-- (void) addChannelTreeToArray:(MKChannel *)tree depth:(NSUInteger)currentDepth;
-
-- (NSUInteger) count;
-- (id) objectAtIndex:(NSUInteger)idx;
 
 #pragma mark -
 

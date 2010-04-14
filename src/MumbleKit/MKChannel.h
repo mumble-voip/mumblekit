@@ -37,6 +37,8 @@
 	NSString *channelName;
 	NSInteger position;
 
+	NSInteger numChildren;
+
 	BOOL inheritACL;
 	BOOL temporary;
 
@@ -45,7 +47,9 @@
 	NSMutableArray *userList;
 	NSMutableArray *ACLList;
 	NSMutableArray *linkedList;
+
 	NSUInteger depth;
+	NSUInteger _modelIndex;
 }
 
 - (id) init;
@@ -57,12 +61,11 @@
 - (void) removeChannel:(MKChannel *)chan;
 - (void) addUser:(MKUser *)user;
 - (void) removeUser:(MKUser *)user;
-- (NSUInteger) numChildren;
 
 #pragma mark -
 
-- (NSUInteger) treeDepth;
-- (void) setTreeDepth:(NSUInteger)depth;
+- (NSArray *) subchannels;
+- (NSArray *) users;
 
 #pragma mark -
 
