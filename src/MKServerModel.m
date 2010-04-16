@@ -65,33 +65,197 @@
 	[super dealloc];
 }
 
-#pragma mark MKConnection Delegate Handlers
+#pragma mark MKMessageHandler methods
 
-- (void) handleAuthenticateMessage: (MPAuthenticate *)msg {
+
+/*
+ * CodecVersion message...
+ *
+ * Used to tell us which version of CELT to use.
+ */
+-(void) handleCodecVersionMessage:(MPCodecVersion *)codec {
+	NSLog(@"MKServerModel: Received CodecVersion message");
+
+	if ([codec hasAlpha])
+		NSLog(@"alpha = 0x%x", [codec alpha]);
+	if ([codec hasBeta])
+		NSLog(@"beta = 0x%x", [codec beta]);
+	if ([codec hasPreferAlpha])
+		NSLog(@"preferAlpha = %i", [codec preferAlpha]);
+}
+
+- (void) handleUserStateMessage:(MPUserState *)msg {
+	BOOL newUser = NO;
+
+	NSLog(@"MKServerModel: Recieved UserState message");
+
+	if (![msg hasSession]) {
+		NSLog(@"MKServerModel: Recieved UserState packet without session. Discarding");
+		return;
+	}
+
+	NSUInteger session = [msg session];
+	MKUser *user = [self userWithSession:session];
+
+	//
+	// Is this an existing user? Or should we create a new user object?
+	//
+	if (user == nil) {
+		if ([msg hasName]) {
+			NSLog(@"Adding user....!");
+			user = [self addUserWithSession:session name:[msg name]];
+
+			// fixme(mkrautz): A new user was added. Ping listeners.
+		} else {
+			return;
+		}
+	}
+
+	if ([msg hasUserId]) {
+		[self setIdForUser:user to:[msg userId]];
+	}
+
+	if ([msg hasHash]) {
+		[self setHashForUser:user to:[msg hash]];
+		/* Check if user is a friend? */
+	}
+
+	if (newUser) {
+		NSLog(@"%@ connected.", [user userName]);
+	}
+
+	if ([msg hasChannelId]) {
+		MKChannel *chan = [self channelWithId:[msg channelId]];
+		if (chan == nil) {
+			NSLog(@"MKServerModel: UserState with invalid channelId.");
+		}
+
+		MKChannel *oldChan = [user channel];
+		if (chan != oldChan) {
+			[self moveUser:user toChannel:chan];
+			NSLog(@"Moved user '%@' to channel '%@'", [user userName], [chan channelName]);
+		}
+	}
+
+	if ([msg hasName]) {
+		[self renameUser:user to:[msg name]];
+	}
+
+	if ([msg hasTexture]) {
+		NSLog(@"MKServerModel: User has texture.. Discarding.");
+	}
+
+	if ([msg hasComment]) {
+		NSLog(@"MKServerModel: User has comment... Discarding.");
+	}
+
+}
+
+//
+// A user has left the server.
+//
+- (void) handleUserRemoveMessage:(MPUserRemove *)msg {
+	MKUser *user = nil;
+
+	NSLog(@"MKServerModel: Recieved UserRemove message");
+
+
+	if ([msg hasSession]) {
+		MKUser *user = [self userWithSession:[msg session]];
+	} else {
+		NSLog(@"MKServerModel: Received UserRemoveMessage without session.");
+		return;
+	}
+
+	[self removeUser:user];
+
+	// fixme(mkrautz): Inform model listeners that a user was removed.
+}
+
+//
+// ChannelState
+//
+- (void) handleChannelStateMessage:(MPChannelState *)msg {
+	NSLog(@"ServerViewController: Received ChannelState message");
+
+	if (![msg hasChannelId]) {
+		NSLog(@"ServerViewController: ChannelState without channelId.");
+		return;
+	}
+
+	MKChannel *chan = [self channelWithId:[msg channelId]];
+	MKChannel *parent = [msg hasParent] ? [self channelWithId:[msg parent]] : nil;
+
+	if (!chan) {
+		if ([msg hasParent] && [msg hasName]) {
+			NSLog(@"MKServerModel: Adding new channel....");
+			chan = [self addChannelWithId:[msg channelId] name:[msg name] parent:parent];
+			if ([msg hasTemporary]) {
+				[chan setTemporary:[msg temporary]];
+			}
+		} else {
+			return;
+		}
+	}
+
+	if (parent) {
+		NSLog(@"MKServerModel: Moving %@ to %@", [chan channelName], [parent channelName]);
+		[self moveChannel:chan toChannel:parent];
+	}
+
+	if ([msg hasName]) {
+		[self renameChannel:chan to:[msg name]];
+	}
+
+	if ([msg hasDescription]) {
+		[self setCommentForChannel:chan to:[msg description]];
+	}
+
+	if ([msg hasPosition]) {
+		[self repositionChannel:chan to:[msg position]];
+	}
+
+	// fixme(mkrautz): Ping listeners.
+}
+
+//
+// A channel was removed from the server.
+//
+- (void) handleChannelRemoveMessage:(MPChannelRemove *)msg {
+	NSLog(@"MKServerModel: ChannelRemove message");
+
+	if (! [msg hasChannelId]) {
+		NSLog(@"MKServerModel: ChannelRemove without channelId.");
+		return;
+	}
+
+	MKChannel *chan = [self channelWithId:[msg channelId]];
+	if (chan && [chan channelId] != 0) {
+		[self removeChannel:chan];
+		// fixme(mkrautz): Ping listeners.
+	}
+}
+
+//
+// All server information synced.
+//
+- (void) handleServerSyncMessage:(MPServerSync *)msg {
+
+	NSLog(@"ServerViewController: Recieved ServerSync message");
+	if (![msg hasSession]) {
+		NSLog(@"ServerViewController: Invalid ServerSync recieved.");
+		return;
+	}
+
+	NSLog(@"MKServerModel: Our session=%u", [msg session]);
+
+	// fixme(mkrautz): Ping listeners.
 }
 
 - (void) handleBanListMessage: (MPBanList *)msg {
 }
 
-- (void) handleRejectMessage: (MPReject *)msg {
-}
-
-- (void) handleServerSyncMessage: (MPServerSync *)msg {
-}
-
 - (void) handlePermissionDeniedMessage: (MPPermissionDenied *)msg {
-}
-
-- (void) handleUserStateMessage: (MPUserState *)msg {
-}
-
-- (void) handleUserRemoveMessage: (MPUserRemove *)msg {
-}
-
-- (void) handleChannelStateMessage: (MPChannelState *)msg {
-}
-
-- (void) handleChannelRemoveMessage: (MPChannelRemove *)msg {
 }
 
 - (void) handleTextMessageMessage: (MPTextMessage *)msg {
@@ -109,9 +273,6 @@
 - (void) handleContextActionAddMessage: (MPContextActionAdd *)add {
 }
 
-- (void) handleVersionMessage: (MPVersion *)msg {
-}
-
 - (void) handleUserListMessage: (MPUserList *)msg {
 }
 
@@ -121,8 +282,6 @@
 - (void) handlePermissionQueryMessage: (MPPermissionQuery *)msg {
 }
 
-- (void) handleCodecVersionMessage: (MPCodecVersion *)msg {
-}
 
 #pragma mark -
 

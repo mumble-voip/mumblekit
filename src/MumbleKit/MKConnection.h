@@ -94,7 +94,6 @@ typedef enum {
 @protocol MKMessageHandler
 - (void) handleAuthenticateMessage: (MPAuthenticate *)msg;
 - (void) handleBanListMessage: (MPBanList *)msg;
-- (void) handleRejectMessage: (MPReject *)msg;
 - (void) handleServerSyncMessage: (MPServerSync *)msg;
 - (void) handlePermissionDeniedMessage: (MPPermissionDenied *)msg;
 - (void) handleUserStateMessage: (MPUserState *)msg;
@@ -104,10 +103,8 @@ typedef enum {
 - (void) handleTextMessageMessage: (MPTextMessage *)msg;
 - (void) handleACLMessage: (MPACL *)msg;
 - (void) handleQueryUsersMessage: (MPQueryUsers *)msg;
-- (void) handleCryptSetupMessage: (MPCryptSetup *)msg;
 - (void) handleContextActionMessage: (MPContextAction *)msg;
 - (void) handleContextActionAddMessage: (MPContextActionAdd *)add;
-- (void) handleVersionMessage: (MPVersion *)msg;
 - (void) handleUserListMessage: (MPUserList *)msg;
 - (void) handleVoiceTargetMessage: (MPVoiceTarget *)msg;
 - (void) handlePermissionQueryMessage: (MPPermissionQuery *)msg;
