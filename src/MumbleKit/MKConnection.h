@@ -130,15 +130,38 @@ typedef enum {
 	id _msgHandler;
 	id _delegate;
 	int _socket;
+
+	//
+	// Server info.
+	//
+	NSString *_serverVersion;
+	NSString *_serverRelease;
+	NSString *_serverOSName;
+	NSString *_serverOSVersion;
 }
 
 - (id) init;
 - (void) dealloc;
 
+#pragma mark -
+
 - (void) connectToHost:(NSString *)hostName port:(NSUInteger)port;
 - (void) reconnect;
 - (void) closeStreams;
 - (BOOL) connected;
+
+#pragma mark Server Info
+
+- (NSString *) serverVersion;
+- (NSString *) serverRelease;
+- (NSString *) serverOSName;
+- (NSString *) serverOSVersion;
+
+#pragma mark -
+
+- (void) authenticateWithUsername:(NSString *)user password:(NSString *)pass;
+
+#pragma mark -
 
 - (void) setMessageHandler: (id<MKMessageHandler>)messageHandler;
 - (id) messageHandler;
@@ -156,10 +179,15 @@ typedef enum {
 
 - (void) _setupSsl;
 
+#pragma mark Internal Message Handlers
+
 - (void) _pingTimerFired;
 - (void) _pingResponseFromServer:(MPPing *)pingMessage;
-
+- (void) _versionMessageReceived:(MPVersion *)msg;
+- (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
 - (void) _connectionRejected:(MPReject *)rejectMessage;
+
+#pragma mark -
 
 - (void) handleError: (NSError *)streamError;
 - (void) handleSslError: (NSError *)streamError;

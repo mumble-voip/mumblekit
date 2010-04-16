@@ -28,11 +28,15 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import <UIKit/UIKit.h>
+
 #import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKPacketDataStream.h>
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutput.h>
+#import <MumbleKit/MKVersion.h>
+#include <MumbleKit/celt/celt.h>
 
 #import <CFNetwork/CFNetwork.h>
 
@@ -130,6 +134,66 @@
 
 - (BOOL) connected {
 	return _connectionEstablished;
+}
+
+#pragma mark Server Information
+
+- (NSString *) serverVersion {
+	return _serverVersion;
+}
+
+- (NSString *) serverRelease {
+	return _serverRelease;
+}
+
+- (NSString *) serverOSName {
+	return _serverOSName;
+}
+
+- (NSString *) serverOSVersion {
+	return _serverOSVersion;
+}
+
+#pragma mark -
+
+- (void) authenticateWithUsername:(NSString *)userName password:(NSString *)password {
+	//
+	// Figure out CELT bitstream version
+	// fixme(mkrautz): Refactor into a MKCELTManager or the like.
+	//
+	celt_int32 bitstream;
+	CELTMode *mode = celt_mode_create(48000, 100, NULL);
+	celt_mode_info(mode, CELT_GET_BITSTREAM_VERSION, &bitstream);
+	celt_mode_destroy(mode);
+
+	 NSLog(@"CELT bitstream = 0x%x", bitstream);
+
+	 NSData *data;
+	 MPVersion_Builder *version = [MPVersion builder];
+
+	//
+	// Query the OS name and version
+	//
+	UIDevice *dev = [UIDevice currentDevice];
+	[version setOs: [dev systemName]];
+	[version setOsVersion: [dev systemVersion]];
+
+	//
+	// Setup MumbleKit version info.
+	//
+	[version setVersion: [MKVersion hexVersion]];
+	[version setRelease: [MKVersion releaseString]];
+	data = [[version build] data];
+	[self sendMessageWithType:VersionMessage data:data];
+
+	MPAuthenticate_Builder *authenticate = [MPAuthenticate builder];
+	[authenticate setUsername:userName];
+	if (password) {
+		[authenticate setPassword:password];
+	}
+	[authenticate addCeltVersions:bitstream];
+	data = [[authenticate build] data];
+	[self sendMessageWithType:AuthenticateMessage data:data];
 }
 
 #pragma mark NSStream event handlers
@@ -344,6 +408,9 @@
 	NSLog(@"MKConnection: pingResponseFromServer");
 }
 
+//
+// The server rejected our connection.
+//
 - (void) _connectionRejected:(MPReject *)rejectMessage {
 	MKRejectReason reason = MKRejectReasonNone;
 	NSString *explanation = nil;
@@ -361,6 +428,30 @@
 
 	[self closeStreams];
 }
+
+//
+// Handle server crypt setup
+//
+- (void) _doCryptSetup:(MPCryptSetup *)cryptSetup {
+	NSLog(@"MKConnection: CryptSetup ...");
+}
+
+//
+// Handle incoming version information from the server.
+//
+- (void) _versionMessageReceived:(MPVersion *)msg {
+	if ([msg hasVersion]) {
+		int32_t version = [msg version];
+		_serverVersion = [[NSString alloc] initWithFormat:@"%i.%i.%i", (version >> 8) & 0xff, (version >> 4) & 0xff, version & 0xff, nil];
+	}
+	if ([msg hasRelease])
+		_serverRelease = [[msg release] copy];
+	if ([msg hasOs])
+		_serverOSName = [[msg os] copy];
+	if ([msg hasOsVersion])
+		_serverOSVersion = [[msg osVersion] copy];
+}
+
 
 - (void) handleError:(NSError *)streamError {
 	NSInteger errorCode = [streamError code];
@@ -424,13 +515,6 @@
 		return;
 
 	switch (packetType) {
-		case VersionMessage: {
-			MPVersion *v = [MPVersion parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleVersionMessage:)];
-			[invocation setArgument:&v atIndex:2];
-			[invocation invokeOnMainThread];
-			break;
-		}
 		case AuthenticateMessage: {
 			MPAuthenticate *a = [MPAuthenticate parseFromData:data];
 			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleAuthenticateMessage:)];
@@ -508,13 +592,6 @@
 			[invocation invokeOnMainThread];
 			break;
 		}
-		case CryptSetupMessage: {
-			MPCryptSetup *cs = [MPCryptSetup parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleCryptSetupMessage:)];
-			[invocation setArgument:&cs atIndex:2];
-			[invocation invokeOnMainThread];
-			break;
-		}
 		case ContextActionAddMessage: {
 			MPContextActionAdd *caa = [MPContextActionAdd parseFromData:data];
 			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleContextActionAddMessage:)];
@@ -557,6 +634,31 @@
 			[invocation invokeOnMainThread];
 			break;
 		}
+
+		//
+		// Internally handled packets.
+		//
+
+		case VersionMessage: {
+			MPVersion *v = [MPVersion parseFromData:data];
+			[self _versionMessageReceived:v];
+			break;
+		}
+		case PingMessage: {
+			MPPing *p = [MPPing parseFromData:data];
+			[self _pingResponseFromServer:p];
+			break;
+		}
+		case RejectMessage: {
+			MPReject *r = [MPReject parseFromData:data];
+			[self _connectionRejected:r];
+			break;
+		}
+		case CryptSetupMessage: {
+			MPCryptSetup *cs = [MPCryptSetup parseFromData:data];
+			[self _doCryptSetup:cs];
+			break;
+		}
 		case UDPTunnelMessage: {
 			unsigned char *buf = (unsigned char *)[data bytes];
 			MKUDPMessageType messageType = ((buf[0] >> 5) & 0x7);
@@ -577,16 +679,7 @@
 			[pds release];
 			break;
 		}
-		case PingMessage: {
-			MPPing *p = [MPPing parseFromData:data];
-			[self _pingResponseFromServer:p];
-			break;
-		}
-		case RejectMessage: {
-			MPReject *r = [MPReject parseFromData:data];
-			[self _connectionRejected:r];
-			break;
-		}
+
 		default: {
 			NSLog(@"MKConnection: Unknown packet type recieved. Discarding.");
 			break;
