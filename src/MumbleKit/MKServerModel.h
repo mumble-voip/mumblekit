@@ -30,6 +30,7 @@
 
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKChannel.h>
+#import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKReadWriteLock.h>
 
 @interface MKServerModel : NSObject {
@@ -41,9 +42,11 @@
 
 	MKReadWriteLock *channelMapLock;
 	NSMutableDictionary *channelMap;
+
+	MKConnection *_connection;
 }
 
-- (id) init;
+- (id) initWithConnection:(MKConnection *)conn;
 - (void) dealloc;
 
 #pragma mark -

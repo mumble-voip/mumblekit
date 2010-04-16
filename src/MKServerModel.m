@@ -29,13 +29,14 @@
 */
 
 #import <MumbleKit/MKServerModel.h>
+#import <MumbleKit/MKConnection.h>
 
 #define STUB \
 	NSLog(@"%@: %s", [self class], __FUNCTION__)
 
 @implementation MKServerModel
 
-- (id) init {
+- (id) initWithConnection:(MKConnection *)conn {
 	self = [super init];
 	if (self == nil)
 		return nil;
@@ -51,11 +52,76 @@
 	[root setChannelName:@"Root"];
 	[channelMap setObject:root forKey:[NSNumber numberWithUnsignedInt:0]];
 
+	//
+	// Set us up to handle messages from the connection.
+	//
+	_connection = conn;
+	[_connection setMessageHandler:self];
+
 	return self;
 }
 
 - (void) dealloc {
 	[super dealloc];
+}
+
+#pragma mark MKConnection Delegate Handlers
+
+- (void) handleAuthenticateMessage: (MPAuthenticate *)msg {
+}
+
+- (void) handleBanListMessage: (MPBanList *)msg {
+}
+
+- (void) handleRejectMessage: (MPReject *)msg {
+}
+
+- (void) handleServerSyncMessage: (MPServerSync *)msg {
+}
+
+- (void) handlePermissionDeniedMessage: (MPPermissionDenied *)msg {
+}
+
+- (void) handleUserStateMessage: (MPUserState *)msg {
+}
+
+- (void) handleUserRemoveMessage: (MPUserRemove *)msg {
+}
+
+- (void) handleChannelStateMessage: (MPChannelState *)msg {
+}
+
+- (void) handleChannelRemoveMessage: (MPChannelRemove *)msg {
+}
+
+- (void) handleTextMessageMessage: (MPTextMessage *)msg {
+}
+
+- (void) handleACLMessage: (MPACL *)msg {
+}
+
+- (void) handleQueryUsersMessage: (MPQueryUsers *)msg {
+}
+
+- (void) handleContextActionMessage: (MPContextAction *)msg {
+}
+
+- (void) handleContextActionAddMessage: (MPContextActionAdd *)add {
+}
+
+- (void) handleVersionMessage: (MPVersion *)msg {
+}
+
+- (void) handleUserListMessage: (MPUserList *)msg {
+}
+
+- (void) handleVoiceTargetMessage: (MPVoiceTarget *)msg {
+}
+
+- (void) handlePermissionQueryMessage: (MPPermissionQuery *)msg {
+}
+
+- (void) handleCodecVersionMessage: (MPCodecVersion *)msg {
 }
 
 #pragma mark -
