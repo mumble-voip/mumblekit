@@ -33,8 +33,24 @@
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKReadWriteLock.h>
 
+@class MulticastDelegate;
+@class MKServerModel;
+
+@protocol MKServerModelDelegate
+- (void) serverModel:(MKServerModel *)model joinedServerAsUser:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userJoined:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userLeft:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model channelAdded:(MKChannel *)channel;
+- (void) serverModel:(MKServerModel *)model channelRemoved:(MKChannel *)channel;
+- (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan;
+//- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
+@end
+
+
 @interface MKServerModel : NSObject {
 	MKChannel *root;
+	MKUser *_connectedUser;
+
 	NSMutableArray *channelArray;
 
 	MKReadWriteLock *userMapLock;
@@ -44,13 +60,21 @@
 	NSMutableDictionary *channelMap;
 
 	MKConnection *_connection;
+
+	MulticastDelegate<MKServerModelDelegate> *_delegate;
 }
 
 - (id) initWithConnection:(MKConnection *)conn;
 - (void) dealloc;
+- (void) addDelegate:(id)delegate;
+- (void) removeDelegate:(id)delegate;
 
 #pragma mark -
 
+
+
+#pragma mark -
+- (MKUser *) connectedUser;
 - (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
 - (MKUser *) userWithSession:(NSUInteger)session;
 - (MKUser *) userWithHash:(NSString *)hash;

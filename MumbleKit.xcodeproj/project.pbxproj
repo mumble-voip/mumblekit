@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 281A23E31179F5B600B7A471 /* MulticastDelegate.h */; };
+		281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281A23E41179F5B600B7A471 /* MulticastDelegate.m */; };
 		287509CF11431A68002885AF /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 287509CD11431A68002885AF /* MKUtils.h */; };
 		28750A1D11431BD4002885AF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A1C11431BD4002885AF /* AudioToolbox.framework */; };
 		28750A2111431BD7002885AF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A2011431BD7002885AF /* CFNetwork.framework */; };
@@ -128,6 +130,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		281A23E31179F5B600B7A471 /* MulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MulticastDelegate.h; path = src/MulticastDelegate.h; sourceTree = "<group>"; };
+		281A23E41179F5B600B7A471 /* MulticastDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MulticastDelegate.m; path = src/MulticastDelegate.m; sourceTree = "<group>"; };
 		281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CELT.xcodeproj; path = 3rdparty/celtbuild/CELT.xcodeproj; sourceTree = "<group>"; };
 		281F0B4411500BA400BAA221 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = 3rdparty/protobufbuild/ProtocolBuffers.xcodeproj; sourceTree = "<group>"; };
 		281F0B5411500BAC00BAA221 /* Speex.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Speex.xcodeproj; path = 3rdparty/speexbuild/Speex.xcodeproj; sourceTree = "<group>"; };
@@ -211,6 +215,7 @@
 				2897BAAC11452CE300F3D16D /* Categories */,
 				287509B511431932002885AF /* Headers */,
 				08FB77AEFE84172EC02AAC07 /* Source */,
+				281A23DD1179F56200B7A471 /* MulticastDelegate */,
 				32C88DFF0371C24200C91783 /* Prefix Header */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -247,6 +252,15 @@
 				28A4934311431863000627EB /* MKAudioOutputUser.m */,
 			);
 			name = Source;
+			sourceTree = "<group>";
+		};
+		281A23DD1179F56200B7A471 /* MulticastDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				281A23E31179F5B600B7A471 /* MulticastDelegate.h */,
+				281A23E41179F5B600B7A471 /* MulticastDelegate.m */,
+			);
+			name = MulticastDelegate;
 			sourceTree = "<group>";
 		};
 		281F0B3611500AB900BAA221 /* Dependencies */ = {
@@ -377,6 +391,7 @@
 				288A6BBF11500C82008FED5E /* Mumble.pb.h in Headers */,
 				288A6BC111500C82008FED5E /* ObjectivecDescriptor.pb.h in Headers */,
 				28BA40DF1179170A006FAB39 /* MKVersion.h in Headers */,
+				281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +556,7 @@
 				288A6BC011500C82008FED5E /* Mumble.pb.m in Sources */,
 				288A6BC211500C82008FED5E /* ObjectivecDescriptor.pb.m in Sources */,
 				28BA40E01179170A006FAB39 /* MKVersion.m in Sources */,
+				281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

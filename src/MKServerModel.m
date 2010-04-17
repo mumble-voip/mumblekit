@@ -31,6 +31,8 @@
 #import <MumbleKit/MKServerModel.h>
 #import <MumbleKit/MKConnection.h>
 
+#import "MulticastDelegate.h"
+
 #define STUB \
 	NSLog(@"%@: %s", [self class], __FUNCTION__)
 
@@ -40,6 +42,8 @@
 	self = [super init];
 	if (self == nil)
 		return nil;
+
+	_delegate = [[MulticastDelegate alloc] init];
 
 	userMapLock = [[MKReadWriteLock alloc] init];
 	userMap = [[NSMutableDictionary alloc] init];
@@ -65,14 +69,25 @@
 	[super dealloc];
 }
 
+- (void) addDelegate:(id)delegate {
+	[(MulticastDelegate *)_delegate addDelegate:delegate];
+}
+
+- (void) removeDelegate:(id)delegate {
+	[(MulticastDelegate *)_delegate removeDelegate:delegate];
+}
+
+- (BOOL) serverInfoSynced {
+	return _connectedUser != nil;
+}
+
 #pragma mark MKMessageHandler methods
 
-
-/*
- * CodecVersion message...
- *
- * Used to tell us which version of CELT to use.
- */
+//
+// CodecVersion message.
+// Tells us which codecs we should use for this server.
+// fixme(mkrautz: Does not belong here.
+//
 -(void) handleCodecVersionMessage:(MPCodecVersion *)codec {
 	NSLog(@"MKServerModel: Received CodecVersion message");
 
@@ -84,13 +99,14 @@
 		NSLog(@"preferAlpha = %i", [codec preferAlpha]);
 }
 
+//
+// UserState message.
+// A change in user state.
+//
 - (void) handleUserStateMessage:(MPUserState *)msg {
 	BOOL newUser = NO;
 
-	NSLog(@"MKServerModel: Recieved UserState message");
-
-	if (![msg hasSession]) {
-		NSLog(@"MKServerModel: Recieved UserState packet without session. Discarding");
+	if (! [msg hasSession]) {
 		return;
 	}
 
@@ -102,10 +118,8 @@
 	//
 	if (user == nil) {
 		if ([msg hasName]) {
-			NSLog(@"Adding user....!");
 			user = [self addUserWithSession:session name:[msg name]];
-
-			// fixme(mkrautz): A new user was added. Ping listeners.
+			newUser = YES;
 		} else {
 			return;
 		}
@@ -120,8 +134,11 @@
 		/* Check if user is a friend? */
 	}
 
-	if (newUser) {
-		NSLog(@"%@ connected.", [user userName]);
+	//
+	// The user just connected. Tell our delegate listeners.
+	//
+	if (newUser && [self serverInfoSynced]) {
+		[_delegate serverModel:self userJoined:user];
 	}
 
 	if ([msg hasChannelId]) {
@@ -155,31 +172,23 @@
 // A user has left the server.
 //
 - (void) handleUserRemoveMessage:(MPUserRemove *)msg {
-	MKUser *user = nil;
-
-	NSLog(@"MKServerModel: Recieved UserRemove message");
-
-
-	if ([msg hasSession]) {
-		MKUser *user = [self userWithSession:[msg session]];
-	} else {
-		NSLog(@"MKServerModel: Received UserRemoveMessage without session.");
+	if (! [msg hasSession]) {
 		return;
 	}
 
-	[self removeUser:user];
+	MKUser *user = [self userWithSession:[msg session]];
+	[_delegate serverModel:self userLeft:user];
 
-	// fixme(mkrautz): Inform model listeners that a user was removed.
+	[self removeUser:user];
 }
 
 //
 // ChannelState
 //
 - (void) handleChannelStateMessage:(MPChannelState *)msg {
-	NSLog(@"ServerViewController: Received ChannelState message");
+	BOOL newChannel = NO;
 
-	if (![msg hasChannelId]) {
-		NSLog(@"ServerViewController: ChannelState without channelId.");
+	if (! [msg hasChannelId]) {
 		return;
 	}
 
@@ -215,24 +224,23 @@
 		[self repositionChannel:chan to:[msg position]];
 	}
 
-	// fixme(mkrautz): Ping listeners.
+	if (newChannel && [self serverInfoSynced]) {
+		[_delegate serverModel:self channelCreated:chan];
+	}
 }
 
 //
 // A channel was removed from the server.
 //
 - (void) handleChannelRemoveMessage:(MPChannelRemove *)msg {
-	NSLog(@"MKServerModel: ChannelRemove message");
-
 	if (! [msg hasChannelId]) {
-		NSLog(@"MKServerModel: ChannelRemove without channelId.");
 		return;
 	}
 
 	MKChannel *chan = [self channelWithId:[msg channelId]];
-	if (chan && [chan channelId] != 0) {
+	if (chan && [chan channelId] != 0 && [self serverInfoSynced]) {
+		[_delegate serverModel:self channelRemoved:chan];
 		[self removeChannel:chan];
-		// fixme(mkrautz): Ping listeners.
 	}
 }
 
@@ -241,15 +249,10 @@
 //
 - (void) handleServerSyncMessage:(MPServerSync *)msg {
 
-	NSLog(@"ServerViewController: Recieved ServerSync message");
-	if (![msg hasSession]) {
-		NSLog(@"ServerViewController: Invalid ServerSync recieved.");
-		return;
-	}
+	MKUser *user = [self userWithSession:[msg session]];
+	_connectedUser = user;
 
-	NSLog(@"MKServerModel: Our session=%u", [msg session]);
-
-	// fixme(mkrautz): Ping listeners.
+	[_delegate serverModel:self joinedServerAsUser:user];
 }
 
 - (void) handleBanListMessage: (MPBanList *)msg {
@@ -284,6 +287,10 @@
 
 
 #pragma mark -
+
+- (MKUser *) connectedUser {
+	return _connectedUser;
+}
 
 /*
  * Add a new user.
