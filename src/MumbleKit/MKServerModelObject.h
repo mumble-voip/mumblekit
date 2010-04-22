@@ -1,4 +1,4 @@
-/* Copyright (C) 2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
 
    All rights reserved.
 
@@ -28,68 +28,14 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKServerModelObject.h>
+#import <Foundation/Foundation.h>
 
-@class MKUser;
+@interface MKServerModelObject : NSObject
 
-@interface MKChannel : MKServerModelObject {
-	MKChannel *channelParent;
-
-	NSUInteger channelId;
-	NSString *channelName;
-	NSInteger position;
-
-	NSInteger numChildren;
-
-	BOOL inheritACL;
-	BOOL temporary;
-
-	NSMutableArray *channelList;
-	NSMutableArray *userList;
-	NSMutableArray *ACLList;
-	NSMutableArray *linkedList;
-
-	NSUInteger depth;
-	NSUInteger _modelIndex;
-}
-
-- (id) init;
-- (void) dealloc;
-
-#pragma mark -
-
-- (void) addChannel:(MKChannel *)chan;
-- (void) removeChannel:(MKChannel *)chan;
-- (void) addUser:(MKUser *)user;
-- (void) removeUser:(MKUser *)user;
-
-#pragma mark -
-
-- (NSArray *) subchannels;
-- (NSArray *) users;
-
-#pragma mark -
-
-- (BOOL) linkedToChannel:(MKChannel *)chan;
-- (void) linkToChannel:(MKChannel *)chan;
-- (void) unlinkFromChannel:(MKChannel *)chan;
-- (void) unlinkAll;
-
-#pragma mark -
-
-- (NSString *) channelName;
-- (void) setChannelName:(NSString *)name;
-
-- (void) setParent:(MKChannel *)chan;
-- (MKChannel *) parent;
-
-- (void) setChannelId:(NSUInteger)chanId;
-- (NSUInteger) channelId;
-
-- (void) setTemporary:(BOOL)flag;
-- (BOOL) temporary;
-
-- (NSInteger) position;
-- (void) setPosition:(NSInteger)pos;
+- (id) copyWithZone:(NSZone *)zone;
+- (id) retain;
+- (NSUInteger) retainCount;
+- (void) release;
+- (id) autorelease;
 
 @end

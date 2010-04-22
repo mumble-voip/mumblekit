@@ -28,6 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import <MumbleKit/MKServerModelObject.h>
+
 @class MKChannel;
 
 typedef enum _TalkingState {
@@ -37,7 +39,7 @@ typedef enum _TalkingState {
 	TalkingStateWhisperTalk,
 } MKTalkingState;
 
-@interface MKUser : NSObject {
+@interface MKUser : MKServerModelObject {
 	@protected
 		BOOL muteState;
 		BOOL deafState;
