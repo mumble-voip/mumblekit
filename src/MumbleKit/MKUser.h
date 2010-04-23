@@ -30,14 +30,14 @@
 
 #import <MumbleKit/MKServerModelObject.h>
 
-@class MKChannel;
+typedef enum {
+	MKTalkStatePassive = 0,
+	MKTalkStateTalking,
+	MKTalkStateWhispering,
+	MKTalkStateShouting,
+} MKTalkState;
 
-typedef enum _TalkingState {
-	TalkingStateOff = 0,
-	TalkingStateTalking,
-	TalkingStateWhisperChannel,
-	TalkingStateWhisperTalk,
-} MKTalkingState;
+@class MKChannel;
 
 @interface MKUser : MKServerModelObject {
 	@protected
@@ -47,23 +47,18 @@ typedef enum _TalkingState {
 		BOOL localMuteState;
 		BOOL selfMuteState;
 		BOOL selfDeafState;
-		MKTalkingState talkState;
+		MKTalkState _talkState;
 		NSUInteger userSession;
 		NSString *userName;
 		NSUInteger depth;
 		MKChannel *channel;
-
+/*
 	@public
 		int sequence;
-		int frames;
+		int frames;*/
 }
 
 - (void) dealloc;
-
-#pragma mark -
-
-- (NSUInteger) treeDepth;
-- (void) setTreeDepth:(NSUInteger)depth;
 
 #pragma mark -
 
@@ -73,8 +68,8 @@ typedef enum _TalkingState {
 - (void) setUserName:(NSString *)name;
 - (NSString *) userName;
 
-- (void) setTalking:(MKTalkingState)flag;
-- (MKTalkingState) talkingState;
+- (void) setTalkState:(MKTalkState)val;
+- (MKTalkState) talkState;
 
 - (void) setMute:(BOOL)flag;
 - (BOOL) muted;

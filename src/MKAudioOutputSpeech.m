@@ -327,9 +327,33 @@
 			jitter_buffer_tick(jitter);
 		}
 
+		//
+		// Update the user's talkstate.
+		//
+		if (user) {
+			if (! nextAlive)
+				flags = 0xff;
+			switch (flags) {
+				case 0:
+					[user setTalkState:MKTalkStateTalking];
+					break;
+				case 1:
+					[user setTalkState:MKTalkStateShouting];
+					break;
+				case 0xff:
+					[user setTalkState:MKTalkStatePassive];
+					break;
+				default:
+					[user setTalkState:MKTalkStateWhispering];
+					break;
+			}
+		}
+
 nextframe:
 		bufferFilled += outputSize;
 	}
+
+
 
 	BOOL tmp = lastAlive;
 	lastAlive = nextAlive;

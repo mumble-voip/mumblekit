@@ -284,6 +284,15 @@
 	return _msgHandler;
 }
 
+- (void) setVoiceDataHandler:(id<MKVoiceDataHandler>)voiceDataHandler {
+	_voiceDataHandler = voiceDataHandler;
+}
+
+- (id<MKVoiceDataHandler>) voiceDataHandler {
+	return _voiceDataHandler;
+}
+
+
 #pragma mark -
 
 /*
@@ -669,7 +678,30 @@
 				case UDPVoiceCELTAlphaMessage:
 				case UDPVoiceCELTBetaMessage:
 				case UDPVoiceSpeexMessage:
-					[self handleVoicePacketOfType:messageType flags:messageFlags datastream:pds];
+					//
+					// Call VoiceDataHandler.
+					//
+					NSLog(@"MKConnection: conn=%p, msgType=%u, msgFlags=%u, voiceData=%p", self, messageType, messageFlags, pds);
+					{
+
+						MK_UNUSED NSUInteger session = [pds getUnsignedInt];
+						NSUInteger seq = [pds getUnsignedInt];
+
+						NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];
+						[voicePacketData setLength:[pds left]+1];
+
+						unsigned char *bytes = [voicePacketData mutableBytes];
+						bytes[0] = (unsigned char)messageFlags;
+						memcpy(bytes+1, [pds dataPtr], [pds left]);
+
+						invocation = [NSInvocation invocationWithTarget:_voiceDataHandler selector:@selector(connection:session:sequence:type:voiceData:)];
+						[invocation setArgument:&self atIndex:2];
+						[invocation setArgument:&session atIndex:3];
+						[invocation setArgument:&seq atIndex:4];
+						[invocation setArgument:&messageType atIndex:5];
+						[invocation setArgument:&voicePacketData atIndex:6];
+						[invocation invokeOnMainThread];
+					}
 					break;
 				default:
 					NSLog(@"MKConnection: Unknown UDPTunnel packet received. Discarding...");
@@ -685,24 +717,6 @@
 			break;
 		}
 	}
-}
-
-- (void) handleVoicePacketOfType:(MKUDPMessageType)msgType flags:(NSUInteger)msgflags datastream:(MKPacketDataStream *)pds {
-	MK_UNUSED NSUInteger session = [pds getUnsignedInt];
-	NSUInteger seq = [pds getUnsignedInt];
-
-	NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];
-	[voicePacketData setLength:[pds left]+1];
-
-	unsigned char *bytes = [voicePacketData mutableBytes];
-	bytes[0] = (unsigned char)msgflags;
-	memcpy(bytes+1, [pds dataPtr], [pds left]);
-
-	MKUser *user = nil;//[User lookupBySession:session];
-	MKAudioOutput *ao = [MKAudio audioOutput];
-	[ao addFrameToBufferWithUser:user data:voicePacketData sequence:seq type:msgType];
-
-	[voicePacketData release];
 }
 
 @end

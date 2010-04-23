@@ -337,12 +337,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	}
 }
 
-/*
- * Flush check.
- *
- * Queue up frames, and send them to the server when enough frames have been
- * queued up.
- */
+//
+// Flush check.
+//
+// Queue up frames, and send them to the server when enough frames have been
+// queued up.
+//
 - (void) flushCheck:(NSData *)codedSpeech terminator:(BOOL)terminator {
 	[frameList addObject:codedSpeech];
 

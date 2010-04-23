@@ -230,6 +230,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 	[outputLock unlock];
 
 	for (MKAudioOutputUser *ou in del) {
+		NSLog(@"stopped talking.... %@", [[ou user] userName]);
 		[self removeBuffer:ou];
 	}
 

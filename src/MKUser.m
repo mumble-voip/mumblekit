@@ -42,16 +42,6 @@
 
 #pragma mark -
 
-- (NSUInteger) treeDepth {
-	return depth;
-}
-
-- (void) setTreeDepth:(NSUInteger)treeDepth {
-	depth = treeDepth;
-}
-
-#pragma mark -
-
 - (void) setSession:(NSUInteger)session {
 	userSession = session;
 }
@@ -70,12 +60,15 @@
 	return userName;
 }
 
-- (void) setTalking:(MKTalkingState)flag {
-	talkState = flag;
+- (void) setTalkState:(MKTalkState)val {
+	_talkState = val;
+
+	NSLog(@"%@ talkState = %u", [self userName], [self talkState]);
+	// fixme(mkrautz): Notify.
 }
 
-- (MKTalkingState) talkingState {
-	return talkState;
+- (MKTalkState) talkState {
+	return _talkState;
 }
 
 - (void) setMute:(BOOL)flag {

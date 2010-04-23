@@ -30,6 +30,9 @@
 
 #import <MumbleKit/MKServerModel.h>
 #import <MumbleKit/MKConnection.h>
+#import <MumbleKit/MKPacketDataStream.h>
+#import <MumbleKit/MKUtils.h>
+#import <MumbleKit/MKAudio.h>
 
 #import "MulticastDelegate.h"
 
@@ -56,11 +59,15 @@
 	[root setChannelName:@"Root"];
 	[channelMap setObject:root forKey:[NSNumber numberWithUnsignedInt:0]];
 
+	_connection = conn;
 	//
 	// Set us up to handle messages from the connection.
 	//
-	_connection = conn;
 	[_connection setMessageHandler:self];
+	//
+	// And also as the voice data handler.
+	//
+	[_connection setVoiceDataHandler:self];
 
 	return self;
 }
@@ -285,6 +292,16 @@
 - (void) handlePermissionQueryMessage: (MPPermissionQuery *)msg {
 }
 
+#pragma mark MKVoiceDataHandler
+
+- (void) connection:(MKConnection *)conn session:(NSUInteger)session sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType voiceData:(NSMutableData *)data {
+	MKUser *speakingUser = [self userWithSession:session];
+
+	MKAudioOutput *audioOutput = [MKAudio audioOutput];
+	[audioOutput addFrameToBufferWithUser:speakingUser data:data sequence:seq type:msgType];
+
+	[data release];
+}
 
 #pragma mark -
 
