@@ -451,4 +451,17 @@
 	STUB;
 }
 
+#pragma mark -
+
+- (void) joinChannel:(MKChannel *)chan {
+	MPUserState_Builder *userState = [MPUserState builder];
+	[userState setSession:[[self connectedUser] session]];
+	[userState setChannelId:[chan channelId]];
+
+	NSData *data = [[userState build] data];
+	[_connection sendMessageWithType:UserStateMessage data:data];
+
+	NSLog(@"requested to join channel %i", [chan channelId]);
+}
+
 @end

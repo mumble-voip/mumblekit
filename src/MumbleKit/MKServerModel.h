@@ -101,4 +101,8 @@
 - (void) unlinkChannel:(MKChannel *)chan fromChannels:(NSArray *)channelLinks;
 - (void) unlinkAllFromChannel:(MKChannel *)chan;
 
+#pragma mark -
+
+- (void) joinChannel:(MKChannel *)chan;
+
 @end
