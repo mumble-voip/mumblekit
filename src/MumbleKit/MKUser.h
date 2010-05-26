@@ -52,10 +52,6 @@ typedef enum {
 		NSString *userName;
 		NSUInteger depth;
 		MKChannel *channel;
-/*
-	@public
-		int sequence;
-		int frames;*/
 }
 
 - (void) dealloc;

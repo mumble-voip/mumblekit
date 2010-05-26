@@ -347,6 +347,11 @@
 					[user setTalkState:MKTalkStateWhispering];
 					break;
 			}
+
+			// Talk notification
+			NSLog(@"TalkNotification");
+			NSNotification *talkNotification = [NSNotification notificationWithName:@"MKUserTalkStateChanged" object:user];
+			[[NSNotificationCenter defaultCenter] postNotification:talkNotification];
 		}
 
 nextframe:
@@ -358,6 +363,11 @@ nextframe:
 	BOOL tmp = lastAlive;
 	lastAlive = nextAlive;
 	return tmp;
+}
+
+// fixme(mkrautz): Not needed?
+- (void) stopSpeaking {
+	[user setTalkState:MKTalkStatePassive];
 }
 
 @end

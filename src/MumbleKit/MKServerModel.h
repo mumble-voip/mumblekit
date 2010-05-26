@@ -42,13 +42,13 @@
 - (void) serverModel:(MKServerModel *)model userLeft:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model channelAdded:(MKChannel *)channel;
 - (void) serverModel:(MKServerModel *)model channelRemoved:(MKChannel *)channel;
-- (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 //- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
 @end
 
 
 @interface MKServerModel : NSObject {
-	MKChannel *root;
+	MKChannel *_rootChannel;
 	MKUser *_connectedUser;
 
 	NSMutableArray *channelArray;
@@ -84,7 +84,7 @@
 - (void) setFriendNameForUser:(MKUser *)user to:(NSString *)newFriendName;
 - (void) setCommentForUser:(MKUser *) to:(NSString *)newComment;
 - (void) setSeenCommentForUser:(MKUser *)user;
-- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan;
+- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 - (void) removeUser:(MKUser *)user;
 
 #pragma mark -

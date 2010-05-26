@@ -54,10 +54,10 @@
 	channelMapLock = [[MKReadWriteLock alloc] init];
 	channelMap = [[NSMutableDictionary alloc] init];
 
-	root = [[MKChannel alloc] init];
-	[root setChannelId:0];
-	[root setChannelName:@"Root"];
-	[channelMap setObject:root forKey:[NSNumber numberWithUnsignedInt:0]];
+	_rootChannel = [[MKChannel alloc] init];
+	[_rootChannel setChannelId:0];
+	[_rootChannel setChannelName:@"Root"];
+	[channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInt:0]];
 
 	_connection = conn;
 	//
@@ -153,12 +153,15 @@
 		if (chan == nil) {
 			NSLog(@"MKServerModel: UserState with invalid channelId.");
 		}
-
 		MKChannel *oldChan = [user channel];
 		if (chan != oldChan) {
-			[self moveUser:user toChannel:chan];
+			[self moveUser:user toChannel:chan byUser:nil];
 			NSLog(@"Moved user '%@' to channel '%@'", [user userName], [chan channelName]);
 		}
+	// The user has no channel id set, and is a newly connected user.
+	// This means the user's residing in the root channel.
+	} else if (newUser) {
+		[self moveUser:user toChannel:_rootChannel byUser:nil];
 	}
 
 	if ([msg hasName]) {
@@ -328,7 +331,6 @@
 	[userMapLock writeLock];
 	[userMap setObject:user forKey:[NSNumber numberWithUnsignedInt:userSession]];
 	[userMapLock unlock];
-	[root addUser:user];
 
 	return user;
 }
@@ -369,20 +371,22 @@
 	STUB;
 }
 
-/*
- * Move a user to a channel.
- *
- * @param  user   The user to move.
- * @param  chan   The channel to move the user to.
- */
-- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan {
-	STUB;
+//
+// Move a user to a channel.
+//
+- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover {
+	MKChannel *currentChannel = [user channel];
+	MKChannel *destChannel = chan;
+
+	[currentChannel removeUser:user];
+	[destChannel addUser:user];
+
+	[_delegate serverModel:self userMoved:user toChannel:chan byUser:mover];
 }
 
-/*
- * Remove a user from the model (in case a user leaves).
- * This cleans up all references of the user in the model.
- */
+//
+// Remove a user from the model.
+//
 - (void) removeUser:(MKUser *)user {
 	STUB;
 }
@@ -390,7 +394,7 @@
 #pragma mark -
 
 - (MKChannel *) rootChannel {
-	return root;
+	return _rootChannel;
 }
 
 /*
