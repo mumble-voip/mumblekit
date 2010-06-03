@@ -34,4 +34,5 @@
 + (NSInvocation *) invocationWithTarget:(id)target selector:(SEL)selector;
 + (void **) nilPointerLocation;
 - (void) invokeOnMainThread;
+- (void) invokeOnMainThreadAndWait;
 @end

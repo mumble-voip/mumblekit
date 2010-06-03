@@ -327,47 +327,43 @@
 			jitter_buffer_tick(jitter);
 		}
 
-		//
-		// Update the user's talkstate.
-		//
 		if (user) {
 			if (! nextAlive)
 				flags = 0xff;
+
+			MKTalkState prevTalkState = [user talkState];
+			MKTalkState newTalkState;
+
 			switch (flags) {
 				case 0:
-					[user setTalkState:MKTalkStateTalking];
+					newTalkState = MKTalkStateTalking;
 					break;
 				case 1:
-					[user setTalkState:MKTalkStateShouting];
+					newTalkState = MKTalkStateShouting;
 					break;
 				case 0xff:
-					[user setTalkState:MKTalkStatePassive];
+					newTalkState = MKTalkStatePassive;
 					break;
 				default:
-					[user setTalkState:MKTalkStateWhispering];
+					newTalkState = MKTalkStateWhispering;
 					break;
 			}
 
-			// Talk notification
-			NSLog(@"TalkNotification");
-			NSNotification *talkNotification = [NSNotification notificationWithName:@"MKUserTalkStateChanged" object:user];
-			[[NSNotificationCenter defaultCenter] postNotification:talkNotification];
+			if (prevTalkState != newTalkState) {
+				[user setTalkState:newTalkState];
+				NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+				NSNotification *talkNotification = [NSNotification notificationWithName:@"MKUserTalkStateChanged" object:user];
+				[center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
+			}
 		}
 
 nextframe:
 		bufferFilled += outputSize;
 	}
 
-
-
 	BOOL tmp = lastAlive;
 	lastAlive = nextAlive;
 	return tmp;
-}
-
-// fixme(mkrautz): Not needed?
-- (void) stopSpeaking {
-	[user setTalkState:MKTalkStatePassive];
 }
 
 @end

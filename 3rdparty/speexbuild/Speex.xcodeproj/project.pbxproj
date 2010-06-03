@@ -527,7 +527,7 @@
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../speex/include//**";
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.2;
+				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../speex/libspeex//**";
 			};
 			name = Debug;
@@ -543,7 +543,7 @@
 				HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../speex/include//**";
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.2;
+				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../speex/libspeex//**";
 			};
 			name = Release;

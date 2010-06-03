@@ -36,7 +36,7 @@ static void *_nilPointerLocation = nil;
 
 + (NSInvocation *) invocationWithTarget:(id)target selector:(SEL)selector {
 	NSInvocation *invocation = nil;
-	
+
 	if ([target respondsToSelector:selector]) {
 		NSMethodSignature *ms = [target methodSignatureForSelector:selector];
 		invocation = [NSInvocation invocationWithMethodSignature:ms];
@@ -56,6 +56,10 @@ static void *_nilPointerLocation = nil;
 
 - (void) invokeOnMainThread {
 	[self performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+}
+
+- (void) invokeOnMainThreadAndWait {
+	[self performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:YES];
 }
 
 @end

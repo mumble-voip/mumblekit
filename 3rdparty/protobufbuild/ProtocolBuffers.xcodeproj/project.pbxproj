@@ -696,7 +696,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
-				SDKROOT = iphonesimulator3.0;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Debug;
 		};
@@ -795,7 +795,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
-				SDKROOT = iphonesimulator3.0;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Release;
 		};
