@@ -183,9 +183,9 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 }
 
 - (void) dealloc {
-	[super dealloc];
 	[ai release];
 	[ao release];
+	[super dealloc];
 }
 
 - (MKAudioInput *) audioInput {

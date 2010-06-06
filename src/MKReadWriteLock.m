@@ -53,14 +53,12 @@
 }
 
 - (void) dealloc {
-	int err;
-
-	[super dealloc];
-
-	err = pthread_rwlock_destroy(&rwlock);
+	int err = pthread_rwlock_destroy(&rwlock);
 	if (err != 0) {
 		NSLog(@"RWLock: Unable to destroy rwlock.");
 	}
+
+	[super dealloc];
 }
 
 /*

@@ -35,8 +35,7 @@
 @implementation MKUser
 
 - (void) dealloc {
-	if (userName)
-		[userName release];
+	[userName release];
 	[super dealloc];
 }
 

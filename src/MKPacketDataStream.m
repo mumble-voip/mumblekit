@@ -83,9 +83,9 @@
 }
 
 - (void) dealloc {
-	[super dealloc];
 	[mutableData release];
 	[immutableData release];
+	[super dealloc];
 }
 
 - (NSUInteger) size {

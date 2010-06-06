@@ -48,12 +48,12 @@
 }
 
 - (void) dealloc {
-	[super dealloc];
-
 	if (buffer)
 		free(buffer);
 	if (volume)
 		free(volume);
+
+	[super dealloc];
 }
 
 - (MKUser *) user {

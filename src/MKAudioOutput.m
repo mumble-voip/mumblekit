@@ -79,9 +79,9 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 }
 
 - (void) dealloc {
-	[super dealloc];
 	[outputLock release];
 	[outputs release];
+	[super dealloc];
 }
 
 - (BOOL) setupDevice {

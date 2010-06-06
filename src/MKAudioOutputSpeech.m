@@ -95,12 +95,12 @@
 }
 
 - (void) dealloc {
-	[super dealloc];
-
 	if (celtDecoder)
 		celt_decoder_destroy(celtDecoder);
 	if (celtMode)
 		celt_mode_destroy(celtMode);
+	
+	[super dealloc];
 }
 
 - (MKUser *) user {
