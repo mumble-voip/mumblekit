@@ -609,8 +609,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
-					"${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/Headers//**",
-					"${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/Headers/MumbleProtocol//**",
+					"${PROJECT_DIR}/3rdparty/celt/libcelt//**",
+					"${PROJECT_DIR}/3rdparty/speex/include//**",
+					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes//**",
+					"${PROJECT_DIR}/proto//**",
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
@@ -628,8 +630,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
-					"${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/Headers//**",
-					"${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/Headers/MumbleProtocol//**",
+					"${PROJECT_DIR}/3rdparty/celt/libcelt//**",
+					"${PROJECT_DIR}/3rdparty/speex/include//**",
+					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes//**",
+					"${PROJECT_DIR}/proto//**",
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;

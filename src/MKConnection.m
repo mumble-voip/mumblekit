@@ -36,7 +36,6 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutput.h>
 #import <MumbleKit/MKVersion.h>
-#include <MumbleKit/celt/celt.h>
 
 #import <CFNetwork/CFNetwork.h>
 
@@ -47,6 +46,11 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
+#include <celt.h>
+
+#import "Mumble.pb.h"
+
+
 /*
  * The SecureTransport.h header is not available on the iPhone, so
  * these constants are lifted from the Mac OS X version of the header.
@@ -54,6 +58,15 @@
 #define errSSLProtocol             -9800
 #define errSSLXCertChainInvalid    -9807
 #define errSSLLast                 -9849
+
+@interface MKConnection (Private)
+- (void) _setupSsl;
+- (void) _pingTimerFired;
+- (void) _pingResponseFromServer:(MPPing *)pingMessage;
+- (void) _versionMessageReceived:(MPVersion *)msg;
+- (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
+- (void) _connectionRejected:(MPReject *)rejectMessage;
+@end
 
 @implementation MKConnection
 

@@ -33,6 +33,7 @@
 #import <MumbleKit/MKPacketDataStream.h>
 #import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKAudio.h>
+#import "Mumble.pb.h"
 
 #import "MulticastDelegate.h"
 

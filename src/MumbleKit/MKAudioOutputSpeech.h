@@ -34,42 +34,36 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutputUser.h>
 
-#include <MumbleKit/speex/speex.h>
-#include <MumbleKit/speex/speex_preprocess.h>
-#include <MumbleKit/speex/speex_echo.h>
-#include <MumbleKit/speex/speex_resampler.h>
-#include <MumbleKit/speex/speex_jitter.h>
-#include <MumbleKit/speex/speex_types.h>
-#include <MumbleKit/celt/celt.h>
+struct MKAudioOutputSpeechPrivate;
 
 @interface MKAudioOutputSpeech : MKAudioOutputUser {
-	MKUDPMessageType messageType;
-	NSUInteger bufferOffset;
-	NSUInteger bufferFilled;
-	NSUInteger outputSize;
-	NSUInteger lastConsume;
-	NSUInteger frameSize;
-	BOOL lastAlive;
-	BOOL hasTerminator;
+	@private
+		struct MKAudioOutputSpeechPrivate *_private;
 
-	float *fadeIn;
-	float *fadeOut;
+	@protected
+		MKUDPMessageType messageType;
+		NSUInteger bufferOffset;
+		NSUInteger bufferFilled;
+		NSUInteger outputSize;
+		NSUInteger lastConsume;
+		NSUInteger frameSize;
+		BOOL lastAlive;
+		BOOL hasTerminator;
 
-	JitterBuffer *jitter;
-	NSInteger missCount;
-	NSInteger missedFrames;
+		float *fadeIn;
+		float *fadeOut;
 
-	NSMutableArray *frames;
-	unsigned char flags;
+		NSInteger missCount;
+		NSInteger missedFrames;
 
-	MKUser *user;
-	float powerMin, powerMax;
-	float averageAvailable;
+		NSMutableArray *frames;
+		unsigned char flags;
 
-	CELTMode *celtMode;
-	CELTDecoder *celtDecoder;
+		MKUser *user;
+		float powerMin, powerMax;
+		float averageAvailable;
 
-	pthread_mutex_t jitterMutex;
+		pthread_mutex_t jitterMutex;
 }
 
 - (id) initWithUser:(MKUser *)user sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;

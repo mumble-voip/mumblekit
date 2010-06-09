@@ -32,6 +32,19 @@
 #import <MumbleKit/MKAudioInput.h>
 #import <MumbleKit/MKPacketDataStream.h>
 
+#include <speex/speex.h>
+#include <speex/speex_preprocess.h>
+#include <speex/speex_echo.h>
+#include <speex/speex_resampler.h>
+#include <speex/speex_jitter.h>
+#include <speex/speex_types.h>
+#include <celt.h>
+
+struct MKAudioInputPrivate {
+	SpeexPreprocessState *preprocessorState;
+	CELTEncoder *celtEncoder;
+};
+
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
 	MKAudioInput *i = (MKAudioInput *)udata;
@@ -75,8 +88,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	if (self == nil)
 		return nil;
 
+	// Allocate private struct.
+	_private = malloc(sizeof(struct MKAudioInputPrivate));
+	_private->preprocessorState = NULL;
+	_private->celtEncoder = NULL;
+
 	frameCounter = 0;
-	preprocessorState = NULL;
 
 	/*
 	 * Adjust bandwidth:
@@ -98,8 +115,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	doResetPreprocessor = YES;
 	previousVoice = NO;
-
-	preprocessorState = NULL;
 
 	psMic = malloc(sizeof(short) * frameSize);
 
@@ -124,6 +139,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	if (psMic)
 		free(psMic);
+
+	if (_private)
+		free(_private);
 
 	[super dealloc];
 }
@@ -274,26 +292,27 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 - (void) resetPreprocessor {
 	int iArg;
 
-	if (preprocessorState)
-		speex_preprocess_state_destroy(preprocessorState);
+	if (_private->preprocessorState)
+		speex_preprocess_state_destroy(_private->preprocessorState);
 
-	preprocessorState = speex_preprocess_state_init(frameSize, sampleRate);
+	_private->preprocessorState = speex_preprocess_state_init(frameSize, sampleRate);
+	SpeexPreprocessState *state = _private->preprocessorState;
 
 	iArg = 1;
-	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_VAD, &iArg);
-	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_AGC, &iArg);
-	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_DENOISE, &iArg);
-	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_DEREVERB, &iArg);
+	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_VAD, &iArg);
+	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC, &iArg);
+	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_DENOISE, &iArg);
+	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_DEREVERB, &iArg);
 
 	iArg = 30000;
-	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_AGC_TARGET, &iArg);
+	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_TARGET, &iArg);
 
 //	float v = 30000.0f / (float) 0.0f; // iMinLoudness
 //	iArg = iroundf(floorf(20.0f * log10f(v)));
-//	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_AGC_MAX_GAIN, &iArg);
+//	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_MAX_GAIN, &iArg);
 
 //	iArg = 0;//g.s.iNoiseSuppress;
-//	speex_preprocess_ctl(preprocessorState, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
+//	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
 }
 
 - (void) encodeAudioFrame {
@@ -305,27 +324,29 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		doResetPreprocessor = NO;
 	}
 
-	int isSpeech = speex_preprocess_run(preprocessorState, psMic);
+	int isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
 
 	{
 		unsigned char buffer[1024];
 		int len = 0;
 
-		if (celtEncoder == nil) {
+		CELTEncoder *encoder = _private->celtEncoder;
+		if (encoder == NULL) {
 			CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
-			celtEncoder = celt_encoder_create(mode, 1, NULL);
+			_private->celtEncoder = celt_encoder_create(mode, 1, NULL);
+			encoder = _private->celtEncoder;
 		}
 
 		audioQuality = 24000;
 
 		if (!previousVoice) {
-			celt_encoder_ctl(celtEncoder, CELT_RESET_STATE);
+			celt_encoder_ctl(encoder, CELT_RESET_STATE);
 			NSLog(@"AudioInput: Reset CELT state.");
 		}
 
-		celt_encoder_ctl(celtEncoder, CELT_SET_PREDICTION(0));
-		celt_encoder_ctl(celtEncoder, CELT_SET_VBR_RATE(audioQuality));
-		len = celt_encode(celtEncoder, psMic, NULL, buffer, MIN(audioQuality / 800, 127));
+		celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
+		celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(audioQuality));
+		len = celt_encode(encoder, psMic, NULL, buffer, MIN(audioQuality / 800, 127));
 
 		bitrate = len * 100 * 8;
 

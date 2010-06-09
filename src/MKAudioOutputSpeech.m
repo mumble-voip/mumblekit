@@ -34,12 +34,31 @@
 
 #include <pthread.h>
 
+#include <speex/speex.h>
+#include <speex/speex_preprocess.h>
+#include <speex/speex_echo.h>
+#include <speex/speex_resampler.h>
+#include <speex/speex_jitter.h>
+#include <speex/speex_types.h>
+#include <celt.h>
+
+struct MKAudioOutputSpeechPrivate {
+	JitterBuffer *jitter;
+	CELTMode *celtMode;
+	CELTDecoder *celtDecoder;
+};
+
 @implementation MKAudioOutputSpeech
 
 - (id) initWithUser:(MKUser *)u sampleRate:(NSUInteger)freq messageType:(MKMessageType)type {
 	self = [super init];
 	if (self == nil)
 		return nil;
+
+	_private = malloc(sizeof(struct MKAudioOutputSpeech));
+	_private->jitter = NULL;
+	_private->celtMode = NULL;
+	_private->celtDecoder = NULL;
 
 	user = u;
 	messageType = type;
@@ -68,9 +87,9 @@
 
 	flags = 0xff;
 
-	jitter = jitter_buffer_init(frameSize);
+	_private->jitter = jitter_buffer_init(frameSize);
 	int margin = /* g.s.iJitterBufferSize */ 10 * frameSize;
-	jitter_buffer_ctl(jitter, JITTER_BUFFER_SET_MARGIN, &margin);
+	jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_SET_MARGIN, &margin);
 
 	fadeIn = malloc(sizeof(float)*frameSize);
 	fadeOut = malloc(sizeof(float)*frameSize);
@@ -82,8 +101,8 @@
 	}
 
 	frames = [[NSMutableArray alloc] init];
-	celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
-	celtDecoder = celt_decoder_create(celtMode, 1, NULL);
+	_private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
+	_private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
 
 	int err = pthread_mutex_init(&jitterMutex, NULL);
 	if (err != 0) {
@@ -95,10 +114,10 @@
 }
 
 - (void) dealloc {
-	if (celtDecoder)
-		celt_decoder_destroy(celtDecoder);
-	if (celtMode)
-		celt_mode_destroy(celtMode);
+	if (_private->celtDecoder)
+		celt_decoder_destroy(_private->celtDecoder);
+	if (_private->celtMode)
+		celt_mode_destroy(_private->celtMode);
 	
 	[super dealloc];
 }
@@ -147,7 +166,7 @@
 	jbp.span = frameSize * nframes;
 	jbp.timestamp = frameSize * seq;
 
-	jitter_buffer_put(jitter, &jbp);
+	jitter_buffer_put(_private->jitter, &jbp);
 
 	[pds release];
 
@@ -184,8 +203,8 @@
 			memset(output, 0, frameSize * sizeof(float));
 		} else {
 			int avail = 0;
-			int ts = jitter_buffer_get_pointer_timestamp(jitter);
-			jitter_buffer_ctl(jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
+			int ts = jitter_buffer_get_pointer_timestamp(_private->jitter);
+			jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
 
 			if (user && (ts == 0)) {
 				int want = (int)averageAvailable; // fixme(mkrautz): Was iroundf.
@@ -213,7 +232,7 @@
 
 				spx_int32_t startofs = 0;
 
-				if (jitter_buffer_get(jitter, &jbp, frameSize, &startofs) == JITTER_BUFFER_OK) {
+				if (jitter_buffer_get(_private->jitter, &jbp, frameSize, &startofs) == JITTER_BUFFER_OK) {
 					MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(unsigned char *)jbp.data length:jbp.len];
 
 					missCount = 0;
@@ -250,7 +269,7 @@
 					}
 				} else {
 					NSLog(@"AudioOutputSpeech: Nothing in jitter buffer...");
-					jitter_buffer_update_delay(jitter, &jbp, NULL);
+					jitter_buffer_update_delay(_private->jitter, &jbp, NULL);
 
 					++missCount;
 					if (missCount > 10) {
@@ -269,9 +288,9 @@
 
 				if (messageType != UDPVoiceSpeexMessage) {
 					if ([frameData length] != 0) {
-						celt_decode_float(celtDecoder, [frameData bytes], [frameData length], output);
+						celt_decode_float(_private->celtDecoder, [frameData bytes], [frameData length], output);
 					} else {
-						celt_decode_float(celtDecoder, NULL, 0, output);
+						celt_decode_float(_private->celtDecoder, NULL, 0, output);
 					}
 				} else {
 					NSLog(@"AudioOutputSpeech: Don't know how to decode Speex.");
@@ -300,7 +319,7 @@
 				update = (pow < (powerMin + 0.01f * (powerMax - powerMin)));
 
 				if ([frames count] == 0 && update) {
-					jitter_buffer_update_delay(jitter, NULL, NULL);
+					jitter_buffer_update_delay(_private->jitter, NULL, NULL);
 				}
 
 				if ([frames count] == 0 && hasTerminator) {
@@ -308,7 +327,7 @@
 				}
 			} else {
 				if (messageType != UDPVoiceSpeexMessage) {
-					celt_decode_float(celtDecoder, NULL, 0, output);
+					celt_decode_float(_private->celtDecoder, NULL, 0, output);
 				} else {
 					NSLog(@"AudioOutputSpeech: I don't handle Speex.");
 				}
@@ -324,7 +343,7 @@
 				}
 			}
 
-			jitter_buffer_tick(jitter);
+			jitter_buffer_tick(_private->jitter);
 		}
 
 		if (user) {

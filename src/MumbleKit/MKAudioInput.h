@@ -34,15 +34,11 @@
 #import <AudioUnit/AUComponent.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-#include <MumbleKit/speex/speex.h>
-#include <MumbleKit/speex/speex_preprocess.h>
-#include <MumbleKit/speex/speex_echo.h>
-#include <MumbleKit/speex/speex_resampler.h>
-#include <MumbleKit/speex/speex_jitter.h>
-#include <MumbleKit/speex/speex_types.h>
-#include <MumbleKit/celt/celt.h>
+struct MKAudioInputPrivate;
 
 @interface MKAudioInput : NSObject {
+	@private
+		struct MKAudioInputPrivate *_private;
 
 	@public
 		AudioUnit audioUnit;
@@ -58,7 +54,6 @@
 		int micFilled;
 		int micLength;
 		BOOL previousVoice;
-		SpeexPreprocessState *preprocessorState;
 		int audioQuality;
 		int numAudioFrames;
 		int bitrate;
@@ -71,7 +66,6 @@
 		MKCodecFormat cfType;
 
 		MKUDPMessageType udpMessageType;
-		CELTEncoder *celtEncoder;
 		NSMutableArray *frameList;
 }
 

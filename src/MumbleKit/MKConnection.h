@@ -28,8 +28,6 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MumbleProtocol/Mumble.pb.h>
-
 #define MKConnectionPingInterval 5.0f
 
 @class MKConnection;
@@ -92,23 +90,23 @@ typedef enum {
  * MKMessageHandler
  */
 @protocol MKMessageHandler
-- (void) handleAuthenticateMessage: (MPAuthenticate *)msg;
-- (void) handleBanListMessage: (MPBanList *)msg;
-- (void) handleServerSyncMessage: (MPServerSync *)msg;
-- (void) handlePermissionDeniedMessage: (MPPermissionDenied *)msg;
-- (void) handleUserStateMessage: (MPUserState *)msg;
-- (void) handleUserRemoveMessage: (MPUserRemove *)msg;
-- (void) handleChannelStateMessage: (MPChannelState *)msg;
-- (void) handleChannelRemoveMessage: (MPChannelRemove *)msg;
-- (void) handleTextMessageMessage: (MPTextMessage *)msg;
-- (void) handleACLMessage: (MPACL *)msg;
-- (void) handleQueryUsersMessage: (MPQueryUsers *)msg;
-- (void) handleContextActionMessage: (MPContextAction *)msg;
-- (void) handleContextActionAddMessage: (MPContextActionAdd *)add;
-- (void) handleUserListMessage: (MPUserList *)msg;
-- (void) handleVoiceTargetMessage: (MPVoiceTarget *)msg;
-- (void) handlePermissionQueryMessage: (MPPermissionQuery *)msg;
-- (void) handleCodecVersionMessage: (MPCodecVersion *)msg;
+- (void) handleAuthenticateMessage: /* MPAuthenticate */ (id)msg;
+- (void) handleBanListMessage: /* MPBanList */ (id)msg;
+- (void) handleServerSyncMessage: /* MPServerSync */ (id)msg;
+- (void) handlePermissionDeniedMessage: /* MPPermissionDenied */ (id)msg;
+- (void) handleUserStateMessage: /* MPUserState */ (id)msg;
+- (void) handleUserRemoveMessage: /* MPUserRemove */ (id)msg;
+- (void) handleChannelStateMessage: /* MPChannelState */ (id)msg;
+- (void) handleChannelRemoveMessage: /* MPChannelRemove */ (id)msg;
+- (void) handleTextMessageMessage: /* MPTextMessage */ (id)msg;
+- (void) handleACLMessage: /* MPACL */ (id)msg;
+- (void) handleQueryUsersMessage: /* MPQueryUsers */ (id)msg;
+- (void) handleContextActionMessage: /* MPContextAction */ (id)msg;
+- (void) handleContextActionAddMessage: /* MPContextActionAdd */ (id)add;
+- (void) handleUserListMessage: /* MPUserList */ (id)msg;
+- (void) handleVoiceTargetMessage: /* MPVoiceTarget */ (id)msg;
+- (void) handlePermissionQueryMessage: /* MPPermissionQuery */ (id)msg;
+- (void) handleCodecVersionMessage: /* MPCodecVersion */ (id)msg;
 @end
 
 /*
@@ -185,16 +183,6 @@ typedef enum {
 
 - (void) dataReady;
 - (void) messageRecieved: (NSData *)data;
-
-- (void) _setupSsl;
-
-#pragma mark Internal Message Handlers
-
-- (void) _pingTimerFired;
-- (void) _pingResponseFromServer:(MPPing *)pingMessage;
-- (void) _versionMessageReceived:(MPVersion *)msg;
-- (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
-- (void) _connectionRejected:(MPReject *)rejectMessage;
 
 #pragma mark -
 
