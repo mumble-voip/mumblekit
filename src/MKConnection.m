@@ -28,8 +28,6 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <UIKit/UIKit.h>
-
 #import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKPacketDataStream.h>
@@ -37,7 +35,10 @@
 #import <MumbleKit/MKAudioOutput.h>
 #import <MumbleKit/MKVersion.h>
 
-#import <CFNetwork/CFNetwork.h>
+#if TARGET_OS_IPHONE == 1
+# import <UIKIt/UIKit.h>
+# import <CFNetwork/CFNetwork.h>
+#endif
 
 #import "NSInvocation(MumbleKitAdditions).h"
 
@@ -187,10 +188,16 @@
 	//
 	// Query the OS name and version
 	//
+#if TARGET_OS_IPHONE == 1
 	UIDevice *dev = [UIDevice currentDevice];
 	[version setOs: [dev systemName]];
 	[version setOsVersion: [dev systemVersion]];
-
+#elif TARGET_OS_MAC == 1
+	// fixme(mkrautz): Do proper lookup here.
+	[version setOs:@"Mac OS X"];
+	[version setOsVersion:@"10.6"];
+#endif
+	
 	//
 	// Setup MumbleKit version info.
 	//

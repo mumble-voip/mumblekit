@@ -75,6 +75,29 @@
 		100000000000000000001C9A /* WireFormatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001C99 /* WireFormatTests.m */; };
 		100000000000000000001C9B /* WireFormatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001C99 /* WireFormatTests.m */; };
 		100000000000000000001ED1 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 100000000000000000001ECF /* libProtocolBuffers.a */; };
+		280442A211BFC0680069E291 /* MutableExtensionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 100000000000000000000F3E /* MutableExtensionRegistry.h */; };
+		280442A311BFC0680069E291 /* ExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 100000000000000000000A13 /* ExtensionField.h */; };
+		280442A411BFC0680069E291 /* ExtendableMessage_Builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 100000000000000000000A0E /* ExtendableMessage_Builder.h */; };
+		280442A511BFC0680069E291 /* ConcreteExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 1000000000000000000007AC /* ConcreteExtensionField.h */; };
+		280442A611BFC0730069E291 /* AbstractMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000003C8 /* AbstractMessage.m */; };
+		280442A711BFC0730069E291 /* AbstractMessage_Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000003CC /* AbstractMessage_Builder.m */; };
+		280442A811BFC0730069E291 /* CodedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 10000000000000000000069A /* CodedInputStream.m */; };
+		280442A911BFC0730069E291 /* CodedOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000006A5 /* CodedOutputStream.m */; };
+		280442AA11BFC0730069E291 /* ExtendableMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000A0B /* ExtendableMessage.m */; };
+		280442AB11BFC0730069E291 /* ExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000A16 /* ExtensionRegistry.m */; };
+		280442AC11BFC0730069E291 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000A77 /* Field.m */; };
+		280442AD11BFC0730069E291 /* GeneratedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000BA5 /* GeneratedMessage.m */; };
+		280442AE11BFC0730069E291 /* GeneratedMessage_Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000BAC /* GeneratedMessage_Builder.m */; };
+		280442AF11BFC0730069E291 /* MutableField.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000F45 /* MutableField.m */; };
+		280442B011BFC0730069E291 /* TextFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001A8E /* TextFormat.m */; };
+		280442B111BFC0730069E291 /* UnknownFieldSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001C2D /* UnknownFieldSet.m */; };
+		280442B211BFC0730069E291 /* UnknownFieldSet_Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001C37 /* UnknownFieldSet_Builder.m */; };
+		280442B311BFC0730069E291 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001C5F /* Utilities.m */; };
+		280442B411BFC0730069E291 /* WireFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000001C95 /* WireFormat.m */; };
+		280442B511BFC0730069E291 /* MutableExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000F40 /* MutableExtensionRegistry.m */; };
+		280442B611BFC0730069E291 /* ExtendableMessage_Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000A10 /* ExtendableMessage_Builder.m */; };
+		280442B711BFC0730069E291 /* ConcreteExtensionField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000007AE /* ConcreteExtensionField.m */; };
+		280442C211BFC0BF0069E291 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 100000000000000000000AAF /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,6 +194,7 @@
 		100000000000000000001C98 /* WireFormatTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WireFormatTests.h; path = ../protobuf/objectivec/Tests/WireFormatTests.h; sourceTree = "<group>"; };
 		100000000000000000001C99 /* WireFormatTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WireFormatTests.m; path = ../protobuf/objectivec/Tests/WireFormatTests.m; sourceTree = "<group>"; };
 		100000000000000000001ECF /* libProtocolBuffers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocolBuffers.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2804429F11BFC0550069E291 /* libProtocolBuffers.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libProtocolBuffers.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +221,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				100000000000000000000AC2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2804429D11BFC0550069E291 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280442C211BFC0BF0069E291 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +363,7 @@
 				100000000000000000001ECF /* libProtocolBuffers.a */,
 				100000000000000000001C15 /* UnitTests.octest */,
 				1000000000000000000007A4 /* CommandLineTests.app */,
+				2804429F11BFC0550069E291 /* libProtocolBuffers.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -397,6 +430,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2804429B11BFC0550069E291 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280442A211BFC0680069E291 /* MutableExtensionRegistry.h in Headers */,
+				280442A311BFC0680069E291 /* ExtensionField.h in Headers */,
+				280442A411BFC0680069E291 /* ExtendableMessage_Builder.h in Headers */,
+				280442A511BFC0680069E291 /* ConcreteExtensionField.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -417,9 +461,9 @@
 			productReference = 1000000000000000000007A4 /* CommandLineTests.app */;
 			productType = "com.apple.product-type.application";
 		};
-		100000000000000000001489 /* ProtocolBuffers */ = {
+		100000000000000000001489 /* ProtocolBuffers (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 100000000000000000000605 /* Build configuration list for PBXNativeTarget "ProtocolBuffers" */;
+			buildConfigurationList = 100000000000000000000605 /* Build configuration list for PBXNativeTarget "ProtocolBuffers (iOS)" */;
 			buildPhases = (
 				100000000000000000000BD4 /* Headers */,
 				100000000000000000001791 /* Sources */,
@@ -429,7 +473,7 @@
 			);
 			dependencies = (
 			);
-			name = ProtocolBuffers;
+			name = "ProtocolBuffers (iOS)";
 			productName = "ProtocolBuffers-iPhoneDevice";
 			productReference = 100000000000000000001ECF /* libProtocolBuffers.a */;
 			productType = "com.apple.product-type.library.static";
@@ -453,6 +497,23 @@
 			productReference = 100000000000000000001C15 /* UnitTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		2804429E11BFC0550069E291 /* ProtocolBuffers (Mac OS X) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 280442C111BFC0BE0069E291 /* Build configuration list for PBXNativeTarget "ProtocolBuffers (Mac OS X)" */;
+			buildPhases = (
+				2804429B11BFC0550069E291 /* Headers */,
+				2804429C11BFC0550069E291 /* Sources */,
+				2804429D11BFC0550069E291 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ProtocolBuffers (Mac OS X)";
+			productName = "ProtocolBuffers (Mac OS X)";
+			productReference = 2804429F11BFC0550069E291 /* libProtocolBuffers.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -465,9 +526,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				100000000000000000001489 /* ProtocolBuffers */,
+				100000000000000000001489 /* ProtocolBuffers (iOS) */,
 				100000000000000000001C12 /* UnitTests */,
 				1000000000000000000007A2 /* CommandLineTests */,
+				2804429E11BFC0550069E291 /* ProtocolBuffers (Mac OS X) */,
 			);
 		};
 /* End PBXProject section */
@@ -586,12 +648,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2804429C11BFC0550069E291 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280442A611BFC0730069E291 /* AbstractMessage.m in Sources */,
+				280442A711BFC0730069E291 /* AbstractMessage_Builder.m in Sources */,
+				280442A811BFC0730069E291 /* CodedInputStream.m in Sources */,
+				280442A911BFC0730069E291 /* CodedOutputStream.m in Sources */,
+				280442AA11BFC0730069E291 /* ExtendableMessage.m in Sources */,
+				280442AB11BFC0730069E291 /* ExtensionRegistry.m in Sources */,
+				280442AC11BFC0730069E291 /* Field.m in Sources */,
+				280442AD11BFC0730069E291 /* GeneratedMessage.m in Sources */,
+				280442AE11BFC0730069E291 /* GeneratedMessage_Builder.m in Sources */,
+				280442AF11BFC0730069E291 /* MutableField.m in Sources */,
+				280442B011BFC0730069E291 /* TextFormat.m in Sources */,
+				280442B111BFC0730069E291 /* UnknownFieldSet.m in Sources */,
+				280442B211BFC0730069E291 /* UnknownFieldSet_Builder.m in Sources */,
+				280442B311BFC0730069E291 /* Utilities.m in Sources */,
+				280442B411BFC0730069E291 /* WireFormat.m in Sources */,
+				280442B511BFC0730069E291 /* MutableExtensionRegistry.m in Sources */,
+				280442B611BFC0730069E291 /* ExtendableMessage_Builder.m in Sources */,
+				280442B711BFC0730069E291 /* ConcreteExtensionField.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		100000000000000000001388 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 100000000000000000001489 /* ProtocolBuffers */;
+			target = 100000000000000000001489 /* ProtocolBuffers (iOS) */;
 			targetProxy = 100000000000000000001221 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -637,6 +724,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
 				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos3.2;
 				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = Debug;
@@ -677,7 +765,7 @@
 		100000000000000000000998 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -689,14 +777,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -772,6 +860,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
 				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos3.2;
 				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = Release;
@@ -779,7 +868,7 @@
 		1000000000000000000015D1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -789,13 +878,64 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		280442A011BFC0560069E291 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${PROJECT_DIR}/../protobuf/objectivec/ProtocolBuffers_Prefix.pch";
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libProtocolBuffers;
+			};
+			name = Debug;
+		};
+		280442A111BFC0560069E291 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${PROJECT_DIR}/../protobuf/objectivec/ProtocolBuffers_Prefix.pch";
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libProtocolBuffers;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -811,7 +951,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		100000000000000000000605 /* Build configuration list for PBXNativeTarget "ProtocolBuffers" */ = {
+		100000000000000000000605 /* Build configuration list for PBXNativeTarget "ProtocolBuffers (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				100000000000000000000995 /* Debug */,
@@ -834,6 +974,15 @@
 			buildConfigurations = (
 				100000000000000000000998 /* Debug */,
 				1000000000000000000015D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		280442C111BFC0BE0069E291 /* Build configuration list for PBXNativeTarget "ProtocolBuffers (Mac OS X)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				280442A011BFC0560069E291 /* Debug */,
+				280442A111BFC0560069E291 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

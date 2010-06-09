@@ -5,3 +5,7 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
 #endif
+
+#ifdef __APPLE__
+ #include "TargetConditionals.h"
+#endif

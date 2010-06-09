@@ -170,7 +170,11 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	AudioStreamBasicDescription fmt;
 
 	desc.componentType = kAudioUnitType_Output;
+#if TARGET_OS_IPHONE == 1
 	desc.componentSubType = kAudioUnitSubType_RemoteIO;
+#elif TARGEt_OS_MAC == 1
+	desc.componentSubType = kAudioUnitSubType_HALOutput;
+#endif
 	desc.componentManufacturer = kAudioUnitManufacturer_Apple;
 	desc.componentFlags = 0;
 	desc.componentFlagsMask = 0;

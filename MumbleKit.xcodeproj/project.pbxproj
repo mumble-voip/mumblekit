@@ -52,6 +52,55 @@
 		28AE414C11432A2E004B3046 /* MKServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AE414B11432A2E004B3046 /* MKServices.m */; };
 		28BA40DF1179170A006FAB39 /* MKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BA40DD1179170A006FAB39 /* MKVersion.h */; };
 		28BA40E01179170A006FAB39 /* MKVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BA40DE1179170A006FAB39 /* MKVersion.m */; };
+		28D81E9811BFC2400037D2C6 /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933B11431863000627EB /* MKAudio.m */; };
+		28D81E9911BFC2400037D2C6 /* MKAudioInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933D11431863000627EB /* MKAudioInput.m */; };
+		28D81E9A11BFC2400037D2C6 /* MKAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933F11431863000627EB /* MKAudioOutput.m */; };
+		28D81E9B11BFC2400037D2C6 /* MKAudioOutputSpeech.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4934111431863000627EB /* MKAudioOutputSpeech.m */; };
+		28D81E9C11BFC2400037D2C6 /* MKAudioOutputUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4934311431863000627EB /* MKAudioOutputUser.m */; };
+		28D81E9D11BFC2400037D2C6 /* MKReadWriteLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A3A11431C50002885AF /* MKReadWriteLock.m */; };
+		28D81E9E11BFC2400037D2C6 /* MKChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4511431D2E002885AF /* MKChannel.m */; };
+		28D81E9F11BFC2400037D2C6 /* MKConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4611431D2E002885AF /* MKConnection.m */; };
+		28D81EA011BFC2400037D2C6 /* MKCryptState.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4711431D2E002885AF /* MKCryptState.m */; };
+		28D81EA111BFC2400037D2C6 /* MKPacketDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4811431D2E002885AF /* MKPacketDataStream.m */; };
+		28D81EA211BFC2400037D2C6 /* MKServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4911431D2E002885AF /* MKServerModel.m */; };
+		28D81EA311BFC2400037D2C6 /* MKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4A11431D2E002885AF /* MKUser.m */; };
+		28D81EA411BFC2400037D2C6 /* MKServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AE414B11432A2E004B3046 /* MKServices.m */; };
+		28D81EA511BFC2400037D2C6 /* NSInvocation(MumbleKitAdditions).m in Sources */ = {isa = PBXBuildFile; fileRef = 2897BAB911452E4D00F3D16D /* NSInvocation(MumbleKitAdditions).m */; };
+		28D81EA611BFC2400037D2C6 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A6BB711500C82008FED5E /* Descriptor.pb.m */; };
+		28D81EA711BFC2400037D2C6 /* Mumble.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A6BB911500C82008FED5E /* Mumble.pb.m */; };
+		28D81EA811BFC2400037D2C6 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A6BBC11500C82008FED5E /* ObjectivecDescriptor.pb.m */; };
+		28D81EA911BFC2400037D2C6 /* MKVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BA40DE1179170A006FAB39 /* MKVersion.m */; };
+		28D81EAA11BFC2400037D2C6 /* MulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281A23E41179F5B600B7A471 /* MulticastDelegate.m */; };
+		28D81EAB11BFC2400037D2C6 /* MKServerModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F62B471180B31600214B11 /* MKServerModelObject.m */; };
+		28D81EAC11BFC2480037D2C6 /* MumbleKit.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* MumbleKit.pch */; };
+		28D81EAD11BFC2480037D2C6 /* MKAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4933A11431863000627EB /* MKAudio.h */; };
+		28D81EAE11BFC2480037D2C6 /* MKAudioInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4933C11431863000627EB /* MKAudioInput.h */; };
+		28D81EAF11BFC2480037D2C6 /* MKAudioOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4933E11431863000627EB /* MKAudioOutput.h */; };
+		28D81EB011BFC2480037D2C6 /* MKAudioOutputSpeech.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4934011431863000627EB /* MKAudioOutputSpeech.h */; };
+		28D81EB111BFC2480037D2C6 /* MKAudioOutputUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4934211431863000627EB /* MKAudioOutputUser.h */; };
+		28D81EB211BFC2480037D2C6 /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 287509CD11431A68002885AF /* MKUtils.h */; };
+		28D81EB311BFC2480037D2C6 /* MKReadWriteLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A3811431C42002885AF /* MKReadWriteLock.h */; };
+		28D81EB411BFC2480037D2C6 /* MKChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5111431D39002885AF /* MKChannel.h */; };
+		28D81EB511BFC2480037D2C6 /* MKConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5211431D39002885AF /* MKConnection.h */; };
+		28D81EB611BFC2480037D2C6 /* MKCryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5311431D39002885AF /* MKCryptState.h */; };
+		28D81EB711BFC2480037D2C6 /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5411431D39002885AF /* MKPacketDataStream.h */; };
+		28D81EB811BFC2480037D2C6 /* MKUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5611431D39002885AF /* MKUser.h */; };
+		28D81EB911BFC2480037D2C6 /* MKServerModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5511431D39002885AF /* MKServerModel.h */; };
+		28D81EBA11BFC2480037D2C6 /* MKServices.h in Headers */ = {isa = PBXBuildFile; fileRef = 28AE414911432A26004B3046 /* MKServices.h */; };
+		28D81EBB11BFC2480037D2C6 /* NSInvocation(MumbleKitAdditions).h in Headers */ = {isa = PBXBuildFile; fileRef = 2897BAB811452E4D00F3D16D /* NSInvocation(MumbleKitAdditions).h */; };
+		28D81EBC11BFC2480037D2C6 /* Descriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 288A6BB611500C82008FED5E /* Descriptor.pb.h */; };
+		28D81EBD11BFC2480037D2C6 /* Mumble.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 288A6BB811500C82008FED5E /* Mumble.pb.h */; };
+		28D81EBE11BFC2480037D2C6 /* ObjectivecDescriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 288A6BBB11500C82008FED5E /* ObjectivecDescriptor.pb.h */; };
+		28D81EBF11BFC2480037D2C6 /* MKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BA40DD1179170A006FAB39 /* MKVersion.h */; };
+		28D81EC011BFC2480037D2C6 /* MulticastDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 281A23E31179F5B600B7A471 /* MulticastDelegate.h */; };
+		28D81EC111BFC2480037D2C6 /* MKServerModelObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F62B461180B31600214B11 /* MKServerModelObject.h */; };
+		28D81EE611BFC30E0037D2C6 /* libSpeexDSP.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442F311BFC1800069E291 /* libSpeexDSP.dylib */; };
+		28D81EE711BFC3180037D2C6 /* libSpeex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442F611BFC1800069E291 /* libSpeex.dylib */; };
+		28D81EE811BFC3220037D2C6 /* libProtocolBuffers.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */; };
+		28D81EE911BFC3300037D2C6 /* libCELT.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442FE11BFC1800069E291 /* libCELT.dylib */; };
+		28D81EEC11BFC36F0037D2C6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A1C11431BD4002885AF /* AudioToolbox.framework */; };
+		28D81EEE11BFC3750037D2C6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D81EED11BFC3750037D2C6 /* Security.framework */; };
+		28D81EF411BFC3910037D2C6 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D81EF311BFC3910037D2C6 /* AudioUnit.framework */; };
 		28F62B481180B31600214B11 /* MKServerModelObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F62B461180B31600214B11 /* MKServerModelObject.h */; };
 		28F62B491180B31600214B11 /* MKServerModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F62B471180B31600214B11 /* MKServerModelObject.m */; };
 		AA747D9F0F9514B9006C5449 /* MumbleKit.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* MumbleKit.pch */; };
@@ -59,6 +108,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		280442F211BFC1800069E291 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 282D53C611BFBD6400717FFD;
+			remoteInfo = "SpeexDSP (Mac OS X)";
+		};
+		280442F511BFC1800069E291 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B5411500BAC00BAA221 /* Speex.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 282D533411BFBBF100717FFD;
+			remoteInfo = "Speex (Mac OS X)";
+		};
+		280442FA11BFC1800069E291 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B4411500BA400BAA221 /* ProtocolBuffers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2804429F11BFC0550069E291;
+			remoteInfo = "ProtocolBuffers (Mac OS X)";
+		};
+		280442FD11BFC1800069E291 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1;
+			remoteInfo = "CELT (Mac OS X)";
+		};
 		281F0B4211500B9C00BAA221 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
@@ -129,6 +206,34 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = SpeexDSP;
 		};
+		28D81EDE11BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1;
+			remoteInfo = "CELT (Mac OS X)";
+		};
+		28D81EE011BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B5411500BAC00BAA221 /* Speex.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 282D533311BFBBF100717FFD;
+			remoteInfo = "Speex (Mac OS X)";
+		};
+		28D81EE211BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B4411500BA400BAA221 /* ProtocolBuffers.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2804429E11BFC0550069E291;
+			remoteInfo = "ProtocolBuffers (Mac OS X)";
+		};
+		28D81EE411BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 282D53C511BFBD6400717FFD;
+			remoteInfo = "SpeexDSP (Mac OS X)";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -179,6 +284,10 @@
 		28BA40DD1179170A006FAB39 /* MKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKVersion.h; sourceTree = "<group>"; };
 		28BA40DE1179170A006FAB39 /* MKVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKVersion.m; path = src/MKVersion.m; sourceTree = "<group>"; };
 		28D1E663115018A800469C69 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MumbleKit-MacOSX.plist"; path = "src/MumbleKit-MacOSX.plist"; sourceTree = "<group>"; };
+		28D81EED11BFC3750037D2C6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		28D81EF311BFC3910037D2C6 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		28F62B461180B31600214B11 /* MKServerModelObject.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = MKServerModelObject.h; sourceTree = "<group>"; };
 		28F62B471180B31600214B11 /* MKServerModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerModelObject.m; path = src/MKServerModelObject.m; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* MumbleKit.pch */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = MumbleKit.pch; path = src/MumbleKit.pch; sourceTree = "<group>"; };
@@ -186,6 +295,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		28D81E9111BFC22F0037D2C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28D81EE911BFC3300037D2C6 /* libCELT.dylib in Frameworks */,
+				28D81EE811BFC3220037D2C6 /* libProtocolBuffers.dylib in Frameworks */,
+				28D81EE711BFC3180037D2C6 /* libSpeex.dylib in Frameworks */,
+				28D81EE611BFC30E0037D2C6 /* libSpeexDSP.dylib in Frameworks */,
+				28D81EEC11BFC36F0037D2C6 /* AudioToolbox.framework in Frameworks */,
+				28D81EEE11BFC3750037D2C6 /* Security.framework in Frameworks */,
+				28D81EF411BFC3910037D2C6 /* AudioUnit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07C0554694100DB518D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -207,6 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				28D1E663115018A800469C69 /* libMumbleKit.a */,
+				28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -219,6 +343,7 @@
 				2897BAAC11452CE300F3D16D /* Categories */,
 				287509B511431932002885AF /* Headers */,
 				08FB77AEFE84172EC02AAC07 /* Source */,
+				2809ABCA11BFC62C006BCD26 /* Other Sources */,
 				281A23DD1179F56200B7A471 /* MulticastDelegate */,
 				32C88DFF0371C24200C91783 /* Prefix Header */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
@@ -230,6 +355,8 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28D81EED11BFC3750037D2C6 /* Security.framework */,
+				28D81EF311BFC3910037D2C6 /* AudioUnit.framework */,
 				28750A2011431BD7002885AF /* CFNetwork.framework */,
 				28750A1C11431BD4002885AF /* AudioToolbox.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
@@ -259,6 +386,14 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
+		2809ABCA11BFC62C006BCD26 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
 		281A23DD1179F56200B7A471 /* MulticastDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +418,7 @@
 			isa = PBXGroup;
 			children = (
 				281F0B4311500B9C00BAA221 /* libCELT.a */,
+				280442FE11BFC1800069E291 /* libCELT.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -293,6 +429,7 @@
 				281F0B4F11500BA400BAA221 /* libProtocolBuffers.a */,
 				281F0B5111500BA400BAA221 /* UnitTests.octest */,
 				281F0B5311500BA400BAA221 /* CommandLineTests.app */,
+				280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				281F0B5C11500BAC00BAA221 /* libSpeex.a */,
+				280442F611BFC1800069E291 /* libSpeex.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -309,6 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				281F0B6511500BB400BAA221 /* libSpeexDSP.a */,
+				280442F311BFC1800069E291 /* libSpeexDSP.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -373,6 +512,35 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		28D81E8E11BFC22F0037D2C6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28D81EAC11BFC2480037D2C6 /* MumbleKit.pch in Headers */,
+				28D81EAD11BFC2480037D2C6 /* MKAudio.h in Headers */,
+				28D81EAE11BFC2480037D2C6 /* MKAudioInput.h in Headers */,
+				28D81EAF11BFC2480037D2C6 /* MKAudioOutput.h in Headers */,
+				28D81EB011BFC2480037D2C6 /* MKAudioOutputSpeech.h in Headers */,
+				28D81EB111BFC2480037D2C6 /* MKAudioOutputUser.h in Headers */,
+				28D81EB211BFC2480037D2C6 /* MKUtils.h in Headers */,
+				28D81EB311BFC2480037D2C6 /* MKReadWriteLock.h in Headers */,
+				28D81EB411BFC2480037D2C6 /* MKChannel.h in Headers */,
+				28D81EB511BFC2480037D2C6 /* MKConnection.h in Headers */,
+				28D81EB611BFC2480037D2C6 /* MKCryptState.h in Headers */,
+				28D81EB711BFC2480037D2C6 /* MKPacketDataStream.h in Headers */,
+				28D81EB811BFC2480037D2C6 /* MKUser.h in Headers */,
+				28D81EB911BFC2480037D2C6 /* MKServerModel.h in Headers */,
+				28D81EBA11BFC2480037D2C6 /* MKServices.h in Headers */,
+				28D81EBB11BFC2480037D2C6 /* NSInvocation(MumbleKitAdditions).h in Headers */,
+				28D81EBC11BFC2480037D2C6 /* Descriptor.pb.h in Headers */,
+				28D81EBD11BFC2480037D2C6 /* Mumble.pb.h in Headers */,
+				28D81EBE11BFC2480037D2C6 /* ObjectivecDescriptor.pb.h in Headers */,
+				28D81EBF11BFC2480037D2C6 /* MKVersion.h in Headers */,
+				28D81EC011BFC2480037D2C6 /* MulticastDelegate.h in Headers */,
+				28D81EC111BFC2480037D2C6 /* MKServerModelObject.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07A0554694100DB518D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -405,9 +573,31 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D2AAC07D0554694100DB518D /* MumbleKit */ = {
+		28D81E9211BFC22F0037D2C6 /* MumbleKit (Mac OS X) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "MumbleKit" */;
+			buildConfigurationList = 28D81E9711BFC22F0037D2C6 /* Build configuration list for PBXNativeTarget "MumbleKit (Mac OS X)" */;
+			buildPhases = (
+				28D81E8E11BFC22F0037D2C6 /* Headers */,
+				28D81E8F11BFC22F0037D2C6 /* Resources */,
+				28D81E9011BFC22F0037D2C6 /* Sources */,
+				28D81E9111BFC22F0037D2C6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				28D81EDF11BFC2F30037D2C6 /* PBXTargetDependency */,
+				28D81EE111BFC2F30037D2C6 /* PBXTargetDependency */,
+				28D81EE311BFC2F30037D2C6 /* PBXTargetDependency */,
+				28D81EE511BFC2F30037D2C6 /* PBXTargetDependency */,
+			);
+			name = "MumbleKit (Mac OS X)";
+			productName = "MumbleKit (Mac OS X)";
+			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D2AAC07D0554694100DB518D /* MumbleKit (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "MumbleKit (iOS)" */;
 			buildPhases = (
 				288A6C4611501161008FED5E /* Create Framework and Copy Headers */,
 				D2AAC07A0554694100DB518D /* Headers */,
@@ -423,7 +613,7 @@
 				281F0B6C11500BC400BAA221 /* PBXTargetDependency */,
 				281F0B6E11500BC600BAA221 /* PBXTargetDependency */,
 			);
-			name = MumbleKit;
+			name = "MumbleKit (iOS)";
 			productName = MumbleKit;
 			productReference = 28D1E663115018A800469C69 /* libMumbleKit.a */;
 			productType = "com.apple.product-type.library.static";
@@ -459,12 +649,41 @@
 			);
 			projectRoot = "";
 			targets = (
-				D2AAC07D0554694100DB518D /* MumbleKit */,
+				D2AAC07D0554694100DB518D /* MumbleKit (iOS) */,
+				28D81E9211BFC22F0037D2C6 /* MumbleKit (Mac OS X) */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		280442F311BFC1800069E291 /* libSpeexDSP.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libSpeexDSP.dylib;
+			remoteRef = 280442F211BFC1800069E291 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		280442F611BFC1800069E291 /* libSpeex.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libSpeex.dylib;
+			remoteRef = 280442F511BFC1800069E291 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libProtocolBuffers.dylib;
+			remoteRef = 280442FA11BFC1800069E291 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		280442FE11BFC1800069E291 /* libCELT.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libCELT.dylib;
+			remoteRef = 280442FD11BFC1800069E291 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		281F0B4311500B9C00BAA221 /* libCELT.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -509,6 +728,16 @@
 		};
 /* End PBXReferenceProxy section */
 
+/* Begin PBXResourcesBuildPhase section */
+		28D81E8F11BFC22F0037D2C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
 		288A6C4611501161008FED5E /* Create Framework and Copy Headers */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -541,6 +770,33 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		28D81E9011BFC22F0037D2C6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28D81E9811BFC2400037D2C6 /* MKAudio.m in Sources */,
+				28D81E9911BFC2400037D2C6 /* MKAudioInput.m in Sources */,
+				28D81E9A11BFC2400037D2C6 /* MKAudioOutput.m in Sources */,
+				28D81E9B11BFC2400037D2C6 /* MKAudioOutputSpeech.m in Sources */,
+				28D81E9C11BFC2400037D2C6 /* MKAudioOutputUser.m in Sources */,
+				28D81E9D11BFC2400037D2C6 /* MKReadWriteLock.m in Sources */,
+				28D81E9E11BFC2400037D2C6 /* MKChannel.m in Sources */,
+				28D81E9F11BFC2400037D2C6 /* MKConnection.m in Sources */,
+				28D81EA011BFC2400037D2C6 /* MKCryptState.m in Sources */,
+				28D81EA111BFC2400037D2C6 /* MKPacketDataStream.m in Sources */,
+				28D81EA211BFC2400037D2C6 /* MKServerModel.m in Sources */,
+				28D81EA311BFC2400037D2C6 /* MKUser.m in Sources */,
+				28D81EA411BFC2400037D2C6 /* MKServices.m in Sources */,
+				28D81EA511BFC2400037D2C6 /* NSInvocation(MumbleKitAdditions).m in Sources */,
+				28D81EA611BFC2400037D2C6 /* Descriptor.pb.m in Sources */,
+				28D81EA711BFC2400037D2C6 /* Mumble.pb.m in Sources */,
+				28D81EA811BFC2400037D2C6 /* ObjectivecDescriptor.pb.m in Sources */,
+				28D81EA911BFC2400037D2C6 /* MKVersion.m in Sources */,
+				28D81EAA11BFC2400037D2C6 /* MulticastDelegate.m in Sources */,
+				28D81EAB11BFC2400037D2C6 /* MKServerModelObject.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07B0554694100DB518D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -591,6 +847,26 @@
 			name = SpeexDSP;
 			targetProxy = 281F0B6D11500BC600BAA221 /* PBXContainerItemProxy */;
 		};
+		28D81EDF11BFC2F30037D2C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CELT (Mac OS X)";
+			targetProxy = 28D81EDE11BFC2F30037D2C6 /* PBXContainerItemProxy */;
+		};
+		28D81EE111BFC2F30037D2C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Speex (Mac OS X)";
+			targetProxy = 28D81EE011BFC2F30037D2C6 /* PBXContainerItemProxy */;
+		};
+		28D81EE311BFC2F30037D2C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ProtocolBuffers (Mac OS X)";
+			targetProxy = 28D81EE211BFC2F30037D2C6 /* PBXContainerItemProxy */;
+		};
+		28D81EE511BFC2F30037D2C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SpeexDSP (Mac OS X)";
+			targetProxy = 28D81EE411BFC2F30037D2C6 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -616,6 +892,7 @@
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Debug;
 		};
@@ -637,13 +914,14 @@
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Release;
 		};
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -652,15 +930,15 @@
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
-				VALID_ARCHS = "i386 armv6 armv7";
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "";
 			};
 			name = Debug;
 		};
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -668,15 +946,73 @@
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
-				VALID_ARCHS = "i386 armv6 armv7";
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "";
+			};
+			name = Release;
+		};
+		28D81E9511BFC22F0037D2C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				MACH_O_TYPE = mh_dylib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = MumbleKit;
+				VALID_ARCHS = "x86_64 ppc i386";
+			};
+			name = Debug;
+		};
+		28D81E9611BFC22F0037D2C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				MACH_O_TYPE = mh_dylib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = MumbleKit;
+				VALID_ARCHS = "x86_64 ppc i386";
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "MumbleKit" */ = {
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "MumbleKit (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB921F08733DC00010E9CD /* Debug */,
@@ -690,6 +1026,15 @@
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
 				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28D81E9711BFC22F0037D2C6 /* Build configuration list for PBXNativeTarget "MumbleKit (Mac OS X)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28D81E9511BFC22F0037D2C6 /* Debug */,
+				28D81E9611BFC22F0037D2C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

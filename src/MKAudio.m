@@ -40,6 +40,8 @@ static void AudioInterruptionListenerCallback(void *udata, UInt32 interruptionSt
 	NSLog(@"Audio: Interruption state callback called.");
 }
 
+
+#if TARGET_OS_IPHONE == 1
 static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionPropertyID property, UInt32 len, void *data) {
 	MK_UNUSED MKAudio *audio = (MKAudio *) udata;
 	BOOL audioInputAvailable;
@@ -60,6 +62,7 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 		}
 	}
 }
+#endif
 
 @implementation MKAudio
 
@@ -93,6 +96,7 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 	if (self == nil)
 		return nil;
 
+#if TARGET_OS_IPHONE == 1
 	/*
 	 * Initialize Audio Session.
 	 */
@@ -170,6 +174,7 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 		NSLog(@"Audio: Unable to query for current hardware sample rate.");
 		return nil;
 	}
+#endif
 
 	NSLog(@"Audio: Current hardware sample rate = %.2fHz.", fval);
 

@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		282D53CA11BFBD8300717FFD /* fftwrap.h in Headers */ = {isa = PBXBuildFile; fileRef = 28886A4010F167910060BD16 /* fftwrap.h */; };
+		282D53CB11BFBD8300717FFD /* filterbank.h in Headers */ = {isa = PBXBuildFile; fileRef = 28886A4210F167910060BD16 /* filterbank.h */; };
+		282D53CC11BFBD8300717FFD /* resample_sse.h in Headers */ = {isa = PBXBuildFile; fileRef = 28886A7210F167910060BD16 /* resample_sse.h */; };
+		282D53CD11BFBD8300717FFD /* smallft.h in Headers */ = {isa = PBXBuildFile; fileRef = 28886A7810F167910060BD16 /* smallft.h */; };
+		282D53CE11BFBD8300717FFD /* speex_jitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9710F16ABD00EDDFA1 /* speex_jitter.h */; };
+		282D53CF11BFBD8300717FFD /* speex_preprocess.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9810F16ABD00EDDFA1 /* speex_preprocess.h */; };
+		282D53D011BFBD8300717FFD /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9910F16ABD00EDDFA1 /* speex_resampler.h */; };
+		282D53D111BFBD8300717FFD /* speex_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9A10F16ABD00EDDFA1 /* speex_types.h */; };
+		282D53D211BFBD8300717FFD /* speex.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9B10F16ABD00EDDFA1 /* speex.h */; };
+		282D53D311BFBD9500717FFD /* fftwrap.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A3F10F167910060BD16 /* fftwrap.c */; };
+		282D53D411BFBD9500717FFD /* filterbank.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A4110F167910060BD16 /* filterbank.c */; };
+		282D53D511BFBD9500717FFD /* jitter.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A5210F167910060BD16 /* jitter.c */; };
+		282D53D611BFBD9500717FFD /* mdf.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A6510F167910060BD16 /* mdf.c */; };
+		282D53D711BFBD9500717FFD /* preprocess.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A6D10F167910060BD16 /* preprocess.c */; };
+		282D53D811BFBD9500717FFD /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A7310F167910060BD16 /* resample.c */; };
+		282D53D911BFBD9500717FFD /* smallft.c in Sources */ = {isa = PBXBuildFile; fileRef = 28886A7710F167910060BD16 /* smallft.c */; };
 		2862FAA710F16ABD00EDDFA1 /* speex_jitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9710F16ABD00EDDFA1 /* speex_jitter.h */; };
 		2862FAA810F16ABD00EDDFA1 /* speex_preprocess.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9810F16ABD00EDDFA1 /* speex_preprocess.h */; };
 		2862FAA910F16ABD00EDDFA1 /* speex_resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = 2862FA9910F16ABD00EDDFA1 /* speex_resampler.h */; };
@@ -26,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		282D53C611BFBD6400717FFD /* libSpeexDSP.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libSpeexDSP.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		2862FA9710F16ABD00EDDFA1 /* speex_jitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_jitter.h; path = ../speex/include/speex/speex_jitter.h; sourceTree = SOURCE_ROOT; };
 		2862FA9810F16ABD00EDDFA1 /* speex_preprocess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_preprocess.h; path = ../speex/include/speex/speex_preprocess.h; sourceTree = SOURCE_ROOT; };
 		2862FA9910F16ABD00EDDFA1 /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_resampler.h; path = ../speex/include/speex/speex_resampler.h; sourceTree = SOURCE_ROOT; };
@@ -46,6 +63,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		282D53C411BFBD6400717FFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07C0554694100DB518D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -60,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AAC07E0554694100DB518D /* libSpeexDSP.a */,
+				282D53C611BFBD6400717FFD /* libSpeexDSP.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +133,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		282D53C211BFBD6400717FFD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				282D53CA11BFBD8300717FFD /* fftwrap.h in Headers */,
+				282D53CB11BFBD8300717FFD /* filterbank.h in Headers */,
+				282D53CC11BFBD8300717FFD /* resample_sse.h in Headers */,
+				282D53CD11BFBD8300717FFD /* smallft.h in Headers */,
+				282D53CE11BFBD8300717FFD /* speex_jitter.h in Headers */,
+				282D53CF11BFBD8300717FFD /* speex_preprocess.h in Headers */,
+				282D53D011BFBD8300717FFD /* speex_resampler.h in Headers */,
+				282D53D111BFBD8300717FFD /* speex_types.h in Headers */,
+				282D53D211BFBD8300717FFD /* speex.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07A0554694100DB518D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,9 +168,26 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D2AAC07D0554694100DB518D /* SpeexDSP */ = {
+		282D53C511BFBD6400717FFD /* SpeexDSP (Mac OS X) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "SpeexDSP" */;
+			buildConfigurationList = 282D53C911BFBD8200717FFD /* Build configuration list for PBXNativeTarget "SpeexDSP (Mac OS X)" */;
+			buildPhases = (
+				282D53C211BFBD6400717FFD /* Headers */,
+				282D53C311BFBD6400717FFD /* Sources */,
+				282D53C411BFBD6400717FFD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SpeexDSP (Mac OS X)";
+			productName = "SpeexDSP (Mac OS X)";
+			productReference = 282D53C611BFBD6400717FFD /* libSpeexDSP.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		D2AAC07D0554694100DB518D /* SpeexDSP (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "SpeexDSP (iOS)" */;
 			buildPhases = (
 				D2AAC07A0554694100DB518D /* Headers */,
 				D2AAC07B0554694100DB518D /* Sources */,
@@ -139,7 +197,7 @@
 			);
 			dependencies = (
 			);
-			name = SpeexDSP;
+			name = "SpeexDSP (iOS)";
 			productName = SpeexDSP;
 			productReference = D2AAC07E0554694100DB518D /* libSpeexDSP.a */;
 			productType = "com.apple.product-type.library.static";
@@ -157,12 +215,27 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2AAC07D0554694100DB518D /* SpeexDSP */,
+				D2AAC07D0554694100DB518D /* SpeexDSP (iOS) */,
+				282D53C511BFBD6400717FFD /* SpeexDSP (Mac OS X) */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		282D53C311BFBD6400717FFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				282D53D311BFBD9500717FFD /* fftwrap.c in Sources */,
+				282D53D411BFBD9500717FFD /* filterbank.c in Sources */,
+				282D53D511BFBD9500717FFD /* jitter.c in Sources */,
+				282D53D611BFBD9500717FFD /* mdf.c in Sources */,
+				282D53D711BFBD9500717FFD /* preprocess.c in Sources */,
+				282D53D811BFBD9500717FFD /* resample.c in Sources */,
+				282D53D911BFBD9500717FFD /* smallft.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07B0554694100DB518D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -207,6 +280,7 @@
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = SpeexDSP;
+				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../speex/libspeex//** ${PROJECT_DIR}/**";
 			};
 			name = Debug;
@@ -235,6 +309,7 @@
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = SpeexDSP;
+				SDKROOT = iphoneos3.2;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../speex/libspeex//** ${PROJECT_DIR}/**";
 			};
 			name = Release;
@@ -242,34 +317,94 @@
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		282D53C711BFBD6400717FFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_BUILD_SPEEX,
+					HAVE_CONFIG_H,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libSpeexDSP;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../speex/libspeex/ ${PROJECT_DIR}";
+			};
+			name = Debug;
+		};
+		282D53C811BFBD6400717FFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_BUILD_SPEEX,
+					HAVE_CONFIG_H,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = libSpeexDSP;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../speex/libspeex/ ${PROJECT_DIR}";
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "SpeexDSP" */ = {
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "SpeexDSP (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB921F08733DC00010E9CD /* Debug */,
@@ -283,6 +418,15 @@
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
 				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		282D53C911BFBD8200717FFD /* Build configuration list for PBXNativeTarget "SpeexDSP (Mac OS X)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				282D53C711BFBD6400717FFD /* Debug */,
+				282D53C811BFBD6400717FFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
