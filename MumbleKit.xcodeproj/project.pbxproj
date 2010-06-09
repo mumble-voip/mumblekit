@@ -304,7 +304,7 @@
 		28BA40DD1179170A006FAB39 /* MKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKVersion.h; sourceTree = "<group>"; };
 		28BA40DE1179170A006FAB39 /* MKVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKVersion.m; path = src/MKVersion.m; sourceTree = "<group>"; };
 		28D1E663115018A800469C69 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D81E9311BFC22F0037D2C6 /* MumbleKit */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MumbleKit; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MumbleKit-MacOSX.plist"; path = "src/MumbleKit-MacOSX.plist"; sourceTree = "<group>"; };
 		28D81EED11BFC3750037D2C6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		28D81EF311BFC3910037D2C6 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -350,7 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				28D1E663115018A800469C69 /* libMumbleKit.a */,
-				28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */,
+				28D81E9311BFC22F0037D2C6 /* MumbleKit */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -614,7 +614,7 @@
 			);
 			name = "MumbleKit (Mac OS X)";
 			productName = "MumbleKit (Mac OS X)";
-			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */;
+			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit */;
 			productType = "com.apple.product-type.framework";
 		};
 		D2AAC07D0554694100DB518D /* MumbleKit (iOS) */ = {
@@ -772,7 +772,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "ROOT=${CONFIGURATION_BUILD_DIR}/MumbleKit.framework/Versions/A\nFWPATH=${ROOT}/Frameworks/\nEXECUTABLE=${ROOT}/MumbleKit\n\ninstall_name_tool -id libCELT.dylib ${FWPATH}/libCELT.dylib\ninstall_name_tool -id libProtocolBuffers.dylib ${FWPATH}/libProtocolBuffers.dylib\ninstall_name_tool -id libSpeex.dylib ${FWPATH}/libSpeex.dylib\ninstall_name_tool -id libSpeexDSP.dylib ${FWPATH}/libSpeexDSP.dylib\n\ninstall_name_tool -change /usr/local/lib/libCELT.dylib @executable_path/Frameworks/libCELT.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libProtocolBuffers.dylib @executable_path/Frameworks/libProtocolBuffers.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeex.dylib @executable_path/Frameworks/libSpeex.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeexDSP.dylib @executable_path/Frameworks/libSpeexDSP.dylib ${EXECUTABLE}\n";
+			shellScript = "ROOT=${CONFIGURATION_BUILD_DIR}/MumbleKit.framework/Versions/A\nFWPATH=${ROOT}/Frameworks/\nEXECUTABLE=${ROOT}/MumbleKit\n\ninstall_name_tool -id libCELT.dylib ${FWPATH}/libCELT.dylib\ninstall_name_tool -id libProtocolBuffers.dylib ${FWPATH}/libProtocolBuffers.dylib\ninstall_name_tool -id libSpeex.dylib ${FWPATH}/libSpeex.dylib\ninstall_name_tool -id libSpeexDSP.dylib ${FWPATH}/libSpeexDSP.dylib\n\ninstall_name_tool -change /usr/local/lib/libCELT.dylib @loader_path/Frameworks/libCELT.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libProtocolBuffers.dylib @loader_path/Frameworks/libProtocolBuffers.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeex.dylib @loader_path/Frameworks/libSpeex.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeexDSP.dylib @loader_path/Frameworks/libSpeexDSP.dylib ${EXECUTABLE}\n\ninstall_name_tool -id MumbleKit ${EXECUTABLE}\n";
 		};
 		288A6C4611501161008FED5E /* Create Framework and Copy Headers */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1000,6 +1000,13 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				HEADER_SEARCH_PATHS = (
+					"./**",
+					"${PROJECT_DIR}/3rdparty/celt/libcelt/",
+					"${PROJECT_DIR}/3rdparty/speex/include/",
+					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/",
+					"${PROJECT_DIR}/proto/",
+				);
 				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				MACH_O_TYPE = mh_dylib;
@@ -1028,6 +1035,13 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				HEADER_SEARCH_PATHS = (
+					"./**",
+					"${PROJECT_DIR}/3rdparty/celt/libcelt/",
+					"${PROJECT_DIR}/3rdparty/speex/include/",
+					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/",
+					"${PROJECT_DIR}/proto/",
+				);
 				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				MACH_O_TYPE = mh_dylib;
