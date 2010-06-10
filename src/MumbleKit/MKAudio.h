@@ -48,10 +48,4 @@ typedef enum {
 + (MKAudioOutput *) audioOutput;
 + (MKAudio *) audio;
 
-/* 'private' methods. */
-- (id) init;
-- (void) dealloc;
-- (MKAudioInput *) audioInput;
-- (MKAudioOutput *) audioOutput;
-
 @end

@@ -33,6 +33,13 @@
 #import <MumbleKit/MKAudioInput.h>
 #import <MumbleKit/MKAudioOutput.h>
 
+@interface MKAudio (Private)
+- (id) init;
+- (void) dealloc;
+- (MKAudioInput *) audioInput;
+- (MKAudioOutput *) audioOutput;
+@end
+
 static MKAudio *audioSingleton = nil;
 
 static void AudioInterruptionListenerCallback(void *udata, UInt32 interruptionState) {
@@ -67,7 +74,6 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 @implementation MKAudio
 
 + (void) initializeAudio {
-	NSLog(@"Audio: Initializing...");
 	audioSingleton = [[MKAudio alloc] init];
 	[[MKAudio audioOutput] setupDevice];
 	[[MKAudio audioInput] setupDevice];
