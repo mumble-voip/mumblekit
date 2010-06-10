@@ -62,6 +62,7 @@ struct MKAudioInputPrivate;
 		BOOL doResetPreprocessor;
 
 		short *psMic;
+		short *psOut;
 
 		MKCodecFormat cfType;
 

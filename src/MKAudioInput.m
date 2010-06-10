@@ -43,6 +43,9 @@
 struct MKAudioInputPrivate {
 	SpeexPreprocessState *preprocessorState;
 	CELTEncoder *celtEncoder;
+	SpeexResamplerState *micResampler;
+	SpeexBits speexBits;
+	void *speexEncoder;
 };
 
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
@@ -92,6 +95,8 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	_private = malloc(sizeof(struct MKAudioInputPrivate));
 	_private->preprocessorState = NULL;
 	_private->celtEncoder = NULL;
+	_private->micResampler = NULL;
+	_private->speexEncoder = NULL;
 
 	frameCounter = 0;
 
@@ -99,24 +104,44 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	 * Adjust bandwidth:
 	 * Depending on the max quality the client has set, determine iAudioQuality and iAudioFrames.
 	 */
-	cfType = CELT;
+	cfType = Speex;
 
 	numAudioFrames = 10;
+	audioQuality = 24000;
+
 	if (cfType == CELT) {
 		sampleRate = SAMPLE_RATE;
 		frameSize = SAMPLE_RATE / 100;
 		NSLog(@"AudioInput: %i bits/s, %d Hz, %d sample CELT", audioQuality, sampleRate, frameSize);
 	} else {
 		sampleRate = 32000;
-		/* Speex. */
-		NSLog(@"AudioInput: Speex input support not yet implemented.");
-		return self;
+
+		speex_bits_init(&_private->speexBits);
+		speex_bits_reset(&_private->speexBits);
+		_private->speexEncoder = speex_encoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_GET_FRAME_SIZE, &frameSize);
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_GET_SAMPLING_RATE, &sampleRate);
+
+		int iArg = 1;
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_VBR, &iArg);
+
+		iArg = 0;
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_VAD, &iArg);
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_DTX, &iArg);
+
+		float fArg = 8.0;
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_VBR_QUALITY, &fArg);
+
+		iArg = audioQuality;
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &iArg);
+
+		iArg = 5;
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_COMPLEXITY, &iArg);
+		NSLog(@"AudioInput: %d bits/s, %d Hz, %d sample Speex-UWB", audioQuality, sampleRate, frameSize);
 	}
 
 	doResetPreprocessor = YES;
 	previousVoice = NO;
-
-	psMic = malloc(sizeof(short) * frameSize);
 
 	numMicChannels = 0;
 	bitrate = 0;
@@ -139,6 +164,17 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	if (psMic)
 		free(psMic);
+	if (psOut)
+		free(psOut);
+
+	if (_private->speexEncoder)
+		speex_encoder_destroy(_private->speexEncoder);
+	if (_private->micResampler)
+		speex_resampler_destroy(_private->micResampler);
+	if (_private->celtEncoder)
+		celt_encoder_destroy(_private->celtEncoder);
+	if (_private->preprocessorState)
+		speex_preprocess_state_destroy(_private->preprocessorState);
 
 	if (_private)
 		free(_private);
@@ -147,14 +183,25 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 }
 
 - (void) initializeMixer {
+	int err;
+
 	NSLog(@"AudioInput: initializeMixer -- iMicFreq=%u, iSampleRate=%u", micFrequency, sampleRate);
 
 	micLength = (frameSize * micFrequency) / sampleRate;
 
+	if (_private->micResampler)
+		speex_resampler_destroy(_private->micResampler);
+
 	if (psMic)
 		free(psMic);
+	if (psOut)
+		free(psOut);
+
+	if (micFrequency != sampleRate)
+		_private->micResampler = speex_resampler_init(1, micFrequency, sampleRate, 3, &err);
 
 	psMic = malloc(micLength * sizeof(short));
+	psOut = malloc(frameSize * sizeof(short));
 	micSampleSize = numMicChannels * sizeof(short);
 	doResetPreprocessor = YES;
 
@@ -287,6 +334,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		nsamp -= left;
 
 		if (micFilled == micLength) {
+			// Should we resample?
+			if (_private->micResampler) {
+				spx_uint32_t inlen = micLength;
+				spx_uint32_t outlen = frameSize;
+				speex_resampler_process_int(_private->micResampler, 0, psMic, &inlen, psOut, &outlen);
+			}
 			micFilled = 0;
 			[self encodeAudioFrame];
 		}
@@ -330,18 +383,16 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	int isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
 
-	{
-		unsigned char buffer[1024];
-		int len = 0;
+	unsigned char buffer[1024];
+	int len = 0;
 
+	if (cfType == CELT) {
 		CELTEncoder *encoder = _private->celtEncoder;
 		if (encoder == NULL) {
 			CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
 			_private->celtEncoder = celt_encoder_create(mode, 1, NULL);
 			encoder = _private->celtEncoder;
 		}
-
-		audioQuality = 24000;
 
 		if (!previousVoice) {
 			celt_encoder_ctl(encoder, CELT_RESET_STATE);
@@ -353,13 +404,26 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		len = celt_encode(encoder, psMic, NULL, buffer, MIN(audioQuality / 800, 127));
 
 		bitrate = len * 100 * 8;
-
-		NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
-		[self flushCheck:outputBuffer terminator:NO];
-		[outputBuffer release];
-
-		previousVoice = YES;
+	} else if (cfType == Speex) {
+		int vbr = 0;
+		speex_encoder_ctl(_private->speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
+		if (vbr != audioQuality) {
+			vbr = audioQuality;
+			speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &vbr);
+		}
+		if (! previousVoice)
+			speex_encoder_ctl(_private->speexEncoder, SPEEX_RESET_STATE, NULL);
+		speex_encode_int(_private->speexEncoder, psOut, &_private->speexBits);
+		len = speex_bits_write(&_private->speexBits, (char *)buffer, 127);
+		speex_bits_reset(&_private->speexBits);
+		bitrate = len * 50 * 8;
 	}
+
+	NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
+	[self flushCheck:outputBuffer terminator:NO];
+	[outputBuffer release];
+
+	previousVoice = YES;
 }
 
 //

@@ -270,7 +270,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 			[self removeBuffer:outputUser];
 		}
 
-		NSLog(@"AudioOutput: No AudioOutputSpeech for user, allocating.");
+		NSLog(@"AudioOutput: No AudioOutputSpeech for user %@, allocating.", [user userName]);
 
 		[outputLock writeLock];
 		outputUser = [[MKAudioOutputSpeech alloc] initWithUser:user sampleRate:mixerFrequency messageType:msgType];

@@ -46,6 +46,9 @@ struct MKAudioOutputSpeechPrivate {
 	JitterBuffer *jitter;
 	CELTMode *celtMode;
 	CELTDecoder *celtDecoder;
+	SpeexBits speexBits;
+	void *speexDecoder;
+	SpeexResamplerState *resampler;
 };
 
 @implementation MKAudioOutputSpeech
@@ -59,6 +62,8 @@ struct MKAudioOutputSpeechPrivate {
 	_private->jitter = NULL;
 	_private->celtMode = NULL;
 	_private->celtDecoder = NULL;
+	_private->speexDecoder = NULL;
+	_private->resampler = NULL;
 
 	user = u;
 	messageType = type;
@@ -68,16 +73,26 @@ struct MKAudioOutputSpeechPrivate {
 	if (type != UDPVoiceSpeexMessage) {
 		sampleRate = SAMPLE_RATE;
 		frameSize = sampleRate / 100;
+		_private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
+		_private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
 	} else {
 		sampleRate = 32000;
-		NSLog(@"AudioOutputSpeech: No Speex support (yet).");
+		speex_bits_init(&_private->speexBits);
+		_private->speexDecoder = speex_decoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
+		int iArg = 1;
+		speex_decoder_ctl(_private->speexDecoder, SPEEX_SET_ENH, &iArg);
+		speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_FRAME_SIZE, &frameSize);
+		speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_SAMPLING_RATE, &sampleRate);
 	}
 
 	if (freq != sampleRate) {
-		NSLog(@"AudioOutputSpeech: freq != sampleRate");
+		int err;
+		_private->resampler = speex_resampler_init(1, sampleRate, freq, 3, &err);
+		NSLog(@"AudioOutputSpeech: Resampling from %i Hz to %d Hz", sampleRate, freq);
 	}
 
-	outputSize = frameSize;
+	outputSize = (int)(ceilf((float)frameSize * freq) / (float)sampleRate);
+
 	bufferOffset = bufferFilled = lastConsume = 0;
 
 	lastAlive = TRUE;
@@ -101,8 +116,6 @@ struct MKAudioOutputSpeechPrivate {
 	}
 
 	frames = [[NSMutableArray alloc] init];
-	_private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
-	_private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
 
 	int err = pthread_mutex_init(&jitterMutex, NULL);
 	if (err != 0) {
@@ -118,7 +131,17 @@ struct MKAudioOutputSpeechPrivate {
 		celt_decoder_destroy(_private->celtDecoder);
 	if (_private->celtMode)
 		celt_mode_destroy(_private->celtMode);
-	
+	if (_private->speexDecoder) {
+		speex_bits_destroy(&_private->speexBits);
+		speex_decoder_destroy(_private->speexDecoder);
+	}
+	if (_private->resampler)
+		speex_resampler_destroy(_private->resampler);
+	if (_private->jitter)
+		jitter_buffer_destroy(_private->jitter);
+
+	[frames release];
+
 	[super dealloc];
 }
 
@@ -188,16 +211,20 @@ struct MKAudioOutputSpeechPrivate {
 	lastConsume = nsamples;
 
 	if (bufferFilled >= nsamples) {
-		NSLog(@"AudioOutputSpeech: bufferFilled >= nsamples... returning lastAlive.");
 		return lastAlive;
 	}
 
+	float fOut[frameSize + 4096];
 	float *output = NULL;
 	BOOL nextAlive = lastAlive;
 
 	while (bufferFilled < nsamples) {
 		[self resizeBuffer:(bufferFilled + outputSize)];
-		output = buffer + bufferFilled;
+
+		if (_private->resampler)
+			output = &fOut[0];
+		else
+			output = buffer + bufferFilled;
 
 		if (! lastAlive) {
 			memset(output, 0, frameSize * sizeof(float));
@@ -293,7 +320,14 @@ struct MKAudioOutputSpeechPrivate {
 						celt_decode_float(_private->celtDecoder, NULL, 0, output);
 					}
 				} else {
-					NSLog(@"AudioOutputSpeech: Don't know how to decode Speex.");
+					if ([frameData length] == 0) {
+						speex_decode(_private->speexDecoder, NULL, output);
+					} else {
+						speex_bits_read_from(&_private->speexBits, [frameData bytes], [frameData length]);
+						speex_decode(_private->speexDecoder, &_private->speexBits, output);
+					}
+					for (unsigned int i=0; i < frameSize; i++)
+						output[i] *= (1.0f / 32767.0f);
 				}
 
 				[frames removeObjectAtIndex:0];
@@ -329,7 +363,9 @@ struct MKAudioOutputSpeechPrivate {
 				if (messageType != UDPVoiceSpeexMessage) {
 					celt_decode_float(_private->celtDecoder, NULL, 0, output);
 				} else {
-					NSLog(@"AudioOutputSpeech: I don't handle Speex.");
+					speex_decode(_private->speexDecoder, NULL, output);
+					for (unsigned int i = 0; i < frameSize; i++)
+						output[i] *= (1.0f / 32767.0f);
 				}
 			}
 
@@ -377,7 +413,14 @@ struct MKAudioOutputSpeechPrivate {
 		}
 
 nextframe:
-		bufferFilled += outputSize;
+		{
+			spx_uint32_t inlen = frameSize;
+			spx_uint32_t outlen = outputSize;
+			if (_private->resampler && lastAlive) {
+				speex_resampler_process_float(_private->resampler, 0, fOut, &inlen, buffer + bufferFilled, &outlen);
+			}
+			bufferFilled += outlen;
+		}
 	}
 
 	BOOL tmp = lastAlive;
