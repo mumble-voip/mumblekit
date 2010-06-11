@@ -1,1 +1,2 @@
 #define FLOATING_POINT
+#define VAR_ARRAYS

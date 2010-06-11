@@ -10,11 +10,8 @@
 		2809ABDD11C00A5D006BCD26 /* libSpeexDSP.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442F311BFC1800069E291 /* libSpeexDSP.dylib */; };
 		2809ABDE11C00A6F006BCD26 /* libSpeex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442F611BFC1800069E291 /* libSpeex.dylib */; };
 		2809ABDF11C00A76006BCD26 /* libProtocolBuffers.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */; };
-		2809ABE011C00A7D006BCD26 /* libCELT.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442FE11BFC1800069E291 /* libCELT.dylib */; };
 		281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 281A23E31179F5B600B7A471 /* MulticastDelegate.h */; };
 		281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281A23E41179F5B600B7A471 /* MulticastDelegate.m */; };
-		28232BF411C2D2A80093C93B /* libCELT-0.8.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28232BF311C2D2960093C93B /* libCELT-0.8.0.dylib */; };
-		28232BF511C2D2B70093C93B /* libCELT-0.8.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28232BF311C2D2960093C93B /* libCELT-0.8.0.dylib */; };
 		287509CF11431A68002885AF /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 287509CD11431A68002885AF /* MKUtils.h */; };
 		28750A1D11431BD4002885AF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A1C11431BD4002885AF /* AudioToolbox.framework */; };
 		28750A2111431BD7002885AF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A2011431BD7002885AF /* CFNetwork.framework */; };
@@ -41,9 +38,11 @@
 		288A6BE011500E06008FED5E /* libSpeexDSP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B6511500BB400BAA221 /* libSpeexDSP.a */; };
 		288A6BE111500E0D008FED5E /* libSpeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B5C11500BAC00BAA221 /* libSpeex.a */; };
 		288A6BE211500E14008FED5E /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B4F11500BA400BAA221 /* libProtocolBuffers.a */; };
-		288A6BE311500E25008FED5E /* libCELT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B4311500B9C00BAA221 /* libCELT.a */; };
 		2897BABA11452E4D00F3D16D /* NSInvocation(MumbleKitAdditions).h in Headers */ = {isa = PBXBuildFile; fileRef = 2897BAB811452E4D00F3D16D /* NSInvocation(MumbleKitAdditions).h */; };
 		2897BABB11452E4D00F3D16D /* NSInvocation(MumbleKitAdditions).m in Sources */ = {isa = PBXBuildFile; fileRef = 2897BAB911452E4D00F3D16D /* NSInvocation(MumbleKitAdditions).m */; };
+		289C799C11C2E2B00061CB28 /* libCELT-0.7.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 289C798811C2E0120061CB28 /* libCELT-0.7.0.dylib */; };
+		289C799D11C2E2C20061CB28 /* libCELT-0.7.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 289C798811C2E0120061CB28 /* libCELT-0.7.0.dylib */; };
+		289C79A511C2E2F60061CB28 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 289C798611C2E0120061CB28 /* libCELT-0.7.0.a */; };
 		28A4934411431863000627EB /* MKAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4933A11431863000627EB /* MKAudio.h */; };
 		28A4934511431863000627EB /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933B11431863000627EB /* MKAudio.m */; };
 		28A4934611431863000627EB /* MKAudioInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4933C11431863000627EB /* MKAudioInput.h */; };
@@ -103,7 +102,6 @@
 		28D81EE611BFC30E0037D2C6 /* libSpeexDSP.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 280442F311BFC1800069E291 /* libSpeexDSP.dylib */; };
 		28D81EE711BFC3180037D2C6 /* libSpeex.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 280442F611BFC1800069E291 /* libSpeex.dylib */; };
 		28D81EE811BFC3220037D2C6 /* libProtocolBuffers.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */; };
-		28D81EE911BFC3300037D2C6 /* libCELT.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 280442FE11BFC1800069E291 /* libCELT.dylib */; };
 		28D81EEC11BFC36F0037D2C6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A1C11431BD4002885AF /* AudioToolbox.framework */; };
 		28D81EEE11BFC3750037D2C6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D81EED11BFC3750037D2C6 /* Security.framework */; };
 		28D81EF411BFC3910037D2C6 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D81EF311BFC3910037D2C6 /* AudioUnit.framework */; };
@@ -134,20 +132,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 2804429F11BFC0550069E291;
 			remoteInfo = "ProtocolBuffers (Mac OS X)";
-		};
-		280442FD11BFC1800069E291 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1;
-			remoteInfo = "CELT (Mac OS X)";
-		};
-		281F0B4211500B9C00BAA221 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = CELT;
 		};
 		281F0B4E11500BA400BAA221 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -184,13 +168,6 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = SpeexDSP;
 		};
-		281F0B6711500BBF00BAA221 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = CELT;
-		};
 		281F0B6911500BC100BAA221 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B5411500BAC00BAA221 /* Speex.xcodeproj */;
@@ -216,29 +193,43 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libCELT-0.8.0.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = "CELT 0.8.0 (iOS)";
 		};
 		28232BF211C2D2960093C93B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1 /* libCELT-0.8.0.dylib */;
+			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1;
 			remoteInfo = "CELT 0.8.0 (Mac OS X)";
 		};
-		28232BF611C2D2F90093C93B /* PBXContainerItemProxy */ = {
+		289C798511C2E0120061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1 /* CELT 0.8.0 (Mac OS X) */;
-			remoteInfo = "CELT 0.8.0 (Mac OS X)";
+			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libCELT-0.7.0.a */;
+			remoteInfo = "CELT 0.7.0 (iOS)";
 		};
-		28D81EDE11BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
+		289C798711C2E0120061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
+			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1 /* libCELT-0.7.0.dylib */;
+			remoteInfo = "CELT 0.7.0 (Mac OS X)";
+		};
+		289C799311C2E0230061CB28 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1;
-			remoteInfo = "CELT (Mac OS X)";
+			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1 /* CELT 0.7.0 (Mac OS X) */;
+			remoteInfo = "CELT 0.7.0 (Mac OS X)";
+		};
+		289C79A311C2E2E60061CB28 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* CELT 0.7.0 (iOS) */;
+			remoteInfo = "CELT 0.7.0 (iOS)";
 		};
 		28D81EE011BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -273,8 +264,7 @@
 				28D81EE611BFC30E0037D2C6 /* libSpeexDSP.dylib in CopyFiles */,
 				28D81EE711BFC3180037D2C6 /* libSpeex.dylib in CopyFiles */,
 				28D81EE811BFC3220037D2C6 /* libProtocolBuffers.dylib in CopyFiles */,
-				28D81EE911BFC3300037D2C6 /* libCELT.dylib in CopyFiles */,
-				28232BF511C2D2B70093C93B /* libCELT-0.8.0.dylib in CopyFiles */,
+				289C799D11C2E2C20061CB28 /* libCELT-0.7.0.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +273,7 @@
 /* Begin PBXFileReference section */
 		281A23E31179F5B600B7A471 /* MulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MulticastDelegate.h; path = src/MulticastDelegate.h; sourceTree = "<group>"; };
 		281A23E41179F5B600B7A471 /* MulticastDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MulticastDelegate.m; path = src/MulticastDelegate.m; sourceTree = "<group>"; };
-		281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CELT.xcodeproj; path = 3rdparty/celtbuild/CELT.xcodeproj; sourceTree = "<group>"; };
+		281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CELT-0.7.0.xcodeproj"; path = "3rdparty/celt-0.7.0-build/CELT-0.7.0.xcodeproj"; sourceTree = "<group>"; };
 		281F0B4411500BA400BAA221 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = 3rdparty/protobufbuild/ProtocolBuffers.xcodeproj; sourceTree = "<group>"; };
 		281F0B5411500BAC00BAA221 /* Speex.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Speex.xcodeproj; path = 3rdparty/speexbuild/Speex.xcodeproj; sourceTree = "<group>"; };
 		281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SpeexDSP.xcodeproj; path = 3rdparty/speexdspbuild/SpeexDSP.xcodeproj; sourceTree = "<group>"; };
@@ -347,8 +337,7 @@
 				2809ABDD11C00A5D006BCD26 /* libSpeexDSP.dylib in Frameworks */,
 				2809ABDE11C00A6F006BCD26 /* libSpeex.dylib in Frameworks */,
 				2809ABDF11C00A76006BCD26 /* libProtocolBuffers.dylib in Frameworks */,
-				2809ABE011C00A7D006BCD26 /* libCELT.dylib in Frameworks */,
-				28232BF411C2D2A80093C93B /* libCELT-0.8.0.dylib in Frameworks */,
+				289C799C11C2E2B00061CB28 /* libCELT-0.7.0.dylib in Frameworks */,
 				28D81EEC11BFC36F0037D2C6 /* AudioToolbox.framework in Frameworks */,
 				28D81EEE11BFC3750037D2C6 /* Security.framework in Frameworks */,
 				28D81EF411BFC3910037D2C6 /* AudioUnit.framework in Frameworks */,
@@ -359,7 +348,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				288A6BE311500E25008FED5E /* libCELT.a in Frameworks */,
+				289C79A511C2E2F60061CB28 /* libCELT-0.7.0.a in Frameworks */,
 				288A6BE211500E14008FED5E /* libProtocolBuffers.a in Frameworks */,
 				288A6BE111500E0D008FED5E /* libSpeex.a in Frameworks */,
 				288A6BE011500E06008FED5E /* libSpeexDSP.a in Frameworks */,
@@ -455,19 +444,10 @@
 				281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */,
 				281F0B5411500BAC00BAA221 /* Speex.xcodeproj */,
 				281F0B4411500BA400BAA221 /* ProtocolBuffers.xcodeproj */,
-				281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */,
+				281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */,
 				28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */,
 			);
 			name = Dependencies;
-			sourceTree = "<group>";
-		};
-		281F0B3C11500B9C00BAA221 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				281F0B4311500B9C00BAA221 /* libCELT.a */,
-				280442FE11BFC1800069E291 /* libCELT.dylib */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		281F0B4511500BA400BAA221 /* Products */ = {
@@ -557,6 +537,15 @@
 			path = src/MumbleKit;
 			sourceTree = "<group>";
 		};
+		289C798111C2E0120061CB28 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				289C798611C2E0120061CB28 /* libCELT-0.7.0.a */,
+				289C798811C2E0120061CB28 /* libCELT-0.7.0.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		32C88DFF0371C24200C91783 /* Prefix Header */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,8 +632,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				28D81EDF11BFC2F30037D2C6 /* PBXTargetDependency */,
-				28232BF711C2D2F90093C93B /* PBXTargetDependency */,
+				289C799411C2E0230061CB28 /* PBXTargetDependency */,
 				28D81EE111BFC2F30037D2C6 /* PBXTargetDependency */,
 				28D81EE311BFC2F30037D2C6 /* PBXTargetDependency */,
 				28D81EE511BFC2F30037D2C6 /* PBXTargetDependency */,
@@ -667,10 +655,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				281F0B6811500BBF00BAA221 /* PBXTargetDependency */,
 				281F0B6A11500BC100BAA221 /* PBXTargetDependency */,
 				281F0B6C11500BC400BAA221 /* PBXTargetDependency */,
 				281F0B6E11500BC600BAA221 /* PBXTargetDependency */,
+				289C79A411C2E2E60061CB28 /* PBXTargetDependency */,
 			);
 			name = "MumbleKit (iOS)";
 			productName = MumbleKit;
@@ -690,12 +678,12 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 28232BE911C2D2960093C93B /* Products */;
-					ProjectRef = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
+					ProductGroup = 289C798111C2E0120061CB28 /* Products */;
+					ProjectRef = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
 				},
 				{
-					ProductGroup = 281F0B3C11500B9C00BAA221 /* Products */;
-					ProjectRef = 281F0B3B11500B9C00BAA221 /* CELT.xcodeproj */;
+					ProductGroup = 28232BE911C2D2960093C93B /* Products */;
+					ProjectRef = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
 				},
 				{
 					ProductGroup = 281F0B4511500BA400BAA221 /* Products */;
@@ -738,20 +726,6 @@
 			fileType = "compiled.mach-o.dylib";
 			path = libProtocolBuffers.dylib;
 			remoteRef = 280442FA11BFC1800069E291 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		280442FE11BFC1800069E291 /* libCELT.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = libCELT.dylib;
-			remoteRef = 280442FD11BFC1800069E291 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		281F0B4311500B9C00BAA221 /* libCELT.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCELT.a;
-			remoteRef = 281F0B4211500B9C00BAA221 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		281F0B4F11500BA400BAA221 /* libProtocolBuffers.a */ = {
@@ -801,6 +775,20 @@
 			fileType = "compiled.mach-o.dylib";
 			path = "libCELT-0.8.0.dylib";
 			remoteRef = 28232BF211C2D2960093C93B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		289C798611C2E0120061CB28 /* libCELT-0.7.0.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCELT-0.7.0.a";
+			remoteRef = 289C798511C2E0120061CB28 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		289C798811C2E0120061CB28 /* libCELT-0.7.0.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = "libCELT-0.7.0.dylib";
+			remoteRef = 289C798711C2E0120061CB28 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -917,11 +905,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		281F0B6811500BBF00BAA221 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CELT;
-			targetProxy = 281F0B6711500BBF00BAA221 /* PBXContainerItemProxy */;
-		};
 		281F0B6A11500BC100BAA221 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Speex;
@@ -937,15 +920,15 @@
 			name = SpeexDSP;
 			targetProxy = 281F0B6D11500BC600BAA221 /* PBXContainerItemProxy */;
 		};
-		28232BF711C2D2F90093C93B /* PBXTargetDependency */ = {
+		289C799411C2E0230061CB28 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "CELT 0.8.0 (Mac OS X)";
-			targetProxy = 28232BF611C2D2F90093C93B /* PBXContainerItemProxy */;
+			name = "CELT 0.7.0 (Mac OS X)";
+			targetProxy = 289C799311C2E0230061CB28 /* PBXContainerItemProxy */;
 		};
-		28D81EDF11BFC2F30037D2C6 /* PBXTargetDependency */ = {
+		289C79A411C2E2E60061CB28 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "CELT (Mac OS X)";
-			targetProxy = 28D81EDE11BFC2F30037D2C6 /* PBXContainerItemProxy */;
+			name = "CELT 0.7.0 (iOS)";
+			targetProxy = 289C79A311C2E2E60061CB28 /* PBXContainerItemProxy */;
 		};
 		28D81EE111BFC2F30037D2C6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1062,7 +1045,7 @@
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
 					"./**",
-					"${PROJECT_DIR}/3rdparty/celt/libcelt/",
+					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/",
 					"${PROJECT_DIR}/3rdparty/speex/include/",
 					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/",
 					"${PROJECT_DIR}/proto/",
@@ -1098,7 +1081,7 @@
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
 					"./**",
-					"${PROJECT_DIR}/3rdparty/celt/libcelt/",
+					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/",
 					"${PROJECT_DIR}/3rdparty/speex/include/",
 					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/",
 					"${PROJECT_DIR}/proto/",

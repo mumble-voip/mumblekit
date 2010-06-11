@@ -1,8 +1,8 @@
 [submodule "3rdparty/speex"]
 	path = 3rdparty/speex
 	url = git://git.xiph.org/speex.git/
-[submodule "3rdparty/celt"]
-	path = 3rdparty/celt
+[submodule "3rdparty/celt-0.7.0"]
+	path = 3rdparty/celt-0.7.0
 	url = git://git.xiph.org/celt.git/
 [submodule "3rdparty/protobuf"]
 	path = 3rdparty/protobuf
