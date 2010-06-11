@@ -1,0 +1,652 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2828A81E11C255130056A4AF /* _kiss_fft_guts.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E111C255130056A4AF /* _kiss_fft_guts.h */; };
+		2828A81F11C255130056A4AF /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E211C255130056A4AF /* arch.h */; };
+		2828A82011C255130056A4AF /* bands.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7E311C255130056A4AF /* bands.c */; };
+		2828A82111C255130056A4AF /* bands.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E411C255130056A4AF /* bands.h */; };
+		2828A82411C255130056A4AF /* celt_header.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E711C255130056A4AF /* celt_header.h */; };
+		2828A82511C255130056A4AF /* celt_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E811C255130056A4AF /* celt_types.h */; };
+		2828A82611C255130056A4AF /* celt.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7E911C255130056A4AF /* celt.c */; };
+		2828A82711C255130056A4AF /* celt.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7EA11C255130056A4AF /* celt.h */; };
+		2828A82811C255130056A4AF /* cwrs.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7EB11C255130056A4AF /* cwrs.c */; };
+		2828A82911C255130056A4AF /* cwrs.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7EC11C255130056A4AF /* cwrs.h */; };
+		2828A82B11C255130056A4AF /* ecintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7EE11C255130056A4AF /* ecintrin.h */; };
+		2828A82C11C255130056A4AF /* entcode.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7EF11C255130056A4AF /* entcode.c */; };
+		2828A82D11C255130056A4AF /* entcode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F011C255130056A4AF /* entcode.h */; };
+		2828A82E11C255130056A4AF /* entdec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7F111C255130056A4AF /* entdec.c */; };
+		2828A82F11C255130056A4AF /* entdec.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F211C255130056A4AF /* entdec.h */; };
+		2828A83011C255130056A4AF /* entenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7F311C255130056A4AF /* entenc.c */; };
+		2828A83111C255130056A4AF /* entenc.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F411C255130056A4AF /* entenc.h */; };
+		2828A83411C255130056A4AF /* fixed_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F711C255130056A4AF /* fixed_debug.h */; };
+		2828A83511C255130056A4AF /* fixed_generic.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F811C255130056A4AF /* fixed_generic.h */; };
+		2828A83611C255130056A4AF /* float_cast.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F911C255130056A4AF /* float_cast.h */; };
+		2828A83711C255130056A4AF /* header.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7FA11C255130056A4AF /* header.c */; };
+		2828A83811C255130056A4AF /* kfft_double.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7FB11C255130056A4AF /* kfft_double.h */; };
+		2828A83911C255130056A4AF /* kfft_single.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7FC11C255130056A4AF /* kfft_single.c */; };
+		2828A83A11C255130056A4AF /* kfft_single.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7FD11C255130056A4AF /* kfft_single.h */; };
+		2828A83B11C255130056A4AF /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7FE11C255130056A4AF /* kiss_fft.c */; };
+		2828A83C11C255130056A4AF /* kiss_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7FF11C255130056A4AF /* kiss_fft.h */; };
+		2828A83D11C255130056A4AF /* kiss_fftr.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80011C255130056A4AF /* kiss_fftr.c */; };
+		2828A83E11C255130056A4AF /* kiss_fftr.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80111C255130056A4AF /* kiss_fftr.h */; };
+		2828A83F11C255130056A4AF /* laplace.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80211C255130056A4AF /* laplace.c */; };
+		2828A84011C255130056A4AF /* laplace.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80311C255130056A4AF /* laplace.h */; };
+		2828A84111C255130056A4AF /* mathops.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80611C255130056A4AF /* mathops.h */; };
+		2828A84211C255130056A4AF /* mdct.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80711C255130056A4AF /* mdct.c */; };
+		2828A84311C255130056A4AF /* mdct.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80811C255130056A4AF /* mdct.h */; };
+		2828A84411C255130056A4AF /* mfrngcod.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80911C255130056A4AF /* mfrngcod.h */; };
+		2828A84711C255130056A4AF /* modes.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80C11C255130056A4AF /* modes.c */; };
+		2828A84811C255130056A4AF /* modes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80D11C255130056A4AF /* modes.h */; };
+		2828A84911C255130056A4AF /* os_support.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80E11C255130056A4AF /* os_support.h */; };
+		2828A84A11C255130056A4AF /* pitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80F11C255130056A4AF /* pitch.c */; };
+		2828A84B11C255130056A4AF /* pitch.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81011C255130056A4AF /* pitch.h */; };
+		2828A84D11C255130056A4AF /* psy.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81211C255130056A4AF /* psy.c */; };
+		2828A84E11C255130056A4AF /* psy.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81311C255130056A4AF /* psy.h */; };
+		2828A84F11C255130056A4AF /* quant_bands.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81411C255130056A4AF /* quant_bands.c */; };
+		2828A85011C255130056A4AF /* quant_bands.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81511C255130056A4AF /* quant_bands.h */; };
+		2828A85111C255130056A4AF /* rangedec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81611C255130056A4AF /* rangedec.c */; };
+		2828A85211C255130056A4AF /* rangeenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81711C255130056A4AF /* rangeenc.c */; };
+		2828A85311C255130056A4AF /* rate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81811C255130056A4AF /* rate.c */; };
+		2828A85411C255130056A4AF /* rate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81911C255130056A4AF /* rate.h */; };
+		2828A85511C255130056A4AF /* stack_alloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81A11C255130056A4AF /* stack_alloc.h */; };
+		2828A85711C255130056A4AF /* vq.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81C11C255130056A4AF /* vq.c */; };
+		2828A85811C255130056A4AF /* vq.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81D11C255130056A4AF /* vq.h */; };
+		2828A85911C255130056A4AF /* _kiss_fft_guts.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E111C255130056A4AF /* _kiss_fft_guts.h */; };
+		2828A85A11C255130056A4AF /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E211C255130056A4AF /* arch.h */; };
+		2828A85B11C255130056A4AF /* bands.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7E311C255130056A4AF /* bands.c */; };
+		2828A85C11C255130056A4AF /* bands.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E411C255130056A4AF /* bands.h */; };
+		2828A85F11C255130056A4AF /* celt_header.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E711C255130056A4AF /* celt_header.h */; };
+		2828A86011C255130056A4AF /* celt_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7E811C255130056A4AF /* celt_types.h */; };
+		2828A86111C255130056A4AF /* celt.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7E911C255130056A4AF /* celt.c */; };
+		2828A86211C255130056A4AF /* celt.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7EA11C255130056A4AF /* celt.h */; };
+		2828A86311C255130056A4AF /* cwrs.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7EB11C255130056A4AF /* cwrs.c */; };
+		2828A86411C255130056A4AF /* cwrs.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7EC11C255130056A4AF /* cwrs.h */; };
+		2828A86611C255130056A4AF /* ecintrin.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7EE11C255130056A4AF /* ecintrin.h */; };
+		2828A86711C255130056A4AF /* entcode.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7EF11C255130056A4AF /* entcode.c */; };
+		2828A86811C255130056A4AF /* entcode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F011C255130056A4AF /* entcode.h */; };
+		2828A86911C255130056A4AF /* entdec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7F111C255130056A4AF /* entdec.c */; };
+		2828A86A11C255130056A4AF /* entdec.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F211C255130056A4AF /* entdec.h */; };
+		2828A86B11C255130056A4AF /* entenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7F311C255130056A4AF /* entenc.c */; };
+		2828A86C11C255130056A4AF /* entenc.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F411C255130056A4AF /* entenc.h */; };
+		2828A86F11C255130056A4AF /* fixed_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F711C255130056A4AF /* fixed_debug.h */; };
+		2828A87011C255130056A4AF /* fixed_generic.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F811C255130056A4AF /* fixed_generic.h */; };
+		2828A87111C255130056A4AF /* float_cast.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7F911C255130056A4AF /* float_cast.h */; };
+		2828A87211C255130056A4AF /* header.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7FA11C255130056A4AF /* header.c */; };
+		2828A87311C255130056A4AF /* kfft_double.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7FB11C255130056A4AF /* kfft_double.h */; };
+		2828A87411C255130056A4AF /* kfft_single.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7FC11C255130056A4AF /* kfft_single.c */; };
+		2828A87511C255130056A4AF /* kfft_single.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7FD11C255130056A4AF /* kfft_single.h */; };
+		2828A87611C255130056A4AF /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A7FE11C255130056A4AF /* kiss_fft.c */; };
+		2828A87711C255130056A4AF /* kiss_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A7FF11C255130056A4AF /* kiss_fft.h */; };
+		2828A87811C255130056A4AF /* kiss_fftr.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80011C255130056A4AF /* kiss_fftr.c */; };
+		2828A87911C255130056A4AF /* kiss_fftr.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80111C255130056A4AF /* kiss_fftr.h */; };
+		2828A87A11C255130056A4AF /* laplace.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80211C255130056A4AF /* laplace.c */; };
+		2828A87B11C255130056A4AF /* laplace.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80311C255130056A4AF /* laplace.h */; };
+		2828A87C11C255130056A4AF /* mathops.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80611C255130056A4AF /* mathops.h */; };
+		2828A87D11C255130056A4AF /* mdct.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80711C255130056A4AF /* mdct.c */; };
+		2828A87E11C255130056A4AF /* mdct.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80811C255130056A4AF /* mdct.h */; };
+		2828A87F11C255130056A4AF /* mfrngcod.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80911C255130056A4AF /* mfrngcod.h */; };
+		2828A88211C255130056A4AF /* modes.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80C11C255130056A4AF /* modes.c */; };
+		2828A88311C255130056A4AF /* modes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80D11C255130056A4AF /* modes.h */; };
+		2828A88411C255130056A4AF /* os_support.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A80E11C255130056A4AF /* os_support.h */; };
+		2828A88511C255130056A4AF /* pitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A80F11C255130056A4AF /* pitch.c */; };
+		2828A88611C255130056A4AF /* pitch.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81011C255130056A4AF /* pitch.h */; };
+		2828A88811C255130056A4AF /* psy.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81211C255130056A4AF /* psy.c */; };
+		2828A88911C255130056A4AF /* psy.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81311C255130056A4AF /* psy.h */; };
+		2828A88A11C255130056A4AF /* quant_bands.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81411C255130056A4AF /* quant_bands.c */; };
+		2828A88B11C255130056A4AF /* quant_bands.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81511C255130056A4AF /* quant_bands.h */; };
+		2828A88C11C255130056A4AF /* rangedec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81611C255130056A4AF /* rangedec.c */; };
+		2828A88D11C255130056A4AF /* rangeenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81711C255130056A4AF /* rangeenc.c */; };
+		2828A88E11C255130056A4AF /* rate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81811C255130056A4AF /* rate.c */; };
+		2828A88F11C255130056A4AF /* rate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81911C255130056A4AF /* rate.h */; };
+		2828A89011C255130056A4AF /* stack_alloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81A11C255130056A4AF /* stack_alloc.h */; };
+		2828A89211C255130056A4AF /* vq.c in Sources */ = {isa = PBXBuildFile; fileRef = 2828A81C11C255130056A4AF /* vq.c */; };
+		2828A89311C255130056A4AF /* vq.h in Headers */ = {isa = PBXBuildFile; fileRef = 2828A81D11C255130056A4AF /* vq.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2828A7E111C255130056A4AF /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = "../celt-0.8.0/libcelt/_kiss_fft_guts.h"; sourceTree = SOURCE_ROOT; };
+		2828A7E211C255130056A4AF /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arch.h; path = "../celt-0.8.0/libcelt/arch.h"; sourceTree = SOURCE_ROOT; };
+		2828A7E311C255130056A4AF /* bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bands.c; path = "../celt-0.8.0/libcelt/bands.c"; sourceTree = SOURCE_ROOT; };
+		2828A7E411C255130056A4AF /* bands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bands.h; path = "../celt-0.8.0/libcelt/bands.h"; sourceTree = SOURCE_ROOT; };
+		2828A7E711C255130056A4AF /* celt_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt_header.h; path = "../celt-0.8.0/libcelt/celt_header.h"; sourceTree = SOURCE_ROOT; };
+		2828A7E811C255130056A4AF /* celt_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt_types.h; path = "../celt-0.8.0/libcelt/celt_types.h"; sourceTree = SOURCE_ROOT; };
+		2828A7E911C255130056A4AF /* celt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt.c; path = "../celt-0.8.0/libcelt/celt.c"; sourceTree = SOURCE_ROOT; };
+		2828A7EA11C255130056A4AF /* celt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt.h; path = "../celt-0.8.0/libcelt/celt.h"; sourceTree = SOURCE_ROOT; };
+		2828A7EB11C255130056A4AF /* cwrs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cwrs.c; path = "../celt-0.8.0/libcelt/cwrs.c"; sourceTree = SOURCE_ROOT; };
+		2828A7EC11C255130056A4AF /* cwrs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cwrs.h; path = "../celt-0.8.0/libcelt/cwrs.h"; sourceTree = SOURCE_ROOT; };
+		2828A7ED11C255130056A4AF /* dump_modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dump_modes.c; path = "../celt-0.8.0/libcelt/dump_modes.c"; sourceTree = SOURCE_ROOT; };
+		2828A7EE11C255130056A4AF /* ecintrin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ecintrin.h; path = "../celt-0.8.0/libcelt/ecintrin.h"; sourceTree = SOURCE_ROOT; };
+		2828A7EF11C255130056A4AF /* entcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entcode.c; path = "../celt-0.8.0/libcelt/entcode.c"; sourceTree = SOURCE_ROOT; };
+		2828A7F011C255130056A4AF /* entcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entcode.h; path = "../celt-0.8.0/libcelt/entcode.h"; sourceTree = SOURCE_ROOT; };
+		2828A7F111C255130056A4AF /* entdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entdec.c; path = "../celt-0.8.0/libcelt/entdec.c"; sourceTree = SOURCE_ROOT; };
+		2828A7F211C255130056A4AF /* entdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entdec.h; path = "../celt-0.8.0/libcelt/entdec.h"; sourceTree = SOURCE_ROOT; };
+		2828A7F311C255130056A4AF /* entenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entenc.c; path = "../celt-0.8.0/libcelt/entenc.c"; sourceTree = SOURCE_ROOT; };
+		2828A7F411C255130056A4AF /* entenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entenc.h; path = "../celt-0.8.0/libcelt/entenc.h"; sourceTree = SOURCE_ROOT; };
+		2828A7F711C255130056A4AF /* fixed_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_debug.h; path = "../celt-0.8.0/libcelt/fixed_debug.h"; sourceTree = SOURCE_ROOT; };
+		2828A7F811C255130056A4AF /* fixed_generic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_generic.h; path = "../celt-0.8.0/libcelt/fixed_generic.h"; sourceTree = SOURCE_ROOT; };
+		2828A7F911C255130056A4AF /* float_cast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = float_cast.h; path = "../celt-0.8.0/libcelt/float_cast.h"; sourceTree = SOURCE_ROOT; };
+		2828A7FA11C255130056A4AF /* header.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = header.c; path = "../celt-0.8.0/libcelt/header.c"; sourceTree = SOURCE_ROOT; };
+		2828A7FB11C255130056A4AF /* kfft_double.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kfft_double.h; path = "../celt-0.8.0/libcelt/kfft_double.h"; sourceTree = SOURCE_ROOT; };
+		2828A7FC11C255130056A4AF /* kfft_single.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kfft_single.c; path = "../celt-0.8.0/libcelt/kfft_single.c"; sourceTree = SOURCE_ROOT; };
+		2828A7FD11C255130056A4AF /* kfft_single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kfft_single.h; path = "../celt-0.8.0/libcelt/kfft_single.h"; sourceTree = SOURCE_ROOT; };
+		2828A7FE11C255130056A4AF /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = "../celt-0.8.0/libcelt/kiss_fft.c"; sourceTree = SOURCE_ROOT; };
+		2828A7FF11C255130056A4AF /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = "../celt-0.8.0/libcelt/kiss_fft.h"; sourceTree = SOURCE_ROOT; };
+		2828A80011C255130056A4AF /* kiss_fftr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fftr.c; path = "../celt-0.8.0/libcelt/kiss_fftr.c"; sourceTree = SOURCE_ROOT; };
+		2828A80111C255130056A4AF /* kiss_fftr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fftr.h; path = "../celt-0.8.0/libcelt/kiss_fftr.h"; sourceTree = SOURCE_ROOT; };
+		2828A80211C255130056A4AF /* laplace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = laplace.c; path = "../celt-0.8.0/libcelt/laplace.c"; sourceTree = SOURCE_ROOT; };
+		2828A80311C255130056A4AF /* laplace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = laplace.h; path = "../celt-0.8.0/libcelt/laplace.h"; sourceTree = SOURCE_ROOT; };
+		2828A80611C255130056A4AF /* mathops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathops.h; path = "../celt-0.8.0/libcelt/mathops.h"; sourceTree = SOURCE_ROOT; };
+		2828A80711C255130056A4AF /* mdct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mdct.c; path = "../celt-0.8.0/libcelt/mdct.c"; sourceTree = SOURCE_ROOT; };
+		2828A80811C255130056A4AF /* mdct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mdct.h; path = "../celt-0.8.0/libcelt/mdct.h"; sourceTree = SOURCE_ROOT; };
+		2828A80911C255130056A4AF /* mfrngcod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mfrngcod.h; path = "../celt-0.8.0/libcelt/mfrngcod.h"; sourceTree = SOURCE_ROOT; };
+		2828A80A11C255130056A4AF /* mfrngdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mfrngdec.c; path = "../celt-0.8.0/libcelt/mfrngdec.c"; sourceTree = SOURCE_ROOT; };
+		2828A80B11C255130056A4AF /* mfrngenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mfrngenc.c; path = "../celt-0.8.0/libcelt/mfrngenc.c"; sourceTree = SOURCE_ROOT; };
+		2828A80C11C255130056A4AF /* modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = modes.c; path = "../celt-0.8.0/libcelt/modes.c"; sourceTree = SOURCE_ROOT; };
+		2828A80D11C255130056A4AF /* modes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = modes.h; path = "../celt-0.8.0/libcelt/modes.h"; sourceTree = SOURCE_ROOT; };
+		2828A80E11C255130056A4AF /* os_support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = os_support.h; path = "../celt-0.8.0/libcelt/os_support.h"; sourceTree = SOURCE_ROOT; };
+		2828A80F11C255130056A4AF /* pitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pitch.c; path = "../celt-0.8.0/libcelt/pitch.c"; sourceTree = SOURCE_ROOT; };
+		2828A81011C255130056A4AF /* pitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pitch.h; path = "../celt-0.8.0/libcelt/pitch.h"; sourceTree = SOURCE_ROOT; };
+		2828A81111C255130056A4AF /* plc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = plc.c; path = "../celt-0.8.0/libcelt/plc.c"; sourceTree = SOURCE_ROOT; };
+		2828A81211C255130056A4AF /* psy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = psy.c; path = "../celt-0.8.0/libcelt/psy.c"; sourceTree = SOURCE_ROOT; };
+		2828A81311C255130056A4AF /* psy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = psy.h; path = "../celt-0.8.0/libcelt/psy.h"; sourceTree = SOURCE_ROOT; };
+		2828A81411C255130056A4AF /* quant_bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quant_bands.c; path = "../celt-0.8.0/libcelt/quant_bands.c"; sourceTree = SOURCE_ROOT; };
+		2828A81511C255130056A4AF /* quant_bands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quant_bands.h; path = "../celt-0.8.0/libcelt/quant_bands.h"; sourceTree = SOURCE_ROOT; };
+		2828A81611C255130056A4AF /* rangedec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rangedec.c; path = "../celt-0.8.0/libcelt/rangedec.c"; sourceTree = SOURCE_ROOT; };
+		2828A81711C255130056A4AF /* rangeenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rangeenc.c; path = "../celt-0.8.0/libcelt/rangeenc.c"; sourceTree = SOURCE_ROOT; };
+		2828A81811C255130056A4AF /* rate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rate.c; path = "../celt-0.8.0/libcelt/rate.c"; sourceTree = SOURCE_ROOT; };
+		2828A81911C255130056A4AF /* rate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rate.h; path = "../celt-0.8.0/libcelt/rate.h"; sourceTree = SOURCE_ROOT; };
+		2828A81A11C255130056A4AF /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stack_alloc.h; path = "../celt-0.8.0/libcelt/stack_alloc.h"; sourceTree = SOURCE_ROOT; };
+		2828A81B11C255130056A4AF /* testcelt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = testcelt.c; path = "../celt-0.8.0/libcelt/testcelt.c"; sourceTree = SOURCE_ROOT; };
+		2828A81C11C255130056A4AF /* vq.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vq.c; path = "../celt-0.8.0/libcelt/vq.c"; sourceTree = SOURCE_ROOT; };
+		2828A81D11C255130056A4AF /* vq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vq.h; path = "../celt-0.8.0/libcelt/vq.h"; sourceTree = SOURCE_ROOT; };
+		2828A8A611C255DF0056A4AF /* fixed_c5x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_c5x.h; path = "../celt-0.8.0/libcelt/fixed_c5x.h"; sourceTree = SOURCE_ROOT; };
+		2828A8A711C255DF0056A4AF /* fixed_c6x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_c6x.h; path = "../celt-0.8.0/libcelt/fixed_c6x.h"; sourceTree = SOURCE_ROOT; };
+		2828A8AA11C255E70056A4AF /* c64_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = c64_fft.c; path = "../celt-0.8.0/libcelt/c64_fft.c"; sourceTree = SOURCE_ROOT; };
+		2828A8AB11C255E70056A4AF /* c64_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = c64_fft.h; path = "../celt-0.8.0/libcelt/c64_fft.h"; sourceTree = SOURCE_ROOT; };
+		2842FCBA11BFB90300CE4CB1 /* libCELT-0.8.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libCELT-0.8.0.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2AAC07E0554694100DB518D /* libCELT-0.8.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCELT-0.8.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2842FCB811BFB90300CE4CB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2AAC07C0554694100DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC07E0554694100DB518D /* libCELT-0.8.0.a */,
+				2842FCBA11BFB90300CE4CB1 /* libCELT-0.8.0.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* CELT */ = {
+			isa = PBXGroup;
+			children = (
+				287265EB10F0FFA200DD4D54 /* Source */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = CELT;
+			sourceTree = "<group>";
+		};
+		287265EB10F0FFA200DD4D54 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				2828A7E111C255130056A4AF /* _kiss_fft_guts.h */,
+				2828A7E211C255130056A4AF /* arch.h */,
+				2828A7E311C255130056A4AF /* bands.c */,
+				2828A7E411C255130056A4AF /* bands.h */,
+				2828A7E711C255130056A4AF /* celt_header.h */,
+				2828A7E811C255130056A4AF /* celt_types.h */,
+				2828A7E911C255130056A4AF /* celt.c */,
+				2828A7EA11C255130056A4AF /* celt.h */,
+				2828A7EB11C255130056A4AF /* cwrs.c */,
+				2828A7EC11C255130056A4AF /* cwrs.h */,
+				2828A7ED11C255130056A4AF /* dump_modes.c */,
+				2828A7EE11C255130056A4AF /* ecintrin.h */,
+				2828A7EF11C255130056A4AF /* entcode.c */,
+				2828A7F011C255130056A4AF /* entcode.h */,
+				2828A7F111C255130056A4AF /* entdec.c */,
+				2828A7F211C255130056A4AF /* entdec.h */,
+				2828A7F311C255130056A4AF /* entenc.c */,
+				2828A7F411C255130056A4AF /* entenc.h */,
+				2828A7F711C255130056A4AF /* fixed_debug.h */,
+				2828A7F811C255130056A4AF /* fixed_generic.h */,
+				2828A7F911C255130056A4AF /* float_cast.h */,
+				2828A7FA11C255130056A4AF /* header.c */,
+				2828A7FB11C255130056A4AF /* kfft_double.h */,
+				2828A7FC11C255130056A4AF /* kfft_single.c */,
+				2828A7FD11C255130056A4AF /* kfft_single.h */,
+				2828A7FE11C255130056A4AF /* kiss_fft.c */,
+				2828A7FF11C255130056A4AF /* kiss_fft.h */,
+				2828A80011C255130056A4AF /* kiss_fftr.c */,
+				2828A80111C255130056A4AF /* kiss_fftr.h */,
+				2828A80211C255130056A4AF /* laplace.c */,
+				2828A80311C255130056A4AF /* laplace.h */,
+				2828A80611C255130056A4AF /* mathops.h */,
+				2828A80711C255130056A4AF /* mdct.c */,
+				2828A80811C255130056A4AF /* mdct.h */,
+				2828A80911C255130056A4AF /* mfrngcod.h */,
+				2828A80A11C255130056A4AF /* mfrngdec.c */,
+				2828A80B11C255130056A4AF /* mfrngenc.c */,
+				2828A80C11C255130056A4AF /* modes.c */,
+				2828A80D11C255130056A4AF /* modes.h */,
+				2828A80E11C255130056A4AF /* os_support.h */,
+				2828A80F11C255130056A4AF /* pitch.c */,
+				2828A81011C255130056A4AF /* pitch.h */,
+				2828A81111C255130056A4AF /* plc.c */,
+				2828A81211C255130056A4AF /* psy.c */,
+				2828A81311C255130056A4AF /* psy.h */,
+				2828A81411C255130056A4AF /* quant_bands.c */,
+				2828A81511C255130056A4AF /* quant_bands.h */,
+				2828A81611C255130056A4AF /* rangedec.c */,
+				2828A81711C255130056A4AF /* rangeenc.c */,
+				2828A81811C255130056A4AF /* rate.c */,
+				2828A81911C255130056A4AF /* rate.h */,
+				2828A81A11C255130056A4AF /* stack_alloc.h */,
+				2828A81B11C255130056A4AF /* testcelt.c */,
+				2828A81C11C255130056A4AF /* vq.c */,
+				2828A81D11C255130056A4AF /* vq.h */,
+				2828A8A611C255DF0056A4AF /* fixed_c5x.h */,
+				2828A8A711C255DF0056A4AF /* fixed_c6x.h */,
+				2828A8AA11C255E70056A4AF /* c64_fft.c */,
+				2828A8AB11C255E70056A4AF /* c64_fft.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2842FCB611BFB90300CE4CB1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2828A81E11C255130056A4AF /* _kiss_fft_guts.h in Headers */,
+				2828A81F11C255130056A4AF /* arch.h in Headers */,
+				2828A82111C255130056A4AF /* bands.h in Headers */,
+				2828A82411C255130056A4AF /* celt_header.h in Headers */,
+				2828A82511C255130056A4AF /* celt_types.h in Headers */,
+				2828A82711C255130056A4AF /* celt.h in Headers */,
+				2828A82911C255130056A4AF /* cwrs.h in Headers */,
+				2828A82B11C255130056A4AF /* ecintrin.h in Headers */,
+				2828A82D11C255130056A4AF /* entcode.h in Headers */,
+				2828A82F11C255130056A4AF /* entdec.h in Headers */,
+				2828A83111C255130056A4AF /* entenc.h in Headers */,
+				2828A83411C255130056A4AF /* fixed_debug.h in Headers */,
+				2828A83511C255130056A4AF /* fixed_generic.h in Headers */,
+				2828A83611C255130056A4AF /* float_cast.h in Headers */,
+				2828A83811C255130056A4AF /* kfft_double.h in Headers */,
+				2828A83A11C255130056A4AF /* kfft_single.h in Headers */,
+				2828A83C11C255130056A4AF /* kiss_fft.h in Headers */,
+				2828A83E11C255130056A4AF /* kiss_fftr.h in Headers */,
+				2828A84011C255130056A4AF /* laplace.h in Headers */,
+				2828A84111C255130056A4AF /* mathops.h in Headers */,
+				2828A84311C255130056A4AF /* mdct.h in Headers */,
+				2828A84411C255130056A4AF /* mfrngcod.h in Headers */,
+				2828A84811C255130056A4AF /* modes.h in Headers */,
+				2828A84911C255130056A4AF /* os_support.h in Headers */,
+				2828A84B11C255130056A4AF /* pitch.h in Headers */,
+				2828A84E11C255130056A4AF /* psy.h in Headers */,
+				2828A85011C255130056A4AF /* quant_bands.h in Headers */,
+				2828A85411C255130056A4AF /* rate.h in Headers */,
+				2828A85511C255130056A4AF /* stack_alloc.h in Headers */,
+				2828A85811C255130056A4AF /* vq.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2AAC07A0554694100DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2828A85911C255130056A4AF /* _kiss_fft_guts.h in Headers */,
+				2828A85A11C255130056A4AF /* arch.h in Headers */,
+				2828A85C11C255130056A4AF /* bands.h in Headers */,
+				2828A85F11C255130056A4AF /* celt_header.h in Headers */,
+				2828A86011C255130056A4AF /* celt_types.h in Headers */,
+				2828A86211C255130056A4AF /* celt.h in Headers */,
+				2828A86411C255130056A4AF /* cwrs.h in Headers */,
+				2828A86611C255130056A4AF /* ecintrin.h in Headers */,
+				2828A86811C255130056A4AF /* entcode.h in Headers */,
+				2828A86A11C255130056A4AF /* entdec.h in Headers */,
+				2828A86C11C255130056A4AF /* entenc.h in Headers */,
+				2828A86F11C255130056A4AF /* fixed_debug.h in Headers */,
+				2828A87011C255130056A4AF /* fixed_generic.h in Headers */,
+				2828A87111C255130056A4AF /* float_cast.h in Headers */,
+				2828A87311C255130056A4AF /* kfft_double.h in Headers */,
+				2828A87511C255130056A4AF /* kfft_single.h in Headers */,
+				2828A87711C255130056A4AF /* kiss_fft.h in Headers */,
+				2828A87911C255130056A4AF /* kiss_fftr.h in Headers */,
+				2828A87B11C255130056A4AF /* laplace.h in Headers */,
+				2828A87C11C255130056A4AF /* mathops.h in Headers */,
+				2828A87E11C255130056A4AF /* mdct.h in Headers */,
+				2828A87F11C255130056A4AF /* mfrngcod.h in Headers */,
+				2828A88311C255130056A4AF /* modes.h in Headers */,
+				2828A88411C255130056A4AF /* os_support.h in Headers */,
+				2828A88611C255130056A4AF /* pitch.h in Headers */,
+				2828A88911C255130056A4AF /* psy.h in Headers */,
+				2828A88B11C255130056A4AF /* quant_bands.h in Headers */,
+				2828A88F11C255130056A4AF /* rate.h in Headers */,
+				2828A89011C255130056A4AF /* stack_alloc.h in Headers */,
+				2828A89311C255130056A4AF /* vq.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2842FCB911BFB90300CE4CB1 /* CELT 0.8.0 (Mac OS X) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2842FD0311BFB97400CE4CB1 /* Build configuration list for PBXNativeTarget "CELT 0.8.0 (Mac OS X)" */;
+			buildPhases = (
+				2842FCB611BFB90300CE4CB1 /* Headers */,
+				2842FCB711BFB90300CE4CB1 /* Sources */,
+				2842FCB811BFB90300CE4CB1 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CELT 0.8.0 (Mac OS X)";
+			productName = "CELT (Mac OS X)";
+			productReference = 2842FCBA11BFB90300CE4CB1 /* libCELT-0.8.0.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		D2AAC07D0554694100DB518D /* CELT 0.8.0 (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "CELT 0.8.0 (iOS)" */;
+			buildPhases = (
+				D2AAC07A0554694100DB518D /* Headers */,
+				D2AAC07B0554694100DB518D /* Sources */,
+				D2AAC07C0554694100DB518D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CELT 0.8.0 (iOS)";
+			productName = CELT;
+			productReference = D2AAC07E0554694100DB518D /* libCELT-0.8.0.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT-0.8.0" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* CELT */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC07D0554694100DB518D /* CELT 0.8.0 (iOS) */,
+				2842FCB911BFB90300CE4CB1 /* CELT 0.8.0 (Mac OS X) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2842FCB711BFB90300CE4CB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2828A82011C255130056A4AF /* bands.c in Sources */,
+				2828A82611C255130056A4AF /* celt.c in Sources */,
+				2828A82811C255130056A4AF /* cwrs.c in Sources */,
+				2828A82C11C255130056A4AF /* entcode.c in Sources */,
+				2828A82E11C255130056A4AF /* entdec.c in Sources */,
+				2828A83011C255130056A4AF /* entenc.c in Sources */,
+				2828A83711C255130056A4AF /* header.c in Sources */,
+				2828A83911C255130056A4AF /* kfft_single.c in Sources */,
+				2828A83B11C255130056A4AF /* kiss_fft.c in Sources */,
+				2828A83D11C255130056A4AF /* kiss_fftr.c in Sources */,
+				2828A83F11C255130056A4AF /* laplace.c in Sources */,
+				2828A84211C255130056A4AF /* mdct.c in Sources */,
+				2828A84711C255130056A4AF /* modes.c in Sources */,
+				2828A84A11C255130056A4AF /* pitch.c in Sources */,
+				2828A84D11C255130056A4AF /* psy.c in Sources */,
+				2828A84F11C255130056A4AF /* quant_bands.c in Sources */,
+				2828A85111C255130056A4AF /* rangedec.c in Sources */,
+				2828A85211C255130056A4AF /* rangeenc.c in Sources */,
+				2828A85311C255130056A4AF /* rate.c in Sources */,
+				2828A85711C255130056A4AF /* vq.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2AAC07B0554694100DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2828A85B11C255130056A4AF /* bands.c in Sources */,
+				2828A86111C255130056A4AF /* celt.c in Sources */,
+				2828A86311C255130056A4AF /* cwrs.c in Sources */,
+				2828A86711C255130056A4AF /* entcode.c in Sources */,
+				2828A86911C255130056A4AF /* entdec.c in Sources */,
+				2828A86B11C255130056A4AF /* entenc.c in Sources */,
+				2828A87211C255130056A4AF /* header.c in Sources */,
+				2828A87411C255130056A4AF /* kfft_single.c in Sources */,
+				2828A87611C255130056A4AF /* kiss_fft.c in Sources */,
+				2828A87811C255130056A4AF /* kiss_fftr.c in Sources */,
+				2828A87A11C255130056A4AF /* laplace.c in Sources */,
+				2828A87D11C255130056A4AF /* mdct.c in Sources */,
+				2828A88211C255130056A4AF /* modes.c in Sources */,
+				2828A88511C255130056A4AF /* pitch.c in Sources */,
+				2828A88811C255130056A4AF /* psy.c in Sources */,
+				2828A88A11C255130056A4AF /* quant_bands.c in Sources */,
+				2828A88C11C255130056A4AF /* rangedec.c in Sources */,
+				2828A88D11C255130056A4AF /* rangeenc.c in Sources */,
+				2828A88E11C255130056A4AF /* rate.c in Sources */,
+				2828A89211C255130056A4AF /* vq.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB921F08733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/CELT.dst;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_FAST_MATH = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_UNROLL_LOOPS = YES;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "-fsingle-precision-constant";
+				"OTHER_CFLAGS[arch=armv7]" = (
+					"-mfpu=neon",
+					"-mfloat-abi=softfp",
+					"-mcpu=cortex-a8",
+				);
+				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
+				PRODUCT_NAME = "CELT-0.8.0";
+				SDKROOT = iphoneos3.2;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.8.0/libcelt//**";
+			};
+			name = Debug;
+		};
+		1DEB922008733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				DSTROOT = /tmp/CELT.dst;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_FAST_MATH = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_UNROLL_LOOPS = YES;
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "-fsingle-precision-constant";
+				"OTHER_CFLAGS[arch=armv7]" = (
+					"-mfpu=neon",
+					"-mfloat-abi=softfp",
+					"-mcpu=cortex-a8",
+				);
+				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
+				PRODUCT_NAME = "CELT-0.8.0";
+				SDKROOT = iphoneos3.2;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.8.0/libcelt//**";
+			};
+			name = Release;
+		};
+		1DEB922308733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				SDKROOT = macosx10.6;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt/libcelt//**";
+			};
+			name = Debug;
+		};
+		1DEB922408733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				SDKROOT = macosx10.6;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt/libcelt//**";
+			};
+			name = Release;
+		};
+		2842FCBB11BFB90300CE4CB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "libCELT-0.8.0";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.8.0/libcelt//**";
+			};
+			name = Debug;
+		};
+		2842FCBC11BFB90300CE4CB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "libCELT-0.8.0";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.8.0/libcelt//**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "CELT 0.8.0 (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB921F08733DC00010E9CD /* Debug */,
+				1DEB922008733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT-0.8.0" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB922308733DC00010E9CD /* Debug */,
+				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2842FD0311BFB97400CE4CB1 /* Build configuration list for PBXNativeTarget "CELT 0.8.0 (Mac OS X)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2842FCBB11BFB90300CE4CB1 /* Debug */,
+				2842FCBC11BFB90300CE4CB1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
