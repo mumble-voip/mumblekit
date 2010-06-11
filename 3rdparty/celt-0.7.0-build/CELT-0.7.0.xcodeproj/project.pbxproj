@@ -114,67 +114,67 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2842FCBA11BFB90300CE4CB1 /* libCELT.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libCELT.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		2872660A10F0FFD300DD4D54 /* bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bands.c; path = ../celt/libcelt/bands.c; sourceTree = SOURCE_ROOT; };
-		2872660B10F0FFD300DD4D54 /* bands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bands.h; path = ../celt/libcelt/bands.h; sourceTree = SOURCE_ROOT; };
-		2872660E10F0FFD300DD4D54 /* celt_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt_header.h; path = ../celt/libcelt/celt_header.h; sourceTree = SOURCE_ROOT; };
-		2872660F10F0FFD300DD4D54 /* celt_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt_types.h; path = ../celt/libcelt/celt_types.h; sourceTree = SOURCE_ROOT; };
-		2872661010F0FFD300DD4D54 /* celt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt.c; path = ../celt/libcelt/celt.c; sourceTree = SOURCE_ROOT; };
-		2872661110F0FFD300DD4D54 /* celt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt.h; path = ../celt/libcelt/celt.h; sourceTree = SOURCE_ROOT; };
-		2872661210F0FFD300DD4D54 /* cwrs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cwrs.c; path = ../celt/libcelt/cwrs.c; sourceTree = SOURCE_ROOT; };
-		2872661310F0FFD300DD4D54 /* cwrs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cwrs.h; path = ../celt/libcelt/cwrs.h; sourceTree = SOURCE_ROOT; };
-		2872661410F0FFD300DD4D54 /* dump_modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dump_modes.c; path = ../celt/libcelt/dump_modes.c; sourceTree = SOURCE_ROOT; };
-		2872661510F0FFD300DD4D54 /* ecintrin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ecintrin.h; path = ../celt/libcelt/ecintrin.h; sourceTree = SOURCE_ROOT; };
-		2872661610F0FFD300DD4D54 /* entcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entcode.c; path = ../celt/libcelt/entcode.c; sourceTree = SOURCE_ROOT; };
-		2872661710F0FFD300DD4D54 /* entcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entcode.h; path = ../celt/libcelt/entcode.h; sourceTree = SOURCE_ROOT; };
-		2872661810F0FFD300DD4D54 /* entdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entdec.c; path = ../celt/libcelt/entdec.c; sourceTree = SOURCE_ROOT; };
-		2872661910F0FFD300DD4D54 /* entdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entdec.h; path = ../celt/libcelt/entdec.h; sourceTree = SOURCE_ROOT; };
-		2872661A10F0FFD300DD4D54 /* entenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entenc.c; path = ../celt/libcelt/entenc.c; sourceTree = SOURCE_ROOT; };
-		2872661B10F0FFD300DD4D54 /* entenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entenc.h; path = ../celt/libcelt/entenc.h; sourceTree = SOURCE_ROOT; };
-		2872661E10F0FFD300DD4D54 /* fixed_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_debug.h; path = ../celt/libcelt/fixed_debug.h; sourceTree = SOURCE_ROOT; };
-		2872661F10F0FFD300DD4D54 /* fixed_generic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_generic.h; path = ../celt/libcelt/fixed_generic.h; sourceTree = SOURCE_ROOT; };
-		2872662010F0FFD300DD4D54 /* float_cast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = float_cast.h; path = ../celt/libcelt/float_cast.h; sourceTree = SOURCE_ROOT; };
-		2872662110F0FFD300DD4D54 /* header.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = header.c; path = ../celt/libcelt/header.c; sourceTree = SOURCE_ROOT; };
-		2872662210F0FFD300DD4D54 /* kfft_double.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kfft_double.h; path = ../celt/libcelt/kfft_double.h; sourceTree = SOURCE_ROOT; };
-		2872662310F0FFD300DD4D54 /* kfft_single.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kfft_single.c; path = ../celt/libcelt/kfft_single.c; sourceTree = SOURCE_ROOT; };
-		2872662410F0FFD300DD4D54 /* kfft_single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kfft_single.h; path = ../celt/libcelt/kfft_single.h; sourceTree = SOURCE_ROOT; };
-		2872662510F0FFD300DD4D54 /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = ../celt/libcelt/kiss_fft.c; sourceTree = SOURCE_ROOT; };
-		2872662610F0FFD300DD4D54 /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = ../celt/libcelt/kiss_fft.h; sourceTree = SOURCE_ROOT; };
-		2872662710F0FFD300DD4D54 /* kiss_fftr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fftr.c; path = ../celt/libcelt/kiss_fftr.c; sourceTree = SOURCE_ROOT; };
-		2872662810F0FFD300DD4D54 /* kiss_fftr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fftr.h; path = ../celt/libcelt/kiss_fftr.h; sourceTree = SOURCE_ROOT; };
-		2872662910F0FFD300DD4D54 /* laplace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = laplace.c; path = ../celt/libcelt/laplace.c; sourceTree = SOURCE_ROOT; };
-		2872662A10F0FFD300DD4D54 /* laplace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = laplace.h; path = ../celt/libcelt/laplace.h; sourceTree = SOURCE_ROOT; };
-		2872662D10F0FFD300DD4D54 /* mathops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathops.h; path = ../celt/libcelt/mathops.h; sourceTree = SOURCE_ROOT; };
-		2872662E10F0FFD300DD4D54 /* mdct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mdct.c; path = ../celt/libcelt/mdct.c; sourceTree = SOURCE_ROOT; };
-		2872662F10F0FFD300DD4D54 /* mdct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mdct.h; path = ../celt/libcelt/mdct.h; sourceTree = SOURCE_ROOT; };
-		2872663010F0FFD300DD4D54 /* mfrngcod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mfrngcod.h; path = ../celt/libcelt/mfrngcod.h; sourceTree = SOURCE_ROOT; };
-		2872663110F0FFD300DD4D54 /* mfrngdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mfrngdec.c; path = ../celt/libcelt/mfrngdec.c; sourceTree = SOURCE_ROOT; };
-		2872663210F0FFD300DD4D54 /* mfrngenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mfrngenc.c; path = ../celt/libcelt/mfrngenc.c; sourceTree = SOURCE_ROOT; };
-		2872663310F0FFD300DD4D54 /* modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = modes.c; path = ../celt/libcelt/modes.c; sourceTree = SOURCE_ROOT; };
-		2872663410F0FFD300DD4D54 /* modes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = modes.h; path = ../celt/libcelt/modes.h; sourceTree = SOURCE_ROOT; };
-		2872663510F0FFD300DD4D54 /* os_support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = os_support.h; path = ../celt/libcelt/os_support.h; sourceTree = SOURCE_ROOT; };
-		2872663610F0FFD300DD4D54 /* pitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pitch.c; path = ../celt/libcelt/pitch.c; sourceTree = SOURCE_ROOT; };
-		2872663710F0FFD300DD4D54 /* pitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pitch.h; path = ../celt/libcelt/pitch.h; sourceTree = SOURCE_ROOT; };
-		2872663810F0FFD300DD4D54 /* plc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = plc.c; path = ../celt/libcelt/plc.c; sourceTree = SOURCE_ROOT; };
-		2872663910F0FFD300DD4D54 /* psy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = psy.c; path = ../celt/libcelt/psy.c; sourceTree = SOURCE_ROOT; };
-		2872663A10F0FFD300DD4D54 /* psy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = psy.h; path = ../celt/libcelt/psy.h; sourceTree = SOURCE_ROOT; };
-		2872663B10F0FFD300DD4D54 /* quant_bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quant_bands.c; path = ../celt/libcelt/quant_bands.c; sourceTree = SOURCE_ROOT; };
-		2872663C10F0FFD300DD4D54 /* quant_bands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quant_bands.h; path = ../celt/libcelt/quant_bands.h; sourceTree = SOURCE_ROOT; };
-		2872663D10F0FFD300DD4D54 /* rangedec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rangedec.c; path = ../celt/libcelt/rangedec.c; sourceTree = SOURCE_ROOT; };
-		2872663E10F0FFD300DD4D54 /* rangeenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rangeenc.c; path = ../celt/libcelt/rangeenc.c; sourceTree = SOURCE_ROOT; };
-		2872663F10F0FFD300DD4D54 /* rate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rate.c; path = ../celt/libcelt/rate.c; sourceTree = SOURCE_ROOT; };
-		2872664010F0FFD300DD4D54 /* rate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rate.h; path = ../celt/libcelt/rate.h; sourceTree = SOURCE_ROOT; };
-		2872664110F0FFD300DD4D54 /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stack_alloc.h; path = ../celt/libcelt/stack_alloc.h; sourceTree = SOURCE_ROOT; };
-		2872664210F0FFD300DD4D54 /* testcelt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = testcelt.c; path = ../celt/libcelt/testcelt.c; sourceTree = SOURCE_ROOT; };
-		2872664310F0FFD300DD4D54 /* vq.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vq.c; path = ../celt/libcelt/vq.c; sourceTree = SOURCE_ROOT; };
-		2872664410F0FFD300DD4D54 /* vq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vq.h; path = ../celt/libcelt/vq.h; sourceTree = SOURCE_ROOT; };
-		2872668010F0FFF300DD4D54 /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arch.h; path = ../celt/libcelt/arch.h; sourceTree = SOURCE_ROOT; };
-		2872668210F1000900DD4D54 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = ../celt/libcelt/_kiss_fft_guts.h; sourceTree = SOURCE_ROOT; };
-		287266F910F1021E00DD4D54 /* c64_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = c64_fft.c; path = ../celt/libcelt/c64_fft.c; sourceTree = SOURCE_ROOT; };
-		287266FA10F1021E00DD4D54 /* c64_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = c64_fft.h; path = ../celt/libcelt/c64_fft.h; sourceTree = SOURCE_ROOT; };
-		287266FB10F1021E00DD4D54 /* fixed_c5x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_c5x.h; path = ../celt/libcelt/fixed_c5x.h; sourceTree = SOURCE_ROOT; };
-		287266FC10F1021E00DD4D54 /* fixed_c6x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_c6x.h; path = ../celt/libcelt/fixed_c6x.h; sourceTree = SOURCE_ROOT; };
-		D2AAC07E0554694100DB518D /* libCELT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCELT.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2842FCBA11BFB90300CE4CB1 /* libCELT-0.7.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libCELT-0.7.0.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2872660A10F0FFD300DD4D54 /* bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bands.c; path = "../celt-0.7.0/libcelt/bands.c"; sourceTree = SOURCE_ROOT; };
+		2872660B10F0FFD300DD4D54 /* bands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bands.h; path = "../celt-0.7.0/libcelt/bands.h"; sourceTree = SOURCE_ROOT; };
+		2872660E10F0FFD300DD4D54 /* celt_header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt_header.h; path = "../celt-0.7.0/libcelt/celt_header.h"; sourceTree = SOURCE_ROOT; };
+		2872660F10F0FFD300DD4D54 /* celt_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt_types.h; path = "../celt-0.7.0/libcelt/celt_types.h"; sourceTree = SOURCE_ROOT; };
+		2872661010F0FFD300DD4D54 /* celt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt.c; path = "../celt-0.7.0/libcelt/celt.c"; sourceTree = SOURCE_ROOT; };
+		2872661110F0FFD300DD4D54 /* celt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = celt.h; path = "../celt-0.7.0/libcelt/celt.h"; sourceTree = SOURCE_ROOT; };
+		2872661210F0FFD300DD4D54 /* cwrs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cwrs.c; path = "../celt-0.7.0/libcelt/cwrs.c"; sourceTree = SOURCE_ROOT; };
+		2872661310F0FFD300DD4D54 /* cwrs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cwrs.h; path = "../celt-0.7.0/libcelt/cwrs.h"; sourceTree = SOURCE_ROOT; };
+		2872661410F0FFD300DD4D54 /* dump_modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dump_modes.c; path = "../celt-0.7.0/libcelt/dump_modes.c"; sourceTree = SOURCE_ROOT; };
+		2872661510F0FFD300DD4D54 /* ecintrin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ecintrin.h; path = "../celt-0.7.0/libcelt/ecintrin.h"; sourceTree = SOURCE_ROOT; };
+		2872661610F0FFD300DD4D54 /* entcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entcode.c; path = "../celt-0.7.0/libcelt/entcode.c"; sourceTree = SOURCE_ROOT; };
+		2872661710F0FFD300DD4D54 /* entcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entcode.h; path = "../celt-0.7.0/libcelt/entcode.h"; sourceTree = SOURCE_ROOT; };
+		2872661810F0FFD300DD4D54 /* entdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entdec.c; path = "../celt-0.7.0/libcelt/entdec.c"; sourceTree = SOURCE_ROOT; };
+		2872661910F0FFD300DD4D54 /* entdec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entdec.h; path = "../celt-0.7.0/libcelt/entdec.h"; sourceTree = SOURCE_ROOT; };
+		2872661A10F0FFD300DD4D54 /* entenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = entenc.c; path = "../celt-0.7.0/libcelt/entenc.c"; sourceTree = SOURCE_ROOT; };
+		2872661B10F0FFD300DD4D54 /* entenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = entenc.h; path = "../celt-0.7.0/libcelt/entenc.h"; sourceTree = SOURCE_ROOT; };
+		2872661E10F0FFD300DD4D54 /* fixed_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_debug.h; path = "../celt-0.7.0/libcelt/fixed_debug.h"; sourceTree = SOURCE_ROOT; };
+		2872661F10F0FFD300DD4D54 /* fixed_generic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_generic.h; path = "../celt-0.7.0/libcelt/fixed_generic.h"; sourceTree = SOURCE_ROOT; };
+		2872662010F0FFD300DD4D54 /* float_cast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = float_cast.h; path = "../celt-0.7.0/libcelt/float_cast.h"; sourceTree = SOURCE_ROOT; };
+		2872662110F0FFD300DD4D54 /* header.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = header.c; path = "../celt-0.7.0/libcelt/header.c"; sourceTree = SOURCE_ROOT; };
+		2872662210F0FFD300DD4D54 /* kfft_double.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kfft_double.h; path = "../celt-0.7.0/libcelt/kfft_double.h"; sourceTree = SOURCE_ROOT; };
+		2872662310F0FFD300DD4D54 /* kfft_single.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kfft_single.c; path = "../celt-0.7.0/libcelt/kfft_single.c"; sourceTree = SOURCE_ROOT; };
+		2872662410F0FFD300DD4D54 /* kfft_single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kfft_single.h; path = "../celt-0.7.0/libcelt/kfft_single.h"; sourceTree = SOURCE_ROOT; };
+		2872662510F0FFD300DD4D54 /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fft.c; path = "../celt-0.7.0/libcelt/kiss_fft.c"; sourceTree = SOURCE_ROOT; };
+		2872662610F0FFD300DD4D54 /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fft.h; path = "../celt-0.7.0/libcelt/kiss_fft.h"; sourceTree = SOURCE_ROOT; };
+		2872662710F0FFD300DD4D54 /* kiss_fftr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kiss_fftr.c; path = "../celt-0.7.0/libcelt/kiss_fftr.c"; sourceTree = SOURCE_ROOT; };
+		2872662810F0FFD300DD4D54 /* kiss_fftr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kiss_fftr.h; path = "../celt-0.7.0/libcelt/kiss_fftr.h"; sourceTree = SOURCE_ROOT; };
+		2872662910F0FFD300DD4D54 /* laplace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = laplace.c; path = "../celt-0.7.0/libcelt/laplace.c"; sourceTree = SOURCE_ROOT; };
+		2872662A10F0FFD300DD4D54 /* laplace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = laplace.h; path = "../celt-0.7.0/libcelt/laplace.h"; sourceTree = SOURCE_ROOT; };
+		2872662D10F0FFD300DD4D54 /* mathops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathops.h; path = "../celt-0.7.0/libcelt/mathops.h"; sourceTree = SOURCE_ROOT; };
+		2872662E10F0FFD300DD4D54 /* mdct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mdct.c; path = "../celt-0.7.0/libcelt/mdct.c"; sourceTree = SOURCE_ROOT; };
+		2872662F10F0FFD300DD4D54 /* mdct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mdct.h; path = "../celt-0.7.0/libcelt/mdct.h"; sourceTree = SOURCE_ROOT; };
+		2872663010F0FFD300DD4D54 /* mfrngcod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mfrngcod.h; path = "../celt-0.7.0/libcelt/mfrngcod.h"; sourceTree = SOURCE_ROOT; };
+		2872663110F0FFD300DD4D54 /* mfrngdec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mfrngdec.c; path = "../celt-0.7.0/libcelt/mfrngdec.c"; sourceTree = SOURCE_ROOT; };
+		2872663210F0FFD300DD4D54 /* mfrngenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mfrngenc.c; path = "../celt-0.7.0/libcelt/mfrngenc.c"; sourceTree = SOURCE_ROOT; };
+		2872663310F0FFD300DD4D54 /* modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = modes.c; path = "../celt-0.7.0/libcelt/modes.c"; sourceTree = SOURCE_ROOT; };
+		2872663410F0FFD300DD4D54 /* modes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = modes.h; path = "../celt-0.7.0/libcelt/modes.h"; sourceTree = SOURCE_ROOT; };
+		2872663510F0FFD300DD4D54 /* os_support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = os_support.h; path = "../celt-0.7.0/libcelt/os_support.h"; sourceTree = SOURCE_ROOT; };
+		2872663610F0FFD300DD4D54 /* pitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pitch.c; path = "../celt-0.7.0/libcelt/pitch.c"; sourceTree = SOURCE_ROOT; };
+		2872663710F0FFD300DD4D54 /* pitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pitch.h; path = "../celt-0.7.0/libcelt/pitch.h"; sourceTree = SOURCE_ROOT; };
+		2872663810F0FFD300DD4D54 /* plc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = plc.c; path = "../celt-0.7.0/libcelt/plc.c"; sourceTree = SOURCE_ROOT; };
+		2872663910F0FFD300DD4D54 /* psy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = psy.c; path = "../celt-0.7.0/libcelt/psy.c"; sourceTree = SOURCE_ROOT; };
+		2872663A10F0FFD300DD4D54 /* psy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = psy.h; path = "../celt-0.7.0/libcelt/psy.h"; sourceTree = SOURCE_ROOT; };
+		2872663B10F0FFD300DD4D54 /* quant_bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quant_bands.c; path = "../celt-0.7.0/libcelt/quant_bands.c"; sourceTree = SOURCE_ROOT; };
+		2872663C10F0FFD300DD4D54 /* quant_bands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quant_bands.h; path = "../celt-0.7.0/libcelt/quant_bands.h"; sourceTree = SOURCE_ROOT; };
+		2872663D10F0FFD300DD4D54 /* rangedec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rangedec.c; path = "../celt-0.7.0/libcelt/rangedec.c"; sourceTree = SOURCE_ROOT; };
+		2872663E10F0FFD300DD4D54 /* rangeenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rangeenc.c; path = "../celt-0.7.0/libcelt/rangeenc.c"; sourceTree = SOURCE_ROOT; };
+		2872663F10F0FFD300DD4D54 /* rate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rate.c; path = "../celt-0.7.0/libcelt/rate.c"; sourceTree = SOURCE_ROOT; };
+		2872664010F0FFD300DD4D54 /* rate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rate.h; path = "../celt-0.7.0/libcelt/rate.h"; sourceTree = SOURCE_ROOT; };
+		2872664110F0FFD300DD4D54 /* stack_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stack_alloc.h; path = "../celt-0.7.0/libcelt/stack_alloc.h"; sourceTree = SOURCE_ROOT; };
+		2872664210F0FFD300DD4D54 /* testcelt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = testcelt.c; path = "../celt-0.7.0/libcelt/testcelt.c"; sourceTree = SOURCE_ROOT; };
+		2872664310F0FFD300DD4D54 /* vq.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vq.c; path = "../celt-0.7.0/libcelt/vq.c"; sourceTree = SOURCE_ROOT; };
+		2872664410F0FFD300DD4D54 /* vq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vq.h; path = "../celt-0.7.0/libcelt/vq.h"; sourceTree = SOURCE_ROOT; };
+		2872668010F0FFF300DD4D54 /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arch.h; path = "../celt-0.7.0/libcelt/arch.h"; sourceTree = SOURCE_ROOT; };
+		2872668210F1000900DD4D54 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = "../celt-0.7.0/libcelt/_kiss_fft_guts.h"; sourceTree = SOURCE_ROOT; };
+		287266F910F1021E00DD4D54 /* c64_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = c64_fft.c; path = "../celt-0.7.0/libcelt/c64_fft.c"; sourceTree = SOURCE_ROOT; };
+		287266FA10F1021E00DD4D54 /* c64_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = c64_fft.h; path = "../celt-0.7.0/libcelt/c64_fft.h"; sourceTree = SOURCE_ROOT; };
+		287266FB10F1021E00DD4D54 /* fixed_c5x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_c5x.h; path = "../celt-0.7.0/libcelt/fixed_c5x.h"; sourceTree = SOURCE_ROOT; };
+		287266FC10F1021E00DD4D54 /* fixed_c6x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixed_c6x.h; path = "../celt-0.7.0/libcelt/fixed_c6x.h"; sourceTree = SOURCE_ROOT; };
+		D2AAC07E0554694100DB518D /* libCELT-0.7.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCELT-0.7.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,8 +198,8 @@
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2AAC07E0554694100DB518D /* libCELT.a */,
-				2842FCBA11BFB90300CE4CB1 /* libCELT.dylib */,
+				D2AAC07E0554694100DB518D /* libCELT-0.7.0.a */,
+				2842FCBA11BFB90300CE4CB1 /* libCELT-0.7.0.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -365,9 +365,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		2842FCB911BFB90300CE4CB1 /* CELT (Mac OS X) */ = {
+		2842FCB911BFB90300CE4CB1 /* CELT 0.7.0 (Mac OS X) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2842FD0311BFB97400CE4CB1 /* Build configuration list for PBXNativeTarget "CELT (Mac OS X)" */;
+			buildConfigurationList = 2842FD0311BFB97400CE4CB1 /* Build configuration list for PBXNativeTarget "CELT 0.7.0 (Mac OS X)" */;
 			buildPhases = (
 				2842FCB611BFB90300CE4CB1 /* Headers */,
 				2842FCB711BFB90300CE4CB1 /* Sources */,
@@ -377,14 +377,14 @@
 			);
 			dependencies = (
 			);
-			name = "CELT (Mac OS X)";
+			name = "CELT 0.7.0 (Mac OS X)";
 			productName = "CELT (Mac OS X)";
-			productReference = 2842FCBA11BFB90300CE4CB1 /* libCELT.dylib */;
+			productReference = 2842FCBA11BFB90300CE4CB1 /* libCELT-0.7.0.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		D2AAC07D0554694100DB518D /* CELT (iOS) */ = {
+		D2AAC07D0554694100DB518D /* CELT 0.7.0 (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "CELT (iOS)" */;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "CELT 0.7.0 (iOS)" */;
 			buildPhases = (
 				D2AAC07A0554694100DB518D /* Headers */,
 				D2AAC07B0554694100DB518D /* Sources */,
@@ -394,9 +394,9 @@
 			);
 			dependencies = (
 			);
-			name = "CELT (iOS)";
+			name = "CELT 0.7.0 (iOS)";
 			productName = CELT;
-			productReference = D2AAC07E0554694100DB518D /* libCELT.a */;
+			productReference = D2AAC07E0554694100DB518D /* libCELT-0.7.0.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -404,7 +404,7 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT" */;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT-0.7.0" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* CELT */;
@@ -412,8 +412,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2AAC07D0554694100DB518D /* CELT (iOS) */,
-				2842FCB911BFB90300CE4CB1 /* CELT (Mac OS X) */,
+				D2AAC07D0554694100DB518D /* CELT 0.7.0 (iOS) */,
+				2842FCB911BFB90300CE4CB1 /* CELT 0.7.0 (Mac OS X) */,
 			);
 		};
 /* End PBXProject section */
@@ -500,8 +500,9 @@
 					"-mcpu=cortex-a8",
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
-				PRODUCT_NAME = CELT;
+				PRODUCT_NAME = "CELT-0.7.0";
 				SDKROOT = iphoneos3.2;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.7.0/libcelt//**";
 			};
 			name = Debug;
 		};
@@ -528,8 +529,9 @@
 					"-mcpu=cortex-a8",
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
-				PRODUCT_NAME = CELT;
+				PRODUCT_NAME = "CELT-0.7.0";
 				SDKROOT = iphoneos3.2;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.7.0/libcelt//**";
 			};
 			name = Release;
 		};
@@ -591,7 +593,8 @@
 					AppKit,
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = libCELT;
+				PRODUCT_NAME = "libCELT-0.7.0";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.7.0/libcelt//**";
 			};
 			name = Debug;
 		};
@@ -615,7 +618,8 @@
 					AppKit,
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = libCELT;
+				PRODUCT_NAME = "libCELT-0.7.0";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.7.0/libcelt//**";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -623,7 +627,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "CELT (iOS)" */ = {
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "CELT 0.7.0 (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB921F08733DC00010E9CD /* Debug */,
@@ -632,7 +636,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT" */ = {
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT-0.7.0" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
@@ -641,7 +645,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2842FD0311BFB97400CE4CB1 /* Build configuration list for PBXNativeTarget "CELT (Mac OS X)" */ = {
+		2842FD0311BFB97400CE4CB1 /* Build configuration list for PBXNativeTarget "CELT 0.7.0 (Mac OS X)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2842FCBB11BFB90300CE4CB1 /* Debug */,
