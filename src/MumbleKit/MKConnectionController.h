@@ -28,63 +28,16 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKAudio.h>
 #import <MumbleKit/MKConnection.h>
-#import <AudioUnit/AudioUnit.h>
-#import <AudioUnit/AUComponent.h>
-#import <AudioToolbox/AudioToolbox.h>
 
-struct MKAudioInputPrivate;
-
-@interface MKAudioInput : NSObject {
-	@private
-		struct MKAudioInputPrivate *_private;
-
-	@public
-		AudioUnit audioUnit;
-		AudioBufferList buflist;
-		int micSampleSize;
-		int numMicChannels;
-
-	@protected
-		int frameSize;
-		int micFrequency;
-		int sampleRate;
-
-		int micFilled;
-		int micLength;
-		BOOL previousVoice;
-		int audioQuality;
-		int numAudioFrames;
-		int bitrate;
-		int frameCounter;
-
-		BOOL doResetPreprocessor;
-
-		short *psMic;
-		short *psOut;
-
-		MKCodecFormat cfType;
-
-		MKUDPMessageType udpMessageType;
-		NSMutableArray *frameList;
-		BOOL _doTransmit;
-		BOOL _forceTransmit;
+@interface MKConnectionController : NSObject {
+	NSMutableArray *_openConnections;
 }
 
-- (id) init;
-- (void) dealloc;
++ (MKConnectionController *) sharedController;
 
-- (BOOL) setupDevice;
-- (void) initializeMixer;
-
-- (void) resetPreprocessor;
-- (void) addMicrophoneDataWithBuffer:(short *)input amount:(NSUInteger)nsamp;
-- (void) encodeAudioFrame;
-- (void) flushCheck:(NSData *)outputBuffer terminator:(BOOL)terminator;
-
-- (void) setForceTransmit:(BOOL)flag;
-- (BOOL) forceTransmit;
-
+- (void) addConnection:(MKConnection *)conn;
+- (void) removeConnection:(MKConnection *)conn;
+- (NSArray *) allConnections;
 
 @end

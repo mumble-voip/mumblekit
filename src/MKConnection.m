@@ -30,6 +30,7 @@
 
 #import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKConnection.h>
+#import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKPacketDataStream.h>
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutput.h>
@@ -81,10 +82,13 @@
 	_socket = -1;
 	_ignoreSSLVerification = NO;
 
+	[[MKConnectionController sharedController] addConnection:self];
+
 	return self;
 }
 
 - (void) dealloc {
+	[[MKConnectionController sharedController] removeConnection:self];
 	[self closeStreams];
 
 	[super dealloc];

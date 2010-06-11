@@ -28,63 +28,50 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKAudio.h>
+#import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKConnection.h>
-#import <AudioUnit/AudioUnit.h>
-#import <AudioUnit/AUComponent.h>
-#import <AudioToolbox/AudioToolbox.h>
 
-struct MKAudioInputPrivate;
+static MKConnectionController *_controllerSingleton = nil;
 
-@interface MKAudioInput : NSObject {
-	@private
-		struct MKAudioInputPrivate *_private;
-
-	@public
-		AudioUnit audioUnit;
-		AudioBufferList buflist;
-		int micSampleSize;
-		int numMicChannels;
-
-	@protected
-		int frameSize;
-		int micFrequency;
-		int sampleRate;
-
-		int micFilled;
-		int micLength;
-		BOOL previousVoice;
-		int audioQuality;
-		int numAudioFrames;
-		int bitrate;
-		int frameCounter;
-
-		BOOL doResetPreprocessor;
-
-		short *psMic;
-		short *psOut;
-
-		MKCodecFormat cfType;
-
-		MKUDPMessageType udpMessageType;
-		NSMutableArray *frameList;
-		BOOL _doTransmit;
-		BOOL _forceTransmit;
-}
-
+@interface MKConnectionController (Private)
 - (id) init;
 - (void) dealloc;
+@end
 
-- (BOOL) setupDevice;
-- (void) initializeMixer;
+@implementation MKConnectionController
 
-- (void) resetPreprocessor;
-- (void) addMicrophoneDataWithBuffer:(short *)input amount:(NSUInteger)nsamp;
-- (void) encodeAudioFrame;
-- (void) flushCheck:(NSData *)outputBuffer terminator:(BOOL)terminator;
+- (id) init {
+	self = [super init];
+	if (self == nil)
+		return nil;
 
-- (void) setForceTransmit:(BOOL)flag;
-- (BOOL) forceTransmit;
+	_openConnections = [[NSMutableArray alloc] init];
 
+	return self;
+}
+
+- (void) dealloc {
+	[_openConnections release];
+
+	[super dealloc];
+}
+
++ (MKConnectionController *) sharedController {
+	if (!_controllerSingleton)
+		_controllerSingleton = [[MKConnectionController alloc] init];
+	return _controllerSingleton;
+}
+								
+- (void) addConnection:(MKConnection *)conn {
+	[_openConnections addObject:[NSValue valueWithNonretainedObject:conn]];
+}
+
+- (void) removeConnection:(MKConnection *)conn {
+	[_openConnections removeObject:[NSValue valueWithNonretainedObject:conn]];
+}
+
+- (NSArray *) allConnections {
+	return _openConnections;
+}
 
 @end

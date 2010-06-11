@@ -31,6 +31,7 @@
 
 #import <MumbleKit/MKAudioInput.h>
 #import <MumbleKit/MKPacketDataStream.h>
+#import <MumbleKit/MKConnectionController.h>
 
 #include <speex/speex.h>
 #include <speex/speex_preprocess.h>
@@ -471,15 +472,30 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	NSUInteger len = [pds size] + 1;
 	[pds release];
 
-#if 0
-	Connection *conn = [[[UIApplication sharedApplication] delegate] connection];
+	_doTransmit = _forceTransmit;
 
-	if ([conn connected]) {
-		NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
+	if (!_doTransmit)
+		return;
+
+	MKConnectionController *conns = [MKConnectionController sharedController];
+	NSArray *connections = [conns allConnections];
+	NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
+
+	for (NSValue *val in connections) {
+		MKConnection *conn = [val pointerValue];
+		NSLog(@"sending to conn = %p", conn);
 		[conn sendMessageWithType:UDPTunnelMessage data:msgData];
-		[msgData release];
 	}
-#endif
+
+	[msgData release];
+}
+
+- (void) setForceTransmit:(BOOL)flag {
+	_forceTransmit = flag;
+}
+
+- (BOOL) forceTransmit {
+	return _forceTransmit;
 }
 
 @end

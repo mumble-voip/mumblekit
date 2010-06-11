@@ -12,6 +12,8 @@
 		2809ABDF11C00A76006BCD26 /* libProtocolBuffers.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */; };
 		281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 281A23E31179F5B600B7A471 /* MulticastDelegate.h */; };
 		281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281A23E41179F5B600B7A471 /* MulticastDelegate.m */; };
+		2866FBF811C2F35600CE375F /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2866FBF611C2F35600CE375F /* MKConnectionController.h */; };
+		2866FBF911C2F35600CE375F /* MKConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866FBF711C2F35600CE375F /* MKConnectionController.m */; };
 		287509CF11431A68002885AF /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 287509CD11431A68002885AF /* MKUtils.h */; };
 		28750A1D11431BD4002885AF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A1C11431BD4002885AF /* AudioToolbox.framework */; };
 		28750A2111431BD7002885AF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A2011431BD7002885AF /* CFNetwork.framework */; };
@@ -207,28 +209,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libCELT-0.7.0.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = "CELT 0.7.0 (iOS)";
 		};
 		289C798711C2E0120061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1 /* libCELT-0.7.0.dylib */;
+			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1;
 			remoteInfo = "CELT 0.7.0 (Mac OS X)";
 		};
 		289C799311C2E0230061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1 /* CELT 0.7.0 (Mac OS X) */;
+			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1;
 			remoteInfo = "CELT 0.7.0 (Mac OS X)";
 		};
 		289C79A311C2E2E60061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* CELT 0.7.0 (iOS) */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = "CELT 0.7.0 (iOS)";
 		};
 		28D81EE011BFC2F30037D2C6 /* PBXContainerItemProxy */ = {
@@ -278,6 +280,8 @@
 		281F0B5411500BAC00BAA221 /* Speex.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Speex.xcodeproj; path = 3rdparty/speexbuild/Speex.xcodeproj; sourceTree = "<group>"; };
 		281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SpeexDSP.xcodeproj; path = 3rdparty/speexdspbuild/SpeexDSP.xcodeproj; sourceTree = "<group>"; };
 		28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CELT-0.8.0.xcodeproj"; path = "3rdparty/celt-0.8.0-build/CELT-0.8.0.xcodeproj"; sourceTree = "<group>"; };
+		2866FBF611C2F35600CE375F /* MKConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKConnectionController.h; sourceTree = "<group>"; };
+		2866FBF711C2F35600CE375F /* MKConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKConnectionController.m; path = src/MKConnectionController.m; sourceTree = "<group>"; };
 		287509CD11431A68002885AF /* MKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKUtils.h; sourceTree = "<group>"; };
 		28750A1C11431BD4002885AF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		28750A2011431BD7002885AF /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -417,6 +421,7 @@
 				28A4933F11431863000627EB /* MKAudioOutput.m */,
 				28A4934111431863000627EB /* MKAudioOutputSpeech.m */,
 				28A4934311431863000627EB /* MKAudioOutputUser.m */,
+				2866FBF711C2F35600CE375F /* MKConnectionController.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -507,6 +512,7 @@
 				28A4934211431863000627EB /* MKAudioOutputUser.h */,
 				28A4933A11431863000627EB /* MKAudio.h */,
 				287509CD11431A68002885AF /* MKUtils.h */,
+				2866FBF611C2F35600CE375F /* MKConnectionController.h */,
 			);
 			name = Headers;
 			path = src/MumbleKit;
@@ -583,6 +589,7 @@
 				28D81EBF11BFC2480037D2C6 /* MKVersion.h in Headers */,
 				28D81EC011BFC2480037D2C6 /* MulticastDelegate.h in Headers */,
 				28D81EC111BFC2480037D2C6 /* MKServerModelObject.h in Headers */,
+				2866FBF811C2F35600CE375F /* MKConnectionController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -872,6 +879,7 @@
 				28D81EA911BFC2400037D2C6 /* MKVersion.m in Sources */,
 				28D81EAA11BFC2400037D2C6 /* MulticastDelegate.m in Sources */,
 				28D81EAB11BFC2400037D2C6 /* MKServerModelObject.m in Sources */,
+				2866FBF911C2F35600CE375F /* MKConnectionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
