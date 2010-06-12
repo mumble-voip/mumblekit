@@ -105,7 +105,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	 * Adjust bandwidth:
 	 * Depending on the max quality the client has set, determine iAudioQuality and iAudioFrames.
 	 */
-	cfType = Speex;
+	cfType = CELT;
 
 	numAudioFrames = 10;
 	audioQuality = 24000;
@@ -216,11 +216,22 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	AudioComponent comp;
 	AudioComponentDescription desc;
 	AudioStreamBasicDescription fmt;
+	AudioDeviceID devId;
+
+#if TARGET_OS_MAC == 1
+	// Get default device
+	len = sizeof(AudioDeviceID);
+	err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &len, &devId);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to query for default device.");
+		return NO;
+	}
+#endif
 
 	desc.componentType = kAudioUnitType_Output;
 #if TARGET_OS_IPHONE == 1
 	desc.componentSubType = kAudioUnitSubType_RemoteIO;
-#elif TARGEt_OS_MAC == 1
+#elif TARGET_OS_MAC == 1
 	desc.componentSubType = kAudioUnitSubType_HALOutput;
 #endif
 	desc.componentManufacturer = kAudioUnitManufacturer_Apple;
@@ -236,6 +247,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &audioUnit);
 	if (err != noErr) {
 		NSLog(@"AudioInput: Unable to instantiate new AudioUnit.");
+		return NO;
+	}
+
+	err = AudioUnitInitialize(audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
 		return NO;
 	}
 
@@ -255,6 +272,16 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
+#if TARGET_OS_MAC == 1
+	// Set default device
+	len = sizeof(AudioDeviceID);
+	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &devId, len);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to set default device.");
+		return NO;
+	}
+#endif
+
 	AURenderCallbackStruct cb;
 	cb.inputProc = inputCallback;
 	cb.inputProcRefCon = self;
@@ -262,12 +289,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 0, &cb, len);
 	if (err != noErr) {
 		NSLog(@"AudioInput: Unable to setup callback.");
-		return NO;
-	}
-
-	err = AudioUnitInitialize(audioUnit);
-	if (err != noErr) {
-		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
 		return NO;
 	}
 
@@ -302,12 +323,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
-	len = sizeof(AudioStreamBasicDescription);
+/*	len = sizeof(AudioStreamBasicDescription);
 	err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &fmt, len);
 	if (err != noErr) {
 		NSLog(@"AudioInput: Unable to set stream format for output device. (input scope)");
 		return NO;
-	}
+	}*/
 
 	err = AudioOutputUnitStart(audioUnit);
 	if (err != noErr) {

@@ -180,6 +180,8 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 		NSLog(@"Audio: Unable to query for current hardware sample rate.");
 		return nil;
 	}
+#elif TARGET_OS_MAC == 1
+	audioInputAvailable = YES;
 #endif
 
 	NSLog(@"Audio: Current hardware sample rate = %.2fHz.", fval);
