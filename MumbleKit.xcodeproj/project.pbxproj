@@ -660,11 +660,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "MumbleKit (iOS)" */;
 			buildPhases = (
-				288A6C4611501161008FED5E /* Create Framework and Copy Headers */,
 				D2AAC07A0554694100DB518D /* Headers */,
 				D2AAC07B0554694100DB518D /* Sources */,
 				D2AAC07C0554694100DB518D /* Frameworks */,
-				28C22B3D1150218D002CEF70 /* Copy Static Library into Framework */,
 			);
 			buildRules = (
 			);
@@ -830,34 +828,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "ROOT=${CONFIGURATION_BUILD_DIR}/MumbleKit.framework/Versions/A\nFWPATH=${ROOT}/Frameworks/\nEXECUTABLE=${ROOT}/MumbleKit\n\ninstall_name_tool -id libCELT-0.7.0.dylib ${FWPATH}/libCELT-0.7.0.dylib\ninstall_name_tool -id libCELT-0.8.0.dylib ${FWPATH}/libCELT-0.8.0.dylib\ninstall_name_tool -id libProtocolBuffers.dylib ${FWPATH}/libProtocolBuffers.dylib\ninstall_name_tool -id libSpeex.dylib ${FWPATH}/libSpeex.dylib\ninstall_name_tool -id libSpeexDSP.dylib ${FWPATH}/libSpeexDSP.dylib\n\ninstall_name_tool -change /usr/local/lib/libCELT-0.7.0.dylib @loader_path/Frameworks/libCELT-0.7.0.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libCELT-0.8.0.dylib @loader_path/Frameworks/libCELT-0.8.0.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libProtocolBuffers.dylib @loader_path/Frameworks/libProtocolBuffers.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeex.dylib @loader_path/Frameworks/libSpeex.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeexDSP.dylib @loader_path/Frameworks/libSpeexDSP.dylib ${EXECUTABLE}\n\ninstall_name_tool -id MumbleKit ${EXECUTABLE}\n";
-		};
-		288A6C4611501161008FED5E /* Create Framework and Copy Headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Create Framework and Copy Headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n#\n# Create a MumbleKit framework for iPhoneOS\n#\n# This is the Phase 1 script:  Create the framework and copy in the needed headers.\n#\n\nMKFW_PATH=${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/\n\nrm -rf ${MKFW_PATH}\nmkdir -p ${MKFW_PATH}\nmkdir -p ${MKFW_PATH}/Headers/\n\n# Copy MumbleKit headers\ncp -R ${PROJECT_DIR}/src/MumbleKit/ ${MKFW_PATH}/Headers/\n\n# Copy protobuf headers\nmkdir -p ${MKFW_PATH}/Headers/MumbleProtocol/\ncp -R ${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/*.h ${MKFW_PATH}/Headers/MumbleProtocol/\ncp -R ${PROJECT_DIR}/proto/*.h ${MKFW_PATH}/Headers/MumbleProtocol/\n\n# Copy Speex headers\ncp -R ${PROJECT_DIR}/3rdparty/speex/include/speex/ ${MKFW_PATH}/Headers/speex/\n\n# Copy CELT headers\nmkdir -p ${MKFW_PATH}/Headers/celt/\ncp -R ${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/*.h ${MKFW_PATH}/Headers/celt/\n\n# Create a new symlink inside Headers\ncd ${MKFW_PATH}/Headers/\nln -sf . MumbleKit";
-		};
-		28C22B3D1150218D002CEF70 /* Copy Static Library into Framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Static Library into Framework";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\n#\n# Copy the libMumbleKit.a library into our framework bundle\n#\n\nMKFW_PATH=${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/\ncp -R ${TARGET_BUILD_DIR}/lib${PROJECT_NAME}.a ${MKFW_PATH}/${PROJECT_NAME}";
 		};
 /* End PBXShellScriptBuildPhase section */
 
