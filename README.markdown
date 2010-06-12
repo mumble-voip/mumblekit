@@ -65,3 +65,31 @@ Then, do the following:
      - Security.framework
 
  * The build should now work.
+
+How do I include this into my Xcode project? (Mac OS X)
+-------------------------------------------------------
+
+One way to do this is to include MumbleKit.xcodeproj inside your main project. Then:
+
+ * Make MumbleKit (Mac OS X) a direct dependency of your chosen target.
+
+ * Add MumbleKit.framework to the 'Link Binary Against Libraries' section of your chosen target.
+
+ * Add a copy build phase. Copy MumbleKit.framework into 'Frameworks'.
+
+ * Add a run script build phase. This is to change the install name id of the Mumble framework, and
+   to fix up the path in your own application binary. The script I use is shown below:
+
+        APP=${CONFIGURATION_BUILD_DIR}/Mumble.app
+        FWPATH=${APP}/Contents/Frameworks/
+        EXECUTABLE=${APP}/Contents/MacOS/Mumble
+        
+        install_name_tool -change MumbleKit @executable_path/../Frameworks/MumbleKit.framework/Versions/A/MumbleKit ${EXECUTABLE}
+
+ It's also worth noting that this procedure seemingly only works if you have a shared build directory. For my
+ own Xcode setup, I have set up an XcodeBuild directory in my home directory. My Xcode preferences are set up to
+ build all projects in this directory. Per-project build directories are inconvenient, because you would have to
+ set the path in both your own .xcodeproj and MumbleKit.xcodeproj.
+
+ Note: It *should* be possible to do this would a common build directory in Xcode 3.1.1+, but I have not yet gotten this
+ to work myself. If you know how, or you've got this working, throw me a note. Thanks.
