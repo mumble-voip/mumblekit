@@ -107,6 +107,8 @@
 		28D81EEC11BFC36F0037D2C6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28750A1C11431BD4002885AF /* AudioToolbox.framework */; };
 		28D81EEE11BFC3750037D2C6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D81EED11BFC3750037D2C6 /* Security.framework */; };
 		28D81EF411BFC3910037D2C6 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D81EF311BFC3910037D2C6 /* AudioUnit.framework */; };
+		28DA415911C3AA4D0037B01D /* MKConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866FBF711C2F35600CE375F /* MKConnectionController.m */; };
+		28DA415A11C3AA590037B01D /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2866FBF611C2F35600CE375F /* MKConnectionController.h */; };
 		28DB498711C39456001140AD /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DB498611C39456001140AD /* CoreAudio.framework */; };
 		28F62B481180B31600214B11 /* MKServerModelObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F62B461180B31600214B11 /* MKServerModelObject.h */; };
 		28F62B491180B31600214B11 /* MKServerModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F62B471180B31600214B11 /* MKServerModelObject.m */; };
@@ -623,6 +625,7 @@
 				28BA40DF1179170A006FAB39 /* MKVersion.h in Headers */,
 				281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */,
 				28F62B481180B31600214B11 /* MKServerModelObject.h in Headers */,
+				28DA415A11C3AA590037B01D /* MKConnectionController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,7 +843,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n#\n# Create a MumbleKit framework for iPhoneOS\n#\n# This is the Phase 1 script:  Create the framework and copy in the needed headers.\n#\n\nMKFW_PATH=${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/\n\nrm -rf ${MKFW_PATH}\nmkdir -p ${MKFW_PATH}\nmkdir -p ${MKFW_PATH}/Headers/\n\n# Copy MumbleKit headers\ncp -R ${PROJECT_DIR}/src/MumbleKit/ ${MKFW_PATH}/Headers/\n\n# Copy protobuf headers\nmkdir -p ${MKFW_PATH}/Headers/MumbleProtocol/\ncp -R ${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/*.h ${MKFW_PATH}/Headers/MumbleProtocol/\ncp -R ${PROJECT_DIR}/proto/*.h ${MKFW_PATH}/Headers/MumbleProtocol/\n\n# Copy Speex headers\ncp -R ${PROJECT_DIR}/3rdparty/speex/include/speex/ ${MKFW_PATH}/Headers/speex/\n\n# Copy CELT headers\nmkdir -p ${MKFW_PATH}/Headers/celt/\ncp -R ${PROJECT_DIR}/3rdparty/celt/libcelt/*.h ${MKFW_PATH}/Headers/celt/\n\n# Create a new symlink inside Headers\ncd ${MKFW_PATH}/Headers/\nln -sf . MumbleKit";
+			shellScript = "#!/bin/bash\n#\n# Create a MumbleKit framework for iPhoneOS\n#\n# This is the Phase 1 script:  Create the framework and copy in the needed headers.\n#\n\nMKFW_PATH=${TARGET_BUILD_DIR}/${PROJECT_NAME}.framework/\n\nrm -rf ${MKFW_PATH}\nmkdir -p ${MKFW_PATH}\nmkdir -p ${MKFW_PATH}/Headers/\n\n# Copy MumbleKit headers\ncp -R ${PROJECT_DIR}/src/MumbleKit/ ${MKFW_PATH}/Headers/\n\n# Copy protobuf headers\nmkdir -p ${MKFW_PATH}/Headers/MumbleProtocol/\ncp -R ${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/*.h ${MKFW_PATH}/Headers/MumbleProtocol/\ncp -R ${PROJECT_DIR}/proto/*.h ${MKFW_PATH}/Headers/MumbleProtocol/\n\n# Copy Speex headers\ncp -R ${PROJECT_DIR}/3rdparty/speex/include/speex/ ${MKFW_PATH}/Headers/speex/\n\n# Copy CELT headers\nmkdir -p ${MKFW_PATH}/Headers/celt/\ncp -R ${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/*.h ${MKFW_PATH}/Headers/celt/\n\n# Create a new symlink inside Headers\ncd ${MKFW_PATH}/Headers/\nln -sf . MumbleKit";
 		};
 		28C22B3D1150218D002CEF70 /* Copy Static Library into Framework */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -891,6 +894,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28DA415911C3AA4D0037B01D /* MKConnectionController.m in Sources */,
 				28A4934511431863000627EB /* MKAudio.m in Sources */,
 				28A4934711431863000627EB /* MKAudioInput.m in Sources */,
 				28A4934911431863000627EB /* MKAudioOutput.m in Sources */,
@@ -975,7 +979,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/3rdparty/celt/libcelt//**",
+					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt//**",
 					"${PROJECT_DIR}/3rdparty/speex/include//**",
 					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes//**",
 					"${PROJECT_DIR}/proto//**",
@@ -997,7 +1001,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/3rdparty/celt/libcelt//**",
+					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt//**",
 					"${PROJECT_DIR}/3rdparty/speex/include//**",
 					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes//**",
 					"${PROJECT_DIR}/proto//**",

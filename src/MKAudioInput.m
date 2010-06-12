@@ -216,9 +216,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	AudioComponent comp;
 	AudioComponentDescription desc;
 	AudioStreamBasicDescription fmt;
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	AudioDeviceID devId;
 
-#if TARGET_OS_MAC == 1
 	// Get default device
 	len = sizeof(AudioDeviceID);
 	err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &len, &devId);
@@ -272,7 +272,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
-#if TARGET_OS_MAC == 1
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	// Set default device
 	len = sizeof(AudioDeviceID);
 	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &devId, len);
