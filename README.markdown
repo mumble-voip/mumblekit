@@ -1,10 +1,11 @@
-(Last-Updated: April 7 2010)
+MumbleKit - A Mumble client framework for iOS and Mac OS X
+==========================================================
 
-MumbleKit - A Mumble client framework for iPhoneOS
-=================================================
+What's this?
+------------
 
 This is the source code of MumbleKit - a Mumble client framework
-for iPhoneOS-based devices.
+for iOS-based devices and computers running Mac OS X.
 
 Mumble is gaming-focused social voice chat utility. The desktop
 version runs of Windows, Mac OS X, Linux and various other Unix-like
@@ -13,60 +14,60 @@ systems. Visit its website at:
  <http://mumble.info/>
 
 Fetching dependencies
-=====================
+---------------------
 
-To build this you need the iPhoneOS 3.0 SDK from Apple and an
-Intel Mac running Mac OS X 10.5 or later.
+To build this you need the iPhone 3.2 SDK (the iPad SDK), or the (as of now, unreleased)
+iOS 4 SDK from Apple. The iOS 4 SDK requires Snow Leopard.
 
 Before starting your build, you will need to check out the re-
 quired submodules.
 
- $ git submodule init
- $ git submodule update
+        $ git submodule init
+        $ git submodule update
 
 This will fetch known "working" snapshot of CELT, Speex and
 Protocol Buffers for Objective C.
 
 Building it (Xcode.app)
-=======================
+-----------------------
 
 To build using Xcode, simply open the MumbleKit Xcode project
 (MumbleKit.xcodeproj in the root of the source tree) and press
 Cmd-B to build.
 
 Building it (command line)
-=========================
+--------------------------
 
 To build from the command line, do something like this:
 
- $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator3.1.3 -target MumbleKit -configuration Debug
+        $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator3.2 -target MumbleKit -configuration Debug
 
-How do I include this into my Xcode project?
-============================================
+How do I include this into my Xcode project? (iOS only!)
+--------------------------------------------------------
 
-The current versions of Xcode with iPhoneOS support has no built-in support for building
+The current versions of Xcode with iOS support has no built-in support for building
 frameworks (only static libraries).  Therefore, the MumbleKit Xcode project uses a few shellscripts
 to force Xcode into creating a framework for us.
 
 When building for a specific platform and configuration, say Debug-iphonesimulator, the default
 Xcode static library template will spit out a libMumbleKit.a library in
 
- ${PROJECT_DIR}/build/Debug-iphonesimulator/libMumbleKit.a
+        ${PROJECT_DIR}/build/Debug-iphonesimulator/libMumbleKit.a
 
-The shell scripts that run during the build process creates a iPhoneOS framework of MumbleKit in the same
+The shell scripts that run during the build process creates a iOS framework of MumbleKit in the same
 directory:
 
- ${PROJECT_DIR}/build/Debug-iphonesimulator/MumbleKit.framework
+        ${PROJECT_DIR}/build/Debug-iphonesimulator/MumbleKit.framework
 
 The best way to include this into your project is to drag the MumbleKit.xcodeproj somewhere into your own
 project, and add MumbleKit as a direct dependency of your own target. This will force Xcode to always build
 MumbleKit. (This is needed since we want to link against the MumbleKit.framework and not the libMumbleKit.a
 library)
 
-The primary consumer of this framework, the Mumble client for iPhoneOS, does the following to
+The primary consumer of this framework, the Mumble client for iOS, does the following to
 successfully link against MumbleKit:
 
- * Mumble for iPhoneOS includes the MumbleKit git repo via a submodule
+ * Mumble for iOS includes the MumbleKit git repo via a submodule
 
  * The MumbleKit.xcodeproj from that submodule is then included into Mumble.xcodeproj
 
