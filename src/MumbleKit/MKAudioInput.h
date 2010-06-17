@@ -47,6 +47,8 @@ struct MKAudioInputPrivate;
 		int numMicChannels;
 
 	@protected
+		MKAudioSettings _settings;
+
 		int frameSize;
 		int micFrequency;
 		int sampleRate;
@@ -54,8 +56,6 @@ struct MKAudioInputPrivate;
 		int micFilled;
 		int micLength;
 		BOOL previousVoice;
-		int audioQuality;
-		int numAudioFrames;
 		int bitrate;
 		int frameCounter;
 
@@ -64,15 +64,15 @@ struct MKAudioInputPrivate;
 		short *psMic;
 		short *psOut;
 
-		MKCodecFormat cfType;
-
 		MKUDPMessageType udpMessageType;
 		NSMutableArray *frameList;
+	
+		MKCodecFormat _codecFormat;
 		BOOL _doTransmit;
 		BOOL _forceTransmit;
 }
 
-- (id) init;
+- (id) initWithSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
 
 - (BOOL) setupDevice;

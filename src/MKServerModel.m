@@ -300,10 +300,7 @@
 
 - (void) connection:(MKConnection *)conn session:(NSUInteger)session sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType voiceData:(NSMutableData *)data {
 	MKUser *speakingUser = [self userWithSession:session];
-
-	MKAudioOutput *audioOutput = [MKAudio audioOutput];
-	[audioOutput addFrameToBufferWithUser:speakingUser data:data sequence:seq type:msgType];
-
+	[[MKAudio sharedAudio] addFrameToBufferWithUser:speakingUser data:data sequence:seq type:msgType];
 	[data release];
 }
 

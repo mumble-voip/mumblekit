@@ -36,8 +36,6 @@
 @interface MKAudio (Private)
 - (id) init;
 - (void) dealloc;
-- (MKAudioInput *) audioInput;
-- (MKAudioOutput *) audioOutput;
 @end
 
 static MKAudio *audioSingleton = nil;
@@ -73,36 +71,24 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 
 @implementation MKAudio
 
-+ (void) initializeAudio {
-	audioSingleton = [[MKAudio alloc] init];
-	[[MKAudio audioOutput] setupDevice];
-	[[MKAudio audioInput] setupDevice];
-}
-
-+ (MKAudioInput *) audioInput {
-	return [audioSingleton audioInput];
-}
-
-+ (MKAudioOutput *) audioOutput {
-	return [audioSingleton audioOutput];
-}
-
-+ (MKAudio *) audio {
++ (MKAudio *) sharedAudio {
+	if (audioSingleton == nil)
+		audioSingleton = [[MKAudio alloc] init];
 	return audioSingleton;
 }
 
 - (id) init {
-	OSStatus err;
-	UInt32 val;
 	Float64 fval;
-	UInt32 valSize;
-	BOOL audioInputAvailable;
+	BOOL audioInputAvailable = YES;
 
 	self = [super init];
 	if (self == nil)
 		return nil;
 
 #if TARGET_OS_IPHONE == 1
+	OSStatus err;
+	UInt32 val, valSize;
+
 	/*
 	 * Initialize Audio Session.
 	 */
@@ -186,27 +172,47 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 
 	NSLog(@"Audio: Current hardware sample rate = %.2fHz.", fval);
 
-	if (audioInputAvailable) {
-		ai = [[MKAudioInput alloc] init];
-	}
-
-	ao = [[MKAudioOutput alloc] init];
-
 	return self;
 }
 
 - (void) dealloc {
-	[ai release];
-	[ao release];
+	[_audioInput release];
+	[_audioOutput release];
+
 	[super dealloc];
 }
 
+// Get the audio input engine
 - (MKAudioInput *) audioInput {
-	return ai;
+	return _audioInput;
 }
 
+// Get the audio output engine
 - (MKAudioOutput *) audioOutput {
-	return ao;
+	return _audioOutput;
+}
+
+// Get current audio engine settings
+- (MKAudioSettings *) audioSettings {
+	return &_audioSettings;
+}
+
+// Set new settings for the audio engine
+- (void) updateAudioSettings:(MKAudioSettings *)settings {
+	memcpy(&_audioSettings, settings, sizeof(MKAudioSettings));
+}
+
+- (void) restart {
+	[_audioInput release];
+	[_audioOutput release];
+	_audioInput = [[MKAudioInput alloc] initWithSettings:&_audioSettings];
+	_audioOutput = [[MKAudioOutput alloc] initWithSettings:&_audioSettings];
+	[_audioInput setupDevice];
+	[_audioOutput setupDevice];
+}
+
+- (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType {
+	[_audioOutput addFrameToBufferWithUser:user data:data sequence:seq type:msgType];
 }
 
 @end

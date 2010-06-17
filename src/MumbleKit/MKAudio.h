@@ -28,24 +28,44 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import <MumbleKit/MKUser.h>
+#import <MumbleKit/MKConnection.h>
+
 @class MKAudioInput;
 @class MKAudioOutput;
 
 #define SAMPLE_RATE 48000
 
-typedef enum {
-	Speex,
-	CELT,
+typedef enum _MKCodecFormat {
+	MKCodecFormatSpeex,
+	MKCodecFormatCELT,
 } MKCodecFormat;
 
+typedef struct _MKAudioSettings {
+	MKCodecFormat	inputCodec;
+	MKCodecFormat   outputCodec;
+	int             quality;
+	int             audioPerPacket;
+	float           noiseSuppression;
+	float           amplification;
+	int             jitterBufferSize;
+	float           volume;
+	int             outputDelay;
+} MKAudioSettings;
+
 @interface MKAudio : NSObject {
-	MKAudioInput *ai;
-	MKAudioOutput *ao;
+	MKAudioInput *_audioInput;
+	MKAudioOutput *_audioOutput;
+	MKAudioSettings _audioSettings;
 }
 
-+ (void) initializeAudio;
-+ (MKAudioInput *) audioInput;
-+ (MKAudioOutput *) audioOutput;
-+ (MKAudio *) audio;
++ (MKAudio *) sharedAudio;
+
+- (void) restart;
+
+- (MKAudioSettings *) audioSettings;
+- (void) updateAudioSettings:(MKAudioSettings *)settings;
+
+- (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
 
 @end

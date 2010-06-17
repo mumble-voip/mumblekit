@@ -63,10 +63,13 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 
 @implementation MKAudioOutput
 
-- (id) init {
+- (id) initWithSettings:(MKAudioSettings *)settings {
 	self = [super init];
 	if (self == nil)
 		return nil;
+
+	// Copy settings
+	memcpy(&_settings, settings, sizeof(MKAudioSettings));
 
 	sampleSize = 0;
 	frameSize = SAMPLE_RATE / 100;
@@ -234,7 +237,6 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 	[outputLock unlock];
 
 	for (MKAudioOutputUser *ou in del) {
-		NSLog(@"stopped talking.... %@", [[ou user] userName]);
 		[self removeBuffer:ou];
 	}
 
