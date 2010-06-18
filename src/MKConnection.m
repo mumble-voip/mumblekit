@@ -63,7 +63,7 @@
 
 @interface MKConnection (Private)
 - (void) _setupSsl;
-- (void) _pingTimerFired;
+- (void) _pingTimerFired:(NSTimer *)timer;
 - (void) _pingResponseFromServer:(MPPing *)pingMessage;
 - (void) _versionMessageReceived:(MPVersion *)msg;
 - (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
@@ -261,8 +261,7 @@
 				_connectionEstablished = YES;
 
 				/* First, schedule our ping timer. */
-				NSInvocation *timerInvocation = [NSInvocation invocationWithTarget:self selector:@selector(_pingTimerFired)];
-				_pingTimer = [NSTimer timerWithTimeInterval:MKConnectionPingInterval invocation:timerInvocation repeats:YES];
+				_pingTimer = [NSTimer timerWithTimeInterval:MKConnectionPingInterval target:self selector:@selector(_pingTimerFired:) userInfo:nil repeats:YES];
 				[[NSRunLoop currentRunLoop] addTimer:_pingTimer forMode:NSRunLoopCommonModes];
 
 				/* Invoke connectionOpened: on our delegate. */
@@ -416,7 +415,7 @@
 /*
  * Ping timer fired.
  */
-- (void) _pingTimerFired {
+- (void) _pingTimerFired:(NSTimer *)timer {
 	NSData *data;
 	MPPing_Builder *ping = [MPPing builder];
 
