@@ -41,7 +41,7 @@
 # import <CFNetwork/CFNetwork.h>
 #endif
 
-#import "NSInvocation(MumbleKitAdditions).h"
+#include <dispatch/dispatch.h>
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -266,9 +266,11 @@
 				[[NSRunLoop currentRunLoop] addTimer:_pingTimer forMode:NSRunLoopCommonModes];
 
 				/* Invoke connectionOpened: on our delegate. */
-				NSInvocation *delegateInvoker = [NSInvocation invocationWithTarget:_delegate selector:@selector(connectionOpened:)];
-				[delegateInvoker setArgument:&self atIndex:2];
-				[delegateInvoker invokeOnMainThread];
+				if ([_delegate respondsToSelector:@selector(connectionOpened:)]) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[_delegate connectionOpened:self];
+					});
+				}
 			}
 			break;
 		}
@@ -446,18 +448,18 @@
 //
 - (void) _connectionRejected:(MPReject *)rejectMessage {
 	MKRejectReason reason = MKRejectReasonNone;
-	NSString *explanation = nil;
+	NSString *explanationString = nil;
 
 	if ([rejectMessage hasType])
 		reason = (MKRejectReason) [rejectMessage type];
 	if ([rejectMessage hasReason])
-		explanation = [rejectMessage reason];
+		explanationString = [rejectMessage reason];
 
-	NSInvocation *invocation = [NSInvocation invocationWithTarget:_delegate selector:@selector(connection:rejectedWithReason:explanation:)];
-	[invocation setArgument:&self atIndex:2];
-	[invocation setArgument:&reason atIndex:3];
-	[invocation setArgument:&explanation atIndex:4];
-	[invocation invokeOnMainThread];
+	if ([_delegate respondsToSelector:@selector(connection:rejectedWithReason:explanation:)]) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[_delegate connection:self rejectedWithReason:reason explanation:explanationString];
+		});
+	}
 
 	[self closeStreams];
 }
@@ -527,12 +529,11 @@
 
 			/* A recoverable trust failure. */
 			case kSecTrustResultRecoverableTrustFailure: {
-				NSArray *certificates = [self certificates];
-				NSInvocation *invocation = [NSInvocation invocationWithTarget:_delegate selector:@selector(connection:trustFailureInCertificateChain:)];
-				[invocation setArgument:&self atIndex:2];
-				[invocation setArgument:&certificates atIndex:3];
-				[invocation invokeOnMainThread];
-				break;
+				if ([_delegate respondsToSelector:@selector(connection:trustFailureInCertificateChain:)]) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[_delegate connection:self trustFailureInCertificateChain:[self certificates]];
+					});
+				}
 			}
 		}
 
@@ -541,130 +542,164 @@
 }
 
 - (void) messageRecieved: (NSData *)data {
-	NSInvocation *invocation;
-
+	dispatch_queue_t main_queue = dispatch_get_main_queue();
+	
 	/* No message handler has been assigned. Don't propagate. */
 	if (! _msgHandler)
 		return;
 
 	switch (packetType) {
 		case AuthenticateMessage: {
-			MPAuthenticate *a = [MPAuthenticate parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleAuthenticateMessage:)];
-			[invocation setArgument:&a atIndex:2];
-			[invocation invokeOnMainThread];
+			MPAuthenticate *auth = [MPAuthenticate parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(handleAuthenticateMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleAuthenticateMessage:auth];
+				});
+			}
 			break;
 		}
 		case ServerSyncMessage: {
-			MPServerSync *ss = [MPServerSync parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleServerSyncMessage:)];
-			[invocation setArgument:&ss atIndex:2];
-			[invocation invokeOnMainThread];
+			MPServerSync *serverSync = [MPServerSync parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleServerSyncMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleServerSyncMessage:serverSync];
+				});
+			}
 			break;
 		}
 		case ChannelRemoveMessage: {
-			MPChannelRemove *chrm = [MPChannelRemove parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleChannelRemoveMessage:)];
-			[invocation setArgument:&chrm atIndex:2];
-			[invocation invokeOnMainThread];
+			MPChannelRemove *channelRemove = [MPChannelRemove parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleChannelRemoveMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleChannelRemoveMessage:channelRemove];
+				});
+			}
 			break;
 		}
 		case ChannelStateMessage: {
-			MPChannelState *chs = [MPChannelState parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleChannelStateMessage:)];
-			[invocation setArgument:&chs atIndex:2];
-			[invocation invokeOnMainThread];
+			MPChannelState *channelState = [MPChannelState parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleChannelStateMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleChannelStateMessage:channelState];
+				});
+			}
 			break;
 		}
 		case UserRemoveMessage: {
-			MPUserRemove *urm = [MPUserRemove parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleUserRemoveMessage:)];
-			[invocation setArgument:&urm atIndex:2];
-			[invocation invokeOnMainThread];
+			MPUserRemove *userRemove = [MPUserRemove parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleUserRemoveMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleUserRemoveMessage:userRemove];
+				});
+			}
 			break;
 		}
 		case UserStateMessage: {
-			MPUserState *us = [MPUserState parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleUserStateMessage:)];
-			[invocation setArgument:&us atIndex:2];
-			[invocation invokeOnMainThread];
+			MPUserState *userState = [MPUserState parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleUserStateMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleUserStateMessage:userState];
+				});
+			}
 			break;
 		}
 		case BanListMessage: {
-			MPBanList *bl = [MPBanList parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleBanListMessage:)];
-			[invocation setArgument:&bl atIndex:2];
-			[invocation invokeOnMainThread];
+			MPBanList *banList = [MPBanList parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleBanListMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleBanListMessage:banList];
+				 });
+			}
 			break;
 		}
 		case TextMessageMessage: {
-			MPTextMessage *tm = [MPTextMessage parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleTextMessageMessage:)];
-			[invocation setArgument:&tm atIndex:2];
-			[invocation invokeOnMainThread];
+			MPTextMessage *textMessage = [MPTextMessage parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleTextMessageMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleTextMessageMessage:textMessage];
+				});
+			}
 			break;
 		}
 		case PermissionDeniedMessage: {
-			MPPermissionDenied *pm = [MPPermissionDenied parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handlePermissionDeniedMessage:)];
-			[invocation setArgument:&pm atIndex:2];
-			[invocation invokeOnMainThread];
+			MPPermissionDenied *permissionDenied = [MPPermissionDenied parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handlePermissionDeniedMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handlePermissionDeniedMessage:permissionDenied];
+				});
+			}
 			break;
 		}
 		case ACLMessage: {
-			MPACL *acl = [MPACL parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleACLMessage:)];
-			[invocation setArgument:&acl atIndex:2];
-			[invocation invokeOnMainThread];
+			MPACL *aclMessage = [MPACL parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleACLMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleACLMessage:aclMessage];
+				});
+			}
 			break;
 		}
 		case QueryUsersMessage: {
-			MPQueryUsers *qu = [MPQueryUsers parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleQueryUsersMessage:)];
-			[invocation setArgument:&qu atIndex:2];
-			[invocation invokeOnMainThread];
+			MPQueryUsers *queryUsers = [MPQueryUsers parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleQueryUsersMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleQueryUsersMessage:queryUsers];
+				});
+			}
 			break;
 		}
 		case ContextActionAddMessage: {
-			MPContextActionAdd *caa = [MPContextActionAdd parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleContextActionAddMessage:)];
-			[invocation setArgument:&caa atIndex:2];
-			[invocation invokeOnMainThread];
+			MPContextActionAdd *contextActionAdd = [MPContextActionAdd parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleContextActionAddMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleContextActionAddMessage:contextActionAdd];
+				});
+			}
 			break;
 		}
 		case ContextActionMessage: {
-			MPContextAction *ca = [MPContextAction parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleContextActionMessage:)];
-			[invocation setArgument:&ca atIndex:2];
-			[invocation invokeOnMainThread];
+			MPContextAction *contextAction = [MPContextAction parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleContextActionMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleContextActionMessage:contextAction];
+				});
+			}
 			break;
 		}
 		case UserListMessage: {
-			MPUserList *ul = [MPUserList parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleUserListMessage:)];
-			[invocation setArgument:&ul atIndex:2];
-			[invocation invokeOnMainThread];
+			MPUserList *userList = [MPUserList parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleUserListMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleUserListMessage:userList];
+				});
+			}
 			break;
 		}
 		case VoiceTargetMessage: {
-			MPVoiceTarget *vt = [MPVoiceTarget parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleVoiceTargetMessage:)];
-			[invocation setArgument:&vt atIndex:2];
-			[invocation invokeOnMainThread];
+			MPVoiceTarget *voiceTarget = [MPVoiceTarget parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(handleVoiceTargetMessage:)]) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[_msgHandler connection:self handleVoiceTargetMessage:voiceTarget];
+				});
+			}
 			break;
 		}
 		case PermissionQueryMessage: {
-			MPPermissionQuery *pq = [MPPermissionQuery parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handlePermissionQueryMessage:)];
-			[invocation setArgument:&pq atIndex:2];
-			[invocation invokeOnMainThread];
+			MPPermissionQuery *permissionQuery = [MPPermissionQuery parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handlePermissionQueryMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handlePermissionQueryMessage:permissionQuery];
+				});
+			}
 			break;
 		}
 		case CodecVersionMessage: {
-			MPCodecVersion *cvm = [MPCodecVersion parseFromData:data];
-			invocation = [NSInvocation invocationWithTarget:_msgHandler selector:@selector(handleCodecVersionMessage:)];
-			[invocation setArgument:&cvm atIndex:2];
-			[invocation invokeOnMainThread];
+			MPCodecVersion *codecVersion = [MPCodecVersion parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleCodecVersionMessage:)]) {
+				dispatch_async(main_queue, ^{
+					[_msgHandler connection:self handleCodecVersionMessage:codecVersion];
+				});
+			}
 			break;
 		}
 
@@ -707,7 +742,6 @@
 					//
 					NSLog(@"MKConnection: conn=%p, msgType=%u, msgFlags=%u, voiceData=%p", self, messageType, messageFlags, pds);
 					{
-
 						MK_UNUSED NSUInteger session = [pds getUnsignedInt];
 						NSUInteger seq = [pds getUnsignedInt];
 
@@ -718,13 +752,11 @@
 						bytes[0] = (unsigned char)messageFlags;
 						memcpy(bytes+1, [pds dataPtr], [pds left]);
 
-						invocation = [NSInvocation invocationWithTarget:_voiceDataHandler selector:@selector(connection:session:sequence:type:voiceData:)];
-						[invocation setArgument:&self atIndex:2];
-						[invocation setArgument:&session atIndex:3];
-						[invocation setArgument:&seq atIndex:4];
-						[invocation setArgument:&messageType atIndex:5];
-						[invocation setArgument:&voicePacketData atIndex:6];
-						[invocation invokeOnMainThread];
+						if ([_voiceDataHandler respondsToSelector:@selector(connection:session:sequence:type:voiceData:)]) {
+							dispatch_async(main_queue, ^{
+								[_voiceDataHandler connection:self session:session sequence:seq type:messageType voiceData:voicePacketData];
+							});
+						}
 					}
 					break;
 				default:
@@ -737,7 +769,7 @@
 		}
 
 		default: {
-			NSLog(@"MKConnection: Unknown packet type recieved. Discarding.");
+			NSLog(@"MKConnection: Unknown packet type recieved. Discarding. (type=%u)", packetType);
 			break;
 		}
 	}

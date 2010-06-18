@@ -96,7 +96,7 @@
 // Tells us which codecs we should use for this server.
 // fixme(mkrautz: Does not belong here.
 //
--(void) handleCodecVersionMessage:(MPCodecVersion *)codec {
+-(void) connection:(MKConnection *)conn handleCodecVersionMessage:(MPCodecVersion *)codec {
 	NSLog(@"MKServerModel: Received CodecVersion message");
 
 	if ([codec hasAlpha])
@@ -111,7 +111,7 @@
 // UserState message.
 // A change in user state.
 //
-- (void) handleUserStateMessage:(MPUserState *)msg {
+- (void) connection:(MKConnection *)conn handleUserStateMessage:(MPUserState *)msg {
 	BOOL newUser = NO;
 
 	if (! [msg hasSession]) {
@@ -182,7 +182,7 @@
 //
 // A user has left the server.
 //
-- (void) handleUserRemoveMessage:(MPUserRemove *)msg {
+- (void) connection:(MKConnection *)conn handleUserRemoveMessage:(MPUserRemove *)msg {
 	if (! [msg hasSession]) {
 		return;
 	}
@@ -196,7 +196,7 @@
 //
 // ChannelState
 //
-- (void) handleChannelStateMessage:(MPChannelState *)msg {
+- (void) connection:(MKConnection *)conn handleChannelStateMessage:(MPChannelState *)msg {
 	BOOL newChannel = NO;
 
 	if (! [msg hasChannelId]) {
@@ -243,7 +243,7 @@
 //
 // A channel was removed from the server.
 //
-- (void) handleChannelRemoveMessage:(MPChannelRemove *)msg {
+- (void) connection:(MKConnection *) handleChannelRemoveMessage:(MPChannelRemove *)msg {
 	if (! [msg hasChannelId]) {
 		return;
 	}
@@ -258,7 +258,7 @@
 //
 // All server information synced.
 //
-- (void) handleServerSyncMessage:(MPServerSync *)msg {
+- (void) connection:(MKConnection *)conn handleServerSyncMessage:(MPServerSync *)msg {
 
 	MKUser *user = [self userWithSession:[msg session]];
 	_connectedUser = user;
@@ -266,34 +266,34 @@
 	[_delegate serverModel:self joinedServerAsUser:user];
 }
 
-- (void) handleBanListMessage: (MPBanList *)msg {
+- (void) connection:(MKConnection *)conn handleBanListMessage: (MPBanList *)msg {
 }
 
-- (void) handlePermissionDeniedMessage: (MPPermissionDenied *)msg {
+- (void) connection:(MKConnection *)conn handlePermissionDeniedMessage: (MPPermissionDenied *)msg {
 }
 
-- (void) handleTextMessageMessage: (MPTextMessage *)msg {
+- (void) connection:(MKConnection *)conn handleTextMessageMessage: (MPTextMessage *)msg {
 }
 
-- (void) handleACLMessage: (MPACL *)msg {
+- (void) connection:(MKConnection *)conn handleACLMessage: (MPACL *)msg {
 }
 
-- (void) handleQueryUsersMessage: (MPQueryUsers *)msg {
+- (void) connection:(MKConnection *)conn handleQueryUsersMessage: (MPQueryUsers *)msg {
 }
 
-- (void) handleContextActionMessage: (MPContextAction *)msg {
+- (void) connection:(MKConnection *)conn handleContextActionMessage: (MPContextAction *)msg {
 }
 
-- (void) handleContextActionAddMessage: (MPContextActionAdd *)add {
+- (void) connection:(MKConnection *)conn handleContextActionAddMessage: (MPContextActionAdd *)add {
 }
 
-- (void) handleUserListMessage: (MPUserList *)msg {
+- (void) connection:(MKConnection *)conn handleUserListMessage: (MPUserList *)msg {
 }
 
-- (void) handleVoiceTargetMessage: (MPVoiceTarget *)msg {
+- (void) connection:(MKConnection *)conn handleVoiceTargetMessage: (MPVoiceTarget *)msg {
 }
 
-- (void) handlePermissionQueryMessage: (MPPermissionQuery *)msg {
+- (void) connection:(MKConnection *)conn handlePermissionQueryMessage: (MPPermissionQuery *)msg {
 }
 
 #pragma mark MKVoiceDataHandler

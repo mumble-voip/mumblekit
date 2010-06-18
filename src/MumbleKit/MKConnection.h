@@ -62,7 +62,10 @@ typedef enum {
 	UserListMessage,
 	VoiceTargetMessage,
 	PermissionQueryMessage,
-	CodecVersionMessage
+	CodecVersionMessage,
+	UserStatsMessage,
+	RequestBlobMessage,
+	ServerConfigMessage,
 } MKMessageType;
 
 typedef enum {
@@ -90,23 +93,23 @@ typedef enum {
  * MKMessageHandler
  */
 @protocol MKMessageHandler
-- (void) handleAuthenticateMessage: /* MPAuthenticate */ (id)msg;
-- (void) handleBanListMessage: /* MPBanList */ (id)msg;
-- (void) handleServerSyncMessage: /* MPServerSync */ (id)msg;
-- (void) handlePermissionDeniedMessage: /* MPPermissionDenied */ (id)msg;
-- (void) handleUserStateMessage: /* MPUserState */ (id)msg;
-- (void) handleUserRemoveMessage: /* MPUserRemove */ (id)msg;
-- (void) handleChannelStateMessage: /* MPChannelState */ (id)msg;
-- (void) handleChannelRemoveMessage: /* MPChannelRemove */ (id)msg;
-- (void) handleTextMessageMessage: /* MPTextMessage */ (id)msg;
-- (void) handleACLMessage: /* MPACL */ (id)msg;
-- (void) handleQueryUsersMessage: /* MPQueryUsers */ (id)msg;
-- (void) handleContextActionMessage: /* MPContextAction */ (id)msg;
-- (void) handleContextActionAddMessage: /* MPContextActionAdd */ (id)add;
-- (void) handleUserListMessage: /* MPUserList */ (id)msg;
-- (void) handleVoiceTargetMessage: /* MPVoiceTarget */ (id)msg;
-- (void) handlePermissionQueryMessage: /* MPPermissionQuery */ (id)msg;
-- (void) handleCodecVersionMessage: /* MPCodecVersion */ (id)msg;
+- (void) connection:(MKConnection *)conn handleAuthenticateMessage: /* MPAuthenticate */ (id)msg;
+- (void) connection:(MKConnection *)conn handleBanListMessage: /* MPBanList */ (id)msg;
+- (void) connection:(MKConnection *)conn handleServerSyncMessage: /* MPServerSync */ (id)msg;
+- (void) connection:(MKConnection *)conn handlePermissionDeniedMessage: /* MPPermissionDenied */ (id)msg;
+- (void) connection:(MKConnection *)conn handleUserStateMessage: /* MPUserState */ (id)msg;
+- (void) connection:(MKConnection *)conn handleUserRemoveMessage: /* MPUserRemove */ (id)msg;
+- (void) connection:(MKConnection *)conn handleChannelStateMessage: /* MPChannelState */ (id)msg;
+- (void) connection:(MKConnection *)conn handleChannelRemoveMessage: /* MPChannelRemove */ (id)msg;
+- (void) connection:(MKConnection *)conn handleTextMessageMessage: /* MPTextMessage */ (id)msg;
+- (void) connection:(MKConnection *)conn handleACLMessage: /* MPACL */ (id)msg;
+- (void) connection:(MKConnection *)conn handleQueryUsersMessage: /* MPQueryUsers */ (id)msg;
+- (void) connection:(MKConnection *)conn handleContextActionMessage: /* MPContextAction */ (id)msg;
+- (void) connection:(MKConnection *)conn handleContextActionAddMessage: /* MPContextActionAdd */ (id)add;
+- (void) connection:(MKConnection *)conn handleUserListMessage: /* MPUserList */ (id)msg;
+- (void) connection:(MKConnection *)conn handleVoiceTargetMessage: /* MPVoiceTarget */ (id)msg;
+- (void) connection:(MKConnection *)conn handlePermissionQueryMessage: /* MPPermissionQuery */ (id)msg;
+- (void) connection:(MKConnection *)conn handleCodecVersionMessage: /* MPCodecVersion */ (id)msg;
 @end
 
 /*

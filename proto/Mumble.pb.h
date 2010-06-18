@@ -958,36 +958,38 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 
 @interface MPUserState : PBGeneratedMessage {
 @private
-  BOOL hasMute_:1;
-  BOOL hasDeaf_:1;
-  BOOL hasSuppress_:1;
-  BOOL hasSelfMute_:1;
+  BOOL hasPrioritySpeaker_:1;
   BOOL hasSelfDeaf_:1;
+  BOOL hasSelfMute_:1;
+  BOOL hasSuppress_:1;
+  BOOL hasDeaf_:1;
+  BOOL hasMute_:1;
   BOOL hasName_:1;
-  BOOL hasHash_:1;
-  BOOL hasComment_:1;
   BOOL hasPluginIdentity_:1;
-  BOOL hasTextureHash_:1;
-  BOOL hasCommentHash_:1;
-  BOOL hasPluginContext_:1;
+  BOOL hasComment_:1;
+  BOOL hasHash_:1;
   BOOL hasTexture_:1;
+  BOOL hasPluginContext_:1;
+  BOOL hasCommentHash_:1;
+  BOOL hasTextureHash_:1;
   BOOL hasChannelId_:1;
   BOOL hasUserId_:1;
   BOOL hasActor_:1;
   BOOL hasSession_:1;
-  BOOL mute_:1;
-  BOOL deaf_:1;
-  BOOL suppress_:1;
-  BOOL selfMute_:1;
+  BOOL prioritySpeaker_:1;
   BOOL selfDeaf_:1;
+  BOOL selfMute_:1;
+  BOOL suppress_:1;
+  BOOL deaf_:1;
+  BOOL mute_:1;
   NSString* name;
-  NSString* hash;
-  NSString* comment;
   NSString* pluginIdentity;
-  NSData* textureHash;
-  NSData* commentHash;
-  NSData* pluginContext;
+  NSString* comment;
+  NSString* hash;
   NSData* texture;
+  NSData* pluginContext;
+  NSData* commentHash;
+  NSData* textureHash;
   int32_t channelId;
   int32_t userId;
   int32_t actor;
@@ -1010,6 +1012,7 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 - (BOOL) hasHash;
 - (BOOL) hasCommentHash;
 - (BOOL) hasTextureHash;
+- (BOOL) hasPrioritySpeaker;
 @property (readonly) int32_t session;
 @property (readonly) int32_t actor;
 @property (readonly, retain) NSString* name;
@@ -1027,6 +1030,7 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 @property (readonly, retain) NSString* hash;
 @property (readonly, retain) NSData* commentHash;
 @property (readonly, retain) NSData* textureHash;
+- (BOOL) prioritySpeaker;
 
 + (MPUserState*) defaultInstance;
 - (MPUserState*) defaultInstance;
@@ -1146,6 +1150,11 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 - (NSData*) textureHash;
 - (MPUserState_Builder*) setTextureHash:(NSData*) value;
 - (MPUserState_Builder*) clearTextureHash;
+
+- (BOOL) hasPrioritySpeaker;
+- (BOOL) prioritySpeaker;
+- (MPUserState_Builder*) setPrioritySpeaker:(BOOL) value;
+- (MPUserState_Builder*) clearPrioritySpeaker;
 @end
 
 @interface MPBanList : PBGeneratedMessage {

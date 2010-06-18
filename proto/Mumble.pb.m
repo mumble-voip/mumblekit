@@ -3353,6 +3353,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 @property (retain) NSString* hash;
 @property (retain) NSData* commentHash;
 @property (retain) NSData* textureHash;
+@property BOOL prioritySpeaker;
 @end
 
 @implementation MPUserState
@@ -3501,6 +3502,18 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
   hasTextureHash_ = !!value;
 }
 @synthesize textureHash;
+- (BOOL) hasPrioritySpeaker {
+  return !!hasPrioritySpeaker_;
+}
+- (void) setHasPrioritySpeaker:(BOOL) value {
+  hasPrioritySpeaker_ = !!value;
+}
+- (BOOL) prioritySpeaker {
+  return !!prioritySpeaker_;
+}
+- (void) setPrioritySpeaker:(BOOL) value {
+  prioritySpeaker_ = !!value;
+}
 - (void) dealloc {
   self.name = nil;
   self.texture = nil;
@@ -3531,6 +3544,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
     self.hash = @"";
     self.commentHash = [NSData data];
     self.textureHash = [NSData data];
+    self.prioritySpeaker = NO;
   }
   return self;
 }
@@ -3601,6 +3615,9 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (self.hasTextureHash) {
     [output writeData:17 value:self.textureHash];
   }
+  if (self.hasPrioritySpeaker) {
+    [output writeBool:18 value:self.prioritySpeaker];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -3660,6 +3677,9 @@ static MPUserState* defaultMPUserStateInstance = nil;
   }
   if (self.hasTextureHash) {
     size += computeDataSize(17, self.textureHash);
+  }
+  if (self.hasPrioritySpeaker) {
+    size += computeBoolSize(18, self.prioritySpeaker);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -3787,6 +3807,9 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (other.hasTextureHash) {
     [self setTextureHash:other.textureHash];
   }
+  if (other.hasPrioritySpeaker) {
+    [self setPrioritySpeaker:other.prioritySpeaker];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3874,6 +3897,10 @@ static MPUserState* defaultMPUserStateInstance = nil;
       }
       case 138: {
         [self setTextureHash:[input readData]];
+        break;
+      }
+      case 144: {
+        [self setPrioritySpeaker:[input readBool]];
         break;
       }
     }
@@ -4149,6 +4176,22 @@ static MPUserState* defaultMPUserStateInstance = nil;
 - (MPUserState_Builder*) clearTextureHash {
   result.hasTextureHash = NO;
   result.textureHash = [NSData data];
+  return self;
+}
+- (BOOL) hasPrioritySpeaker {
+  return result.hasPrioritySpeaker;
+}
+- (BOOL) prioritySpeaker {
+  return result.prioritySpeaker;
+}
+- (MPUserState_Builder*) setPrioritySpeaker:(BOOL) value {
+  result.hasPrioritySpeaker = YES;
+  result.prioritySpeaker = value;
+  return self;
+}
+- (MPUserState_Builder*) clearPrioritySpeaker {
+  result.hasPrioritySpeaker = NO;
+  result.prioritySpeaker = NO;
   return self;
 }
 @end
