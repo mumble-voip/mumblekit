@@ -403,7 +403,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	unsigned char buffer[1024];
 	int len = 0;
 
-	if (_codecFormat == MKCodecFormatCELT) {
+	if (_settings.inputCodec == MKCodecFormatCELT) {
 		CELTEncoder *encoder = _private->celtEncoder;
 		if (encoder == NULL) {
 			CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
@@ -421,7 +421,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		len = celt_encode(encoder, psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
 
 		bitrate = len * 100 * 8;
-	} else if (_codecFormat	== MKCodecFormatSpeex) {
+	} else if (_settings.inputCodec == MKCodecFormatSpeex) {
 		int vbr = 0;
 		speex_encoder_ctl(_private->speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
 		if (vbr != _settings.quality) {
