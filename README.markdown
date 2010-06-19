@@ -45,6 +45,8 @@ To build from the command line, do something like this:
 How do I include this into my Xcode project? (iOS)
 --------------------------------------------------
 
+Note: Building MumbleKit on iOS requires the iOS 4 SDK.
+
 The easiest way to include MumbleKit with your application on iOS
 is to drag the MumbleKit.xcodeproj project inside your application's project.
 
