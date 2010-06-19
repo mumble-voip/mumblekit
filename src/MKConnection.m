@@ -158,10 +158,12 @@
 }
 
 - (void) closeStreams {
-	NSAssert([self isExecuting], @"Thread is not executing. Can't stop it.");
+	if (![self isExecuting])
+		return;
 	_keepRunning = NO;
 	[self performSelector:@selector(_stopThreadRunLoop:) onThread:self withObject:nil waitUntilDone:NO];
-	while (![self isFinished]);
+	while ([self isExecuting] && ![self isFinished]) {
+	}
 }
 
 - (void) reconnect {
