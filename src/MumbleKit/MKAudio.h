@@ -46,7 +46,7 @@ typedef struct _MKAudioSettings {
 	MKCodecFormat   outputCodec;
 	int             quality;
 	int             audioPerPacket;
-	float           noiseSuppression;
+	int             noiseSuppression;
 	float           amplification;
 	int             jitterBufferSize;
 	float           volume;

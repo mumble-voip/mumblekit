@@ -381,12 +381,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	iArg = 30000;
 	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_TARGET, &iArg);
 
-//	float v = 30000.0f / (float) 0.0f; // iMinLoudness
-//	iArg = iroundf(floorf(20.0f * log10f(v)));
-//	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_MAX_GAIN, &iArg);
+	//float v = 30000.0f / (float) 0.0f; // iMinLoudness
+	//iArg = iroundf(floorf(20.0f * log10f(v)));
+	//speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_MAX_GAIN, &iArg);
 
-//	iArg = 0;//g.s.iNoiseSuppress;
-//	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
+	iArg = _settings.noiseSuppression;
+	speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
 }
 
 - (void) encodeAudioFrame {
