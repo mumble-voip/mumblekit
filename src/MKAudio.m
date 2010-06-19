@@ -215,4 +215,12 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 	[_audioOutput addFrameToBufferWithUser:user data:data sequence:seq type:msgType];
 }
 
+- (BOOL) forceTransmit {
+	return [_audioInput forceTransmit];
+}
+
+- (void) setForceTransmit:(BOOL)flag {
+	[_audioInput setForceTransmit:flag];
+}
+
 @end

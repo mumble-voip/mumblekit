@@ -68,4 +68,7 @@ typedef struct _MKAudioSettings {
 
 - (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
 
+- (BOOL) forceTransmit;
+- (void) setForceTransmit:(BOOL)flag;
+
 @end
