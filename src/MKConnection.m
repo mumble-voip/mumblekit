@@ -166,10 +166,7 @@
 - (void) closeStreams {
 	_keepRunning = NO;
 	[self performSelector:@selector(_stopThreadRunLoop:) onThread:self withObject:nil waitUntilDone:NO];
-	while (![self isFinished]) {
-		NSLog(@"$$$ looping");
-	}
-	NSLog(@"thread finished... isExecuting=%u", [self isExecuting]);
+	while (![self isFinished]);
 }
 
 - (void) reconnect {
@@ -251,9 +248,6 @@
 #pragma mark NSStream event handlers
 
 - (void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
-
-	NSLog(@"$$$ streamEventHandler");
-
 	if (stream == _inputStream) {
 		if (eventCode == NSStreamEventHasBytesAvailable)
 			[self dataReady];
