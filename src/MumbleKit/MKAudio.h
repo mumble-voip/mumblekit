@@ -51,6 +51,7 @@ typedef struct _MKAudioSettings {
 	int             jitterBufferSize;
 	float           volume;
 	int             outputDelay;
+	BOOL            enablePreprocessor;
 } MKAudioSettings;
 
 @interface MKAudio : NSObject {

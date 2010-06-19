@@ -411,7 +411,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		doResetPreprocessor = NO;
 	}
 
-	int isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
+	int isSpeech = 0;
+	if (_settings.enablePreprocessor)
+		isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
 
 	unsigned char buffer[1024];
 	int len = 0;
