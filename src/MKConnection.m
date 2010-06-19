@@ -69,6 +69,7 @@
 - (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
 - (void) _connectionRejected:(MPReject *)rejectMessage;
 - (void) _sendMessageWrapper:(NSDictionary *)dict;
+- (void) _stopThreadRunLoop:(id)noObject;
 @end
 
 @implementation MKConnection
@@ -145,6 +146,11 @@
 	_pingTimer = nil;
 }
 
+- (void) _stopThreadRunLoop:(id)noObject {
+	CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
+	CFRunLoopStop(runLoop);
+}
+
 - (void) connectToHost:(NSString *)hostName port:(NSUInteger)portNumber {
 	packetLength = -1;
 	_connectionEstablished = NO;
@@ -159,6 +165,7 @@
 
 - (void) closeStreams {
 	_keepRunning = NO;
+	[self performSelector:@selector(_stopThreadRunLoop:) onThread:self withObject:nil waitUntilDone:NO];
 	while (![self isFinished]) {
 		NSLog(@"$$$ looping");
 	}
