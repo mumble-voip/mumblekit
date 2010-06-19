@@ -70,6 +70,7 @@ struct MKAudioInputPrivate;
 		MKCodecFormat _codecFormat;
 		BOOL _doTransmit;
 		BOOL _forceTransmit;
+		BOOL _lastTransmit;
 }
 
 - (id) initWithSettings:(MKAudioSettings *)settings;

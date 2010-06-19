@@ -764,7 +764,7 @@
 					//
 					// Call VoiceDataHandler.
 					//
-					NSLog(@"MKConnection: conn=%p, msgType=%u, msgFlags=%u, voiceData=%p", self, messageType, messageFlags, pds);
+					//NSLog(@"MKConnection: conn=%p, msgType=%u, msgFlags=%u, voiceData=%p", self, messageType, messageFlags, pds);
 					{
 						MK_UNUSED NSUInteger session = [pds getUnsignedInt];
 						NSUInteger seq = [pds getUnsignedInt];

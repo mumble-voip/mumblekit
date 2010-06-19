@@ -32,6 +32,7 @@
 #import <MumbleKit/MKAudioInput.h>
 #import <MumbleKit/MKPacketDataStream.h>
 #import <MumbleKit/MKConnectionController.h>
+#import <MumbleKit/MKServerModel.h>
 
 #include <speex/speex.h>
 #include <speex/speex_preprocess.h>
@@ -79,8 +80,10 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return err;
 	}
 
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	short *buf = (short *)i->buflist.mBuffers->mData;
 	[i addMicrophoneDataWithBuffer:buf amount:nframes];
+	[pool release];
 
 	return noErr;
 }
@@ -245,11 +248,13 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	err = AudioUnitInitialize(audioUnit);
 	if (err != noErr) {
 		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
 		return NO;
 	}
+#endif
 
 	/* fixme(mkrautz): Backport some of this to the desktop CoreAudio backend? */
 
@@ -286,6 +291,14 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		NSLog(@"AudioInput: Unable to setup callback.");
 		return NO;
 	}
+
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
+	err = AudioUnitInitialize(audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
+		return NO;
+	}
+#endif
 
 	len = sizeof(AudioStreamBasicDescription);
 	err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &fmt, &len);
@@ -489,21 +502,35 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	[pds release];
 
 	_doTransmit = _forceTransmit;
+	if (_lastTransmit != _doTransmit) {
+		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+		NSNotification *talkNotification = nil;
 
-	if (!_doTransmit)
-		return;
+		// fixme(mkrautz): Make these more general sometime in the future. We'd probably
+		//                 like to support whispering and such things as well, sometime.
+		if (_doTransmit) {
+			talkNotification = [NSNotification notificationWithName:@"MKAudioTransmitStarted" object:nil];
+		} else {
+			talkNotification = [NSNotification notificationWithName:@"MKAudioTransmitStopped" object:nil];
+		}
 
-	MKConnectionController *conns = [MKConnectionController sharedController];
-	NSArray *connections = [conns allConnections];
-	NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
-
-	for (NSValue *val in connections) {
-		MKConnection *conn = [val pointerValue];
-		NSLog(@"sending to conn = %p", conn);
-		[conn sendMessageWithType:UDPTunnelMessage data:msgData];
+		[center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
 	}
 
-	[msgData release];
+	if (_doTransmit) {
+		MKConnectionController *conns = [MKConnectionController sharedController];
+		NSArray *connections = [conns allConnections];
+		NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
+
+		for (NSValue *val in connections) {
+			MKConnection *conn = [val pointerValue];
+			[conn sendMessageWithType:UDPTunnelMessage data:msgData];
+		}
+
+		[msgData release];
+	}
+
+	_lastTransmit = _doTransmit;
 }
 
 - (void) setForceTransmit:(BOOL)flag {
