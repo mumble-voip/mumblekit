@@ -119,13 +119,14 @@ typedef enum {
 - (void) connection:(MKConnection *)conn session:(NSUInteger)session sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType voiceData:(NSMutableData *)data;
 @end
 
-@interface MKConnection : NSObject {
+@interface MKConnection : NSThread <NSStreamDelegate> {
 	MKMessageType packetType;
 	int packetLength;
 	int packetBufferOffset;
 	NSMutableData *packetBuffer;
 	NSString *hostname;
 	NSUInteger port;
+	BOOL _keepRunning;
 
 	NSTimer *_pingTimer;
 	NSOutputStream *_outputStream;
@@ -181,7 +182,6 @@ typedef enum {
 - (void) setIgnoreSSLVerification:(BOOL)flag;
 - (NSArray *) certificates;
 
-- (void) sendMessageWithType:(MKMessageType)messageType buffer:(unsigned char *)buf length:(NSUInteger)len;
 - (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;
 
 - (void) dataReady;
@@ -191,7 +191,5 @@ typedef enum {
 
 - (void) handleError: (NSError *)streamError;
 - (void) handleSslError: (NSError *)streamError;
-
-- (void) _handleVoicePacketOfType:(MKUDPMessageType)messageType flags:(NSUInteger)messageFlags datastream:(MKPacketDataStream *)pds;
 
 @end

@@ -68,6 +68,7 @@
 - (void) _versionMessageReceived:(MPVersion *)msg;
 - (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
 - (void) _connectionRejected:(MPReject *)rejectMessage;
+- (void) _sendMessageWrapper:(NSDictionary *)dict;
 @end
 
 @implementation MKConnection
@@ -94,13 +95,9 @@
 	[super dealloc];
 }
 
-- (void) connectToHost:(NSString *)hostName port:(NSUInteger)portNumber {
-
-	packetLength = -1;
-	_connectionEstablished = NO;
-
-	hostname = hostName;
-	port = portNumber;
+- (void) main {
+	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+	NSLog(@"Launching thread...");
 
 	CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
 									   (CFStringRef)hostname, port,
@@ -115,17 +112,22 @@
 	[_inputStream setDelegate:self];
 	[_outputStream setDelegate:self];
 
-	[_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_inputStream scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+	[_outputStream scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
 
 	[self _setupSsl];
 
 	[_inputStream open];
 	[_outputStream open];
-}
 
-- (void) closeStreams {
-	NSLog(@"MKConnection: Closing streams.");
+	NSLog(@"opened threads...");
+	NSLog(@"launching runloop...");
+
+	while (_keepRunning) {
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+	}
+
+	NSLog(@"out of runloop.");
 
 	if (_inputStream) {
 		[_inputStream close];
@@ -143,9 +145,28 @@
 	_pingTimer = nil;
 }
 
+- (void) connectToHost:(NSString *)hostName port:(NSUInteger)portNumber {
+	packetLength = -1;
+	_connectionEstablished = NO;
+
+	hostname = hostName;
+	port = portNumber;
+
+	_keepRunning = YES;
+
+	[self start];
+}
+
+- (void) closeStreams {
+	_keepRunning = NO;
+	while (![self isFinished]) {
+		NSLog(@"$$$ looping");
+	}
+	NSLog(@"thread finished... isExecuting=%u", [self isExecuting]);
+}
+
 - (void) reconnect {
 	[self closeStreams];
-
 	NSLog(@"MKConnection: Reconnecting...");
 	[self connectToHost:hostname port:port];
 }
@@ -223,6 +244,8 @@
 #pragma mark NSStream event handlers
 
 - (void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
+
+	NSLog(@"$$$ streamEventHandler");
 
 	if (stream == _inputStream) {
 		if (eventCode == NSStreamEventHasBytesAvailable)
@@ -330,15 +353,6 @@
 
 	if (sslDictionary) {
 		CFDictionaryAddValue(sslDictionary, kCFStreamSSLLevel, kCFStreamSocketSecurityLevelTLSv1);
-		/*
-		 * The CFNetwork headers dictates that using the following properties:
-		 *
-		 *  - kCFStreamSSLAllowsExpiredCertificates
-		 *  - kCFStreamSSLAllowsExpiredRoots
-		 *  - kCFSTreamSSLAllowsAnyRoot
-		 *
-		 * has been deprecated in favor of using kCFStreamSSLValidatesCertificateChain.
-		 */
 		CFDictionaryAddValue(sslDictionary, kCFStreamSSLValidatesCertificateChain, _ignoreSSLVerification ? kCFBooleanFalse : kCFBooleanTrue);
 	}
 
@@ -357,18 +371,31 @@
 	return [certs autorelease];
 }
 
-- (void) sendMessageWithType:(MKMessageType)messageType buffer:(unsigned char *)buf length:(NSUInteger)len {
+- (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data {
+	NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
+							data, @"data",
+							[NSNumber numberWithInt:(int)messageType], @"messageType", nil];
+	if ([NSThread currentThread] != self) {
+		[self performSelector:@selector(_sendMessageWrapper:) onThread:self withObject:dict waitUntilDone:NO];
+	} else {
+		[self _sendMessageWrapper:dict];
+	}
+}
+
+- (void) _sendMessageWrapper:(NSDictionary *)dict {
+	NSData *data = [dict objectForKey:@"data"];
+	MKMessageType messageType = (MKMessageType)[[dict objectForKey:@"messageType"] intValue];
+	const unsigned char *buf = [data bytes];
+	NSUInteger len = [data length];
+
 	UInt16 type = CFSwapInt16HostToBig((UInt16)messageType);
 	UInt32 length = CFSwapInt32HostToBig(len);
 
 	[_outputStream write:(unsigned char *)&type maxLength:sizeof(UInt16)];
 	[_outputStream write:(unsigned char *)&length maxLength:sizeof(UInt32)];
-	[_outputStream	write:buf maxLength:len];
+	[_outputStream write:buf maxLength:len];
 }
 
-- (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data {
-	[self sendMessageWithType:messageType buffer:(unsigned char *)[data bytes] length:[data length]];
-}
 
 -(void) dataReady {
 	unsigned char buffer[6];
