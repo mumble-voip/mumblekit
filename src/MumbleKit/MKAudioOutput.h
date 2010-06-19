@@ -59,6 +59,7 @@
 - (void) dealloc;
 
 - (BOOL) setupDevice;
+- (BOOL) teardownDevice;
 
 - (void) removeBuffer:(MKAudioOutputUser *)u;
 - (BOOL) mixFrames: (void *)frames amount:(unsigned int)nframes;

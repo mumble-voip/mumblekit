@@ -77,6 +77,8 @@ struct MKAudioInputPrivate;
 - (void) dealloc;
 
 - (BOOL) setupDevice;
+- (BOOL) teardownDevice;
+
 - (void) initializeMixer;
 
 - (void) resetPreprocessor;

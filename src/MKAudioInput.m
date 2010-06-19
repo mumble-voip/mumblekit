@@ -159,6 +159,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 }
 
 - (void) dealloc {
+	// fixme(mkrautz): Return value?
+	[self teardownDevice];
+
 	[frameList release];
 
 	if (psMic)
@@ -344,6 +347,23 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
+	return YES;
+}
+
+- (BOOL) teardownDevice {
+	OSStatus err;
+
+	err = AudioOutputUnitStop(audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to stop AudioUnit.");
+		return NO;
+	}
+
+	AudioBuffer *b = buflist.mBuffers;
+	if (b && b->mData)
+		free(b->mData);
+
+	NSLog(@"AudioInput: Teardown finished.");
 	return YES;
 }
 
