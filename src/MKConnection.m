@@ -98,7 +98,6 @@
 
 - (void) main {
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	NSLog(@"Launching thread...");
 
 	CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
 									   (CFStringRef)hostname, port,
@@ -121,14 +120,9 @@
 	[_inputStream open];
 	[_outputStream open];
 
-	NSLog(@"opened threads...");
-	NSLog(@"launching runloop...");
-
 	while (_keepRunning) {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	}
-
-	NSLog(@"out of runloop.");
 
 	if (_inputStream) {
 		[_inputStream close];
@@ -152,18 +146,19 @@
 }
 
 - (void) connectToHost:(NSString *)hostName port:(NSUInteger)portNumber {
+	NSAssert(![self isExecuting], @"Thread is currently executing. Can't start another one."); 
+
 	packetLength = -1;
 	_connectionEstablished = NO;
-
 	hostname = hostName;
 	port = portNumber;
-
 	_keepRunning = YES;
 
 	[self start];
 }
 
 - (void) closeStreams {
+	NSAssert([self isExecuting], @"Thread is not executing. Can't stop it.");
 	_keepRunning = NO;
 	[self performSelector:@selector(_stopThreadRunLoop:) onThread:self withObject:nil waitUntilDone:NO];
 	while (![self isFinished]);
