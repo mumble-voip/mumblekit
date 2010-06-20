@@ -1,4 +1,4 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2010 Mikkel Krautz <mikkel@krautz.dk>
 
    All rights reserved.
 
@@ -28,55 +28,41 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKUser.h>
-#import <MumbleKit/MKConnection.h>
+#ifndef __TIMEDELTA_H__
+#define __TIMEDELTA_H__
 
-@class MKAudioInput;
-@class MKAudioOutput;
+#include <assert.h>
+#include <sys/time.h>
 
-#define SAMPLE_RATE 48000
+#define TIMEDELTA_USEC_PER_SEC 1000000UL
 
-typedef enum _MKCodecFormat {
-	MKCodecFormatSpeex,
-	MKCodecFormatCELT,
-} MKCodecFormat;
+typedef struct _TimeDelta {
+	struct timeval tv1, tv2;
+} TimeDelta;
 
-typedef struct _MKAudioSettings {
-	MKCodecFormat	inputCodec;
-	MKCodecFormat   outputCodec;
-	int             quality;
-	int             audioPerPacket;
-	int             noiseSuppression;
-	float           amplification;
-	int             jitterBufferSize;
-	float           volume;
-	int             outputDelay;
-	BOOL            enablePreprocessor;
-	BOOL            enableBenchmark;
-} MKAudioSettings;
-
-typedef struct _MKAudioBenchmark {
-	signed long  avgPreprocessorRuntime;
-} MKAudioBenchmark;
-
-@interface MKAudio : NSObject {
-	MKAudioInput *_audioInput;
-	MKAudioOutput *_audioOutput;
-	MKAudioSettings _audioSettings;
+static inline void
+TimeDelta_start(TimeDelta *td)
+{
+	assert(gettimeofday(&td->tv1, NULL) == 0);
 }
 
-+ (MKAudio *) sharedAudio;
+static inline void
+TimeDelta_stop(TimeDelta *td)
+{
+	assert(gettimeofday(&td->tv2, NULL) == 0);
+}
 
-- (void) restart;
+static inline unsigned long
+TimeDelta_usec_delta(TimeDelta *td) {
+	time_t sdt = td->tv2.tv_sec - td->tv1.tv_sec;
+	// sdt > 0 means usec wrap around + (sdt-1)*USEC_PER_SEC
+	unsigned long udt = 0;
+	if (sdt > 0) {
+		udt = (TIMEDELTA_USEC_PER_SEC - td->tv1.tv_usec) + td->tv2.tv_usec + (sdt-1) * TIMEDELTA_USEC_PER_SEC;
+	} else {
+		udt = td->tv2.tv_usec - td->tv1.tv_usec;
+	}
+	return udt;
+}
 
-- (MKAudioSettings *) audioSettings;
-- (void) updateAudioSettings:(MKAudioSettings *)settings;
-
-- (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
-
-- (BOOL) forceTransmit;
-- (void) setForceTransmit:(BOOL)flag;
-
-- (void) getBenchmarkData:(MKAudioBenchmark *)bench;
-
-@end
+#endif /* __TIMEDELTA_H__ */

@@ -42,6 +42,8 @@
 #include <speex/speex_types.h>
 #include <celt.h>
 
+#include "timedelta.h"
+
 struct MKAudioInputPrivate {
 	SpeexPreprocessState *preprocessorState;
 	CELTEncoder *celtEncoder;
@@ -399,6 +401,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 - (void) resetPreprocessor {
 	int iArg;
 
+	_preprocAvgItems = 0;
+	_preprocRunningAvg = 0;
+
 	if (_private->preprocessorState)
 		speex_preprocess_state_destroy(_private->preprocessorState);
 
@@ -432,8 +437,25 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	}
 
 	int isSpeech = 0;
-	if (_settings.enablePreprocessor)
-		isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
+	if (_settings.enablePreprocessor) {
+#if 1
+		if (_settings.enableBenchmark) {
+			TimeDelta td;
+			TimeDelta_start(&td);
+			isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
+			TimeDelta_stop(&td);
+			unsigned long udt = TimeDelta_usec_delta(&td);
+			if (_preprocAvgItems == 0)
+				_preprocRunningAvg = (long)udt;
+			else
+				_preprocRunningAvg += (((long)udt - _preprocRunningAvg) / _preprocAvgItems);
+			++_preprocAvgItems;
+		} else
+#endif
+		{
+			isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
+		}
+	}
 
 	unsigned char buffer[1024];
 	int len = 0;
@@ -561,6 +583,10 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 - (BOOL) forceTransmit {
 	return _forceTransmit;
+}
+
+- (long) preprocessorAvgRuntime {
+	return _preprocRunningAvg;
 }
 
 @end

@@ -71,6 +71,9 @@ struct MKAudioInputPrivate;
 		BOOL _doTransmit;
 		BOOL _forceTransmit;
 		BOOL _lastTransmit;
+
+		signed long _preprocRunningAvg;
+		signed long _preprocAvgItems;
 }
 
 - (id) initWithSettings:(MKAudioSettings *)settings;
@@ -88,6 +91,8 @@ struct MKAudioInputPrivate;
 
 - (void) setForceTransmit:(BOOL)flag;
 - (BOOL) forceTransmit;
+
+- (signed long) preprocessorAvgRuntime;
 
 
 @end

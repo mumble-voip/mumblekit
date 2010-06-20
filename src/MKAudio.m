@@ -223,4 +223,10 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 	[_audioInput setForceTransmit:flag];
 }
 
+- (void) getBenchmarkData:(MKAudioBenchmark *)bench {
+	if (bench != NULL) {
+		bench->avgPreprocessorRuntime = [_audioInput preprocessorAvgRuntime];
+	}
+}
+
 @end

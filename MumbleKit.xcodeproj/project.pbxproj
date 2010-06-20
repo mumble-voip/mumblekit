@@ -12,6 +12,7 @@
 		2809ABDF11C00A76006BCD26 /* libProtocolBuffers.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 280442FB11BFC1800069E291 /* libProtocolBuffers.dylib */; };
 		281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 281A23E31179F5B600B7A471 /* MulticastDelegate.h */; };
 		281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281A23E41179F5B600B7A471 /* MulticastDelegate.m */; };
+		2830A0F011CE830000970A41 /* timedelta.h in Headers */ = {isa = PBXBuildFile; fileRef = 2830A0EF11CE830000970A41 /* timedelta.h */; };
 		2866FBF811C2F35600CE375F /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2866FBF611C2F35600CE375F /* MKConnectionController.h */; };
 		2866FBF911C2F35600CE375F /* MKConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866FBF711C2F35600CE375F /* MKConnectionController.m */; };
 		287509CF11431A68002885AF /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 287509CD11431A68002885AF /* MKUtils.h */; };
@@ -279,6 +280,7 @@
 		281F0B5411500BAC00BAA221 /* Speex.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Speex.xcodeproj; path = 3rdparty/speexbuild/Speex.xcodeproj; sourceTree = "<group>"; };
 		281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SpeexDSP.xcodeproj; path = 3rdparty/speexdspbuild/SpeexDSP.xcodeproj; sourceTree = "<group>"; };
 		28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CELT-0.8.0.xcodeproj"; path = "3rdparty/celt-0.8.0-build/CELT-0.8.0.xcodeproj"; sourceTree = "<group>"; };
+		2830A0EF11CE830000970A41 /* timedelta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timedelta.h; path = src/timedelta.h; sourceTree = SOURCE_ROOT; };
 		2866FBF611C2F35600CE375F /* MKConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKConnectionController.h; sourceTree = "<group>"; };
 		2866FBF711C2F35600CE375F /* MKConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKConnectionController.m; path = src/MKConnectionController.m; sourceTree = "<group>"; };
 		287509CD11431A68002885AF /* MKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKUtils.h; sourceTree = "<group>"; };
@@ -495,6 +497,7 @@
 		287509B511431932002885AF /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				2830A0EF11CE830000970A41 /* timedelta.h */,
 				28BA40DD1179170A006FAB39 /* MKVersion.h */,
 				28AE414911432A26004B3046 /* MKServices.h */,
 				28750A5111431D39002885AF /* MKChannel.h */,
@@ -578,6 +581,7 @@
 				28D81EC011BFC2480037D2C6 /* MulticastDelegate.h in Headers */,
 				28D81EC111BFC2480037D2C6 /* MKServerModelObject.h in Headers */,
 				2866FBF811C2F35600CE375F /* MKConnectionController.h in Headers */,
+				2830A0F011CE830000970A41 /* timedelta.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
