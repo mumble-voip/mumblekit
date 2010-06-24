@@ -165,7 +165,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 	if (!_derCert || !_derPrivKey) {
 		return nil;
 	}
-	
+
 	p = [_derPrivKey bytes];
 	pkey = d2i_AutoPrivateKey(NULL, &p, [_derPrivKey length]);
 
@@ -189,7 +189,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			}
 #endif
 
-			pkcs = PKCS12_create(password ? [password UTF8String] : NULL, "Mumble Identity", pkey, x509, certs, -1, -1, 0, 0, 0);			
+			pkcs = PKCS12_create(password ? [password UTF8String] : NULL, "Mumble Identity", pkey, x509, certs, 0, 0, 0, 0, 0);
 			if (pkcs) {
 				mem = BIO_new(BIO_s_mem());
 				i2d_PKCS12_bio(mem, pkcs);
