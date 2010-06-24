@@ -10,3 +10,6 @@
 [submodule "3rdparty/celt-0.8.0"]
 	path = 3rdparty/celt-0.8.0
 	url = git://git.xiph.org/celt.git
+[submodule "3rdparty/openssl"]
+	path = 3rdparty/openssl
+	url = git://github.com/mkrautz/openssl-mirror.git

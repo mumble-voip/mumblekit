@@ -32,6 +32,7 @@
 		28750A5A11431D39002885AF /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5411431D39002885AF /* MKPacketDataStream.h */; };
 		28750A5B11431D39002885AF /* MKServerModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5511431D39002885AF /* MKServerModel.h */; };
 		28750A5C11431D39002885AF /* MKUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 28750A5611431D39002885AF /* MKUser.h */; };
+		28763DBF11D3A85B009DB8B6 /* libOpenSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28763DBC11D3A842009DB8B6 /* libOpenSSL.a */; };
 		288A6BBD11500C82008FED5E /* Descriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 288A6BB611500C82008FED5E /* Descriptor.pb.h */; };
 		288A6BBE11500C82008FED5E /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A6BB711500C82008FED5E /* Descriptor.pb.m */; };
 		288A6BBF11500C82008FED5E /* Mumble.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = 288A6BB811500C82008FED5E /* Mumble.pb.h */; };
@@ -58,6 +59,10 @@
 		28AE414C11432A2E004B3046 /* MKServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 28AE414B11432A2E004B3046 /* MKServices.m */; };
 		28BA40DF1179170A006FAB39 /* MKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BA40DD1179170A006FAB39 /* MKVersion.h */; };
 		28BA40E01179170A006FAB39 /* MKVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BA40DE1179170A006FAB39 /* MKVersion.m */; };
+		28BADB1C11D3ABAE00BFDC43 /* MKCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BADB1B11D3ABAE00BFDC43 /* MKCertificate.m */; };
+		28BADB1D11D3ABAE00BFDC43 /* MKCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BADB1B11D3ABAE00BFDC43 /* MKCertificate.m */; };
+		28BADB1F11D3ABBE00BFDC43 /* MKCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */; };
+		28BADB2011D3ABBE00BFDC43 /* MKCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */; };
 		28D81E9811BFC2400037D2C6 /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933B11431863000627EB /* MKAudio.m */; };
 		28D81E9911BFC2400037D2C6 /* MKAudioInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933D11431863000627EB /* MKAudioInput.m */; };
 		28D81E9A11BFC2400037D2C6 /* MKAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933F11431863000627EB /* MKAudioOutput.m */; };
@@ -205,6 +210,20 @@
 			remoteGlobalIDString = 2842FCBA11BFB90300CE4CB1;
 			remoteInfo = "CELT 0.8.0 (Mac OS X)";
 		};
+		28763DBB11D3A842009DB8B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "OpenSSL (iOS)";
+		};
+		28763DBD11D3A848009DB8B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = "OpenSSL (iOS)";
+		};
 		289C798511C2E0120061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
@@ -280,7 +299,7 @@
 		281F0B5411500BAC00BAA221 /* Speex.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Speex.xcodeproj; path = 3rdparty/speexbuild/Speex.xcodeproj; sourceTree = "<group>"; };
 		281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SpeexDSP.xcodeproj; path = 3rdparty/speexdspbuild/SpeexDSP.xcodeproj; sourceTree = "<group>"; };
 		28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CELT-0.8.0.xcodeproj"; path = "3rdparty/celt-0.8.0-build/CELT-0.8.0.xcodeproj"; sourceTree = "<group>"; };
-		2830A0EF11CE830000970A41 /* timedelta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timedelta.h; path = src/timedelta.h; sourceTree = SOURCE_ROOT; };
+		2830A0EF11CE830000970A41 /* timedelta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timedelta.h; path = src/timedelta.h; sourceTree = "<group>"; };
 		2866FBF611C2F35600CE375F /* MKConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKConnectionController.h; sourceTree = "<group>"; };
 		2866FBF711C2F35600CE375F /* MKConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKConnectionController.m; path = src/MKConnectionController.m; sourceTree = "<group>"; };
 		287509CD11431A68002885AF /* MKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKUtils.h; sourceTree = "<group>"; };
@@ -300,6 +319,7 @@
 		28750A5411431D39002885AF /* MKPacketDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKPacketDataStream.h; sourceTree = "<group>"; };
 		28750A5511431D39002885AF /* MKServerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKServerModel.h; sourceTree = "<group>"; };
 		28750A5611431D39002885AF /* MKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKUser.h; sourceTree = "<group>"; };
+		28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenSSL.xcodeproj; path = 3rdparty/opensslbuild/OpenSSL.xcodeproj; sourceTree = "<group>"; };
 		288A6BB611500C82008FED5E /* Descriptor.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Descriptor.pb.h; sourceTree = "<group>"; };
 		288A6BB711500C82008FED5E /* Descriptor.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Descriptor.pb.m; sourceTree = "<group>"; };
 		288A6BB811500C82008FED5E /* Mumble.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mumble.pb.h; sourceTree = "<group>"; };
@@ -321,6 +341,8 @@
 		28AE414B11432A2E004B3046 /* MKServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServices.m; path = src/MKServices.m; sourceTree = "<group>"; };
 		28BA40DD1179170A006FAB39 /* MKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKVersion.h; sourceTree = "<group>"; };
 		28BA40DE1179170A006FAB39 /* MKVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKVersion.m; path = src/MKVersion.m; sourceTree = "<group>"; };
+		28BADB1B11D3ABAE00BFDC43 /* MKCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCertificate.m; path = src/MKCertificate.m; sourceTree = "<group>"; };
+		28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKCertificate.h; sourceTree = "<group>"; };
 		28D1E663115018A800469C69 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MumbleKit-MacOSX.plist"; path = "src/MumbleKit-MacOSX.plist"; sourceTree = "<group>"; };
@@ -353,6 +375,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28763DBF11D3A85B009DB8B6 /* libOpenSSL.a in Frameworks */,
 				289C79A511C2E2F60061CB28 /* libCELT-0.7.0.a in Frameworks */,
 				288A6BE211500E14008FED5E /* libProtocolBuffers.a in Frameworks */,
 				288A6BE111500E0D008FED5E /* libSpeex.a in Frameworks */,
@@ -407,6 +430,7 @@
 		08FB77AEFE84172EC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				2830A0EF11CE830000970A41 /* timedelta.h */,
 				28BA40DE1179170A006FAB39 /* MKVersion.m */,
 				28AE414B11432A2E004B3046 /* MKServices.m */,
 				28750A4511431D2E002885AF /* MKChannel.m */,
@@ -423,6 +447,7 @@
 				28A4934111431863000627EB /* MKAudioOutputSpeech.m */,
 				28A4934311431863000627EB /* MKAudioOutputUser.m */,
 				2866FBF711C2F35600CE375F /* MKConnectionController.m */,
+				28BADB1B11D3ABAE00BFDC43 /* MKCertificate.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -447,6 +472,7 @@
 		281F0B3611500AB900BAA221 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */,
 				281F0B5D11500BB400BAA221 /* SpeexDSP.xcodeproj */,
 				281F0B5411500BAC00BAA221 /* Speex.xcodeproj */,
 				281F0B4411500BA400BAA221 /* ProtocolBuffers.xcodeproj */,
@@ -497,7 +523,6 @@
 		287509B511431932002885AF /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				2830A0EF11CE830000970A41 /* timedelta.h */,
 				28BA40DD1179170A006FAB39 /* MKVersion.h */,
 				28AE414911432A26004B3046 /* MKServices.h */,
 				28750A5111431D39002885AF /* MKChannel.h */,
@@ -515,9 +540,18 @@
 				28A4933A11431863000627EB /* MKAudio.h */,
 				287509CD11431A68002885AF /* MKUtils.h */,
 				2866FBF611C2F35600CE375F /* MKConnectionController.h */,
+				28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */,
 			);
 			name = Headers;
 			path = src/MumbleKit;
+			sourceTree = "<group>";
+		};
+		28763DB511D3A841009DB8B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28763DBC11D3A842009DB8B6 /* libOpenSSL.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		288A6BB111500C66008FED5E /* Protocol */ = {
@@ -582,6 +616,7 @@
 				28D81EC111BFC2480037D2C6 /* MKServerModelObject.h in Headers */,
 				2866FBF811C2F35600CE375F /* MKConnectionController.h in Headers */,
 				2830A0F011CE830000970A41 /* timedelta.h in Headers */,
+				28BADB2011D3ABBE00BFDC43 /* MKCertificate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,6 +646,7 @@
 				281A23E51179F5B600B7A471 /* MulticastDelegate.h in Headers */,
 				28F62B481180B31600214B11 /* MKServerModelObject.h in Headers */,
 				28DA415A11C3AA590037B01D /* MKConnectionController.h in Headers */,
+				28BADB1F11D3ABBE00BFDC43 /* MKCertificate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,6 +692,7 @@
 				281F0B6C11500BC400BAA221 /* PBXTargetDependency */,
 				281F0B6E11500BC600BAA221 /* PBXTargetDependency */,
 				289C79A411C2E2E60061CB28 /* PBXTargetDependency */,
+				28763DBE11D3A848009DB8B6 /* PBXTargetDependency */,
 			);
 			name = "MumbleKit (iOS)";
 			productName = MumbleKit;
@@ -681,6 +718,10 @@
 				{
 					ProductGroup = 28232BE911C2D2960093C93B /* Products */;
 					ProjectRef = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
+				},
+				{
+					ProductGroup = 28763DB511D3A841009DB8B6 /* Products */;
+					ProjectRef = 28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */;
 				},
 				{
 					ProductGroup = 281F0B4511500BA400BAA221 /* Products */;
@@ -774,6 +815,13 @@
 			remoteRef = 28232BF211C2D2960093C93B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		28763DBC11D3A842009DB8B6 /* libOpenSSL.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOpenSSL.a;
+			remoteRef = 28763DBB11D3A842009DB8B6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		289C798611C2E0120061CB28 /* libCELT-0.7.0.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -841,6 +889,7 @@
 				28D81EAA11BFC2400037D2C6 /* MulticastDelegate.m in Sources */,
 				28D81EAB11BFC2400037D2C6 /* MKServerModelObject.m in Sources */,
 				2866FBF911C2F35600CE375F /* MKConnectionController.m in Sources */,
+				28BADB1D11D3ABAE00BFDC43 /* MKCertificate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -868,6 +917,7 @@
 				28BA40E01179170A006FAB39 /* MKVersion.m in Sources */,
 				281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */,
 				28F62B491180B31600214B11 /* MKServerModelObject.m in Sources */,
+				28BADB1C11D3ABAE00BFDC43 /* MKCertificate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -888,6 +938,11 @@
 			isa = PBXTargetDependency;
 			name = SpeexDSP;
 			targetProxy = 281F0B6D11500BC600BAA221 /* PBXContainerItemProxy */;
+		};
+		28763DBE11D3A848009DB8B6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenSSL (iOS)";
+			targetProxy = 28763DBD11D3A848009DB8B6 /* PBXContainerItemProxy */;
 		};
 		289C799411C2E0230061CB28 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -932,10 +987,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt//**",
-					"${PROJECT_DIR}/3rdparty/speex/include//**",
-					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes//**",
-					"${PROJECT_DIR}/proto//**",
+					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/",
+					"${PROJECT_DIR}/3rdparty/speex/include/",
+					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/",
+					"${PROJECT_DIR}/proto/",
+					"${PROJECT_DIR}/3rdparty/openssl/include/",
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
@@ -954,10 +1010,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
 				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt//**",
-					"${PROJECT_DIR}/3rdparty/speex/include//**",
-					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes//**",
-					"${PROJECT_DIR}/proto//**",
+					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/",
+					"${PROJECT_DIR}/3rdparty/speex/include/",
+					"${PROJECT_DIR}/3rdparty/protobuf/objectivec/Classes/",
+					"${PROJECT_DIR}/proto/",
+					"${PROJECT_DIR}/3rdparty/openssl/include/",
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
