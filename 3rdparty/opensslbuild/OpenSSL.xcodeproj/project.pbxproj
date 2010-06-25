@@ -5332,6 +5332,7 @@
 					"OPENSSL_NO_INLINE_ASM=1",
 					"OPENSSL_NO_ASM=1",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -5358,6 +5359,7 @@
 					"OPENSSL_NO_INLINE_ASM=1",
 					"OPENSSL_NO_ASM=1",
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
