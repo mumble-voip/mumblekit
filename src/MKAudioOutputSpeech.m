@@ -58,7 +58,7 @@ struct MKAudioOutputSpeechPrivate {
 	if (self == nil)
 		return nil;
 
-	_private = malloc(sizeof(struct MKAudioOutputSpeech));
+	_private = malloc(sizeof(struct MKAudioOutputSpeechPrivate));
 	_private->jitter = NULL;
 	_private->celtMode = NULL;
 	_private->celtDecoder = NULL;
