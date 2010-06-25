@@ -786,6 +786,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = "-Wno-switch-enum";
 			};
 			name = Debug;
 		};
@@ -888,6 +889,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = "-Wno-switch-enum";
 			};
 			name = Release;
 		};
