@@ -42,6 +42,9 @@
 		288A6BE011500E06008FED5E /* libSpeexDSP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B6511500BB400BAA221 /* libSpeexDSP.a */; };
 		288A6BE111500E0D008FED5E /* libSpeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B5C11500BAC00BAA221 /* libSpeex.a */; };
 		288A6BE211500E14008FED5E /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281F0B4F11500BA400BAA221 /* libProtocolBuffers.a */; };
+		288BFF6111D56ACA009E9BE0 /* libOpenSSL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 288BFF5211D56AB5009E9BE0 /* libOpenSSL.dylib */; };
+		288BFF6511D56AE7009E9BE0 /* libOpenSSL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 288BFF5211D56AB5009E9BE0 /* libOpenSSL.dylib */; };
+		288BFF7611D56C4D009E9BE0 /* libCELT-0.8.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28232BF311C2D2960093C93B /* libCELT-0.8.0.dylib */; };
 		289C799C11C2E2B00061CB28 /* libCELT-0.7.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 289C798811C2E0120061CB28 /* libCELT-0.7.0.dylib */; };
 		289C799D11C2E2C20061CB28 /* libCELT-0.7.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 289C798811C2E0120061CB28 /* libCELT-0.7.0.dylib */; };
 		289C79A511C2E2F60061CB28 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 289C798611C2E0120061CB28 /* libCELT-0.7.0.a */; };
@@ -224,6 +227,20 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = "OpenSSL (iOS)";
 		};
+		288BFF5111D56AB5009E9BE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28D39C2811D564F00016C02E;
+			remoteInfo = "OpenSSL (Mac OS X)";
+		};
+		288BFF7411D56C31009E9BE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28232BE811C2D2960093C93B /* CELT-0.8.0.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2842FCB911BFB90300CE4CB1;
+			remoteInfo = "CELT 0.8.0 (Mac OS X)";
+		};
 		289C798511C2E0120061CB28 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281F0B3B11500B9C00BAA221 /* CELT-0.7.0.xcodeproj */;
@@ -273,6 +290,13 @@
 			remoteGlobalIDString = 282D53C511BFBD6400717FFD;
 			remoteInfo = "SpeexDSP (Mac OS X)";
 		};
+		28E232DC11D55A7C00F1EA8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28763DB411D3A841009DB8B6 /* OpenSSL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 28D39C2711D564F00016C02E;
+			remoteInfo = "OpenSSL (Mac OS X)";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -286,6 +310,8 @@
 				28D81EE711BFC3180037D2C6 /* libSpeex.dylib in CopyFiles */,
 				28D81EE811BFC3220037D2C6 /* libProtocolBuffers.dylib in CopyFiles */,
 				289C799D11C2E2C20061CB28 /* libCELT-0.7.0.dylib in CopyFiles */,
+				288BFF7611D56C4D009E9BE0 /* libCELT-0.8.0.dylib in CopyFiles */,
+				288BFF6511D56AE7009E9BE0 /* libOpenSSL.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +390,7 @@
 				2809ABDE11C00A6F006BCD26 /* libSpeex.dylib in Frameworks */,
 				2809ABDF11C00A76006BCD26 /* libProtocolBuffers.dylib in Frameworks */,
 				289C799C11C2E2B00061CB28 /* libCELT-0.7.0.dylib in Frameworks */,
+				288BFF6111D56ACA009E9BE0 /* libOpenSSL.dylib in Frameworks */,
 				28D81EEC11BFC36F0037D2C6 /* AudioToolbox.framework in Frameworks */,
 				28D81EEE11BFC3750037D2C6 /* Security.framework in Frameworks */,
 				28D81EF411BFC3910037D2C6 /* AudioUnit.framework in Frameworks */,
@@ -550,6 +577,7 @@
 			isa = PBXGroup;
 			children = (
 				28763DBC11D3A842009DB8B6 /* libOpenSSL.a */,
+				288BFF5211D56AB5009E9BE0 /* libOpenSSL.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -668,9 +696,11 @@
 			);
 			dependencies = (
 				289C799411C2E0230061CB28 /* PBXTargetDependency */,
+				288BFF7511D56C31009E9BE0 /* PBXTargetDependency */,
 				28D81EE111BFC2F30037D2C6 /* PBXTargetDependency */,
 				28D81EE311BFC2F30037D2C6 /* PBXTargetDependency */,
 				28D81EE511BFC2F30037D2C6 /* PBXTargetDependency */,
+				28E232DD11D55A7C00F1EA8F /* PBXTargetDependency */,
 			);
 			name = "MumbleKit (Mac OS X)";
 			productName = "MumbleKit (Mac OS X)";
@@ -822,6 +852,13 @@
 			remoteRef = 28763DBB11D3A842009DB8B6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		288BFF5211D56AB5009E9BE0 /* libOpenSSL.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libOpenSSL.dylib;
+			remoteRef = 288BFF5111D56AB5009E9BE0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		289C798611C2E0120061CB28 /* libCELT-0.7.0.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -860,7 +897,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "ROOT=${CONFIGURATION_BUILD_DIR}/MumbleKit.framework/Versions/A\nFWPATH=${ROOT}/Frameworks/\nEXECUTABLE=${ROOT}/MumbleKit\n\ninstall_name_tool -id libCELT-0.7.0.dylib ${FWPATH}/libCELT-0.7.0.dylib\ninstall_name_tool -id libCELT-0.8.0.dylib ${FWPATH}/libCELT-0.8.0.dylib\ninstall_name_tool -id libProtocolBuffers.dylib ${FWPATH}/libProtocolBuffers.dylib\ninstall_name_tool -id libSpeex.dylib ${FWPATH}/libSpeex.dylib\ninstall_name_tool -id libSpeexDSP.dylib ${FWPATH}/libSpeexDSP.dylib\n\ninstall_name_tool -change /usr/local/lib/libCELT-0.7.0.dylib @loader_path/Frameworks/libCELT-0.7.0.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libCELT-0.8.0.dylib @loader_path/Frameworks/libCELT-0.8.0.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libProtocolBuffers.dylib @loader_path/Frameworks/libProtocolBuffers.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeex.dylib @loader_path/Frameworks/libSpeex.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeexDSP.dylib @loader_path/Frameworks/libSpeexDSP.dylib ${EXECUTABLE}\n\ninstall_name_tool -id MumbleKit ${EXECUTABLE}\n";
+			shellScript = "ROOT=${CONFIGURATION_BUILD_DIR}/MumbleKit.framework/Versions/A\nFWPATH=${ROOT}/Frameworks/\nEXECUTABLE=${ROOT}/MumbleKit\n\ninstall_name_tool -id libCELT-0.7.0.dylib ${FWPATH}/libCELT-0.7.0.dylib\ninstall_name_tool -id libCELT-0.8.0.dylib ${FWPATH}/libCELT-0.8.0.dylib\ninstall_name_tool -id libProtocolBuffers.dylib ${FWPATH}/libProtocolBuffers.dylib\ninstall_name_tool -id libSpeex.dylib ${FWPATH}/libSpeex.dylib\ninstall_name_tool -id libSpeexDSP.dylib ${FWPATH}/libSpeexDSP.dylib\ninstall_name_tool -id libOpenSSL.dylib ${FWPATH}/libOpenSSL.dylib\n\ninstall_name_tool -change /usr/local/lib/libCELT-0.7.0.dylib @loader_path/Frameworks/libCELT-0.7.0.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libCELT-0.8.0.dylib @loader_path/Frameworks/libCELT-0.8.0.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libProtocolBuffers.dylib @loader_path/Frameworks/libProtocolBuffers.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeex.dylib @loader_path/Frameworks/libSpeex.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libSpeexDSP.dylib @loader_path/Frameworks/libSpeexDSP.dylib ${EXECUTABLE}\ninstall_name_tool -change /usr/local/lib/libOpenSSL.dylib @loader_path/Frameworks/libOpenSSL.dylib ${EXECUTABLE}\n\ninstall_name_tool -id MumbleKit ${EXECUTABLE}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -944,6 +981,11 @@
 			name = "OpenSSL (iOS)";
 			targetProxy = 28763DBD11D3A848009DB8B6 /* PBXContainerItemProxy */;
 		};
+		288BFF7511D56C31009E9BE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CELT 0.8.0 (Mac OS X)";
+			targetProxy = 288BFF7411D56C31009E9BE0 /* PBXContainerItemProxy */;
+		};
 		289C799411C2E0230061CB28 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CELT 0.7.0 (Mac OS X)";
@@ -968,6 +1010,11 @@
 			isa = PBXTargetDependency;
 			name = "SpeexDSP (Mac OS X)";
 			targetProxy = 28D81EE411BFC2F30037D2C6 /* PBXContainerItemProxy */;
+		};
+		28E232DD11D55A7C00F1EA8F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenSSL (Mac OS X)";
+			targetProxy = 28E232DC11D55A7C00F1EA8F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1028,6 +1075,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "./**";
@@ -1044,6 +1092,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "./**";
