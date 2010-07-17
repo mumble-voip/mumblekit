@@ -127,6 +127,7 @@ typedef enum {
 	NSString *hostname;
 	NSUInteger port;
 	BOOL _keepRunning;
+	BOOL _reconnect;
 
 	NSTimer *_pingTimer;
 	NSOutputStream *_outputStream;

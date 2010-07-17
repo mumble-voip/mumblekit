@@ -99,54 +99,70 @@
 - (void) main {
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 
-	CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
-									   (CFStringRef)hostname, port,
-									   (CFReadStreamRef *) &_inputStream,
-									   (CFWriteStreamRef *) &_outputStream);
+	do {
+		if (_reconnect) {
+			NSLog(@"MKConnection: Reconnecting...");
+			_reconnect = NO;
+		}
 
-	if (_inputStream == nil || _outputStream == nil) {
-		NSLog(@"MKConnection: Unable to create stream pair.");
-		return;
-	}
+		CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
+										   (CFStringRef)hostname, port,
+										   (CFReadStreamRef *) &_inputStream,
+										   (CFWriteStreamRef *) &_outputStream);
 
-	[_inputStream setDelegate:self];
-	[_outputStream setDelegate:self];
+		if (_inputStream == nil || _outputStream == nil) {
+			NSLog(@"MKConnection: Unable to create stream pair.");
+			return;
+		}
 
-	[_inputStream scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
-	[_outputStream scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+		[_inputStream setDelegate:self];
+		[_outputStream setDelegate:self];
 
-	[self _setupSsl];
+		[_inputStream scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+		[_outputStream scheduleInRunLoop:runLoop forMode:NSDefaultRunLoopMode];
 
-	[_inputStream open];
-	[_outputStream open];
+		[self _setupSsl];
 
-	while (_keepRunning) {
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-	}
+		[_inputStream open];
+		[_outputStream open];
 
-	if (_inputStream) {
-		[_inputStream close];
-		[_inputStream release];
-		_inputStream = nil;
-	}
+		while (_keepRunning) {
+			if (_reconnect)
+				break;
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+		}
 
-	if (_outputStream) {
-		[_outputStream close];
-		[_outputStream release];
-		_outputStream = nil;
-	}
+		if (_inputStream) {
+			[_inputStream close];
+			[_inputStream release];
+			_inputStream = nil;
+		}
 
-	[_pingTimer invalidate];
-	_pingTimer = nil;
+		if (_outputStream) {
+			[_outputStream close];
+			[_outputStream release];
+			_outputStream = nil;
+		}
+
+		[_pingTimer invalidate];
+		_pingTimer = nil;
+
+	} while (_reconnect);
+
+	[NSThread exit];
 }
 
-- (void) _stopThreadRunLoop:(id)noObject {
+- (void) _wakeRunLoopHelper:(id)noObject {
 	CFRunLoopRef runLoop = [[NSRunLoop currentRunLoop] getCFRunLoop];
-	CFRunLoopStop(runLoop);
+	CFRunLoopWakeUp(runLoop);
+}
+
+- (void) _wakeRunLoop {
+	[self performSelector:@selector(_wakeRunLoopHelper:) onThread:self withObject:nil waitUntilDone:NO];
 }
 
 - (void) connectToHost:(NSString *)hostName port:(NSUInteger)portNumber {
-	NSAssert(![self isExecuting], @"Thread is currently executing. Can't start another one."); 
+	NSAssert(![self isExecuting], @"Thread is currently executing. Can't start another one.");
 
 	packetLength = -1;
 	_connectionEstablished = NO;
@@ -161,15 +177,15 @@
 	if (![self isExecuting])
 		return;
 	_keepRunning = NO;
-	[self performSelector:@selector(_stopThreadRunLoop:) onThread:self withObject:nil waitUntilDone:NO];
+	[self _wakeRunLoop];
 	while ([self isExecuting] && ![self isFinished]) {
+		// Wait for the thread to be done...
 	}
 }
 
 - (void) reconnect {
-	[self closeStreams];
-	NSLog(@"MKConnection: Reconnecting...");
-	[self connectToHost:hostname port:port];
+	_reconnect = YES;
+	[self _wakeRunLoop];
 }
 
 - (BOOL) connected {
@@ -223,7 +239,7 @@
 	[version setOs:@"Mac OS X"];
 	[version setOsVersion:@"10.6"];
 #endif
-	
+
 	//
 	// Setup MumbleKit version info.
 	//
@@ -567,7 +583,7 @@
 
 - (void) messageRecieved: (NSData *)data {
 	dispatch_queue_t main_queue = dispatch_get_main_queue();
-	
+
 	/* No message handler has been assigned. Don't propagate. */
 	if (! _msgHandler)
 		return;
