@@ -22,7 +22,7 @@
 		28750A3B11431C50002885AF /* MKReadWriteLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A3A11431C50002885AF /* MKReadWriteLock.m */; };
 		28750A4B11431D2E002885AF /* MKChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4511431D2E002885AF /* MKChannel.m */; };
 		28750A4C11431D2E002885AF /* MKConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4611431D2E002885AF /* MKConnection.m */; };
-		28750A4D11431D2E002885AF /* MKCryptState.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4711431D2E002885AF /* MKCryptState.m */; };
+		28750A4D11431D2E002885AF /* MKCryptState_openssl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4711431D2E002885AF /* MKCryptState_openssl.mm */; };
 		28750A4E11431D2E002885AF /* MKPacketDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4811431D2E002885AF /* MKPacketDataStream.m */; };
 		28750A4F11431D2E002885AF /* MKServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4911431D2E002885AF /* MKServerModel.m */; };
 		28750A5011431D2E002885AF /* MKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4A11431D2E002885AF /* MKUser.m */; };
@@ -66,6 +66,8 @@
 		28BADB1D11D3ABAE00BFDC43 /* MKCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BADB1B11D3ABAE00BFDC43 /* MKCertificate.m */; };
 		28BADB1F11D3ABBE00BFDC43 /* MKCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */; };
 		28BADB2011D3ABBE00BFDC43 /* MKCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */; };
+		28D744E611FB0D3F0025C823 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D744E411FB0D3F0025C823 /* CryptState.cpp */; };
+		28D744E711FB0D3F0025C823 /* CryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D744E511FB0D3F0025C823 /* CryptState.h */; };
 		28D81E9811BFC2400037D2C6 /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933B11431863000627EB /* MKAudio.m */; };
 		28D81E9911BFC2400037D2C6 /* MKAudioInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933D11431863000627EB /* MKAudioInput.m */; };
 		28D81E9A11BFC2400037D2C6 /* MKAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A4933F11431863000627EB /* MKAudioOutput.m */; };
@@ -74,7 +76,7 @@
 		28D81E9D11BFC2400037D2C6 /* MKReadWriteLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A3A11431C50002885AF /* MKReadWriteLock.m */; };
 		28D81E9E11BFC2400037D2C6 /* MKChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4511431D2E002885AF /* MKChannel.m */; };
 		28D81E9F11BFC2400037D2C6 /* MKConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4611431D2E002885AF /* MKConnection.m */; };
-		28D81EA011BFC2400037D2C6 /* MKCryptState.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4711431D2E002885AF /* MKCryptState.m */; };
+		28D81EA011BFC2400037D2C6 /* MKCryptState_openssl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4711431D2E002885AF /* MKCryptState_openssl.mm */; };
 		28D81EA111BFC2400037D2C6 /* MKPacketDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4811431D2E002885AF /* MKPacketDataStream.m */; };
 		28D81EA211BFC2400037D2C6 /* MKServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4911431D2E002885AF /* MKServerModel.m */; };
 		28D81EA311BFC2400037D2C6 /* MKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28750A4A11431D2E002885AF /* MKUser.m */; };
@@ -335,7 +337,7 @@
 		28750A3A11431C50002885AF /* MKReadWriteLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKReadWriteLock.m; path = src/MKReadWriteLock.m; sourceTree = "<group>"; };
 		28750A4511431D2E002885AF /* MKChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKChannel.m; path = src/MKChannel.m; sourceTree = "<group>"; };
 		28750A4611431D2E002885AF /* MKConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKConnection.m; path = src/MKConnection.m; sourceTree = "<group>"; };
-		28750A4711431D2E002885AF /* MKCryptState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCryptState.m; path = src/MKCryptState.m; sourceTree = "<group>"; };
+		28750A4711431D2E002885AF /* MKCryptState_openssl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MKCryptState_openssl.mm; path = src/MKCryptState_openssl.mm; sourceTree = "<group>"; };
 		28750A4811431D2E002885AF /* MKPacketDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKPacketDataStream.m; path = src/MKPacketDataStream.m; sourceTree = "<group>"; };
 		28750A4911431D2E002885AF /* MKServerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerModel.m; path = src/MKServerModel.m; sourceTree = "<group>"; };
 		28750A4A11431D2E002885AF /* MKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKUser.m; path = src/MKUser.m; sourceTree = "<group>"; };
@@ -370,6 +372,8 @@
 		28BADB1B11D3ABAE00BFDC43 /* MKCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCertificate.m; path = src/MKCertificate.m; sourceTree = "<group>"; };
 		28BADB1E11D3ABBE00BFDC43 /* MKCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKCertificate.h; sourceTree = "<group>"; };
 		28D1E663115018A800469C69 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D744E411FB0D3F0025C823 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = "<group>"; };
+		28D744E511FB0D3F0025C823 /* CryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CryptState.h; path = src/CryptState.h; sourceTree = "<group>"; };
 		28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MumbleKit-MacOSX.plist"; path = "src/MumbleKit-MacOSX.plist"; sourceTree = "<group>"; };
 		28D81EED11BFC3750037D2C6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -457,12 +461,14 @@
 		08FB77AEFE84172EC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				28D744E411FB0D3F0025C823 /* CryptState.cpp */,
+				28D744E511FB0D3F0025C823 /* CryptState.h */,
 				2830A0EF11CE830000970A41 /* timedelta.h */,
 				28BA40DE1179170A006FAB39 /* MKVersion.m */,
 				28AE414B11432A2E004B3046 /* MKServices.m */,
 				28750A4511431D2E002885AF /* MKChannel.m */,
 				28750A4611431D2E002885AF /* MKConnection.m */,
-				28750A4711431D2E002885AF /* MKCryptState.m */,
+				28750A4711431D2E002885AF /* MKCryptState_openssl.mm */,
 				28750A4811431D2E002885AF /* MKPacketDataStream.m */,
 				28F62B471180B31600214B11 /* MKServerModelObject.m */,
 				28750A4911431D2E002885AF /* MKServerModel.m */,
@@ -675,6 +681,7 @@
 				28F62B481180B31600214B11 /* MKServerModelObject.h in Headers */,
 				28DA415A11C3AA590037B01D /* MKConnectionController.h in Headers */,
 				28BADB1F11D3ABBE00BFDC43 /* MKCertificate.h in Headers */,
+				28D744E711FB0D3F0025C823 /* CryptState.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -914,7 +921,7 @@
 				28D81E9D11BFC2400037D2C6 /* MKReadWriteLock.m in Sources */,
 				28D81E9E11BFC2400037D2C6 /* MKChannel.m in Sources */,
 				28D81E9F11BFC2400037D2C6 /* MKConnection.m in Sources */,
-				28D81EA011BFC2400037D2C6 /* MKCryptState.m in Sources */,
+				28D81EA011BFC2400037D2C6 /* MKCryptState_openssl.mm in Sources */,
 				28D81EA111BFC2400037D2C6 /* MKPacketDataStream.m in Sources */,
 				28D81EA211BFC2400037D2C6 /* MKServerModel.m in Sources */,
 				28D81EA311BFC2400037D2C6 /* MKUser.m in Sources */,
@@ -943,7 +950,7 @@
 				28750A3B11431C50002885AF /* MKReadWriteLock.m in Sources */,
 				28750A4B11431D2E002885AF /* MKChannel.m in Sources */,
 				28750A4C11431D2E002885AF /* MKConnection.m in Sources */,
-				28750A4D11431D2E002885AF /* MKCryptState.m in Sources */,
+				28750A4D11431D2E002885AF /* MKCryptState_openssl.mm in Sources */,
 				28750A4E11431D2E002885AF /* MKPacketDataStream.m in Sources */,
 				28750A4F11431D2E002885AF /* MKServerModel.m in Sources */,
 				28750A5011431D2E002885AF /* MKUser.m in Sources */,
@@ -955,6 +962,7 @@
 				281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */,
 				28F62B491180B31600214B11 /* MKServerModelObject.m in Sources */,
 				28BADB1C11D3ABAE00BFDC43 /* MKCertificate.m in Sources */,
+				28D744E611FB0D3F0025C823 /* CryptState.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

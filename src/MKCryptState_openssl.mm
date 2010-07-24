@@ -39,49 +39,71 @@
  */
 
 #import <MumbleKit/MKCryptState.h>
+#include "CryptState.h"
+
+using namespace MumbleClient;
+
+struct MKCryptStatePrivate {
+	CryptState cs;
+};
 
 @implementation MKCryptState
 
 - (id) init {
-	int i;
-
 	self = [super init];
 	if (self == nil)
 		return nil;
 
-	for (i = 0; i < 0x100; i++)
-		decryptHistory[i] = 0;
-
-	initialized = NO;
-	numGood = numLost = numResync = 0;
+	priv = new MKCryptStatePrivate;
 
 	return self;
 }
 
 - (void) dealloc {
+	delete priv;
+
 	[super dealloc];
-	NSLog(@"CryptState: Dealloc.");
 }
 
 - (BOOL) valid {
-	return initialized;
+	return (BOOL)priv->cs.isValid();
 }
 
 - (void) generateKey {
+	priv->cs.genKey();
 }
 
 - (void) setKey:(NSData *)key eiv:(NSData *)enc div:(NSData *)dec {
+	NSAssert([key length] == AES_BLOCK_SIZE, @"key length not AES_BLOCK_SIZE");
+	NSAssert([enc length] == AES_BLOCK_SIZE, @"enc length not AES_BLOCK_SIZE");
+	NSAssert([dec length] == AES_BLOCK_SIZE, @"dec length not AES_BLOCK_SIZE");
+	priv->cs.setKey((const unsigned char *)[key bytes], (const unsigned char *)[enc bytes], (const unsigned char *)[dec bytes]);
 }
 
 - (void) setDecryptIV:(NSData *)dec {
+	NSAssert([dec length] == AES_BLOCK_SIZE, @"dec length not AES_BLOCK_SIZE");
+	priv->cs.setDecryptIV((const unsigned char *)[dec bytes]);
+	
+}
+
+- (NSData *) getEncryptIV {
+	return [[NSData alloc] initWithBytes:priv->cs.getEncryptIV() length:AES_BLOCK_SIZE];
 }
 
 - (NSData *) encryptData:(NSData *)data {
-	return nil;
+	NSMutableData *crypted = [[NSMutableData alloc] initWithCapacity:[data length]+4];
+	priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], [data length]);
+	return crypted;
 }
 
 - (NSData *) decryptData:(NSData *)data {
-	return nil;
+	NSMutableData *plain = [[NSMutableData alloc] initWithCapacity:[data length]-4];
+	if (priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], [data length])) {
+		return plain;
+	} else {
+		[plain release];
+		return nil;
+	}
 }
 
 @end

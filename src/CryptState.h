@@ -1,4 +1,4 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2005-2010, Thorvald Natvig <thorvald@natvig.com>
 
    All rights reserved.
 
@@ -28,21 +28,50 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-struct MKCryptStatePrivate;
+#ifndef _CRYPTSTATE_H
+#define _CRYPTSTATE_H
 
-@interface MKCryptState : NSObject {
-	@private
-		struct MKCryptStatePrivate *priv;
-}
+#include <openssl/aes.h>
 
-- (id) init;
-- (void) dealloc;
+namespace MumbleClient {
 
-- (BOOL) valid;
-- (void) generateKey;
-- (void) setKey:(NSData *)key eiv:(NSData *)enc div:(NSData *)dec;
-- (void) setDecryptIV:(NSData *)dec;
-- (NSData *) encryptData:(NSData *)data;
-- (NSData *) decryptData:(NSData *)data;
+class CryptState {
+	private:
+		unsigned char raw_key[AES_BLOCK_SIZE];
+		unsigned char encrypt_iv[AES_BLOCK_SIZE];
+		unsigned char decrypt_iv[AES_BLOCK_SIZE];
+		unsigned char decrypt_history[0x100];
 
-@end
+		unsigned int uiGood;
+		unsigned int uiLate;
+		unsigned int uiLost;
+		unsigned int uiResync;
+
+		unsigned int uiRemoteGood;
+		unsigned int uiRemoteLate;
+		unsigned int uiRemoteLost;
+		unsigned int uiRemoteResync;
+
+		AES_KEY encrypt_key;
+		AES_KEY decrypt_key;
+		bool bInit;
+
+	public:
+		CryptState();
+
+		bool isValid() const;
+		void genKey();
+		void setKey(const unsigned char* rkey, const unsigned char* eiv, const unsigned char* div);
+		void setDecryptIV(const unsigned char* iv);
+		const unsigned char* getEncryptIV() const;
+
+		void ocb_encrypt(const unsigned char* plain, unsigned char* encrypted, unsigned int len, const unsigned char* nonce, unsigned char* tag);
+		void ocb_decrypt(const unsigned char* encrypted, unsigned char* plain, unsigned int len, const unsigned char* nonce, unsigned char* tag);
+
+		bool decrypt(const unsigned char* source, unsigned char* dst, unsigned int crypted_length);
+		void encrypt(const unsigned char* source, unsigned char* dst, unsigned int plain_length);
+};
+
+}  // end namespace MumbleClient
+
+#endif
