@@ -32,7 +32,7 @@ struct MKCryptStatePrivate;
 
 @interface MKCryptState : NSObject {
 	@private
-		struct MKCryptStatePrivate *priv;
+		struct MKCryptStatePrivate *_priv;
 }
 
 - (id) init;

@@ -54,51 +54,51 @@ struct MKCryptStatePrivate {
 	if (self == nil)
 		return nil;
 
-	priv = new MKCryptStatePrivate;
+	_priv = (struct MKCryptStatePrivate *) malloc(sizeof(struct MKCryptStatePrivate));
 
 	return self;
 }
 
 - (void) dealloc {
-	delete priv;
+	free(_priv);
 
 	[super dealloc];
 }
 
 - (BOOL) valid {
-	return (BOOL)priv->cs.isValid();
+	return (BOOL)_priv->cs.isValid();
 }
 
 - (void) generateKey {
-	priv->cs.genKey();
+	_priv->cs.genKey();
 }
 
 - (void) setKey:(NSData *)key eiv:(NSData *)enc div:(NSData *)dec {
 	NSAssert([key length] == AES_BLOCK_SIZE, @"key length not AES_BLOCK_SIZE");
 	NSAssert([enc length] == AES_BLOCK_SIZE, @"enc length not AES_BLOCK_SIZE");
 	NSAssert([dec length] == AES_BLOCK_SIZE, @"dec length not AES_BLOCK_SIZE");
-	priv->cs.setKey((const unsigned char *)[key bytes], (const unsigned char *)[enc bytes], (const unsigned char *)[dec bytes]);
+	_priv->cs.setKey((const unsigned char *)[key bytes], (const unsigned char *)[enc bytes], (const unsigned char *)[dec bytes]);
 }
 
 - (void) setDecryptIV:(NSData *)dec {
 	NSAssert([dec length] == AES_BLOCK_SIZE, @"dec length not AES_BLOCK_SIZE");
-	priv->cs.setDecryptIV((const unsigned char *)[dec bytes]);
+	_priv->cs.setDecryptIV((const unsigned char *)[dec bytes]);
 	
 }
 
 - (NSData *) getEncryptIV {
-	return [[NSData alloc] initWithBytes:priv->cs.getEncryptIV() length:AES_BLOCK_SIZE];
+	return [[NSData alloc] initWithBytes:_priv->cs.getEncryptIV() length:AES_BLOCK_SIZE];
 }
 
 - (NSData *) encryptData:(NSData *)data {
-	NSMutableData *crypted = [[NSMutableData alloc] initWithCapacity:[data length]+4];
-	priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], [data length]);
+	NSMutableData *crypted = [[NSMutableData alloc] initWithLength:[data length]+4];
+	_priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], [data length]);
 	return crypted;
 }
 
 - (NSData *) decryptData:(NSData *)data {
-	NSMutableData *plain = [[NSMutableData alloc] initWithCapacity:[data length]-4];
-	if (priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], [data length])) {
+	NSMutableData *plain = [[NSMutableData alloc] initWithLength:[data length]-4];
+	if (_priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], [data length])) {
 		return plain;
 	} else {
 		[plain release];
