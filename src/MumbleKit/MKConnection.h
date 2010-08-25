@@ -120,32 +120,33 @@ typedef enum {
 @end
 
 @interface MKConnection : NSThread <NSStreamDelegate> {
-	MKMessageType packetType;
-	int packetLength;
-	int packetBufferOffset;
-	NSMutableData *packetBuffer;
-	NSString *hostname;
-	NSUInteger port;
-	BOOL _keepRunning;
-	BOOL _reconnect;
+	MKMessageType  packetType;
+	int            packetLength;
+	int            packetBufferOffset;
+	NSMutableData  *packetBuffer;
+	NSString       *hostname;
+	NSUInteger     port;
+	BOOL           _keepRunning;
+	BOOL           _reconnect;
 
-	NSTimer *_pingTimer;
+	NSTimer        *_pingTimer;
 	NSOutputStream *_outputStream;
-	NSInputStream *_inputStream;
-	BOOL _connectionEstablished;
-	BOOL _ignoreSSLVerification;
-	id _voiceDataHandler;
-	id _msgHandler;
-	id _delegate;
-	int _socket;
+	NSInputStream  *_inputStream;
+	BOOL           _connectionEstablished;
+	BOOL           _ignoreSSLVerification;
+	id             _voiceDataHandler;
+	id             _msgHandler;
+	id             _delegate;
+	int            _socket;
+	CFSocketRef    _udpSock;
 
 	//
 	// Server info.
 	//
-	NSString *_serverVersion;
-	NSString *_serverRelease;
-	NSString *_serverOSName;
-	NSString *_serverOSVersion;
+	NSString       *_serverVersion;
+	NSString       *_serverRelease;
+	NSString       *_serverOSName;
+	NSString       *_serverOSVersion;
 }
 
 - (id) init;

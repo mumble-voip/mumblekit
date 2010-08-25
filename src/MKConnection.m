@@ -39,6 +39,7 @@
 #if TARGET_OS_IPHONE == 1
 # import <UIKIt/UIKit.h>
 # import <CFNetwork/CFNetwork.h>
+# import <CoreFoundation/CoreFoundation.h>
 #endif
 
 #include <dispatch/dispatch.h>
@@ -70,7 +71,15 @@
 - (void) _connectionRejected:(MPReject *)rejectMessage;
 - (void) _sendMessageWrapper:(NSDictionary *)dict;
 - (void) _stopThreadRunLoop:(id)noObject;
+- (void) _setupUdpSock;
+- (void) _teardownUdpSock;
 @end
+
+// CFSocket UDP callback.
+static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
+									CFDataRef addr, const void *data, void *udata) {
+       NSLog(@"UdpCallback: %i", type);
+}
 
 @implementation MKConnection
 
@@ -131,6 +140,8 @@
 				break;
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		}
+
+		[self _teardownUdpSock];
 
 		if (_inputStream) {
 			[_inputStream close];
@@ -261,6 +272,7 @@
 #pragma mark NSStream event handlers
 
 - (void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
+	// Exception for incoming messages.
 	if (stream == _inputStream) {
 		if (eventCode == NSStreamEventHasBytesAvailable)
 			[self dataReady];
@@ -268,15 +280,14 @@
 	}
 
 	switch (eventCode) {
+		// The OpenCompleted event is a bad indicator of 'ready to use' for a TLS
+		// socket, since it will be fired before the TLS handshake. Thus, we only
+		// use this event for grabbing a native handle to our socket and for establishing
+		// an UDP connection (for voice) to the server.  For an indication of a finished
+		// TLS handshake, we use the NSStreamEventHasSpaceAvailable instead.
 		case NSStreamEventOpenCompleted: {
-			/*
-			 * The OpenCompleted is a bad indicator of 'ready to use' for a
-			 * TLS socket, since it will fire even before the TLS handshake
-			 * has even begun. Instead, we rely on the first CanAcceptBytes
-			 * event we receive to determine that a connection was established.
-			 *
-			 * We only use this event to extract our underlying socket.
-			 */
+
+			// Fetch a native handle to our socket
 			CFDataRef nativeHandle = CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySocketNativeHandle);
 			if (nativeHandle) {
 				_socket = *(int *)CFDataGetBytePtr(nativeHandle);
@@ -285,23 +296,32 @@
 				NSLog(@"MKConnection: Unable to get socket file descriptor from stream. Breakage may occur.");
 			}
 
+			// Disable Nagle's algorithm
 			if (_socket != -1) {
 				int val = 1;
 				setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY, &val, sizeof(val));
 				NSLog(@"MKConnection: TCP_NODELAY=1");
 			}
+
+			// Setup UDP connection
+			[self _setupUdpSock];
+
 			break;
 		}
 
 		case NSStreamEventHasSpaceAvailable: {
+			// The first time we're called with NSStreamHasSpaceAvailable, we can
+			// be sure that the TLS handshake has finished successfully.  In here
+			// we setup our ping timer and tell our delegate that we've successfully
+			// opened a connection to the server.
 			if (! _connectionEstablished) {
 				_connectionEstablished = YES;
 
-				/* First, schedule our ping timer. */
+				// Schedule our ping timer.
 				_pingTimer = [NSTimer timerWithTimeInterval:MKConnectionPingInterval target:self selector:@selector(_pingTimerFired:) userInfo:nil repeats:YES];
 				[[NSRunLoop currentRunLoop] addTimer:_pingTimer forMode:NSRunLoopCommonModes];
 
-				/* Invoke connectionOpened: on our delegate. */
+				// Tell our delegate that we're connected to the server.
 				if ([_delegate respondsToSelector:@selector(connectionOpened:)]) {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						[_delegate connectionOpened:self];
@@ -374,6 +394,56 @@
 	CFReadStreamSetProperty((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, sslDictionary);
 
 	CFRelease(sslDictionary);
+}
+
+// Initialize the UDP connection-part of an MKConnection.
+//
+// Must be called after a TCP connection is already in place
+// (since it assembles the address it connects to by querying
+// the address of the TCP socket.)
+//
+// Must also be called from the MKConnection thread, because
+// the function adds the UDP socket to the thread's runloop.
+- (void) _setupUdpSock {
+       CFSocketContext udpctx;
+       memset(&udpctx, 0, sizeof(CFSocketContext));
+       udpctx.info = self;
+       _udpSock = CFSocketCreate(NULL, PF_INET, SOCK_DGRAM, IPPROTO_UDP,
+								 kCFSocketReadCallBack, MKConnectionUDPCallback,
+								 &udpctx);
+       if (! _udpSock) {
+               NSLog(@"MKConnection: Failed to create UDP socket.");
+               return;
+       }
+
+       // Add the UDP socket to the runloop of the MKConnection thread.
+       CFRunLoopSourceRef src = CFSocketCreateRunLoopSource(NULL, _udpSock, 0);
+       CFRunLoopAddSource(CFRunLoopGetCurrent(), src, kCFRunLoopDefaultMode);
+
+       // Get the peer address of the TCP socket (i.e. the host)
+       struct sockaddr sa;
+       socklen_t sl = sizeof(struct sockaddr);
+       if (getpeername(_socket, &sa, &sl) == -1) {
+               NSLog(@"MKConnection: Unable to query TCP socket for address.");
+               return;
+       }
+
+		NSData *addrData = [[NSData alloc] initWithBytes:&sa length:(NSUInteger)sl];
+		CFSocketError err = CFSocketConnectToAddress(_udpSock, (CFDataRef)addrData, -1);
+       if (err == kCFSocketError) {
+               NSLog(@"MKConnection: Unable to CFSocketConnectToAddress()");
+               return;
+       }
+
+       NSLog(@"MKConnection: UDP connection established...");
+
+       [addrData release];
+}
+
+// Tear down the UDP connection-part of an MKConnection
+- (void) _teardownUdpSock {
+       CFSocketInvalidate(_udpSock);
+       CFRelease(_udpSock);
 }
 
 - (void) setIgnoreSSLVerification:(BOOL)flag {
