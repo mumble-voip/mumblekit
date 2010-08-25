@@ -774,7 +774,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			case kSecTrustResultRecoverableTrustFailure: {
 				if ([_delegate respondsToSelector:@selector(connection:trustFailureInCertificateChain:)]) {
 					dispatch_async(dispatch_get_main_queue(), ^{
-						[_delegate connection:self trustFailureInCertificateChain:[self certificates]];
+						[_delegate connection:self trustFailureInCertificateChain:[self peerCertificates]];
 					});
 				}
 			}
