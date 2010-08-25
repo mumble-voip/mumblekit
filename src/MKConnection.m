@@ -32,6 +32,7 @@
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKPacketDataStream.h>
+#import <MumbleKit/MKCryptState.h>
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutput.h>
 #import <MumbleKit/MKVersion.h>
@@ -46,6 +47,7 @@
 
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
@@ -54,31 +56,47 @@
 #import "Mumble.pb.h"
 
 
-/*
- * The SecureTransport.h header is not available on the iPhone, so
- * these constants are lifted from the Mac OS X version of the header.
- */
+// The SecureTransport.h header is not available on the iPhone, so
+// these constants are lifted from the Mac OS X version of the header.
 #define errSSLProtocol             -9800
 #define errSSLXCertChainInvalid    -9807
 #define errSSLLast                 -9849
 
 @interface MKConnection (Private)
+- (void) _stopThreadRunLoop:(id)noObject;
+- (uint64_t) _currentTimeStamp;
+
 - (void) _setupSsl;
 - (void) _pingTimerFired:(NSTimer *)timer;
 - (void) _pingResponseFromServer:(MPPing *)pingMessage;
 - (void) _versionMessageReceived:(MPVersion *)msg;
 - (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
 - (void) _connectionRejected:(MPReject *)rejectMessage;
-- (void) _sendMessageWrapper:(NSDictionary *)dict;
-- (void) _stopThreadRunLoop:(id)noObject;
+
+// TCP
+- (void) _sendMessageHelper:(NSDictionary *)dict;
+- (void) _dataReady;
+- (void) _messageRecieved:(NSData *)data;
+
+// UDP
 - (void) _setupUdpSock;
 - (void) _teardownUdpSock;
+- (void) _udpDataReady:(NSData *)data;
+- (void) _udpMessageReceived:(NSData *)data;
+
+// Error handling
+- (void) _handleError:(NSError *)streamError;
+- (void) _handleSslError:(NSError *)streamError;
 @end
 
-// CFSocket UDP callback.
+// CFSocket UDP callback.  This is called by MKConnection's UDP CFSocket whenever
+// there is new data available (it only uses the kCFSocketDataCallback callback mode).
 static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 									CFDataRef addr, const void *data, void *udata) {
-       NSLog(@"UdpCallback: %i", type);
+	if (type != kCFSocketDataCallBack || !udata || !data)
+		return;
+	MKConnection *conn = (MKConnection *)udata;
+	[conn _udpDataReady:(NSData *)data];
 }
 
 @implementation MKConnection
@@ -93,6 +111,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	_socket = -1;
 	_ignoreSSLVerification = NO;
 
+	_crypt = [[MKCryptState alloc] init];
+
 	[[MKConnectionController sharedController] addConnection:self];
 
 	return self;
@@ -101,6 +121,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 - (void) dealloc {
 	[[MKConnectionController sharedController] removeConnection:self];
 	[self closeStreams];
+	[_crypt release];
 
 	[super dealloc];
 }
@@ -275,7 +296,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	// Exception for incoming messages.
 	if (stream == _inputStream) {
 		if (eventCode == NSStreamEventHasBytesAvailable)
-			[self dataReady];
+			[self _dataReady];
 		return;
 	}
 
@@ -295,6 +316,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			} else {
 				NSLog(@"MKConnection: Unable to get socket file descriptor from stream. Breakage may occur.");
 			}
+
+			// Set our connTime to the timestamp at connect-time.
+			_connTime = [self _currentTimeStamp];
 
 			// Disable Nagle's algorithm
 			if (_socket != -1) {
@@ -334,7 +358,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		case NSStreamEventErrorOccurred: {
 			NSLog(@"MKConnection: ErrorOccurred");
 			NSError *err = [_outputStream streamError];
-			[self handleError:err];
+			[self _handleError:err];
 			break;
 		}
 
@@ -405,68 +429,125 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // Must also be called from the MKConnection thread, because
 // the function adds the UDP socket to the thread's runloop.
 - (void) _setupUdpSock {
-       CFSocketContext udpctx;
-       memset(&udpctx, 0, sizeof(CFSocketContext));
-       udpctx.info = self;
-       _udpSock = CFSocketCreate(NULL, PF_INET, SOCK_DGRAM, IPPROTO_UDP,
-								 kCFSocketReadCallBack, MKConnectionUDPCallback,
-								 &udpctx);
-       if (! _udpSock) {
-               NSLog(@"MKConnection: Failed to create UDP socket.");
-               return;
-       }
+	CFSocketContext udpctx;
+	memset(&udpctx, 0, sizeof(CFSocketContext));
+	udpctx.info = self;
 
-       // Add the UDP socket to the runloop of the MKConnection thread.
-       CFRunLoopSourceRef src = CFSocketCreateRunLoopSource(NULL, _udpSock, 0);
-       CFRunLoopAddSource(CFRunLoopGetCurrent(), src, kCFRunLoopDefaultMode);
+	_udpSock = CFSocketCreate(NULL, PF_INET, SOCK_DGRAM, IPPROTO_UDP,
+								  kCFSocketDataCallBack, MKConnectionUDPCallback,
+								  &udpctx);
+	if (! _udpSock) {
+		NSLog(@"MKConnection: Failed to create UDP socket.");
+		return;
+	}
 
-       // Get the peer address of the TCP socket (i.e. the host)
-       struct sockaddr sa;
-       socklen_t sl = sizeof(struct sockaddr);
-       if (getpeername(_socket, &sa, &sl) == -1) {
-               NSLog(@"MKConnection: Unable to query TCP socket for address.");
-               return;
-       }
+	// Add the UDP socket to the runloop of the MKConnection thread.
+	CFRunLoopSourceRef src = CFSocketCreateRunLoopSource(NULL, _udpSock, 0);
+	CFRunLoopAddSource(CFRunLoopGetCurrent(), src, kCFRunLoopDefaultMode);
 
-		NSData *addrData = [[NSData alloc] initWithBytes:&sa length:(NSUInteger)sl];
-		CFSocketError err = CFSocketConnectToAddress(_udpSock, (CFDataRef)addrData, -1);
-       if (err == kCFSocketError) {
-               NSLog(@"MKConnection: Unable to CFSocketConnectToAddress()");
-               return;
-       }
+	// Get the peer address of the TCP socket (i.e. the host)
+	struct sockaddr sa;
+	socklen_t sl = sizeof(struct sockaddr);
+	if (getpeername(_socket, &sa, &sl) == -1) {
+		NSLog(@"MKConnection: Unable to query TCP socket for address.");
+		return;
+	}
 
-       NSLog(@"MKConnection: UDP connection established...");
-
-       [addrData release];
+	NSData *_udpAddr = [[NSData alloc] initWithBytes:&sa length:(NSUInteger)sl];
+	CFSocketError err = CFSocketConnectToAddress(_udpSock, (CFDataRef)_udpAddr, -1);
+	if (err == kCFSocketError) {
+		NSLog(@"MKConnection: Unable to CFSocketConnectToAddress()");
+		return;
+	}
+	[_udpAddr release];
 }
 
 // Tear down the UDP connection-part of an MKConnection
 - (void) _teardownUdpSock {
-       CFSocketInvalidate(_udpSock);
-       CFRelease(_udpSock);
+	CFSocketInvalidate(_udpSock);
+	CFRelease(_udpSock);
 }
 
+// Force the connection to ignore any SSL errors that occur.  This is a
+// dirty hack forced upon us by Apple's NSStream/CFStream SSL API on
+// iOS.  There's no real way to hook into the TLS handshake process,
+// so to be able to connect to servers that use a self-signed certificate
+// we have to set this flag.
+//
+// The use case for this is that a program using the MKConnection class will
+// connect to the server, and if the connection fails because of TLS handshake
+// error, it will fetch the server's certificate chain through a call to
+// peerCertificates. It will then compare the returned certificate chain with a
+// cached certificate chain for the server (if the client has connected to the
+// server before) or cache the server's certificate chain.
+// If the certificate chain matches what's already on file we're good to go and
+// can do something like:
+//
+//   [conn setIgnoreSSLVerification:YES];
+//   [conn reconnect];
+//
+// Then, before any Mumble messages go over the wire the client can check that the
+// certificate given to it by the server matches what's on file again, just to make
+// sure everything matches up.
+//
+// Ideally, one would be able to trust certain self-signed certificates and be done
+// with it, but instead one has to go through this hassle of manually checking the
+// certificates each time.
 - (void) setIgnoreSSLVerification:(BOOL)flag {
 	_ignoreSSLVerification = flag;
 }
 
-- (NSArray *) certificates {
+// Returns the certificates of the peer of connection. That is, the server's certificate chain.
+- (NSArray *) peerCertificates {
 	NSArray *certs = (NSArray *) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerCertificates);
 	return [certs autorelease];
 }
 
+// Send a UDP message.  This method encrypts the message using the connection's
+// current CryptState before sending it to the server.
+// Message identity information is stored as part of the first byte of 'data'.
+- (void) sendUDPMessage:(NSData *)data {
+	// We need a valid CryptState and a valid UDP socket to send UDP datagrams.
+	if (![_crypt valid] || !CFSocketIsValid(_udpSock)) {
+		NSLog(@"MKConnection: Invalid CryptState or CFSocket.");
+		return;
+	}
+
+	NSData *crypted = [_crypt encryptData:data];
+	CFSocketError err = CFSocketSendData(_udpSock, NULL, (CFDataRef)crypted, 1.0f);
+	if (err != kCFSocketSuccess) {
+		NSLog(@"MKConnection: CFSocketSendData failed with err=%i", (int)err);
+	}
+
+	[crypted release];
+}
+
+// Send a control-channel message to the server.  This may be called from any thread,
+// but will be synchronized onto MKConnection's own thread in the end.
 - (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data {
 	NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
 							data, @"data",
-							[NSNumber numberWithInt:(int)messageType], @"messageType", nil];
+							[NSNumber numberWithInt:(int)messageType], @"messageType",
+							nil];
+
+	// Were we called from another thread? Synchronize onto the MKConnection thread.
 	if ([NSThread currentThread] != self) {
-		[self performSelector:@selector(_sendMessageWrapper:) onThread:self withObject:dict waitUntilDone:NO];
+		[self performSelector:@selector(_sendMessageHelper:) onThread:self withObject:dict waitUntilDone:NO];
+
+	// If we were called from our own thread, just call the wrapper directly.
+	// Note that we need to release the wrapper dictionary manually in this case!
 	} else {
-		[self _sendMessageWrapper:dict];
+		[self _sendMessageHelper:dict];
+		[dict release];
 	}
 }
 
-- (void) _sendMessageWrapper:(NSDictionary *)dict {
+// This is a helper function for dispatching a sendMessageWithType:data: method call
+// onto MKConnection's own thread.  This method is called by sendMessageWithType:data:,
+// passing in its two arguments in a dictionary with the keys "data" and "messageType".
+//
+// This message should only be called from MKConnection's own thread.
+- (void) _sendMessageHelper:(NSDictionary *)dict {
 	NSData *data = [dict objectForKey:@"data"];
 	MKMessageType messageType = (MKMessageType)[[dict objectForKey:@"messageType"] intValue];
 	const unsigned char *buf = [data bytes];
@@ -480,15 +561,42 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	[_outputStream write:buf maxLength:len];
 }
 
+// New UDP packet received.  This method is called by MKConnection's
+// MKUDPMessageCallback function whenever a new datagram has been received
+// by our UDP socket.  The method will decrypt the received datagram and
+// pass it onto the _udpMessageReceived: method (with the plain data as
+// its parameter).
+//
+// The reason this method exists is that Mumble can tunnel UDP packets over
+// TCP, and in that case, the packets are not encrypted with OCB-AES128
+// because they will be tunneled through a TLS connection that is already
+// encrypted using whichever cipher was agreed upon during the handshake.
+// These tunelled UDP messages do not go through this method, but go directly
+// to the _udpMessageReceived: method instead.
+- (void) _udpDataReady:(NSData *)crypted {
+	NSData *plain = [_crypt decryptData:crypted];
+	[self _udpMessageReceived:plain];
+	[plain release];
+}
 
--(void) dataReady {
+// This method is called by our NSStream delegate methods whenever
+// it has received a chunk of data via TCP.  This method then fills
+// it internal buffer until it has received a full Mumble message.
+//
+// When a complete message has been received, it calls the
+// _messageReceived: method with the full received data as its
+// argument.
+- (void) _dataReady {
 	unsigned char buffer[6];
 
+	// Allocate a packet buffer if there isn't one available
+	// already.
 	if (! packetBuffer) {
 		packetBuffer = [[NSMutableData alloc] initWithLength:0];
 	}
 
-	/* We aren't currently retrieveing a packet. */
+	// Not currently receiving a message. This is the first part of
+	// a message.
 	if (packetLength == -1) {
 		NSInteger availableBytes = [_inputStream read:&buffer[0] maxLength:6];
 		if (availableBytes < 6) {
@@ -502,7 +610,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		[packetBuffer setLength:packetLength];
 	}
 
-	/* We're recv'ing a packet. */
+	// Receive in progress.
 	if (packetLength > 0) {
 		UInt8 *packetBytes = [packetBuffer mutableBytes];
 		if (! packetBytes) {
@@ -515,22 +623,47 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		packetBufferOffset += availableBytes;
 	}
 
-	/* Done! */
+	// Done.
 	if (packetLength == 0) {
-		[self messageRecieved:packetBuffer];
+		[self _messageRecieved:packetBuffer];
 		[packetBuffer setLength:0]; // fixme(mkrautz): Is this one needed?
 		packetLength = -1;
 	}
 }
 
-/*
- * Ping timer fired.
- */
+// Returns the number of usecs since the Unix epoch.
+- (uint64_t) _currentTimeStamp {
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+
+	uint64_t ret = tv.tv_sec * 1000000ULL;
+	ret += tv.tv_usec;
+
+	return ret;
+}
+
+// Ping timer fired. Time to ping the server!
 - (void) _pingTimerFired:(NSTimer *)timer {
+	unsigned char buf[16];
 	NSData *data;
+	uint64_t timeStamp = [self _currentTimeStamp] - _connTime;
+
+	// First, do a UDP ping...
+	MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:buf+1 length:16];
+	buf[0] = UDPPingMessage << 5;
+	[pds addVarint:timeStamp];
+
+	if ([pds valid]) {
+		data = [[NSData alloc] initWithBytesNoCopy:buf length:[pds size]+1 freeWhenDone:NO];
+		[self sendUDPMessage:data];
+		[data release];
+	}
+		
+	// Then the TCP ping...
 	MPPing_Builder *ping = [MPPing builder];
 
-	[ping setTimestamp:0];
+	[ping setTimestamp:timeStamp];
+
 	[ping setGood:0];
 	[ping setLate:0];
 	[ping setLost:0];
@@ -553,9 +686,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	NSLog(@"MKConnection: pingResponseFromServer");
 }
 
-//
 // The server rejected our connection.
-//
 - (void) _connectionRejected:(MPReject *)rejectMessage {
 	MKRejectReason reason = MKRejectReasonNone;
 	NSString *explanationString = nil;
@@ -574,16 +705,18 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	[self closeStreams];
 }
 
-//
 // Handle server crypt setup
-//
 - (void) _doCryptSetup:(MPCryptSetup *)cryptSetup {
-	NSLog(@"MKConnection: CryptSetup ...");
+	NSLog(@"MKConnection: Got CryptSetup from server.");
+
+	// A full setup message. Initialize our CryptState.
+	if ([cryptSetup hasKey] && [cryptSetup hasClientNonce] && [cryptSetup hasServerNonce]) {
+		[_crypt setKey:[cryptSetup key] eiv:[cryptSetup clientNonce] div:[cryptSetup serverNonce]];
+		NSLog(@"MKConnection: CryptState initialized.");
+	}
 }
 
-//
 // Handle incoming version information from the server.
-//
 - (void) _versionMessageReceived:(MPVersion *)msg {
 	if ([msg hasVersion]) {
 		int32_t version = [msg version];
@@ -598,46 +731,46 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 }
 
 
-- (void) handleError:(NSError *)streamError {
+- (void) _handleError:(NSError *)streamError {
 	NSInteger errorCode = [streamError code];
 
 	/* Is the error an SSL-related error? (OSStatus errors are negative, so the
 	 * greater than and less than signs are sort-of reversed here. */
 	if (errorCode <= errSSLProtocol && errorCode > errSSLLast) {
-		[self handleSslError:streamError];
+		[self _handleSslError:streamError];
 	}
 
 	NSLog(@"MKConnection: Error: %@", streamError);
 }
 
-- (void) handleSslError:(NSError *)streamError {
+- (void) _handleSslError:(NSError *)streamError {
 
 	if ([streamError code] == errSSLXCertChainInvalid) {
 		SecTrustRef trust = (SecTrustRef) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerTrust);
 		SecTrustResultType trustResult;
 		if (SecTrustEvaluate(trust, &trustResult) != noErr) {
-			/* Unable to evaluate trust. */
+			// Unable to evaluate trust.
 		}
 
 		switch (trustResult) {
-			/* Invalid setting or result. Indicates the SecTrustEvaluate() did not finish completely. */
+			// Invalid setting or result. Indicates the SecTrustEvaluate() did not finish completely.
 			case kSecTrustResultInvalid:
-			/* May be trusted for the purposes designated. ('Always Trust' in Keychain) */
+			// May be trusted for the purposes designated. ('Always Trust' in Keychain)
 			case kSecTrustResultProceed:
-			/* User confirmation is required before proceeding. ('Ask Permission' in Keychain) */
+			// User confirmation is required before proceeding. ('Ask Permission' in Keychain)
 			case kSecTrustResultConfirm:
-			/* This certificate is not trusted. ('Never Trust' in Keychain) */
+			// This certificate is not trusted. ('Never Trust' in Keychain)
 			case kSecTrustResultDeny:
-			/* No trust setting specified. ('Use System Policy' in Keychain) */
+			// No trust setting specified. ('Use System Policy' in Keychain)
 			case kSecTrustResultUnspecified:
-			/* Fatal trust failure. Trust cannot be established without replacing the certificate.
-			 * This error is thrown when the certificate is corrupt. */
+			// Fatal trust failure. Trust cannot be established without replacing the certificate.
+			// This error is thrown when the certificate is corrupt.
 			case kSecTrustResultFatalTrustFailure:
-			/* A non-trust related error. Possibly internal error in SecTrustEvaluate(). */
+			// A non-trust related error. Possibly internal error in SecTrustEvaluate().
 			case kSecTrustResultOtherError:
 				break;
 
-			/* A recoverable trust failure. */
+			// A recoverable trust failure.
 			case kSecTrustResultRecoverableTrustFailure: {
 				if ([_delegate respondsToSelector:@selector(connection:trustFailureInCertificateChain:)]) {
 					dispatch_async(dispatch_get_main_queue(), ^{
@@ -651,7 +784,57 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	}
 }
 
-- (void) messageRecieved: (NSData *)data {
+// This is the entry point for UDP packets after they've been decrypted,
+// and also for UDP packets that are tunneled through the TCP stream.
+- (void) _udpMessageReceived:(NSData *)data {
+	dispatch_queue_t main_queue = dispatch_get_main_queue();
+	unsigned char *buf = (unsigned char *)[data bytes];
+	MKUDPMessageType messageType = ((buf[0] >> 5) & 0x7);
+	unsigned int messageFlags = buf[0] & 0x1f;
+	MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:buf+1 length:[data length]-1]; // fixme(-1)?
+
+	switch (messageType) {
+		case UDPVoiceCELTAlphaMessage:
+		case UDPVoiceCELTBetaMessage:
+		case UDPVoiceSpeexMessage:
+			// Call VoiceDataHandler.
+		{
+			MK_UNUSED NSUInteger session = [pds getUnsignedInt];
+			NSUInteger seq = [pds getUnsignedInt];
+
+			NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];
+			[voicePacketData setLength:[pds left]+1];
+
+			unsigned char *bytes = [voicePacketData mutableBytes];
+			bytes[0] = (unsigned char)messageFlags;
+			memcpy(bytes+1, [pds dataPtr], [pds left]);
+
+			// fixme(mkrautz): No need to route voice packets through the main thread.
+			if ([_voiceDataHandler respondsToSelector:@selector(connection:session:sequence:type:voiceData:)]) {
+				dispatch_async(main_queue, ^{
+					[_voiceDataHandler connection:self session:session sequence:seq type:messageType voiceData:voicePacketData];
+				});
+			}
+		}
+			break;
+
+		case UDPPingMessage: {
+			uint64_t timeStamp = [pds getVarint];
+			uint64_t now = [self _currentTimeStamp] - _connTime;
+			NSLog(@"UDP ping = %llu usec", now - timeStamp); 
+			break;
+		}
+
+		default:
+			NSLog(@"MKConnection: Unknown UDPTunnel packet (%i) received. Discarding...", (int)messageType);
+			break;
+	}
+
+	[pds release];
+}
+
+
+- (void) _messageRecieved:(NSData *)data {
 	dispatch_queue_t main_queue = dispatch_get_main_queue();
 
 	/* No message handler has been assigned. Don't propagate. */
@@ -659,6 +842,12 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		return;
 
 	switch (packetType) {
+		// A UDP message tunneled through our TCP control channel.
+		// Pass it on to our incoming UDP handler.
+		case UDPTunnelMessage: {
+			[self _udpMessageReceived:data];
+			break;
+		}
 		case AuthenticateMessage: {
 			MPAuthenticate *auth = [MPAuthenticate parseFromData:data];
 			if ([_msgHandler respondsToSelector:@selector(handleAuthenticateMessage:)]) {
@@ -835,46 +1024,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		case CryptSetupMessage: {
 			MPCryptSetup *cs = [MPCryptSetup parseFromData:data];
 			[self _doCryptSetup:cs];
-			break;
-		}
-		case UDPTunnelMessage: {
-			unsigned char *buf = (unsigned char *)[data bytes];
-			MKUDPMessageType messageType = ((buf[0] >> 5) & 0x7);
-			unsigned int messageFlags = buf[0] & 0x1f;
-			MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:buf+1 length:[data length]-1]; // fixme(-1)?
-
-			switch (messageType) {
-				case UDPVoiceCELTAlphaMessage:
-				case UDPVoiceCELTBetaMessage:
-				case UDPVoiceSpeexMessage:
-					//
-					// Call VoiceDataHandler.
-					//
-					//NSLog(@"MKConnection: conn=%p, msgType=%u, msgFlags=%u, voiceData=%p", self, messageType, messageFlags, pds);
-					{
-						MK_UNUSED NSUInteger session = [pds getUnsignedInt];
-						NSUInteger seq = [pds getUnsignedInt];
-
-						NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];
-						[voicePacketData setLength:[pds left]+1];
-
-						unsigned char *bytes = [voicePacketData mutableBytes];
-						bytes[0] = (unsigned char)messageFlags;
-						memcpy(bytes+1, [pds dataPtr], [pds left]);
-
-						if ([_voiceDataHandler respondsToSelector:@selector(connection:session:sequence:type:voiceData:)]) {
-							dispatch_async(main_queue, ^{
-								[_voiceDataHandler connection:self session:session sequence:seq type:messageType voiceData:voicePacketData];
-							});
-						}
-					}
-					break;
-				default:
-					NSLog(@"MKConnection: Unknown UDPTunnel packet received. Discarding...");
-					break;
-			}
-
-			[pds release];
 			break;
 		}
 

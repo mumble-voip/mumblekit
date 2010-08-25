@@ -32,6 +32,7 @@
 
 @class MKConnection;
 @class MKPacketDataStream;
+@class MKCryptState;
 
 typedef enum {
 	UDPVoiceCELTAlphaMessage = 0,
@@ -120,6 +121,8 @@ typedef enum {
 @end
 
 @interface MKConnection : NSThread <NSStreamDelegate> {
+	MKCryptState   *_crypt;
+
 	MKMessageType  packetType;
 	int            packetLength;
 	int            packetBufferOffset;
@@ -129,6 +132,7 @@ typedef enum {
 	BOOL           _keepRunning;
 	BOOL           _reconnect;
 
+	unsigned long  _connTime;
 	NSTimer        *_pingTimer;
 	NSOutputStream *_outputStream;
 	NSInputStream  *_inputStream;
@@ -182,16 +186,8 @@ typedef enum {
 #pragma mark -
 
 - (void) setIgnoreSSLVerification:(BOOL)flag;
-- (NSArray *) certificates;
+- (NSArray *) peerCertificates;
 
 - (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;
-
-- (void) dataReady;
-- (void) messageRecieved: (NSData *)data;
-
-#pragma mark -
-
-- (void) handleError: (NSError *)streamError;
-- (void) handleSslError: (NSError *)streamError;
 
 @end
