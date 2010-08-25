@@ -83,6 +83,7 @@
 - (void) _teardownUdpSock;
 - (void) _udpDataReady:(NSData *)data;
 - (void) _udpMessageReceived:(NSData *)data;
+- (void) _sendUDPMessage:(NSData *)data;
 
 // Error handling
 - (void) _handleError:(NSError *)streamError;
@@ -506,7 +507,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // Send a UDP message.  This method encrypts the message using the connection's
 // current CryptState before sending it to the server.
 // Message identity information is stored as part of the first byte of 'data'.
-- (void) sendUDPMessage:(NSData *)data {
+- (void) _sendUDPMessage:(NSData *)data {
 	// We need a valid CryptState and a valid UDP socket to send UDP datagrams.
 	if (![_crypt valid] || !CFSocketIsValid(_udpSock)) {
 		NSLog(@"MKConnection: Invalid CryptState or CFSocket.");
@@ -559,6 +560,17 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	[_outputStream write:(unsigned char *)&type maxLength:sizeof(UInt16)];
 	[_outputStream write:(unsigned char *)&length maxLength:sizeof(UInt32)];
 	[_outputStream write:buf maxLength:len];
+}
+
+// Send a voice packet to the server.  The method will automagically figure
+// out whether it should be sent via UDP or TCP depending on the current
+// connection conditions.
+- (void) sendVoiceData:(NSData *)data {
+	if (_udpAvailable) {
+		[self _sendUDPMessage:data];
+	} else {
+		[self sendMessageWithType:UDPTunnelMessage data:data];
+	}
 }
 
 // New UDP packet received.  This method is called by MKConnection's
@@ -655,7 +667,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 	if ([pds valid]) {
 		data = [[NSData alloc] initWithBytesNoCopy:buf length:[pds size]+1 freeWhenDone:NO];
-		[self sendUDPMessage:data];
+		[self _sendUDPMessage:data];
 		[data release];
 	}
 		
@@ -792,6 +804,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	MKUDPMessageType messageType = ((buf[0] >> 5) & 0x7);
 	unsigned int messageFlags = buf[0] & 0x1f;
 	MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:buf+1 length:[data length]-1]; // fixme(-1)?
+
+	// For now, let's just do this to enable UDP. fixme(mkrautz): Better detection.
+	_udpAvailable = true;
 
 	switch (messageType) {
 		case UDPVoiceCELTAlphaMessage:

@@ -132,6 +132,7 @@ typedef enum {
 	BOOL           _keepRunning;
 	BOOL           _reconnect;
 
+	BOOL           _udpAvailable;
 	unsigned long  _connTime;
 	NSTimer        *_pingTimer;
 	NSOutputStream *_outputStream;
@@ -189,5 +190,6 @@ typedef enum {
 - (NSArray *) peerCertificates;
 
 - (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;
+- (void) sendVoiceData:(NSData *)data;
 
 @end

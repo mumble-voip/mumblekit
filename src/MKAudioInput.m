@@ -568,7 +568,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 		for (NSValue *val in connections) {
 			MKConnection *conn = [val pointerValue];
-			[conn sendMessageWithType:UDPTunnelMessage data:msgData];
+			[conn sendVoiceData:msgData];
 		}
 
 		[msgData release];
