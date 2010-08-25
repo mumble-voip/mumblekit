@@ -441,7 +441,6 @@
 				32C88DFF0371C24200C91783 /* Prefix Header */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
-				28DB498611C39456001140AD /* CoreAudio.framework */,
 			);
 			name = MumbleKit;
 			sourceTree = "<group>";
@@ -449,6 +448,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28DB498611C39456001140AD /* CoreAudio.framework */,
 				28D81EED11BFC3750037D2C6 /* Security.framework */,
 				28D81EF311BFC3910037D2C6 /* AudioUnit.framework */,
 				28750A2011431BD7002885AF /* CFNetwork.framework */,
