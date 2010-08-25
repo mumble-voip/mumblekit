@@ -514,7 +514,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	}
 
 	NSData *crypted = [_crypt encryptData:data];
-	CFSocketError err = CFSocketSendData(_udpSock, NULL, (CFDataRef)crypted, 1.0f);
+	CFSocketError err = CFSocketSendData(_udpSock, NULL, (CFDataRef)crypted, -1.0f);
 	if (err != kCFSocketSuccess) {
 		NSLog(@"MKConnection: CFSocketSendData failed with err=%i", (int)err);
 	}
