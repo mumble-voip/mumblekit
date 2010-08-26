@@ -675,12 +675,12 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:buf+1 length:16];
 	buf[0] = UDPPingMessage << 5;
 	[pds addVarint:timeStamp];
-
 	if ([pds valid]) {
 		data = [[NSData alloc] initWithBytesNoCopy:buf length:[pds size]+1 freeWhenDone:NO];
 		[self _sendUDPMessage:data];
 		[data release];
 	}
+	[pds release];
 		
 	// Then the TCP ping...
 	MPPing_Builder *ping = [MPPing builder];
