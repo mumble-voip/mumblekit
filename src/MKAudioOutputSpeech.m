@@ -139,9 +139,13 @@ struct MKAudioOutputSpeechPrivate {
 		speex_resampler_destroy(_private->resampler);
 	if (_private->jitter)
 		jitter_buffer_destroy(_private->jitter);
+	if (_private)
+		free(_private);
 
-	free(fadeIn);
-	free(fadeOut);
+	if (fadeIn)
+		free(fadeIn);
+	if (fadeOut)
+		free(fadeOut);
 
 	[frames release];
 
