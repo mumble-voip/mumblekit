@@ -547,11 +547,11 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		[self performSelector:@selector(_sendMessageHelper:) onThread:self withObject:dict waitUntilDone:NO];
 
 	// If we were called from our own thread, just call the wrapper directly.
-	// Note that we need to release the wrapper dictionary manually in this case!
 	} else {
 		[self _sendMessageHelper:dict];
-		[dict release];
 	}
+
+	[dict release];
 }
 
 // This is a helper function for dispatching a sendMessageWithType:data: method call
