@@ -53,11 +53,11 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 		 * you back later.
 		 */
 		buf->mDataByteSize = 0;
+		[pool release];
 		return -1;
 	}
 
 	[pool release];
-
 	return noErr;
 }
 
