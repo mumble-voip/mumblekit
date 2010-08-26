@@ -504,6 +504,17 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	return [certs autorelease];
 }
 
+// Force the MKConnection into TCP mode, forcing all voice data to
+// be tunelled through TCP instead of being transmitted via UDP.
+- (void) setForceTCP:(BOOL)flag {
+	_forceTCP = flag;
+}
+
+// Return the current TCP mode status
+- (BOOL) forceTCP {
+	return _forceTCP;
+}
+
 // Send a UDP message.  This method encrypts the message using the connection's
 // current CryptState before sending it to the server.
 // Message identity information is stored as part of the first byte of 'data'.
@@ -566,7 +577,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // out whether it should be sent via UDP or TCP depending on the current
 // connection conditions.
 - (void) sendVoiceData:(NSData *)data {
-	if (_udpAvailable) {
+	if (!_forceTCP && _udpAvailable) {
 		[self _sendUDPMessage:data];
 	} else {
 		[self sendMessageWithType:UDPTunnelMessage data:data];

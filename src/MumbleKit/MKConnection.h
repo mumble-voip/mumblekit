@@ -132,6 +132,7 @@ typedef enum {
 	BOOL           _keepRunning;
 	BOOL           _reconnect;
 
+	BOOL           _forceTCP;
 	BOOL           _udpAvailable;
 	unsigned long  _connTime;
 	NSTimer        *_pingTimer;
@@ -188,6 +189,9 @@ typedef enum {
 
 - (void) setIgnoreSSLVerification:(BOOL)flag;
 - (NSArray *) peerCertificates;
+
+- (void) setForceTCP:(BOOL)flag;
+- (BOOL) forceTCP;
 
 - (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;
 - (void) sendVoiceData:(NSData *)data;
