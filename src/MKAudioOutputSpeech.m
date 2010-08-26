@@ -140,6 +140,9 @@ struct MKAudioOutputSpeechPrivate {
 	if (_private->jitter)
 		jitter_buffer_destroy(_private->jitter);
 
+	free(fadeIn);
+	free(fadeOut);
+
 	[frames release];
 
 	[super dealloc];
