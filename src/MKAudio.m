@@ -40,32 +40,43 @@
 
 static MKAudio *audioSingleton = nil;
 
-static void AudioInterruptionListenerCallback(void *udata, UInt32 interruptionState) {
+static void MKAudio_InterruptCallback(void *udata, UInt32 interruptionState) {
 	MK_UNUSED MKAudio *audio = (MKAudio *) udata;
-	NSLog(@"Audio: Interruption state callback called.");
+	NSLog(@"MKAudio: Interruption state callback called.");
 }
 
 
 #if TARGET_OS_IPHONE == 1
-static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionPropertyID property, UInt32 len, void *data) {
-	MK_UNUSED MKAudio *audio = (MKAudio *) udata;
+static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionPropertyID prop, UInt32 len, uint32_t *avail) {
 	BOOL audioInputAvailable;
-	UInt32 *u32;
+	UInt32 val;
+	OSStatus err;
 
-	switch (property) {
-		case kAudioSessionProperty_AudioInputAvailable: {
-			u32 = data;
-			audioInputAvailable = (BOOL)*u32;
-			if (audioInputAvailable == NO) {
-				NSLog(@"Audio: Audio Input now unavailable.");
-			} else {
-				NSLog(@"Audio: Audio Input now available.");
-			}
-
-			NSLog(@"Audio: AudioInputAvailable changed...");
-			break;
+	if (avail) {
+		audioInputAvailable = *avail;
+		val = audioInputAvailable ? kAudioSessionCategory_PlayAndRecord : kAudioSessionCategory_MediaPlayback;
+		err = AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(val), &val);
+		if (err != kAudioSessionNoError) {
+			NSLog(@"MKAudio: Unable to set AudioCategory property.");
+			return;
 		}
+
+		if (val == kAudioSessionCategory_PlayAndRecord) {
+			val = 1;
+			err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
+			if (err != kAudioSessionNoError) {
+				NSLog(@"MKAudio: Unable to set OverrideCategoryDefaultToSpeaker property.");
+				return;
+			}
+		}
+
+		[audio restart];
 	}
+}
+
+static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionPropertyID prop, UInt32 len, NSDictionary *dict) {
+	NSLog(@"MKAudio: Audio route changed.");
+
 }
 #endif
 
@@ -89,88 +100,98 @@ static void AudioSessionPropertyListenerCallback(void *udata, AudioSessionProper
 	OSStatus err;
 	UInt32 val, valSize;
 
-	/*
-	 * Initialize Audio Session.
-	 */
-	err = AudioSessionInitialize(CFRunLoopGetMain(), kCFRunLoopDefaultMode, AudioInterruptionListenerCallback, self);
+	// Initialize Audio Session
+	err = AudioSessionInitialize(CFRunLoopGetMain(), kCFRunLoopDefaultMode, MKAudio_InterruptCallback, self);
 	if (err != kAudioSessionNoError) {
-		NSLog(@"Audio: Unable to initialize AudioSession.");
+		NSLog(@"MKAudio: Unable to initialize AudioSession.");
 		return nil;
 	}
 
-	/*
-	 * To properly determine the right category property (at this time), we need to check
-	 * whether we have a microphone available. This will always be the case on an iPhone,
-	 * but for the iPod touch, we need the headphones plugged in.
-	 */
+	// Listen for audio route changes
+	err = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
+										  (AudioSessionPropertyListener)MKAudio_AudioRouteChangedCallback,
+										  self);
+	if (err != kAudioSessionNoError) {
+		NSLog(@"MKAudio: Unable to register property listener for AudioRouteChange.");
+		return nil;
+	}
+
+	// Listen for audio input availability changes
+	err = AudioSessionAddPropertyListener(kAudioSessionProperty_AudioInputAvailable,
+										  (AudioSessionPropertyListener)MKAudio_AudioInputAvailableCallback,
+										  self);
+	if (err != kAudioSessionNoError) {
+		NSLog(@"MKAudio: Unable to register property listener for AudioInputAvailable.");
+		return nil;
+	}
+
+	// To be able to select the correct category, we must query whethe audio input is
+	// available.
 	valSize = sizeof(UInt32);
 	err = AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, &valSize, &val);
 	if (err != kAudioSessionNoError || valSize != sizeof(UInt32)) {
-		NSLog(@"Audio: Unable to query for input availability.");
+		NSLog(@"MKAudio: Unable to query for input availability.");
 	}
 
+	// Set the correct category for our Audio Session depending on our current audio input situation.
 	audioInputAvailable = (BOOL) val;
-	if (audioInputAvailable == NO) {
-		NSLog(@"Audio: Audio Input not available.");
-		val = kAudioSessionCategory_MediaPlayback;
-	} else {
-		NSLog(@"Audio: Audio Input available.");
-		val = kAudioSessionCategory_PlayAndRecord;
-	}
-
+	val = audioInputAvailable ? kAudioSessionCategory_PlayAndRecord : kAudioSessionCategory_MediaPlayback;
 	err = AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(val), &val);
 	if (err != kAudioSessionNoError) {
-		NSLog(@"Audio: Unable to set AudioCategory property.");
+		NSLog(@"MKAudio: Unable to set AudioCategory property.");
 		return nil;
 	}
 
-	/*
-	 * Override whether we want to allow to be mixed with other applications. We want this to be
-	 * a user choice. Some users may want their iPod app to play in the background.
-	 */
+	if (audioInputAvailable) {
+		// The OverrideCategoryDefaultToSpeaker property makes us output to the speakers of the iOS device
+		// as long as there's not a headset connected.
+		val = TRUE;
+		err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
+		if (err != kAudioSessionNoError) {
+			NSLog(@"MKAudio: Unable to set OverrideCategoryDefaultToSpeaker property.");
+			return;
+		}
+	}
+
+	// Do we want to be mixed with other applications?
 	val = TRUE;
 	err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
 	if (err != kAudioSessionNoError) {
-		NSLog(@"Audio: Unable to set MixWithOthers property.");
+		NSLog(@"MKAudio: Unable to set MixWithOthers property.");
 		return nil;
 	}
 
-	/*
-	 * Set the preferred hardware sample rate.
-	 * fixme(mkrautz): The AudioSession *can* reject this, in which case we need
-	 *                 to be able to handle whatever input sampling rate is chosen
-	 *                 for us. This is apparently 8KHz on a 1st gen iPhone.
-	 */
+	 // Set the preferred hardware sample rate.
+	 //
+	 // fixme(mkrautz): The AudioSession *can* reject this, in which case we need
+	 // to be able to handle whatever input sampling rate is chosen for us. This is
+	 // apparently 8KHz on a 1st gen iPhone.
 	fval = SAMPLE_RATE;
 	err = AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(Float64), &fval);
 	if (err != kAudioSessionNoError) {
-		NSLog(@"Audio: Unable to set preferred hardware sample rate.");
+		NSLog(@"MKAudio: Unable to set preferred hardware sample rate.");
 		return nil;
 	}
 
-	/*
-	 * Activate our Audio Session.
-	 */
+	// Activate our audio session
 	err = AudioSessionSetActive(TRUE);
 	if (err != kAudioSessionNoError) {
-			NSLog(@"Audio: Unable to set session as active.");
+			NSLog(@"MKAudio: Unable to set session as active.");
 			return nil;
 	}
 
-	/*
-	 * Query for the actual sample rate we are to cope with.
-	 */
+	// Query for the actual sample rate we're to cope with.
 	valSize = sizeof(Float64);
 	err = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate, &valSize, &fval);
 	if (err != kAudioSessionNoError) {
-		NSLog(@"Audio: Unable to query for current hardware sample rate.");
+		NSLog(@"MKAudio: Unable to query for current hardware sample rate.");
 		return nil;
 	}
 #elif TARGET_OS_MAC == 1
 	audioInputAvailable = YES;
 #endif
 
-	NSLog(@"Audio: Current hardware sample rate = %.2fHz.", fval);
+	NSLog(@"MKAudio: Current hardware sample rate = %.2fHz.", fval);
 
 	return self;
 }

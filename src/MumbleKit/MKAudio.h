@@ -60,9 +60,9 @@ typedef struct _MKAudioBenchmark {
 } MKAudioBenchmark;
 
 @interface MKAudio : NSObject {
-	MKAudioInput *_audioInput;
-	MKAudioOutput *_audioOutput;
-	MKAudioSettings _audioSettings;
+	MKAudioInput     *_audioInput;
+	MKAudioOutput    *_audioOutput;
+	MKAudioSettings  _audioSettings;
 }
 
 + (MKAudio *) sharedAudio;
