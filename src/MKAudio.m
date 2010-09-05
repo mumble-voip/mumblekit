@@ -149,7 +149,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 		err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
 		if (err != kAudioSessionNoError) {
 			NSLog(@"MKAudio: Unable to set OverrideCategoryDefaultToSpeaker property.");
-			return;
+			return nil;
 		}
 	}
 
@@ -249,5 +249,22 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 		bench->avgPreprocessorRuntime = [_audioInput preprocessorAvgRuntime];
 	}
 }
+
+- (NSString *) currentAudioRoute {
+#if TARGET_OS_IPHONE == 1
+	// Query for the actual sample rate we're to cope with.
+	NSString *route;
+	UInt32 len = sizeof(NSString *);
+	OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &len, &route);
+	if (err != kAudioSessionNoError) {
+		NSLog(@"MKAudio: Unable to query for current audio route.");
+		return @"Unknown";
+	}
+	return route;
+#else
+	return @"Unknown";
+#endif
+}
+
 
 @end

@@ -79,4 +79,6 @@ typedef struct _MKAudioBenchmark {
 
 - (void) getBenchmarkData:(MKAudioBenchmark *)bench;
 
+- (NSString *) currentAudioRoute;
+
 @end
