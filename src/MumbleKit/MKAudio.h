@@ -42,8 +42,7 @@ typedef enum _MKCodecFormat {
 } MKCodecFormat;
 
 typedef struct _MKAudioSettings {
-	MKCodecFormat	inputCodec;
-	MKCodecFormat   outputCodec;
+	MKCodecFormat   codec;
 	int             quality;
 	int             audioPerPacket;
 	int             noiseSuppression;

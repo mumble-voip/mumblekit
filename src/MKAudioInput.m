@@ -110,11 +110,11 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	frameCounter = 0;
 
 
-	if (_settings.inputCodec == MKCodecFormatCELT) {
+	if (_settings.codec == MKCodecFormatCELT) {
 		sampleRate = SAMPLE_RATE;
 		frameSize = SAMPLE_RATE / 100;
 		NSLog(@"AudioInput: %i bits/s, %d Hz, %d sample CELT", _settings.quality, sampleRate, frameSize);
-	} else if (_settings.inputCodec == MKCodecFormatSpeex) {
+	} else if (_settings.codec == MKCodecFormatSpeex) {
 		sampleRate = 32000;
 
 		speex_bits_init(&_private->speexBits);
@@ -460,7 +460,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	unsigned char buffer[1024];
 	int len = 0;
 
-	if (_settings.inputCodec == MKCodecFormatCELT) {
+	if (_settings.codec == MKCodecFormatCELT) {
 		CELTEncoder *encoder = _private->celtEncoder;
 		if (encoder == NULL) {
 			CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
@@ -478,7 +478,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		len = celt_encode(encoder, psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
 
 		bitrate = len * 100 * 8;
-	} else if (_settings.inputCodec == MKCodecFormatSpeex) {
+	} else if (_settings.codec == MKCodecFormatSpeex) {
 		int vbr = 0;
 		speex_encoder_ctl(_private->speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
 		if (vbr != _settings.quality) {
