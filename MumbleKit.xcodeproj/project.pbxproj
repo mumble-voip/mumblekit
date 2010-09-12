@@ -119,6 +119,7 @@
 		28DB498711C39456001140AD /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DB498611C39456001140AD /* CoreAudio.framework */; };
 		28F62B481180B31600214B11 /* MKServerModelObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F62B461180B31600214B11 /* MKServerModelObject.h */; };
 		28F62B491180B31600214B11 /* MKServerModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F62B471180B31600214B11 /* MKServerModelObject.m */; };
+		28FE3F68123D673400A8ED52 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D744E411FB0D3F0025C823 /* CryptState.cpp */; };
 		AA747D9F0F9514B9006C5449 /* MumbleKit.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* MumbleKit.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -920,6 +921,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28FE3F68123D673400A8ED52 /* CryptState.cpp in Sources */,
 				28D81E9811BFC2400037D2C6 /* MKAudio.m in Sources */,
 				28D81E9911BFC2400037D2C6 /* MKAudioInput.m in Sources */,
 				28D81E9A11BFC2400037D2C6 /* MKAudioOutput.m in Sources */,
@@ -948,6 +950,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D744E611FB0D3F0025C823 /* CryptState.cpp in Sources */,
 				28DA415911C3AA4D0037B01D /* MKConnectionController.m in Sources */,
 				28A4934511431863000627EB /* MKAudio.m in Sources */,
 				28A4934711431863000627EB /* MKAudioInput.m in Sources */,
@@ -969,7 +972,6 @@
 				281A23E61179F5B600B7A471 /* MulticastDelegate.m in Sources */,
 				28F62B491180B31600214B11 /* MKServerModelObject.m in Sources */,
 				28BADB1C11D3ABAE00BFDC43 /* MKCertificate.m in Sources */,
-				28D744E611FB0D3F0025C823 /* CryptState.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
