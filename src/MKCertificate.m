@@ -383,7 +383,6 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			unsigned char *strPtr = NULL;
 
 			switch (name->type) {
-
 				case GEN_DNS: {
 					if (!_dnsEntries)
 						_dnsEntries = [[NSMutableArray alloc] init];
@@ -416,7 +415,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 // Get the common name of a MKCertificate.  If no common name is available,
 // nil is returned.
 - (NSString *) commonName {
-	return [_subjectDict objectForKey:@"CN"];
+	return [_subjectDict objectForKey:MKCertificateItemCommonName];
 }
 
 // Get the email of the subject of the MKCertificate.  If no email is available,
@@ -430,12 +429,27 @@ static int add_ext(X509 * crt, int nid, char *value) {
 
 // Get the issuer name of the MKCertificate.  If no issuer is present, nil is returned.
 - (NSString *) issuerName {
-	return [_issuerDict objectForKey:@"CN"];
+	return [self issuerItem:MKCertificateItemCommonName];
 }
 
 // Returns the expiry date of the certificate.
-- (NSDate *) expiryDate {
+- (NSDate *) notAfter {
 	return _notAfterDate;
+}
+
+// Returns the notBefore date of the certificate.
+- (NSDate *) notBefore {
+	return _notBeforeDate;
+}
+
+// Look up an issuer item.
+- (NSString *) issuerItem:(NSString *)item {
+	return [_issuerDict objectForKey:item];
+}
+
+// Look up a subject item.
+- (NSString *) subjectItem:(NSString *)item {
+	return [_subjectDict objectForKey:item];
 }
 
 @end

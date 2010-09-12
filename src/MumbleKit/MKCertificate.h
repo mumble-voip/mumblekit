@@ -29,6 +29,11 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#define MKCertificateItemCommonName   @"CN"
+#define MKCertificateItemCountry      @"C"
+#define MKCertificateItemOrganization @"O"
+#define MKCertificateItemSerialNumber @"serialNumber"
+
 @interface MKCertificate : NSObject {
 	NSData          *_derCert;
 	NSData          *_derPrivKey;
@@ -50,6 +55,9 @@
 - (NSString *) commonName;
 - (NSString *) emailAddress;
 - (NSString *) issuerName;
-- (NSDate *) expiryDate;
+- (NSDate *) notBefore;
+- (NSDate *) notAfter;
+- (NSString *) issuerItem:(NSString *)item;
+- (NSString *) subjectItem:(NSString *)item;
 
 @end
