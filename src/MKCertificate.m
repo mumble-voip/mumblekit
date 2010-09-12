@@ -55,8 +55,11 @@ static int add_ext(X509 * crt, int nid, char *value) {
 @interface MKCertificate (Private)
 - (void) setCertificate:(NSData *)cert;
 - (NSData *) certificate;
+
 - (void) setPrivateKey:(NSData *)pkey;
 - (NSData *) privateKey;
+
+- (void) extractCertInfo;
 @end
 
 @implementation MKCertificate
@@ -94,6 +97,18 @@ static int add_ext(X509 * crt, int nid, char *value) {
 	return _derPrivKey;
 }
 
+// Returns an autoreleased MKCertificate object constructed by the given DER-encoded
+// certificate and private key.
++ (MKCertificate *) certificateWithCertificate:(NSData *)cert privateKey:(NSData *)privkey {
+	MKCertificate *ourCert = [[MKCertificate alloc] init];
+	[ourCert setCertificate:cert];
+	[ourCert setPrivateKey:privkey];
+	[ourCert extractCertInfo];
+	return [ourCert autorelease];
+}
+
+// Generate a self-signed certificate with the given name and email address as
+// a MKCertificate object.
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)aName email:(NSString *)anEmail {
 	CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_ON);
 
@@ -151,6 +166,9 @@ static int add_ext(X509 * crt, int nid, char *value) {
 	return [cert autorelease];
 }
 
+// Export a MKCertificate object as a PKCS12-encoded NSData blob. This is useful for
+// APIs that only accept PKCS12 encoded data for import, like some the iOS keychain
+// APIs.
 - (NSData *) exportPKCS12WithPassword:(NSString *)password {
 	X509 *x509 = NULL;
 	EVP_PKEY *pkey = NULL;
@@ -212,6 +230,212 @@ static int add_ext(X509 * crt, int nid, char *value) {
 		sk_X509_free(certs);
 
 	return [retData autorelease];
+}
+
+// Parse a one-line ASCII representation of subject or issuer info
+// from a certificate. Returns a dictionary with the keys and values
+// as-is.
+- (NSDictionary *) dictForOneLineASCIIRepr:(char *)asciiRepr {
+	char *cur = asciiRepr;
+	NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+	char *key = NULL, *val = NULL;
+	while (1) {
+		if (*cur == '/') {
+			*cur = '\0';
+			if (key) {
+				[dict setValue:[NSString stringWithCString:val encoding:NSASCIIStringEncoding]
+						forKey:[NSString stringWithCString:key encoding:NSASCIIStringEncoding]];
+			}
+			key = cur+1;
+		} else if (*cur == '=') {
+			*cur = '\0';
+			val = cur+1;
+		} else if (*cur == '\0') {
+			[dict setValue:[NSString stringWithCString:val encoding:NSASCIIStringEncoding]
+					forKey:[NSString stringWithCString:key encoding:NSASCIIStringEncoding]];
+			break;
+		}
+		++cur;
+	}
+	return (NSDictionary *)dict;
+}
+
+// Parse an ASN1 string representing time.
+// GeneralizedTime: http://www.obj-sys.com/asn1tutorial/node14.html
+// UTCTime: http://www.obj-sys.com/asn1tutorial/node15.html
+// Also, a gem from http://www.columbia.edu/~ariel/ssleay/asn1-time.html:
+// "UTCTIME is used to encode values with year 1950 through 2049."
+//
+// fixme(mkrautz): This needs some testing. And fuzzing.
+//                 Also, are "local time only" times supposed to be handled?
+- (NSDate *) parseASN1Date:(ASN1_TIME *)time {
+	int Y = 0, M = 0, D = 0, h = 0, m = 0, s = 0, sfrac = 0, th = 0, tm = 0, sign = 0;
+	unsigned char *p = time->data;
+
+	if (time->type == V_ASN1_UTCTIME && time->length-1 >= 10) {
+		Y = (p[0]-'0')*10 + (p[1]-'0');
+		if (Y > 49)
+			Y += 1900;
+		else
+			Y += 2000;
+		M = (p[2]-'0')*10 + (p[3]-'0');
+		D = (p[4]-'0')*10 + (p[5]-'0');
+		h = (p[6]-'0')*10 + (p[7]-'0');
+		m = (p[7]-'0')*10 + (p[8]-'0');
+		if (p[9] == 'Z' || p[9] == '+' || p[9] == '-') {
+			if (time->length-1 >= 13 && p[9] != 'Z') {
+				sign = p[9] == '+' ? 1 : -1;
+				th = sign*((p[10]-'0')*10 + (p[11]-'0'));
+				tm = sign*((p[12]-'0')*10 + (p[13]-'0'));
+			}
+		} else {
+			s = (p[9]-'0')*10 + (p[10]-'0');
+		}
+		if (time->length-1 >= 11 && (p[11] == 'Z' || p[11] == '+' || p[11] == '-')) {
+			if (time->length-1 >= 15 && p[11] != 'Z') {
+				sign = p[11] == '+' ? 1 : -1;
+				th = ((p[12]-'0')*10 + (p[13]-'0'));
+				tm = ((p[14]-'0')*10 + (p[15]-'0'));
+			}
+		} else if (time->length-1 >= 15 && p[11] == '.') {
+			sfrac = (p[12]-'0')*100 + (p[13]-'0')*10 + (p[14]-'0');
+			if (p[15] == 'Z' || p[15] == '+' || p[15] == '-') {
+				if (time->length-1 >= 17 && p[15] != 'Z') {
+					sign = p[15] == '+' ? 1 : -1;
+					th = ((p[16]-'0')*10 + (p[17]-'0'));
+					tm = ((p[16]-'0')*10 + (p[17]-'0'));
+				}
+			}
+		}
+	} else if (time->type == V_ASN1_GENERALIZEDTIME && time->length-1 >= 14) {
+		Y = (p[0]-'0')*1000 + (p[1]-'0')*100 + (p[2]-'0')*10 + (p[3]-'0');
+		M = (p[4]-'0')*10 + (p[5]-'0');
+		D = (p[6]-'0')*10 + (p[7]-'0');
+		h = (p[8]-'0')*10 + (p[9]-'0');
+		m = (p[10]-'0')*10 + (p[11]-'0');
+		s = (p[12]-'0')*10 + (p[13]-'0');
+		if (time->length-1 >= 18 && p[14] == '.') {
+			sfrac = (p[15]-'0')*100 + (p[16]-'0')*10 + (p[17]-'0');
+			if (p[18] == 'Z' || p[18] == '+' || p[18] == '-') {
+				if (time->length-1 >= 22 && p[18] != 'Z') {
+					sign = p[18] == '+' ? 1 : -1;
+					th = ((p[19]-'0')*10 + (p[20]-'0'));
+					tm = ((p[21]-'0')*10 + (p[22]-'0'));
+				}
+			}
+		} else if (p[14] == 'Z' || p[14] == '+' || p[14] == '-') {
+			if (time->length-1 >= 18 && p[14] != 'Z') {
+				sign = p[14] == '+' ? 1 : -1;
+				th = ((p[15]-'0')*10 + (p[16]-'0'));
+				tm = ((p[17]-'0')*10 + (p[18]-'0'));
+			}
+		}
+	}
+
+	return [[NSDate alloc] initWithString:
+			[NSString stringWithFormat:@"%.4i-%.2i-%.2i %.2i-%.2i-%.2i %c%.2i%.2i",
+					Y, M, D, h, m, s, sign > 0 ? '+' : '-', th, tm]];
+}
+
+- (void) extractCertInfo {
+	X509 *x509 = NULL;
+	const unsigned char *p = NULL;
+
+	p = [_derCert bytes];
+	x509 = d2i_X509(NULL, &p, [_derCert length]);
+
+	if (x509) {
+		// Extract subject information
+		{
+			X509_NAME *subject = X509_get_subject_name(x509);
+			char *asciiRepr = X509_NAME_oneline(subject, NULL, 0);
+			if (asciiRepr) {
+				_subjectDict = [self dictForOneLineASCIIRepr:asciiRepr];
+				OPENSSL_free(asciiRepr);
+			}
+		}
+
+		// Extract issuer information
+		{
+			X509_NAME *issuer = X509_get_issuer_name(x509);
+			char *asciiRepr = X509_NAME_oneline(issuer, NULL, 0);
+			if (asciiRepr) {
+				_issuerDict = [self dictForOneLineASCIIRepr:asciiRepr];
+				OPENSSL_free(asciiRepr);
+			}
+		}
+
+		// Extract notBefore and notAfter
+		ASN1_TIME *notBefore = X509_get_notBefore(x509);
+		if (notBefore) {
+			_notBeforeDate = [self parseASN1Date:notBefore];
+		}
+		ASN1_TIME *notAfter = X509_get_notAfter(x509);
+		if (notAfter) {
+			_notAfterDate = [self parseASN1Date:notAfter];
+		}
+
+		// Extract Subject Alt Names
+		STACK_OF(GENERAL_NAME) *subjAltNames = X509_get_ext_d2i(x509, NID_subject_alt_name, NULL, NULL);
+		int num = sk_GENERAL_NAME_num(subjAltNames);
+		for (int i = 0; i < num; i++) {
+			GENERAL_NAME *name = sk_GENERAL_NAME_value(subjAltNames, i);
+			unsigned char *strPtr = NULL;
+
+			switch (name->type) {
+
+				case GEN_DNS: {
+					if (!_dnsEntries)
+						_dnsEntries = [[NSMutableArray alloc] init];
+					ASN1_STRING_to_UTF8(&strPtr, name->d.ia5);
+					NSString *dns = [[NSString alloc] initWithUTF8String:(char *)strPtr];
+					[_dnsEntries addObject:dns];
+					break;
+				}
+				case GEN_EMAIL: {
+					if (!_emailAddresses)
+						_emailAddresses = [[NSMutableArray alloc] init];
+					ASN1_STRING_to_UTF8(&strPtr, name->d.ia5);
+					NSString *email = [[NSString alloc] initWithUTF8String:(char *)strPtr];
+					[_emailAddresses addObject:email];
+					break;
+				}
+				// fixme(mkrautz): There's an URI alt name as well.
+				default:
+					break;
+			}
+
+			OPENSSL_free(strPtr);
+		}
+
+		sk_pop_free(subjAltNames, sk_free);
+		X509_free(x509);
+	}
+}
+
+// Get the common name of a MKCertificate.  If no common name is available,
+// nil is returned.
+- (NSString *) commonName {
+	return [_subjectDict objectForKey:@"CN"];
+}
+
+// Get the email of the subject of the MKCertificate.  If no email is available,
+// nil is returned.
+- (NSString *) emailAddress {
+	if (_emailAddresses && [_emailAddresses count] > 0) {
+		return [_emailAddresses objectAtIndex:0];
+	}
+	return nil;
+}
+
+// Get the issuer name of the MKCertificate.  If no issuer is present, nil is returned.
+- (NSString *) issuerName {
+	return [_issuerDict objectForKey:@"CN"];
+}
+
+// Returns the expiry date of the certificate.
+- (NSDate *) expiryDate {
+	return _notAfterDate;
 }
 
 @end

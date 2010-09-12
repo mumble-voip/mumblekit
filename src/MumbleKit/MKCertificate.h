@@ -30,11 +30,26 @@
 */
 
 @interface MKCertificate : NSObject {
-	NSData *_derCert;
-	NSData *_derPrivKey;
+	NSData          *_derCert;
+	NSData          *_derPrivKey;
+
+	NSDictionary    *_subjectDict;
+	NSDictionary    *_issuerDict;
+
+	NSDate          *_notAfterDate;
+	NSDate          *_notBeforeDate;
+
+	NSMutableArray  *_emailAddresses;
+	NSMutableArray  *_dnsEntries;
 }
 
++ (MKCertificate *) certificateWithCertificate:(NSData *)cert privateKey:(NSData *)privkey;
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email;
 - (NSData *) exportPKCS12WithPassword:(NSString *)password;
+
+- (NSString *) commonName;
+- (NSString *) emailAddress;
+- (NSString *) issuerName;
+- (NSDate *) expiryDate;
 
 @end
