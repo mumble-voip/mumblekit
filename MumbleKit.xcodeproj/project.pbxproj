@@ -375,7 +375,7 @@
 		28D1E663115018A800469C69 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D744E411FB0D3F0025C823 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = "<group>"; };
 		28D744E511FB0D3F0025C823 /* CryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CryptState.h; path = src/CryptState.h; sourceTree = "<group>"; };
-		28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D81E9311BFC22F0037D2C6 /* MumbleKit */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MumbleKit; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MumbleKit-MacOSX.plist"; path = "src/MumbleKit-MacOSX.plist"; sourceTree = "<group>"; };
 		28D81EED11BFC3750037D2C6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		28D81EF311BFC3910037D2C6 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -425,7 +425,7 @@
 			isa = PBXGroup;
 			children = (
 				28D1E663115018A800469C69 /* libMumbleKit.a */,
-				28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */,
+				28D81E9311BFC22F0037D2C6 /* MumbleKit */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -712,7 +712,7 @@
 			);
 			name = "MumbleKit (Mac OS X)";
 			productName = "MumbleKit (Mac OS X)";
-			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */;
+			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit */;
 			productType = "com.apple.product-type.framework";
 		};
 		D2AAC07D0554694100DB518D /* MumbleKit (iOS) */ = {
@@ -1040,7 +1040,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/MumbleKit.dst;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -1059,7 +1059,8 @@
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
 		};
@@ -1067,7 +1068,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/MumbleKit.dst;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_MODEL_TUNING = G5;
@@ -1082,7 +1083,8 @@
 				);
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = MumbleKit;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
 		};

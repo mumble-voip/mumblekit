@@ -2288,7 +2288,7 @@
 		28CB1D9A11D01C9800ACF085 /* t1_srvr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = t1_srvr.c; sourceTree = "<group>"; };
 		28CB1D9B11D01C9800ACF085 /* tls1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tls1.h; sourceTree = "<group>"; };
 		28CB232A11D0284500ACF085 /* OpenSSL.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenSSL.pch; sourceTree = "<group>"; };
-		28D39C2811D564F00016C02E /* libOpenSSL.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libOpenSSL.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D39C2811D564F00016C02E /* libOpenSSL */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = libOpenSSL; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2AAC07E0554694100DB518D /* libOpenSSL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpenSSL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -2314,7 +2314,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AAC07E0554694100DB518D /* libOpenSSL.a */,
-				28D39C2811D564F00016C02E /* libOpenSSL.dylib */,
+				28D39C2811D564F00016C02E /* libOpenSSL */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3967,7 +3967,7 @@
 			);
 			name = "OpenSSL (Mac OS X)";
 			productName = "OpenSSL (Mac OS X)";
-			productReference = 28D39C2811D564F00016C02E /* libOpenSSL.dylib */;
+			productReference = 28D39C2811D564F00016C02E /* libOpenSSL */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		D2AAC07D0554694100DB518D /* OpenSSL (iOS) */ = {
@@ -3994,7 +3994,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "OpenSSL" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* OpenSSL */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -5299,6 +5306,7 @@
 					"\"$(SRCROOT)/../../../../../XcodeBuild/Debug\"",
 				);
 				PRODUCT_NAME = OpenSSL;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -5316,6 +5324,7 @@
 					"\"$(SRCROOT)/../../../../../XcodeBuild/Debug\"",
 				);
 				PRODUCT_NAME = OpenSSL;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Release;
 		};

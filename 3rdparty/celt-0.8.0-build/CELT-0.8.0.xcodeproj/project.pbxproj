@@ -396,7 +396,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "CELT-0.8.0" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* CELT */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -470,7 +477,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/CELT.dst;
 				GCC_AUTO_VECTORIZATION = YES;
@@ -493,7 +500,7 @@
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "CELT-0.8.0";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.1;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.8.0/libcelt//**";
 			};
 			name = Debug;
@@ -502,7 +509,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/CELT.dst;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_FAST_MATH = YES;
@@ -522,7 +529,7 @@
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=armv7]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "CELT-0.8.0";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.1;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/** ${PROJECT_DIR}/../celt-0.8.0/libcelt//**";
 			};
 			name = Release;
