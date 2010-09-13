@@ -375,7 +375,7 @@
 		28D1E663115018A800469C69 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D744E411FB0D3F0025C823 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = "<group>"; };
 		28D744E511FB0D3F0025C823 /* CryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CryptState.h; path = src/CryptState.h; sourceTree = "<group>"; };
-		28D81E9311BFC22F0037D2C6 /* MumbleKit */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MumbleKit; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D81E9411BFC22F0037D2C6 /* MumbleKit-MacOSX.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MumbleKit-MacOSX.plist"; path = "src/MumbleKit-MacOSX.plist"; sourceTree = "<group>"; };
 		28D81EED11BFC3750037D2C6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		28D81EF311BFC3910037D2C6 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -425,7 +425,7 @@
 			isa = PBXGroup;
 			children = (
 				28D1E663115018A800469C69 /* libMumbleKit.a */,
-				28D81E9311BFC22F0037D2C6 /* MumbleKit */,
+				28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -712,7 +712,7 @@
 			);
 			name = "MumbleKit (Mac OS X)";
 			productName = "MumbleKit (Mac OS X)";
-			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit */;
+			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		D2AAC07D0554694100DB518D /* MumbleKit (iOS) */ = {
@@ -1050,6 +1050,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/",
 					"${PROJECT_DIR}/3rdparty/speex/include/",
@@ -1074,6 +1075,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/3rdparty/celt-0.7.0/libcelt/",
 					"${PROJECT_DIR}/3rdparty/speex/include/",
