@@ -958,6 +958,7 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 
 @interface MPUserState : PBGeneratedMessage {
 @private
+  BOOL hasRecording_:1;
   BOOL hasPrioritySpeaker_:1;
   BOOL hasSelfDeaf_:1;
   BOOL hasSelfMute_:1;
@@ -976,6 +977,7 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
   BOOL hasUserId_:1;
   BOOL hasActor_:1;
   BOOL hasSession_:1;
+  BOOL recording_:1;
   BOOL prioritySpeaker_:1;
   BOOL selfDeaf_:1;
   BOOL selfMute_:1;
@@ -1013,6 +1015,7 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 - (BOOL) hasCommentHash;
 - (BOOL) hasTextureHash;
 - (BOOL) hasPrioritySpeaker;
+- (BOOL) hasRecording;
 @property (readonly) int32_t session;
 @property (readonly) int32_t actor;
 @property (readonly, retain) NSString* name;
@@ -1031,6 +1034,7 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 @property (readonly, retain) NSData* commentHash;
 @property (readonly, retain) NSData* textureHash;
 - (BOOL) prioritySpeaker;
+- (BOOL) recording;
 
 + (MPUserState*) defaultInstance;
 - (MPUserState*) defaultInstance;
@@ -1155,6 +1159,11 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value);
 - (BOOL) prioritySpeaker;
 - (MPUserState_Builder*) setPrioritySpeaker:(BOOL) value;
 - (MPUserState_Builder*) clearPrioritySpeaker;
+
+- (BOOL) hasRecording;
+- (BOOL) recording;
+- (MPUserState_Builder*) setRecording:(BOOL) value;
+- (MPUserState_Builder*) clearRecording;
 @end
 
 @interface MPBanList : PBGeneratedMessage {

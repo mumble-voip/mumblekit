@@ -3354,6 +3354,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 @property (retain) NSData* commentHash;
 @property (retain) NSData* textureHash;
 @property BOOL prioritySpeaker;
+@property BOOL recording;
 @end
 
 @implementation MPUserState
@@ -3514,6 +3515,18 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 - (void) setPrioritySpeaker:(BOOL) value {
   prioritySpeaker_ = !!value;
 }
+- (BOOL) hasRecording {
+  return !!hasRecording_;
+}
+- (void) setHasRecording:(BOOL) value {
+  hasRecording_ = !!value;
+}
+- (BOOL) recording {
+  return !!recording_;
+}
+- (void) setRecording:(BOOL) value {
+  recording_ = !!value;
+}
 - (void) dealloc {
   self.name = nil;
   self.texture = nil;
@@ -3545,6 +3558,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
     self.commentHash = [NSData data];
     self.textureHash = [NSData data];
     self.prioritySpeaker = NO;
+    self.recording = NO;
   }
   return self;
 }
@@ -3618,6 +3632,9 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (self.hasPrioritySpeaker) {
     [output writeBool:18 value:self.prioritySpeaker];
   }
+  if (self.hasRecording) {
+    [output writeBool:19 value:self.recording];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -3680,6 +3697,9 @@ static MPUserState* defaultMPUserStateInstance = nil;
   }
   if (self.hasPrioritySpeaker) {
     size += computeBoolSize(18, self.prioritySpeaker);
+  }
+  if (self.hasRecording) {
+    size += computeBoolSize(19, self.recording);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -3810,6 +3830,9 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (other.hasPrioritySpeaker) {
     [self setPrioritySpeaker:other.prioritySpeaker];
   }
+  if (other.hasRecording) {
+    [self setRecording:other.recording];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3901,6 +3924,10 @@ static MPUserState* defaultMPUserStateInstance = nil;
       }
       case 144: {
         [self setPrioritySpeaker:[input readBool]];
+        break;
+      }
+      case 152: {
+        [self setRecording:[input readBool]];
         break;
       }
     }
@@ -4192,6 +4219,22 @@ static MPUserState* defaultMPUserStateInstance = nil;
 - (MPUserState_Builder*) clearPrioritySpeaker {
   result.hasPrioritySpeaker = NO;
   result.prioritySpeaker = NO;
+  return self;
+}
+- (BOOL) hasRecording {
+  return result.hasRecording;
+}
+- (BOOL) recording {
+  return result.recording;
+}
+- (MPUserState_Builder*) setRecording:(BOOL) value {
+  result.hasRecording = YES;
+  result.recording = value;
+  return self;
+}
+- (MPUserState_Builder*) clearRecording {
+  result.hasRecording = NO;
+  result.recording = NO;
   return self;
 }
 @end
