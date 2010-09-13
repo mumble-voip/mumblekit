@@ -16,8 +16,8 @@ systems. Visit its website at:
 Fetching dependencies
 ---------------------
 
-To build this you need the iPhone 3.2 SDK (the iPad SDK), or the (as of now, unreleased)
-iOS 4 SDK from Apple. The iOS 4 SDK requires Snow Leopard.
+To build this you need the iOS 4 SDK from Apple. The iOS 4 SDK
+requires Snow Leopard.
 
 Before starting your build, you will need to check out the re-
 quired submodules.
@@ -40,7 +40,7 @@ Building it (command line)
 
 To build from the command line, do something like this:
 
-        $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator3.2 -target MumbleKit -configuration Debug
+        $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator4.1 -target MumbleKit -configuration Debug
 
 How do I include this into my Xcode project? (iOS)
 --------------------------------------------------
