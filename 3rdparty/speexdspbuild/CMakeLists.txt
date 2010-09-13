@@ -1,0 +1,29 @@
+set(SRCDIR ${PROJECT_SOURCE_DIR}/3rdparty/speex/libspeex)
+set(INCDIR ${PROJECT_SOURCE_DIR}/3rdparty/speex/include)
+
+INCLUDE_DIRECTORIES(
+	${PROJECT_SOURCE_DIR}/3rdparty/speexbuild/
+	${INCDIR}
+	${SRCDIR}
+)
+
+ADD_DEFINITIONS(
+	-DHAVE_CONFIG_H
+)
+
+ADD_LIBRARY(SpeexDSP STATIC
+	${SRCDIR}/fftwrap.c
+	${SRCDIR}/filterbank.c
+	${SRCDIR}/jitter.c
+	${SRCDIR}/mdf.c
+	${SRCDIR}/preprocess.c
+	${SRCDIR}/resample.c
+	${SRCDIR}/smallft.c
+)
+
+TARGET_LINK_LIBRARIES(SpeexDSP)
+
+SET_TARGET_PROPERTIES(SpeexDSP PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
+SET_TARGET_PROPERTIES(SpeexDSP PROPERTIES XCODE_ATTRIBUTE_GCC_C_LANGUAGE_STANDARD "c99")
+
+set(CMAKE_OSX_SYSROOT iphoneos4.1)

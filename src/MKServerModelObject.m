@@ -28,7 +28,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import "MKServerModelObject.h"
+#import <MumbleKit/MKServerModelObject.h>
 
 @implementation MKServerModelObject
 
