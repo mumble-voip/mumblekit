@@ -18,3 +18,13 @@ MumbleKit.xcodeproj/xcuserdata/
 *.mode1v3
 *.rej
 *.orig
+
+Makefile
+CMakeFiles
+CMakeLists.txt
+CTestTestfile.cmake
+cmake_install.cmake
+cmake_uninstall.cmake
+CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
