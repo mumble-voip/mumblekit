@@ -21,6 +21,7 @@ MumbleKit.xcodeproj/xcuserdata/
 
 Makefile
 CMakeFiles
+CMakeScripts
 CMakeLists.txt
 CTestTestfile.cmake
 cmake_install.cmake
@@ -28,3 +29,6 @@ cmake_uninstall.cmake
 CMakeCache.txt
 CPackConfig.cmake
 CPackSourceConfig.cmake
+Debug
+Release
+MumbleKit-CMake.xcodeproj
