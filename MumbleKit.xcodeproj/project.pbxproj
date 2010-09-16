@@ -715,7 +715,7 @@
 			productReference = 28D81E9311BFC22F0037D2C6 /* MumbleKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		D2AAC07D0554694100DB518D /* MumbleKit (iOS) */ = {
+		D2AAC07D0554694100DB518D /* CELT 0.8.0 (iOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "MumbleKit (iOS)" */;
 			buildPhases = (
@@ -783,7 +783,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				D2AAC07D0554694100DB518D /* MumbleKit (iOS) */,
+				D2AAC07D0554694100DB518D /* CELT 0.8.0 (iOS) */,
 				28D81E9211BFC22F0037D2C6 /* MumbleKit (Mac OS X) */,
 			);
 		};

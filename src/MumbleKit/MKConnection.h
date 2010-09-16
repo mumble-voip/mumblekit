@@ -33,6 +33,7 @@
 @class MKConnection;
 @class MKPacketDataStream;
 @class MKCryptState;
+@class MKCertificate;
 
 typedef enum {
 	UDPVoiceCELTAlphaMessage = 0,
@@ -146,13 +147,12 @@ typedef enum {
 	int            _socket;
 	CFSocketRef    _udpSock;
 
-	//
 	// Server info.
-	//
 	NSString       *_serverVersion;
 	NSString       *_serverRelease;
 	NSString       *_serverOSName;
 	NSString       *_serverOSVersion;
+	NSMutableArray *_peerCertificates;
 }
 
 - (id) init;

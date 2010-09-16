@@ -36,6 +36,7 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutput.h>
 #import <MumbleKit/MKVersion.h>
+#import <MumbleKit/MKCertificate.h>
 
 #if TARGET_OS_IPHONE == 1
 # import <UIKIt/UIKit.h>
@@ -122,7 +123,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 - (void) dealloc {
 	[[MKConnectionController sharedController] removeConnection:self];
 	[self closeStreams];
+
 	[_crypt release];
+	[_peerCertificates release];
 
 	[super dealloc];
 }
@@ -500,8 +503,19 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 // Returns the certificates of the peer of connection. That is, the server's certificate chain.
 - (NSArray *) peerCertificates {
-	NSArray *certs = (NSArray *) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerCertificates);
-	return [certs autorelease];
+	if (_peerCertificates != nil) {
+		return _peerCertificates;
+	}
+
+	NSArray *secCerts = (NSArray *) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerCertificates);
+	_peerCertificates = [[NSMutableArray alloc] initWithCapacity:[secCerts count]];
+	[secCerts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		NSData *data = (NSData *) SecCertificateCopyData((SecCertificateRef)obj);
+		[_peerCertificates addObject:[MKCertificate certificateWithCertificate:data privateKey:nil]];
+		[data release];
+	}];
+
+	return _peerCertificates;
 }
 
 // Force the MKConnection into TCP mode, forcing all voice data to
