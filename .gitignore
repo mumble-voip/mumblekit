@@ -31,4 +31,4 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 Debug
 Release
-MumbleKit-CMake.xcodeproj
+MumbleKit.xcodeproj
