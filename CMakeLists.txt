@@ -2,12 +2,6 @@ PROJECT(MumbleKit-CMake)
 SET(NAME MumbleKit)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-ADD_SUBDIRECTORY(3rdparty/celt-0.7.0-build)
-ADD_SUBDIRECTORY(3rdparty/speexbuild)
-ADD_SUBDIRECTORY(3rdparty/speexdspbuild)
-ADD_SUBDIRECTORY(3rdparty/protobufbuild)
-ADD_SUBDIRECTORY(3rdparty/opensslbuild)
-
 INCLUDE_DIRECTORIES(
 	src
 	proto
@@ -65,6 +59,32 @@ SET(HEADERS
 	src/MumbleKit/MKVersion.h
 )
 
+# Compiler selection
+IF (XCODE_COMPILER STREQUAL "gcc")
+	SET(MUMBLEKIT_GCC_VERSION "4.2")
+	MESSAGE("Xcode compiler set to gcc 4.2")
+ELSEIF (XCODE_COMPILER STREQUAL "llvmgcc")
+	SET(MUMBLEKIT_GCC_VERSION "com.apple.compilers.llvmgcc42")
+ELSEIF (XCODE_COMPILER STREQUAL "clang")
+	SET(MUMBLEKIT_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
+	MESSAGE("Xcode compiler set to clang")
+ELSE()
+	SET(MUMBLEKIT_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
+	MESSAGE("No Xcode compiler selected. Defaulting to clang")
+ENDIF()
+
+# Configuration types. Change the order to make Release the default configuration for Xcode.
+SET(CMAKE_CONFIGURATION_TYPES "Release" "Debug")
+
+# Add subdirectores now that we've set up our MUMBLEKIT_GCC_VERSION
+# variable. All our 3rdparty CMakeLists depend upon that variable being
+# set.
+ADD_SUBDIRECTORY(3rdparty/celt-0.7.0-build)
+ADD_SUBDIRECTORY(3rdparty/speexbuild)
+ADD_SUBDIRECTORY(3rdparty/speexdspbuild)
+ADD_SUBDIRECTORY(3rdparty/protobufbuild)
+ADD_SUBDIRECTORY(3rdparty/opensslbuild)
+
 IF (MACOSX_BUILD)
 	SET(CMAKE_OSX_SYSROOT macosx10.6)
 	set(CMAKE_SHARED_LINKER_FLAGS "-framework Foundation -framework AudioToolbox -framework AudioUnit -framework Security -framework CoreAudio -framework CoreServices")
@@ -112,7 +132,7 @@ ELSEIF (IOS_BUILD)
 	ENDIF()
 endif()
 
-SET_TARGET_PROPERTIES(MumbleKit PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
+SET_TARGET_PROPERTIES(MumbleKit PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION ${MUMBLEKIT_GCC_VERSION})
 SET_TARGET_PROPERTIES(MumbleKit PROPERTIES XCODE_ATTRIBUTE_GCC_C_LANGUAGE_STANDARD "c99")
 SET_TARGET_PROPERTIES(MumbleKit PROPERTIES XCODE_ATTRIBUTE_GCC_PRECOMPILE_PREFIX_HEADER "YES")
 SET_TARGET_PROPERTIES(MumbleKit PROPERTIES XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "src/MumbleKit.pch")
