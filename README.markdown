@@ -28,19 +28,44 @@ quired submodules.
 This will fetch known "working" snapshot of CELT, Speex and
 Protocol Buffers for Objective C.
 
+Generating the project file
+---------------------------
+
+MumbleKit uses CMake to generate its Xcode project files. If
+you're on Mac OS X, you can download CMake from the CMake
+website at http://www.cmake.org/. If you're a user of Homebrew,
+MacPorts or Fink, there are packages available in there, too.
+
+To generate a MumbleKit.xcodeproj that targets iOS, use:
+
+        $ cmake -G Xcode . -DIOS_BUILD=1
+
+To generate a MumbleKit.xcodeproj that targets Mac OS X, use:
+
+        $ cmake -G Xcode . -DMACOSX_BUILD=1
+
+Note: There's a bug in the current (2.8.2) release of CMake that
+makes it hard to generate .xcodeprojs that use the built-in
+Xcode "standard architectures" for iOS (armv6 and armv7 for device
+builds, i386 for simulator builds). Please see the following CMake
+bug report for more info: http://www.vtk.org/Bug/view.php?id=11244
+
+To work around this issue, you can pass -DBROKEN_CMAKE=1 to simply
+use whatever defaults architectures CMake wants to use.
+
 Building it (Xcode.app)
 -----------------------
 
-To build using Xcode, simply open the MumbleKit Xcode project
-(MumbleKit.xcodeproj in the root of the source tree) and press
-Cmd-B to build.
+After generating a MumbleKit.xcodeproj for your platform, open it
+and select your prefered configuration (Debug or Release). The default
+build configuration for MumbleKit is Release.
 
 Building it (command line)
 --------------------------
 
 To build from the command line, do something like this:
 
-        $ xcodebuild -project MumbleKit.xcodeproj -sdk iphonesimulator4.1 -target MumbleKit -configuration Debug
+        $ xcodebuild -project MumbleKit.xcodeproj -sdk iphoneos4.1 -target BUILD_ALL -configuration Release
 
 How do I include this into my Xcode project? (iOS)
 --------------------------------------------------
@@ -52,10 +77,10 @@ is to drag the MumbleKit.xcodeproj project inside your application's project.
 
 Then, do the following:
 
- * Make MumbleKit (iOS) a direct dependency of your application's main
+ * Make MumbleKitCombined a direct dependency of your application's main
    executable target.
 
- * Drag libMumbleKit.a into the 'Link Against Libraries' section of your
+ * Drag libMumbleCombined.a into the 'Link Against Libraries' section of your
    application's main executable target.
 
  * Add MumbleKit's src directory as a header search path for your application's
@@ -73,7 +98,7 @@ How do I include this into my Xcode project? (Mac OS X)
 
 One way to do this is to include MumbleKit.xcodeproj inside your main project. Then:
 
- * Make MumbleKit (Mac OS X) a direct dependency of your chosen target.
+ * Make MumbleKit a direct dependency of your chosen target.
 
  * Add MumbleKit.framework to the 'Link Binary Against Libraries' section of your chosen target.
 
