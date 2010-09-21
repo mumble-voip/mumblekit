@@ -38,13 +38,13 @@
 #import <MumbleKit/MKVersion.h>
 #import <MumbleKit/MKCertificate.h>
 
+#include <dispatch/dispatch.h>
+
 #if TARGET_OS_IPHONE == 1
 # import <UIKIt/UIKit.h>
 # import <CFNetwork/CFNetwork.h>
 # import <CoreFoundation/CoreFoundation.h>
 #endif
-
-#include <dispatch/dispatch.h>
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -126,6 +126,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 	[_crypt release];
 	[_peerCertificates release];
+
+	if (_clientIdentity)
+		CFRelease(_clientIdentity);
 
 	[super dealloc];
 }
@@ -226,6 +229,17 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 - (BOOL) connected {
 	return _connectionEstablished;
+}
+
+// Sets the SecIdentityRef the client should use for authenticating
+// with the server.
+- (void) setClientIdentity:(SecIdentityRef)secIdentity {
+	_clientIdentity = (SecIdentityRef)CFRetain(secIdentity);
+}
+
+// Returns the current clientIdentity.
+- (SecIdentityRef) clientIdentity {
+	return _clientIdentity;
 }
 
 #pragma mark Server Information
@@ -412,16 +426,19 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	CFMutableDictionaryRef sslDictionary = CFDictionaryCreateMutable(kCFAllocatorDefault, 0,
 																	 &kCFTypeDictionaryKeyCallBacks,
 																	 &kCFTypeDictionaryValueCallBacks);
-
 	if (sslDictionary) {
 		CFDictionaryAddValue(sslDictionary, kCFStreamSSLLevel, kCFStreamSocketSecurityLevelTLSv1);
 		CFDictionaryAddValue(sslDictionary, kCFStreamSSLValidatesCertificateChain, _ignoreSSLVerification ? kCFBooleanFalse : kCFBooleanTrue);
+		if (_clientIdentity) {
+			CFArrayRef array = CFArrayCreate(kCFAllocatorDefault, (const void **)&_clientIdentity, 1, NULL);
+			CFDictionaryAddValue(sslDictionary, kCFStreamSSLCertificates, array);
+			CFRelease(array);
+		}
+
+		CFWriteStreamSetProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLSettings, sslDictionary);
+		CFReadStreamSetProperty((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, sslDictionary);
+		CFRelease(sslDictionary);
 	}
-
-	CFWriteStreamSetProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLSettings, sslDictionary);
-	CFReadStreamSetProperty((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, sslDictionary);
-
-	CFRelease(sslDictionary);
 }
 
 // Initialize the UDP connection-part of an MKConnection.

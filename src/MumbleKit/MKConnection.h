@@ -28,6 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import <Security/Security.h>
+
 #define MKConnectionPingInterval 5.0f
 
 @class MKConnection;
@@ -146,6 +148,7 @@ typedef enum {
 	id             _delegate;
 	int            _socket;
 	CFSocketRef    _udpSock;
+	SecIdentityRef _clientIdentity;
 
 	// Server info.
 	NSString       *_serverVersion;
@@ -164,6 +167,8 @@ typedef enum {
 - (void) reconnect;
 - (void) closeStreams;
 - (BOOL) connected;
+- (void) setClientIdentity:(SecIdentityRef)secIdentity;
+- (SecIdentityRef) clientIdentity;
 
 #pragma mark Server Info
 
