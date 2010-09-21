@@ -169,7 +169,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		}
 
-		[self _teardownUdpSock];
+		if (_udpSock) {
+			[self _teardownUdpSock];
+		}
 
 		if (_inputStream) {
 			[_inputStream close];
@@ -483,7 +485,10 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	[_udpAddr release];
 }
 
-// Tear down the UDP connection-part of an MKConnection
+// Tear down the UDP connection-part of an MKConnection.
+//
+// Can only be called if _setupUdpSock has successfully created
+// a UDP socket. (_udpSock != nil)
 - (void) _teardownUdpSock {
 	CFSocketInvalidate(_udpSock);
 	CFRelease(_udpSock);
