@@ -22,8 +22,8 @@ requires Snow Leopard.
 Before starting your build, you will need to check out the re-
 quired submodules.
 
-        $ git submodule init
-        $ git submodule update
+    $ git submodule init
+    $ git submodule update
 
 This will fetch known "working" snapshot of CELT, Speex and
 Protocol Buffers for Objective C.
@@ -38,17 +38,29 @@ MacPorts or Fink, there are packages available in there, too.
 
 To generate a MumbleKit.xcodeproj that targets iOS, use:
 
-        $ cmake -G Xcode . -DIOS_BUILD=1
+    $ cmake -G Xcode . -DIOS_BUILD=1
 
 To generate a MumbleKit.xcodeproj that targets Mac OS X, use:
 
-        $ cmake -G Xcode . -DMACOSX_BUILD=1
+    $ cmake -G Xcode . -DMACOSX_BUILD=1
 
 Note: There's a bug in the current (2.8.2) release of CMake that
 makes it hard to generate .xcodeprojs that use the built-in
 Xcode "standard architectures" for iOS (armv6 and armv7 for device
 builds, i386 for simulator builds). Please see the following CMake
 bug report for more info: http://www.vtk.org/Bug/view.php?id=11244
+
+Patches for the issue:
+
+ * http://cmake.org/gitweb?p=cmake.git;a=patch;h=a8ded533
+
+ * http://cmake.org/gitweb?p=cmake.git;a=patch;h=0790af3b
+
+If you use Homebrew as your package manager, the current forumla for
+CMake 2.8.2 has been patched to fix these issues. Simply upgrade to
+the latest version:
+
+    $ brew install --force cmake
 
 To work around this issue, you can pass -DBROKEN_CMAKE=1 to simply
 use whatever defaults architectures CMake wants to use.
@@ -110,7 +122,6 @@ One way to do this is to include MumbleKit.xcodeproj inside your main project. T
         APP=${CONFIGURATION_BUILD_DIR}/Mumble.app
         FWPATH=${APP}/Contents/Frameworks/
         EXECUTABLE=${APP}/Contents/MacOS/Mumble
-        
         install_name_tool -change MumbleKit @executable_path/../Frameworks/MumbleKit.framework/Versions/A/MumbleKit ${EXECUTABLE}
 
  It's also worth noting that this procedure seemingly only works if you have a shared build directory. For my
