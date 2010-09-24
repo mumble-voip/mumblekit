@@ -749,7 +749,6 @@ ADD_LIBRARY(OpenSSL STATIC
 	${ENGINES}/ccgost/gost2001_keyx.c
 	${ENGINES}/ccgost/gost2001.c
 	${ENGINES}/ccgost/gosthash.c
-	${ENGINES}/ccgost/gostsum.c
 	${ENGINES}/ccgost/e_gost_err.c
 )
 
