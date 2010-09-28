@@ -130,8 +130,8 @@ typedef enum {
 	int            packetLength;
 	int            packetBufferOffset;
 	NSMutableData  *packetBuffer;
-	NSString       *hostname;
-	NSUInteger     port;
+	NSString       *_hostname;
+	NSUInteger     _port;
 	BOOL           _keepRunning;
 	BOOL           _reconnect;
 
@@ -167,6 +167,9 @@ typedef enum {
 - (void) reconnect;
 - (void) disconnect;
 - (BOOL) connected;
+- (NSString *) hostname;
+- (NSUInteger) port;
+
 - (void) setClientIdentity:(SecIdentityRef)secIdentity;
 - (SecIdentityRef) clientIdentity;
 
@@ -176,7 +179,6 @@ typedef enum {
 - (NSString *) serverRelease;
 - (NSString *) serverOSName;
 - (NSString *) serverOSVersion;
-
 #pragma mark -
 
 - (void) authenticateWithUsername:(NSString *)user password:(NSString *)pass;

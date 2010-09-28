@@ -143,7 +143,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		}
 
 		CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
-										   (CFStringRef)hostname, port,
+										   (CFStringRef)_hostname, _port,
 										   (CFReadStreamRef *) &_inputStream,
 										   (CFWriteStreamRef *) &_outputStream);
 
@@ -207,8 +207,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 	packetLength = -1;
 	_connectionEstablished = NO;
-	hostname = hostName;
-	port = portNumber;
+	_hostname = hostName;
+	_port = portNumber;
 	_keepRunning = YES;
 
 	[self start];
@@ -231,6 +231,16 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 - (BOOL) connected {
 	return _connectionEstablished;
+}
+
+// Get the hostname the MKConnection is connected to.
+- (NSString *) hostname {
+	return _hostname;
+}
+
+// Get the port number the MKConnection is connected to.
+- (NSUInteger) port {
+	return _port;
 }
 
 // Sets the SecIdentityRef the client should use for authenticating
