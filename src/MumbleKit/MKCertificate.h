@@ -52,6 +52,9 @@
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email;
 - (NSData *) exportPKCS12WithPassword:(NSString *)password;
 
+- (NSData *) digest;
+- (NSString *) hexDigest;
+
 - (NSString *) commonName;
 - (NSString *) emailAddress;
 - (NSString *) issuerName;
