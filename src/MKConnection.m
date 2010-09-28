@@ -122,7 +122,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 - (void) dealloc {
 	[[MKConnectionController sharedController] removeConnection:self];
-	[self closeStreams];
+	[self disconnect];
 
 	[_crypt release];
 	[_peerCertificates release];
@@ -214,7 +214,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	[self start];
 }
 
-- (void) closeStreams {
+- (void) disconnect {
 	if (![self isExecuting])
 		return;
 	_keepRunning = NO;
@@ -761,7 +761,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		});
 	}
 
-	[self closeStreams];
+	[self disconnect];
 }
 
 // Handle server crypt setup

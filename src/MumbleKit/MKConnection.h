@@ -165,7 +165,7 @@ typedef enum {
 
 - (void) connectToHost:(NSString *)hostName port:(NSUInteger)port;
 - (void) reconnect;
-- (void) closeStreams;
+- (void) disconnect;
 - (BOOL) connected;
 - (void) setClientIdentity:(SecIdentityRef)secIdentity;
 - (SecIdentityRef) clientIdentity;
