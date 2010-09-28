@@ -234,6 +234,14 @@ static int add_ext(X509 * crt, int nid, char *value) {
 	return [retData autorelease];
 }
 
+- (BOOL) hasCertificate {
+	return _derCert != nil;
+}
+
+- (BOOL) hasPrivateKey {
+	return _derPrivKey != nil;
+}
+
 // Parse a one-line ASCII representation of subject or issuer info
 // from a certificate. Returns a dictionary with the keys and values
 // as-is.
