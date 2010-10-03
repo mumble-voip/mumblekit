@@ -427,7 +427,8 @@
 
 - (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker {
 	[user setPrioritySpeaker:prioritySpeaker];
-	[_delegate serverModel:self userPrioritySpeakerChanged:user];
+	if ([self serverInfoSynced])
+		[_delegate serverModel:self userPrioritySpeakerChanged:user];
 }
 
 - (void) setHashForUser:(MKUser *)user to:(NSString *)newHash {
