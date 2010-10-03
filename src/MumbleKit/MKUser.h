@@ -40,20 +40,21 @@ typedef enum {
 @class MKChannel;
 
 @interface MKUser : MKServerModelObject {
-	@protected
-		BOOL muteState;
-		BOOL deafState;
-		BOOL suppressState;
-		BOOL localMuteState;
-		BOOL selfMuteState;
-		BOOL selfDeafState;
-		MKTalkState _talkState;
-		NSUInteger userSession;
-		NSString *userName;
-		NSUInteger depth;
-		MKChannel *channel;
+	BOOL         _muted;
+	BOOL         _deafened;
+	BOOL         _suppressed;
+	BOOL         _localMuted;
+	BOOL         _selfMuted;
+	BOOL         _selfDeafened;
+	BOOL         _friend;
+	MKTalkState  _talkState;
+	NSUInteger   _session;
+	NSInteger    _userId;
+	NSString     *_username;
+	MKChannel    *_channel;
 }
 
+- (id) init;
 - (void) dealloc;
 
 #pragma mark -
@@ -64,26 +65,34 @@ typedef enum {
 - (void) setUserName:(NSString *)name;
 - (NSString *) userName;
 
+- (void) setUserId:(NSInteger)userId;
+- (NSInteger) userId;
+
 - (void) setTalkState:(MKTalkState)val;
 - (MKTalkState) talkState;
 
-- (void) setMute:(BOOL)flag;
-- (BOOL) muted;
+- (BOOL) isAuthenticated;
 
-- (void) setDeaf:(BOOL)flag;
-- (BOOL) deafened;
+- (void) setFriend:(BOOL)flag;
+- (BOOL) isFriend;
 
-- (void) setSuppress:(BOOL)flag;
-- (BOOL) suppressed;
+- (void) setMuted:(BOOL)flag;
+- (BOOL) isMuted;
 
-- (void) setLocalMute:(BOOL)flag;
-- (BOOL) localMuted;
+- (void) setDeafened:(BOOL)flag;
+- (BOOL) isDeafened;
 
-- (void) setSelfMute:(BOOL)flag;
-- (BOOL) selfMuted;
+- (void) setSuppressed:(BOOL)flag;
+- (BOOL) isSuppressed;
 
-- (void) setSelfDeaf:(BOOL)flag;
-- (BOOL) selfDeafened;
+- (void) setLocalMuted:(BOOL)flag;
+- (BOOL) isLocalMuted;
+
+- (void) setSelfMuted:(BOOL)flag;
+- (BOOL) isSelfMuted;
+
+- (void) setSelfDeafened:(BOOL)flag;
+- (BOOL) isSelfDeafened;
 
 - (void) setChannel:(MKChannel *)chan;
 - (MKChannel *) channel;

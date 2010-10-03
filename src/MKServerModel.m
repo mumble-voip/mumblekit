@@ -40,6 +40,10 @@
 #define STUB \
 	NSLog(@"%@: %s", [self class], __FUNCTION__)
 
+@interface MKServerModel (InlinePrivate)
+- (void) setSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
+@end
+
 @implementation MKServerModel
 
 - (id) initWithConnection:(MKConnection *)conn {
@@ -61,13 +65,10 @@
 	[channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInt:0]];
 
 	_connection = conn;
-	//
+
 	// Set us up to handle messages from the connection.
-	//
 	[_connection setMessageHandler:self];
-	//
 	// And also as the voice data handler.
-	//
 	[_connection setVoiceDataHandler:self];
 
 	return self;
@@ -91,11 +92,6 @@
 
 #pragma mark MKMessageHandler methods
 
-//
-// CodecVersion message.
-// Tells us which codecs we should use for this server.
-// fixme(mkrautz: Does not belong here.
-//
 -(void) connection:(MKConnection *)conn handleCodecVersionMessage:(MPCodecVersion *)codec {
 	NSLog(@"MKServerModel: Received CodecVersion message");
 
@@ -107,10 +103,6 @@
 		NSLog(@"preferAlpha = %i", [codec preferAlpha]);
 }
 
-//
-// UserState message.
-// A change in user state.
-//
 - (void) connection:(MKConnection *)conn handleUserStateMessage:(MPUserState *)msg {
 	BOOL newUser = NO;
 
@@ -121,9 +113,7 @@
 	NSUInteger session = [msg session];
 	MKUser *user = [self userWithSession:session];
 
-	//
 	// Is this an existing user? Or should we create a new user object?
-	//
 	if (user == nil) {
 		if ([msg hasName]) {
 			user = [self addUserWithSession:session name:[msg name]];
@@ -142,9 +132,11 @@
 		/* Check if user is a friend? */
 	}
 
-	//
+	if ([msg hasSelfDeaf] || [msg hasSelfMute]) {
+		[self setSelfMuteDeafenStateForUser:user fromMessage:msg];
+	}
+
 	// The user just connected. Tell our delegate listeners.
-	//
 	if (newUser && [self serverInfoSynced]) {
 		[_delegate serverModel:self userJoined:user];
 	}
@@ -159,6 +151,7 @@
 			[self moveUser:user toChannel:chan byUser:nil];
 			NSLog(@"Moved user '%@' to channel '%@'", [user userName], [chan channelName]);
 		}
+
 	// The user has no channel id set, and is a newly connected user.
 	// This means the user's residing in the root channel.
 	} else if (newUser) {
@@ -176,12 +169,8 @@
 	if ([msg hasComment]) {
 		NSLog(@"MKServerModel: User has comment... Discarding.");
 	}
-
 }
 
-//
-// A user has left the server.
-//
 - (void) connection:(MKConnection *)conn handleUserRemoveMessage:(MPUserRemove *)msg {
 	if (! [msg hasSession]) {
 		return;
@@ -193,9 +182,6 @@
 	[self removeUser:user];
 }
 
-//
-// ChannelState
-//
 - (void) connection:(MKConnection *)conn handleChannelStateMessage:(MPChannelState *)msg {
 	BOOL newChannel = NO;
 
@@ -240,9 +226,6 @@
 	}
 }
 
-//
-// A channel was removed from the server.
-//
 - (void) connection:(MKConnection *) handleChannelRemoveMessage:(MPChannelRemove *)msg {
 	if (! [msg hasChannelId]) {
 		return;
@@ -350,7 +333,30 @@
 }
 
 - (void) setIdForUser:(MKUser *)user to:(NSUInteger)newId {
-	STUB;
+	[user setUserId:newId];
+}
+
+- (void) setSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg {
+	if ([msg hasSelfMute]) {
+		[user setSelfMuted:[msg selfMute]];
+	}
+	if ([msg hasSelfDeaf]) {
+		[user setSelfDeafened:[msg selfDeaf]];
+	}
+
+	if ([self serverInfoSynced]) {
+		// This is what the desktop client does.  There's no state for
+		// 'user unmuted and undeafened'.
+		if ([user isSelfMuted] && [user isSelfDeafened]) {
+			[_delegate serverModel:self userSelfMutedAndDeafened:user];
+		} else if ([user isSelfMuted]) {
+			[_delegate serverModel:self userSelfMuted:user];
+		} else {
+			[_delegate serverModel:self userRemovedSelfMute:user];
+		}
+
+		[_delegate serverModel:self userSelfMuteDeafenStateChanged:user];
+	}
 }
 
 - (void) setHashForUser:(MKUser *)user to:(NSString *)newHash {

@@ -44,6 +44,13 @@
 - (void) serverModel:(MKServerModel *)model channelRemoved:(MKChannel *)channel;
 - (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 //- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
+
+- (void) serverModel:(MKServerModel *)model userSelfMuted:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userRemovedSelfMute:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userSelfMutedAndDeafened:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userRemovedSelfMuteAndDeafen:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userSelfMuteDeafenStateChanged:(MKUser *)user;
+
 @end
 
 
@@ -71,9 +78,6 @@
 
 #pragma mark -
 
-
-
-#pragma mark -
 - (MKUser *) connectedUser;
 - (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
 - (MKUser *) userWithSession:(NSUInteger)session;

@@ -34,97 +34,127 @@
 
 @implementation MKUser
 
+- (id) init {
+	if (self = [super init]) {
+		_userId = -1;
+	}
+	return self;
+}
+
 - (void) dealloc {
-	[userName release];
+	[_username release];
 	[super dealloc];
 }
 
 #pragma mark -
 
 - (void) setSession:(NSUInteger)session {
-	userSession = session;
+	_session = session;
 }
 
 - (NSUInteger) session {
-	return userSession;
+	return _session;
 }
 
 - (void) setUserName:(NSString *)name {
-	if (userName)
-		[userName release];
-	userName = [name copy];
+	[_username release];
+	_username = [name copy];
 }
 
 - (NSString *) userName {
-	return userName;
+	return _username;
+}
+
+- (void) setUserId:(NSInteger)userId {
+	_userId = userId;
+}
+
+- (NSInteger) userId {
+	return _userId;
 }
 
 - (void) setTalkState:(MKTalkState)val {
 	_talkState = val;
-
-	NSLog(@"%@ talkState = %u", [self userName], [self talkState]);
-	// fixme(mkrautz): Notify.
 }
 
 - (MKTalkState) talkState {
 	return _talkState;
 }
 
+- (BOOL) isAuthenticated {
+	return _userId >= 0;
+}
+
+- (void) setFriend:(BOOL)flag {
+	_friend = flag;
+}
+
+- (BOOL) isFriend {
+	return _friend;
+}
+
 - (void) setMute:(BOOL)flag {
-	muteState = flag;
+	_muted = flag;
+	if (! flag)
+		_deafened = NO;
 }
 
-- (BOOL) muted {
-	return muteState;
+- (BOOL) isMuted {
+	return _muted;
 }
 
-- (void) setDeaf:(BOOL)flag {
-	deafState = flag;
+- (void) setDeafened:(BOOL)flag {
+	_deafened = flag;
+	if (flag)
+		_muted = YES;
 }
 
-- (BOOL) deafened {
-	return deafState;
+- (BOOL) isDeafened {
+	return _deafened;
 }
 
-- (void) setSuppress:(BOOL)flag {
-	suppressState = flag;
+- (void) setSuppressed:(BOOL)flag {
+	_suppressed = flag;
 }
 
-- (BOOL) suppressed {
-	return suppressState;
+- (BOOL) isSuppressed {
+	return _suppressed;
 }
 
-- (void) setLocalMute:(BOOL)flag {
-	localMuteState = flag;
+- (void) setLocalMuted:(BOOL)flag {
+	_localMuted = flag;
 }
 
-- (BOOL) localMuted {
-	return localMuteState;
+- (BOOL) isLocalMuted {
+	return _localMuted;
 }
 
-- (void) setSelfMute:(BOOL)flag {
-	selfMuteState = flag;
+- (void) setSelfMuted:(BOOL)flag {
+	_selfMuted = flag;
+	if (! flag)
+		_selfDeafened = NO;
 }
 
-- (BOOL) selfMuted {
-	return selfMuteState;
+- (BOOL) isSelfMuted {
+	return _selfMuted;
 }
 
-- (void) setSelfDeaf:(BOOL)flag {
-	selfDeafState = flag;
+- (void) setSelfDeafened:(BOOL)flag {
+	_selfDeafened = flag;
+	if (flag)
+		_selfMuted = YES;
 }
 
-- (BOOL) selfDeafened {
-	return selfDeafState;
+- (BOOL) isSelfDeafened {
+	return _selfDeafened;
 }
 
 - (void) setChannel:(MKChannel *)chan {
-	channel = chan;
+	_channel = chan;
 }
 
 - (MKChannel *) channel {
-	return channel;
+	return _channel;
 }
-
 
 @end
