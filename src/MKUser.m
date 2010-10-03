@@ -93,7 +93,7 @@
 	return _friend;
 }
 
-- (void) setMute:(BOOL)flag {
+- (void) setMuted:(BOOL)flag {
 	_muted = flag;
 	if (! flag)
 		_deafened = NO;
@@ -147,6 +147,14 @@
 
 - (BOOL) isSelfDeafened {
 	return _selfDeafened;
+}
+
+- (void) setPrioritySpeaker:(BOOL)flag {
+	_prioritySpeaker = flag;
+}
+
+- (BOOL) isPrioritySpeaker {
+	return _prioritySpeaker;
 }
 
 - (void) setChannel:(MKChannel *)chan {

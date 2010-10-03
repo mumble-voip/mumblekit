@@ -47,6 +47,7 @@ typedef enum {
 	BOOL         _selfMuted;
 	BOOL         _selfDeafened;
 	BOOL         _friend;
+	BOOL         _prioritySpeaker;
 	MKTalkState  _talkState;
 	NSUInteger   _session;
 	NSInteger    _userId;
@@ -93,6 +94,9 @@ typedef enum {
 
 - (void) setSelfDeafened:(BOOL)flag;
 - (BOOL) isSelfDeafened;
+
+- (void) setPrioritySpeaker:(BOOL)flag;
+- (BOOL) isPrioritySpeaker;
 
 - (void) setChannel:(MKChannel *)chan;
 - (MKChannel *) channel;

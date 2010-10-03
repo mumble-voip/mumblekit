@@ -42,6 +42,8 @@
 
 @interface MKServerModel (InlinePrivate)
 - (void) setSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
+- (void) setMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
+- (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker;
 @end
 
 @implementation MKServerModel
@@ -134,6 +136,14 @@
 
 	if ([msg hasSelfDeaf] || [msg hasSelfMute]) {
 		[self setSelfMuteDeafenStateForUser:user fromMessage:msg];
+	}
+
+	if ([msg hasPrioritySpeaker]) {
+		[self setPrioritySpeakerStateForUser:user to:[msg prioritySpeaker]];
+	}
+
+	if ([msg hasDeaf] || [msg hasMute] || [msg hasSuppress]) {
+		[self setMuteStateForUser:user fromMessage:msg];
 	}
 
 	// The user just connected. Tell our delegate listeners.
@@ -357,6 +367,67 @@
 
 		[_delegate serverModel:self userSelfMuteDeafenStateChanged:user];
 	}
+}
+
+- (void) setMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg {
+	if ([msg hasMute])
+		[user setMuted:[msg mute]];
+	if ([msg hasDeaf])
+		[user setDeafened:[msg deaf]];
+	if ([msg hasSuppress])
+		[user setSuppressed:[msg suppress]];
+
+	if (![msg hasSession] && ![msg hasActor]) {
+		NSLog(@"Missing session and actor.");
+		return;
+	}
+
+	MKUser *actor = [self userWithSession:[msg actor]];
+
+	if ([self serverInfoSynced]) {
+		if ([msg hasMute] && [msg hasDeaf] && [user isMuted] && [user isDeafened]) {
+			[_delegate serverModel:self userMutedAndDeafened:user byUser:actor];
+		} else if ([msg hasMute] && [msg hasDeaf] && ![user isMuted] && ![user isDeafened]) {
+			[_delegate serverModel:self userUnmutedAndUndeafened:user byUser:actor];
+		} else {
+			if ([msg hasMute]) {
+				if ([user isMuted]) {
+					[_delegate serverModel:self userMuted:user byUser:actor];
+				} else {
+					[_delegate serverModel:self userUnmuted:user byUser:actor];
+				}
+			}
+			if ([msg hasDeaf]) {
+				if ([user isDeafened]) {
+					[_delegate serverModel:self userDeafened:user byUser:actor];
+				} else {
+					[_delegate serverModel:self userUndeafened:user byUser:actor];
+				}
+			}
+		}
+		if ([msg hasSuppress]) {
+			if (user == [self connectedUser]) {
+				if ([user isSuppressed]) {
+					[_delegate serverModel:self userSuppressed:user byUser:nil];
+				} else if ([msg hasChannelId]) {
+					[_delegate serverModel:self userUnsuppressed:user byUser:nil];
+				}
+			} else if (![msg hasChannelId]) {
+				if ([user isSuppressed]) {
+					[_delegate serverModel:self userSuppressed:user byUser:actor];
+				} else {
+					[_delegate serverModel:self userUnsuppressed:user byUser:actor];
+				}
+			}
+		}
+
+		[_delegate serverModel:self userMuteStateChanged:user];
+	}
+}
+
+- (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker {
+	[user setPrioritySpeaker:prioritySpeaker];
+	[_delegate serverModel:self userPrioritySpeakerChanged:user];
 }
 
 - (void) setHashForUser:(MKUser *)user to:(NSString *)newHash {

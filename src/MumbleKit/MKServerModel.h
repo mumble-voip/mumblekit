@@ -45,12 +45,26 @@
 - (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 //- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
 
+// Self-mute and self-deafen
 - (void) serverModel:(MKServerModel *)model userSelfMuted:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userRemovedSelfMute:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userSelfMutedAndDeafened:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userRemovedSelfMuteAndDeafen:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userSelfMuteDeafenStateChanged:(MKUser *)user;
 
+// Mute, deafen and suppress
+- (void) serverModel:(MKServerModel *)model userMutedAndDeafened:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userUnmutedAndUndeafened:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userMuted:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userUnmuted:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userDeafened:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userUndeafened:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userSuppressed:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userUnsuppressed:(MKUser *)user byUser:(MKUser *)actor;
+- (void) serverModel:(MKServerModel *)model userMuteStateChanged:(MKUser *)user;
+
+// Priority speaker
+- (void) serverModel:(MKServerModel *)model userPrioritySpeakerChanged:(MKUser *)user;
 @end
 
 
