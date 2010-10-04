@@ -75,6 +75,15 @@
 	return _userId;
 }
 
+- (void) setUserHash:(NSString *)hash {
+	[_userHash release];
+	_userHash = [hash copy];
+}
+
+- (NSString *) userHash {
+	return _userHash;
+}
+
 - (void) setTalkState:(MKTalkState)val {
 	_talkState = val;
 }
@@ -159,12 +168,56 @@
 	return _prioritySpeaker;
 }
 
+- (void) setRecording:(BOOL)flag {
+	_recording = flag;
+}
+
+- (BOOL) isRecording {
+	return _recording;
+}
+
 - (void) setChannel:(MKChannel *)chan {
 	_channel = chan;
 }
 
 - (MKChannel *) channel {
 	return _channel;
+}
+
+- (void) setCommentHash:(NSData *)hash {
+	[_commentHash release];
+	_commentHash = [hash copy];
+}
+
+- (NSData *) commentHash {
+	return _commentHash;
+}
+
+- (void) setComment:(NSString *)comment {
+	[_comment release];
+	_comment = [comment copy];
+}
+
+- (NSData *) comment {
+	return _comment;
+}
+
+- (void) setTextureHash:(NSData *)hash {
+	[_textureHash release];
+	_textureHash = [hash copy];
+}
+
+- (NSData *) textureHash {
+	return _textureHash;
+}
+
+- (void) setTexture:(NSData *)texture {
+	[_texture release];
+	_texture = [texture copy];
+}
+
+- (NSData *) texture {
+	return _texture;
 }
 
 @end

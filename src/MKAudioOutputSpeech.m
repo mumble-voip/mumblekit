@@ -32,6 +32,9 @@
 #import <MumbleKit/MKAudioOutputSpeech.h>
 #import <MumbleKit/MKPacketDataStream.h>
 
+#import <MumbleKit/MKUser.h>
+#import "MKUserPrivate.h"
+
 #include <pthread.h>
 
 #include <speex/speex.h>

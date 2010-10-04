@@ -48,19 +48,26 @@ typedef enum {
 	BOOL         _selfDeafened;
 	BOOL         _friend;
 	BOOL         _prioritySpeaker;
+	BOOL         _recording;
 	MKTalkState  _talkState;
 	NSUInteger   _session;
 	NSInteger    _userId;
+	NSString     *_userHash;
 	NSString     *_username;
 	MKChannel    *_channel;
+	NSString     *_comment;
+	NSData       *_commentHash;
+	NSData       *_texture;
+	NSData       *_textureHash;
 }
 
 - (id) init;
 - (void) dealloc;
 
+- (NSInteger) userId;
 - (NSUInteger) session;
 - (NSString *) userName;
-- (NSInteger) userId;
+- (NSString *) userHash;
 - (MKTalkState) talkState;
 - (BOOL) isAuthenticated;
 - (BOOL) isFriend;
@@ -71,6 +78,11 @@ typedef enum {
 - (BOOL) isSelfMuted;
 - (BOOL) isSelfDeafened;
 - (BOOL) isPrioritySpeaker;
+- (BOOL) isRecording;
 - (MKChannel *) channel;
+- (NSData *) commentHash;
+- (NSString *) comment;
+- (NSData *) textureHash;
+- (NSData *) texture;
 
 @end

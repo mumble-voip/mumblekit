@@ -37,11 +37,16 @@
 @class MKServerModel;
 
 @protocol MKServerModelDelegate
-// User changes
+// On join
 - (void) serverModel:(MKServerModel *)model joinedServerAsUser:(MKUser *)user;
+
+// User changes
 - (void) serverModel:(MKServerModel *)model userJoined:(MKUser *)user;
-- (void) serverModel:(MKServerModel *)model userLeft:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userRenamed:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
+- (void) serverModel:(MKServerModel *)model userCommentChanged:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userTextureChanged:(MKUser *)user;
+
 //- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
 
 // Self-mute and self-deafen
@@ -62,8 +67,15 @@
 - (void) serverModel:(MKServerModel *)model userUnsuppressed:(MKUser *)user byUser:(MKUser *)actor;
 - (void) serverModel:(MKServerModel *)model userMuteStateChanged:(MKUser *)user;
 
-// Priority speaker
+// Priority speaker and recording
 - (void) serverModel:(MKServerModel *)model userPrioritySpeakerChanged:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userRecordingStateChanged:(MKUser *)user;
+
+// User leaving
+- (void) serverModel:(MKServerModel *)model userBanned:(MKUser *)user byUser:(MKUser *)actor forReason:(NSString *)reason;
+- (void) serverModel:(MKServerModel *)model userKicked:(MKUser *)user byUser:(MKUser *)actor forReason:(NSString *)reason;
+- (void) serverModel:(MKServerModel *)model userDisconnected:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userLeft:(MKUser *)user;
 
 // Channel stuff
 - (void) serverModel:(MKServerModel *)model channelAdded:(MKChannel *)channel;
@@ -100,7 +112,6 @@
 - (MKUser *) connectedUser;
 - (MKUser *) userWithSession:(NSUInteger)session;
 - (MKUser *) userWithHash:(NSString *)hash;
-- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 
 #pragma mark -
 #pragma mark Channel operations

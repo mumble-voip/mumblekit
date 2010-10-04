@@ -44,23 +44,20 @@
 
 #import "MulticastDelegate.h"
 
-#define STUB \
-	NSLog(@"%@: %s", [self class], __FUNCTION__)
-
-@interface MKServerModel (InlinePrivate)
-
-- (void) setSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
-- (void) setMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
-- (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker;
-
-- (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
-- (void) renameUser:(MKUser *)user to:(NSString *)newName;
-- (void) setIdForUser:(MKUser *)user to:(NSUInteger)newId;
-- (void) setHashForUser:(MKUser *)user to:(NSString *)newHash;
-- (void) setFriendNameForUser:(MKUser *)user to:(NSString *)newFriendName;
-- (void) setCommentForUser:(MKUser *) to:(NSString *)newComment;
-- (void) setSeenCommentForUser:(MKUser *)user;
-- (void) removeUser:(MKUser *)user;
+@interface MKServerModel (InternalPrivate)
+// Internal user operations
+- (MKUser *) internalAddUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
+- (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)actor;
+- (void) internalSetSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
+- (void) internalSetMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
+- (void) internalSetPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker;
+- (void) internalSetRecordingStateForUser:(MKUser *)user to:(BOOL)flag;
+- (void) internalRenameUser:(MKUser *)user to:(NSString *)name;
+- (void) internalSetCommentForUser:(MKUser *)user to:(NSString *)comment;
+- (void) internalSetCommentHashForUser:(MKUser *)user to:(NSData *)hash;
+- (void) internalSetTextureForUser:(MKUser *)user to:(NSData *)texture;
+- (void) internalSetTextureHashForUser:(MKUser *)user to:(NSData *)hash;
+- (void) internalRemoveUserWithMessage:(MPUserRemove *)msg;
 
 // Internal channel operations
 - (MKChannel *) internalAddChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent;
@@ -73,7 +70,6 @@
 - (void) internalSetDescriptionHashForChannel:(MKChannel *)chan to:(NSData *)hash;
 - (void) internalMoveChannel:(MKChannel *)chan toChannel:(MKChannel *)newParent;
 - (void) internalRemoveChannel:(MKChannel *)chan;
-
 @end
 
 @implementation MKServerModel
@@ -141,7 +137,7 @@
 	// Is this an existing user? Or should we create a new user object?
 	if (user == nil) {
 		if ([msg hasName]) {
-			user = [self addUserWithSession:session name:[msg name]];
+			user = [self internalAddUserWithSession:session name:[msg name]];
 			newUser = YES;
 		} else {
 			return;
@@ -149,24 +145,10 @@
 	}
 
 	if ([msg hasUserId]) {
-		[self setIdForUser:user to:[msg userId]];
+		[user setUserId:[msg userId]];
 	}
-
 	if ([msg hasHash]) {
-		[self setHashForUser:user to:[msg hash]];
-		/* Check if user is a friend? */
-	}
-
-	if ([msg hasSelfDeaf] || [msg hasSelfMute]) {
-		[self setSelfMuteDeafenStateForUser:user fromMessage:msg];
-	}
-
-	if ([msg hasPrioritySpeaker]) {
-		[self setPrioritySpeakerStateForUser:user to:[msg prioritySpeaker]];
-	}
-
-	if ([msg hasDeaf] || [msg hasMute] || [msg hasSuppress]) {
-		[self setMuteStateForUser:user fromMessage:msg];
+		[user setUserHash:[msg hash]];
 	}
 
 	// The user just connected. Tell our delegate listeners.
@@ -174,33 +156,57 @@
 		[_delegate serverModel:self userJoined:user];
 	}
 
+	if ([msg hasRecording]) {
+		[self internalSetRecordingStateForUser:user to:[msg recording]];
+	}
+
+	if ([msg hasSelfDeaf] || [msg hasSelfMute]) {
+		[self internalSetSelfMuteDeafenStateForUser:user fromMessage:msg];
+	}
+
+	if ([msg hasPrioritySpeaker]) {
+		[self internalSetPrioritySpeakerStateForUser:user to:[msg prioritySpeaker]];
+	}
+
+	if ([msg hasDeaf] || [msg hasMute] || [msg hasSuppress]) {
+		[self internalSetMuteStateForUser:user fromMessage:msg];
+	}
+
 	if ([msg hasChannelId]) {
 		MKChannel *chan = [self channelWithId:[msg channelId]];
-		if (chan == nil) {
-			NSLog(@"MKServerModel: UserState with invalid channelId.");
-		}
 		MKChannel *oldChan = [user channel];
+		MKUser *actor = nil;
+		if ([msg hasActor]) {
+			actor = [self userWithSession:[msg actor]];
+		}
 		if (chan != oldChan) {
-			[self moveUser:user toChannel:chan byUser:nil];
-			NSLog(@"Moved user '%@' to channel '%@'", [user userName], [chan channelName]);
+			[self internalMoveUser:user toChannel:chan byUser:actor];
 		}
 
 	// The user has no channel id set, and is a newly connected user.
 	// This means the user's residing in the root channel.
 	} else if (newUser) {
-		[self moveUser:user toChannel:_rootChannel byUser:nil];
+		[self internalMoveUser:user toChannel:_rootChannel byUser:nil];
 	}
 
 	if ([msg hasName]) {
-		[self renameUser:user to:[msg name]];
+		[self internalRenameUser:user to:[msg name]];
 	}
 
 	if ([msg hasTexture]) {
-		NSLog(@"MKServerModel: User has texture.. Discarding.");
+		[self internalSetTextureForUser:user to:[msg texture]];
+	}
+
+	if ([msg hasTextureHash]) {
+		[self internalSetTextureHashForUser:user to:[msg textureHash]];
 	}
 
 	if ([msg hasComment]) {
-		NSLog(@"MKServerModel: User has comment... Discarding.");
+		[self internalSetCommentForUser:user to:[msg comment]];
+	}
+
+	if ([msg hasCommentHash]) {
+		[self internalSetCommentHashForUser:user to:[msg commentHash]];
 	}
 }
 
@@ -209,10 +215,7 @@
 		return;
 	}
 
-	MKUser *user = [self userWithSession:[msg session]];
-	[_delegate serverModel:self userLeft:user];
-
-	[self removeUser:user];
+	[self internalRemoveUserWithMessage:msg];
 }
 
 - (void) connection:(MKConnection *)conn handleChannelStateMessage:(MPChannelState *)msg {
@@ -331,12 +334,9 @@
 }
 
 #pragma mark -
+#pragma mark Internal handlers for state change messages
 
-- (MKUser *) connectedUser {
-	return _connectedUser;
-}
-
-- (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName {
+- (MKUser *) internalAddUserWithSession:(NSUInteger)userSession name:(NSString *)userName {
 	MKUser *user = [[MKUser alloc] init];
 	[user setSession:userSession];
 	[user setUserName:userName];
@@ -348,26 +348,23 @@
 	return user;
 }
 
-- (MKUser *) userWithSession:(NSUInteger)session {
-	[_userMapLock readLock];
-	MKUser *u = [_userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
-	[_userMapLock unlock];
-	return u;
+- (void) internalRenameUser:(MKUser *)user to:(NSString *)newName {
+	[user setUserName:newName];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self userRenamed:user];
+	}
 }
 
-- (MKUser *) userWithHash:(NSString *)hash {
-	return nil;
+- (void) internalSetRecordingStateForUser:(MKUser *)user to:(BOOL)flag {
+	[user setRecording:flag];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self userRecordingStateChanged:user];
+	}
 }
 
-- (void) renameUser:(MKUser *)user to:(NSString *)newName {
-	STUB;
-}
-
-- (void) setIdForUser:(MKUser *)user to:(NSUInteger)newId {
-	[user setUserId:newId];
-}
-
-- (void) setSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg {
+- (void) internalSetSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg {
 	if ([msg hasSelfMute]) {
 		[user setSelfMuted:[msg selfMute]];
 	}
@@ -390,7 +387,7 @@
 	}
 }
 
-- (void) setMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg {
+- (void) internalSetMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg {
 	if ([msg hasMute])
 		[user setMuted:[msg mute]];
 	if ([msg hasDeaf])
@@ -399,7 +396,6 @@
 		[user setSuppressed:[msg suppress]];
 
 	if (![msg hasSession] && ![msg hasActor]) {
-		NSLog(@"Missing session and actor.");
 		return;
 	}
 
@@ -446,47 +442,76 @@
 	}
 }
 
-- (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker {
+- (void) internalSetPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker {
 	[user setPrioritySpeaker:prioritySpeaker];
 	if (_connectedUser)
 		[_delegate serverModel:self userPrioritySpeakerChanged:user];
 }
 
-- (void) setHashForUser:(MKUser *)user to:(NSString *)newHash {
-	STUB;
+- (void) internalSetCommentForUser:(MKUser *)user to:(NSString *)comment {
+	[user setComment:comment];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self userCommentChanged:user];
+	}
 }
 
-- (void) setFriendNameForUser:(MKUser *)user to:(NSString *)newFriendName {
-	STUB;
+- (void) internalSetCommentHashForUser:(MKUser *)user to:(NSData *)hash {
+	[user setCommentHash:hash];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self userCommentChanged:user];
+	}
 }
 
-- (void) setCommentForUser:(MKUser *) to:(NSString *)newComment {
-	STUB;
+- (void) internalSetTextureForUser:(MKUser *)user to:(NSData *)texture {
+	[user setTexture:texture];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self userTextureChanged:user];
+	}
 }
 
-- (void) setSeenCommentForUser:(MKUser *)user {
-	STUB;
+- (void) internalSetTextureHashForUser:(MKUser *)user to:(NSData *)hash {
+	[user setTextureHash:hash];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self userTextureChanged:user];
+	}
 }
 
-- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover {
-	MKChannel *currentChannel = [user channel];
-	MKChannel *destChannel = chan;
+- (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover {
+	[chan addUser:user];
 
-	[currentChannel removeUser:user];
-	[destChannel addUser:user];
-
-	[_delegate serverModel:self userMoved:user toChannel:chan byUser:mover];
+	if (_connectedUser) {
+		[_delegate serverModel:self userMoved:user toChannel:chan byUser:mover];
+	}
 }
 
-- (void) removeUser:(MKUser *)user {
-	STUB;
+- (void) internalRemoveUserWithMessage:(MPUserRemove *)msg {
+	MKUser *user = [self userWithSession:[msg session]];
+	MKUser *actor = [msg hasActor] ? [self userWithSession:[msg actor]] : nil;
+	BOOL ban = [msg hasBan] ? [msg ban] : NO;
+	NSString *reason = [msg hasReason] ? [msg reason] : nil;
+
+	if (_connectedUser) {
+		if (actor) {
+			if (ban) {
+				[_delegate serverModel:self userBanned:user byUser:actor forReason:reason];
+			} else {
+				[_delegate serverModel:self userKicked:user byUser:actor forReason:reason];
+			}
+		} else {
+			[_delegate serverModel:self userDisconnected:user];
+		}
+
+		[_delegate serverModel:self userLeft:user];
+	}
+
+	// todo(mkrautz): Get rid of model object...
 }
 
 #pragma mark -
-
-- (MKChannel *) rootChannel {
-	return _rootChannel;
-}
 
 // Add a new channel to our model
 - (MKChannel *) internalAddChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent {
@@ -632,6 +657,25 @@
 
 #pragma mark -
 #pragma mark Channel operations
+
+- (MKChannel *) rootChannel {
+	return _rootChannel;
+}
+
+- (MKUser *) connectedUser {
+	return _connectedUser;
+}
+
+- (MKUser *) userWithSession:(NSUInteger)session {
+	[_userMapLock readLock];
+	MKUser *u = [_userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
+	[_userMapLock unlock];
+	return u;
+}
+
+- (MKUser *) userWithHash:(NSString *)hash {
+	return nil;
+}
 
 // Lookup a channel by its channelId.
 - (MKChannel *) channelWithId:(NSUInteger)channelId {
