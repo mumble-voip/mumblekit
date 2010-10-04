@@ -1,4 +1,4 @@
-/* Copyright (C) 2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
 
    All rights reserved.
 
@@ -28,40 +28,24 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKServerModelObject.h>
+@interface MKChannel (PrivateMethods)
+- (void) setChannelId:(NSUInteger)channelId;
+- (void) setChannelName:(NSString *)name;
+- (void) setTemporary:(BOOL)flag;
+- (void) setPosition:(NSInteger)pos;
 
-@class MKUser;
+- (void) setParent:(MKChannel *)chan;
+- (void) addChannel:(MKChannel *)child;
+- (void) removeChannel:(MKChannel *)child;
 
-@interface MKChannel : MKServerModelObject {
-	MKChannel        *_parent;
-	NSUInteger       _channelId;
-	NSString         *_channelName;
-	BOOL             _temporary;
-	NSInteger        _position;
-	NSMutableArray   *_channels;
-	NSMutableArray   *_users;
-	NSMutableArray   *_linked;
-	NSData           *_channelDescriptionHash;
-	NSString         *_channelDescription;
-}
+- (void) addUser:(MKUser *)user;
+- (void) removeUser:(MKUser *)user;
 
-- (id) init;
-- (void) dealloc;
+- (void) linkToChannel:(MKChannel *)chan;
+- (void) unlinkFromChannel:(MKChannel *)chan;
+- (void) unlinkAll;
 
-#pragma mark -
-
-- (NSUInteger) channelId;
-- (NSString *) channelName;
-- (BOOL) isTemporary;
-- (NSInteger) position;
-
-- (MKChannel *) parent;
-- (NSArray *) channels;
-- (NSArray *) users;
-- (NSArray *) linkedChannels;
-- (BOOL) isLinkedToChannel:(MKChannel*)chan;
-
-- (NSData *) channelDescriptionHash;
-- (NSString *) channelDescription;
-
+- (void) setChannelDescriptionHash:(NSData *)hash;
+- (void) setChannelDescription:(NSString *)desc;
 @end
+

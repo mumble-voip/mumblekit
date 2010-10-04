@@ -29,167 +29,149 @@
 */
 
 #import <MumbleKit/MKChannel.h>
+#import "MKChannelPrivate.h"
+
 #import <MumbleKit/MKUser.h>
+#import "MKUserPrivate.h"
 
 @implementation MKChannel
 
-static NSInteger stringSort(NSString *str1, NSString *str2, void *reverse) {
-	if (reverse)
-		return [str2 compare:str1];
-	else
-		return [str1 compare:str2];
-}
-
-static NSInteger channelSort(MKChannel *chan1, MKChannel *chan2, void *reverse) {
-	if ([chan1 position] != [chan2 position]) {
-		return reverse ? ([chan1 position] > [chan2 position]) : ([chan2 position] > [chan1 position]);
-	} else {
-		return stringSort([chan1 channelName], [chan2 channelName], reverse);
-	}
-}
-
 - (id) init {
-	self = [super init];
-	if (self == nil)
-		return nil;
-
-	inheritACL = YES;
-	channelList = [[NSMutableArray alloc] init];
-	userList = [[NSMutableArray alloc] init];
-	ACLList = [[NSMutableArray alloc] init];
-
+	if (self = [super init]) {
+		_channels = [[NSMutableArray alloc] init];
+		_users = [[NSMutableArray alloc] init];
+		_linked = [[NSMutableArray alloc] init];
+	}
 	return self;
 }
 
 - (void) dealloc {
-	[channelName release];
-
-	[userList release];
-	[channelList release];
-	[ACLList release];
-
+	[_channelName release];
+	[_channels release];
+	[_users release];
+	[_linked release];
 	[super dealloc];
 }
 
 #pragma mark -
 
-//
-// Add a child channel to this channel.
-// Returns the index into the channel's subchannel list that the child was inserted at.
-//
-- (NSUInteger) addChannel:(MKChannel *)newChild {
-	[newChild setParent:self];
-	[channelList addObject:newChild];
-	[channelList sortUsingFunction:channelSort context:nil];
-	return [channelList indexOfObject:newChild];
+- (void) addChannel:(MKChannel *)child {
+	[child setParent:self];
+	[_channels addObject:child];
 }
 
-//
-// Remove a child channel.
-//
-- (void) removeChannel:(MKChannel *)chan {
-	[chan setParent:nil];
-	[channelList removeObject:chan];
+- (void) removeChannel:(MKChannel *)child {
+	[child setParent:nil];
+	[_channels removeObject:child];
 }
 
 - (void) addUser:(MKUser *)user {
 	MKChannel *chan = [user channel];
 	[chan removeUser:user];
 	[user setChannel:self];
-	[userList addObject:user];
+	[_users addObject:user];
 }
 
 - (void) removeUser:(MKUser *)user {
-	[userList removeObject:user];
+	[user setChannel:nil];
+	[_users removeObject:user];
 }
 
-#pragma mark -
-
-/*
- * Get a list of children of this channel.
- */
-- (NSArray *) subchannels {
-	return channelList;
+- (NSArray *) channels {
+	return [[_channels copy] autorelease];
 }
 
-/*
- * Get a list of the current users residing in this channel.
- */
 - (NSArray *) users {
-	return userList;
+	return [[_users copy] autorelease];
 }
 
-#pragma mark -
+- (NSArray *) linkedChannels {
+	return [[_linked copy] autorelease];
+}
 
-- (BOOL) linkedToChannel:(MKChannel *)chan {
-	for (MKChannel *c in linkedList) {
-		if (c == chan) {
-			return YES;
-		}
-	}
-	return NO;
+- (BOOL) isLinkedToChannel:(MKChannel*)chan {
+	return [_linked containsObject:chan];
 }
 
 - (void) linkToChannel:(MKChannel *)chan {
-	if ([self linkedToChannel:chan])
+	if ([self isLinkedToChannel:chan])
 		return;
 
-	[linkedList addObject:chan];
-	[chan->linkedList addObject:self];
+	[_linked addObject:chan];
+	[chan linkToChannel:self];
 }
 
 - (void) unlinkFromChannel:(MKChannel *)chan {
-	[linkedList removeObject:chan];
-	[chan->linkedList removeObject:self];
+	if ([self isLinkedToChannel:chan]) {
+		[_linked removeObject:chan];
+		[chan unlinkFromChannel:self];
+	}
 }
 
 - (void) unlinkAll {
-	for (MKChannel *chan in linkedList) {
+	for (MKChannel *chan in _linked) {
 		[self unlinkFromChannel:chan];
 	}
 }
 
-#pragma mark -
-
 - (void) setChannelName:(NSString *)name {
-	[channelName release];
-	channelName = [name copy];
+	[_channelName release];
+	_channelName = [name copy];
 }
 
 - (NSString *) channelName {
-	return channelName;
+	return _channelName;
 }
 
 - (void) setParent:(MKChannel *)chan {
-	channelParent = chan;
+	_parent = chan;
 }
 
 - (MKChannel *) parent {
-	return channelParent;
+	return _parent;
 }
 
-- (void) setChannelId:(NSUInteger)chanId {
-	channelId = chanId;
+- (void) setChannelId:(NSUInteger)channelId {
+	_channelId = channelId;
 }
 
 - (NSUInteger) channelId {
-	return channelId;
+	return _channelId;
 }
 
 - (void) setTemporary:(BOOL)flag {
-	temporary = flag;
+	_temporary = flag;
 }
 
-- (BOOL) temporary {
-	return temporary;
-}
-
-- (NSInteger) position {
-	return position;
+- (BOOL) isTemporary {
+	return _temporary;
 }
 
 - (void) setPosition:(NSInteger)pos {
-	position = pos;
+	_position = pos;
+}
+
+- (NSInteger) position {
+	return _position;
+}
+
+- (void) setChannelDescriptionHash:(NSData *)hash {
+	[_channelDescriptionHash release];
+	_channelDescriptionHash = [hash copy];
+
+}
+
+- (NSData *) channelDescriptionHash {
+	return _channelDescriptionHash;
+}
+
+- (void) setChannelDescription:(NSString *)desc {
+	[_channelDescription release];
+	_channelDescription = [desc copy];
+}
+
+- (NSString *) channelDescription {
+	return _channelDescription;
 }
 
 @end

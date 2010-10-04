@@ -37,11 +37,10 @@
 @class MKServerModel;
 
 @protocol MKServerModelDelegate
+// User changes
 - (void) serverModel:(MKServerModel *)model joinedServerAsUser:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userJoined:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userLeft:(MKUser *)user;
-- (void) serverModel:(MKServerModel *)model channelAdded:(MKChannel *)channel;
-- (void) serverModel:(MKServerModel *)model channelRemoved:(MKChannel *)channel;
 - (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 //- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
 
@@ -65,24 +64,29 @@
 
 // Priority speaker
 - (void) serverModel:(MKServerModel *)model userPrioritySpeakerChanged:(MKUser *)user;
+
+// Channel stuff
+- (void) serverModel:(MKServerModel *)model channelAdded:(MKChannel *)channel;
+- (void) serverModel:(MKServerModel *)model channelRemoved:(MKChannel *)channel;
+- (void) serverModel:(MKServerModel *)model channelRenamed:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model channelPositionChanged:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model channelMoved:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model channelDescriptionChanged:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model linksSet:(NSArray *)newLinks forChannel:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model linksAdded:(NSArray *)newLinks toChannel:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model linksRemoved:(NSArray *)removedLinks fromChannel:(MKChannel *)chan;
+- (void) serverModel:(MKServerModel *)model linksChangedForChannel:(MKChannel *)chan;
 @end
 
-
 @interface MKServerModel : NSObject {
-	MKChannel *_rootChannel;
-	MKUser *_connectedUser;
-
-	NSMutableArray *channelArray;
-
-	MKReadWriteLock *userMapLock;
-	NSMutableDictionary *userMap;
-
-	MKReadWriteLock *channelMapLock;
-	NSMutableDictionary *channelMap;
-
-	MKConnection *_connection;
-
-	MulticastDelegate<MKServerModelDelegate> *_delegate;
+	MKConnection                              *_connection;
+	MKChannel                                 *_rootChannel;
+	MKUser                                    *_connectedUser;
+	MKReadWriteLock                           *_userMapLock;
+	NSMutableDictionary                       *_userMap;
+	MKReadWriteLock                           *_channelMapLock;
+	NSMutableDictionary                       *_channelMap;
+	MulticastDelegate<MKServerModelDelegate>  *_delegate;
 }
 
 - (id) initWithConnection:(MKConnection *)conn;
@@ -91,36 +95,18 @@
 - (void) removeDelegate:(id)delegate;
 
 #pragma mark -
+#pragma mark Users
 
 - (MKUser *) connectedUser;
-- (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
 - (MKUser *) userWithSession:(NSUInteger)session;
 - (MKUser *) userWithHash:(NSString *)hash;
-- (void) renameUser:(MKUser *)user to:(NSString *)newName;
-- (void) setIdForUser:(MKUser *)user to:(NSUInteger)newId;
-- (void) setHashForUser:(MKUser *)user to:(NSString *)newHash;
-- (void) setFriendNameForUser:(MKUser *)user to:(NSString *)newFriendName;
-- (void) setCommentForUser:(MKUser *) to:(NSString *)newComment;
-- (void) setSeenCommentForUser:(MKUser *)user;
 - (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
-- (void) removeUser:(MKUser *)user;
 
 #pragma mark -
+#pragma mark Channel operations
 
 - (MKChannel *) rootChannel;
-- (MKChannel *) addChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)p;
-- (MKChannel *) channelWithId:(NSUInteger)chanId;
-- (void) renameChannel:(MKChannel *)chan to:(NSString *)newName;
-- (void) repositionChannel:(MKChannel *)chan to:(NSInteger)pos;
-- (void) setCommentForChannel:(MKChannel *)chan to:(NSString *)newComment;
-- (void) moveChannel:(MKChannel *)chan toChannel:(MKChannel *)newParent;
-- (void) removeChannel:(MKChannel *)chan;
-- (void) linkChannel:(MKChannel *)chan withChannels:(NSArray *)channelLinks;
-- (void) unlinkChannel:(MKChannel *)chan fromChannels:(NSArray *)channelLinks;
-- (void) unlinkAllFromChannel:(MKChannel *)chan;
-
-#pragma mark -
-
+- (MKChannel *) channelWithId:(NSUInteger)channelId;
 - (void) joinChannel:(MKChannel *)chan;
 
 @end

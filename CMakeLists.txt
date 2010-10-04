@@ -42,7 +42,12 @@ SET(SOURCES
 	proto/ObjectivecDescriptor.pb.m
 )
 
-SET(HEADERS
+SET(PRIVATE_HEADERS
+	src/MKUserPrivate.h
+	src/MKChannelPrivate.h
+)
+
+SET(PUBLIC_HEADERS
 	src/MumbleKit/MKAudio.h
 	src/MumbleKit/MKAudioInput.h
 	src/MumbleKit/MKAudioOutput.h
@@ -93,17 +98,17 @@ IF (MACOSX_BUILD)
 	SET(CMAKE_OSX_SYSROOT macosx10.6)
 	set(CMAKE_SHARED_LINKER_FLAGS "-framework Foundation -framework AudioToolbox -framework AudioUnit -framework Security -framework CoreAudio -framework CoreServices")
 
-	ADD_LIBRARY(MumbleKit SHARED ${SOURCES} ${HEADERS})
+	ADD_LIBRARY(MumbleKit SHARED ${SOURCES} ${PRIVATE_HEADERS} ${PUBLIC_HEADERS})
 	TARGET_LINK_LIBRARIES(MumbleKit CELT-0.7.0 Speex SpeexDSP ProtocolBuffers OpenSSL)
 
 	SET_TARGET_PROPERTIES(MumbleKit PROPERTIES FRAMEWORK TRUE)
 	SET_TARGET_PROPERTIES(MumbleKit PROPERTIES FRAMEWORK_VERSION "1.0")
-	SET_TARGET_PROPERTIES(MumbleKit PROPERTIES PUBLIC_HEADER "${HEADERS}")
+	SET_TARGET_PROPERTIES(MumbleKit PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 	SET(CMAKE_OSX_ARCHITECTURES "x86_64")
 ELSEIF (IOS_BUILD)
 	SET(CMAKE_OSX_SYSROOT iphoneos4.1)
 
-	ADD_LIBRARY(MumbleKit STATIC ${SOURCES} ${HEADERS})
+	ADD_LIBRARY(MumbleKit STATIC ${SOURCES} ${PRIVATE_HEADERS} ${PUBLIC_HEADERS})
 	TARGET_LINK_LIBRARIES(MumbleKit CELT-0.7.0 Speex SpeexDSP ProtocolBuffers OpenSSL)
 
 	# Create a combined static library that includes MumbleKit and all its

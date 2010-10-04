@@ -29,11 +29,18 @@
 */
 
 #import <MumbleKit/MKServerModel.h>
+
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKPacketDataStream.h>
 #import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKAudio.h>
 #import "Mumble.pb.h"
+
+#import <MumbleKit/MKChannel.h>
+#import "MKChannelPrivate.h"
+
+#import <MumbleKit/MKUser.h>
+#import "MKUserPrivate.h"
 
 #import "MulticastDelegate.h"
 
@@ -41,38 +48,57 @@
 	NSLog(@"%@: %s", [self class], __FUNCTION__)
 
 @interface MKServerModel (InlinePrivate)
+
 - (void) setSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
 - (void) setMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
 - (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker;
+
+- (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
+- (void) renameUser:(MKUser *)user to:(NSString *)newName;
+- (void) setIdForUser:(MKUser *)user to:(NSUInteger)newId;
+- (void) setHashForUser:(MKUser *)user to:(NSString *)newHash;
+- (void) setFriendNameForUser:(MKUser *)user to:(NSString *)newFriendName;
+- (void) setCommentForUser:(MKUser *) to:(NSString *)newComment;
+- (void) setSeenCommentForUser:(MKUser *)user;
+- (void) removeUser:(MKUser *)user;
+
+// Internal channel operations
+- (MKChannel *) internalAddChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent;
+- (void) internalSetLinks:(NSArray *)links forChannel:(MKChannel *)chan;
+- (void) internalAddLinks:(NSArray *)links toChannel:(MKChannel *)chan;
+- (void) internalRemoveLinks:(NSArray *)links fromChannel:(MKChannel *)chan;
+- (void) internalRenameChannel:(MKChannel *)chan to:(NSString *)newName;
+- (void) internalRepositionChannel:(MKChannel *)chan to:(NSInteger)pos;
+- (void) internalSetDescriptionForChannel:(MKChannel *)chan to:(NSString *)desc;
+- (void) internalSetDescriptionHashForChannel:(MKChannel *)chan to:(NSData *)hash;
+- (void) internalMoveChannel:(MKChannel *)chan toChannel:(MKChannel *)newParent;
+- (void) internalRemoveChannel:(MKChannel *)chan;
+
 @end
 
 @implementation MKServerModel
 
 - (id) initWithConnection:(MKConnection *)conn {
-	self = [super init];
-	if (self == nil)
-		return nil;
+	if (self = [super init]) {
+		_delegate = [[MulticastDelegate alloc] init];
 
-	_delegate = [[MulticastDelegate alloc] init];
+		_userMapLock = [[MKReadWriteLock alloc] init];
+		_userMap = [[NSMutableDictionary alloc] init];
 
-	userMapLock = [[MKReadWriteLock alloc] init];
-	userMap = [[NSMutableDictionary alloc] init];
+		_channelMapLock = [[MKReadWriteLock alloc] init];
+		_channelMap = [[NSMutableDictionary alloc] init];
 
-	channelMapLock = [[MKReadWriteLock alloc] init];
-	channelMap = [[NSMutableDictionary alloc] init];
+		_rootChannel = [[MKChannel alloc] init];
+		[_rootChannel setChannelId:0];
+		[_rootChannel setChannelName:@"Root"];
 
-	_rootChannel = [[MKChannel alloc] init];
-	[_rootChannel setChannelId:0];
-	[_rootChannel setChannelName:@"Root"];
-	[channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInt:0]];
+		[_channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInt:0]];
 
-	_connection = conn;
+		_connection = conn;
 
-	// Set us up to handle messages from the connection.
-	[_connection setMessageHandler:self];
-	// And also as the voice data handler.
-	[_connection setVoiceDataHandler:self];
-
+		[_connection setMessageHandler:self];
+		[_connection setVoiceDataHandler:self];
+	}
 	return self;
 }
 
@@ -88,11 +114,8 @@
 	[(MulticastDelegate *)_delegate removeDelegate:delegate];
 }
 
-- (BOOL) serverInfoSynced {
-	return _connectedUser != nil;
-}
-
-#pragma mark MKMessageHandler methods
+#pragma mark -
+#pragma mark MKMessageHandler delegate
 
 -(void) connection:(MKConnection *)conn handleCodecVersionMessage:(MPCodecVersion *)codec {
 	NSLog(@"MKServerModel: Received CodecVersion message");
@@ -147,7 +170,7 @@
 	}
 
 	// The user just connected. Tell our delegate listeners.
-	if (newUser && [self serverInfoSynced]) {
+	if (newUser && _connectedUser) {
 		[_delegate serverModel:self userJoined:user];
 	}
 
@@ -204,8 +227,7 @@
 
 	if (!chan) {
 		if ([msg hasParent] && [msg hasName]) {
-			NSLog(@"MKServerModel: Adding new channel....");
-			chan = [self addChannelWithId:[msg channelId] name:[msg name] parent:parent];
+			chan = [self internalAddChannelWithId:[msg channelId] name:[msg name] parent:parent];
 			if ([msg hasTemporary]) {
 				[chan setTemporary:[msg temporary]];
 			}
@@ -215,24 +237,39 @@
 	}
 
 	if (parent) {
-		NSLog(@"MKServerModel: Moving %@ to %@", [chan channelName], [parent channelName]);
-		[self moveChannel:chan toChannel:parent];
+		[self internalMoveChannel:chan toChannel:parent];
 	}
 
 	if ([msg hasName]) {
-		[self renameChannel:chan to:[msg name]];
+		[self internalRenameChannel:chan to:[msg name]];
 	}
 
 	if ([msg hasDescription]) {
-		[self setCommentForChannel:chan to:[msg description]];
+		[self internalSetDescriptionForChannel:chan to:[msg description]];
+	}
+
+	if ([msg hasDescriptionHash]) {
+		[self internalSetDescriptionHashForChannel:chan to:[msg descriptionHash]];
 	}
 
 	if ([msg hasPosition]) {
-		[self repositionChannel:chan to:[msg position]];
+		[self internalRepositionChannel:chan to:[msg position]];
 	}
 
-	if (newChannel && [self serverInfoSynced]) {
-		[_delegate serverModel:self channelCreated:chan];
+	if ([[msg linksList] count] > 0) {
+		[self internalSetLinks:[msg linksList] forChannel:chan];
+	}
+
+	if ([[msg linksAddList] count] > 0) {
+		[self internalAddLinks:[msg linksAddList] toChannel:chan];
+	}
+
+	if ([[msg linksRemoveList] count] > 0) {
+		[self internalRemoveLinks:[msg linksRemoveList] fromChannel:chan];
+	}
+
+	if (newChannel && _connectedUser) {
+		[_delegate serverModel:self channelAdded:chan];
 	}
 }
 
@@ -242,17 +279,12 @@
 	}
 
 	MKChannel *chan = [self channelWithId:[msg channelId]];
-	if (chan && [chan channelId] != 0 && [self serverInfoSynced]) {
-		[_delegate serverModel:self channelRemoved:chan];
-		[self removeChannel:chan];
+	if (chan && [chan channelId] != 0 && _connectedUser) {
+		[self internalRemoveChannel:chan];
 	}
 }
 
-//
-// All server information synced.
-//
 - (void) connection:(MKConnection *)conn handleServerSyncMessage:(MPServerSync *)msg {
-
 	MKUser *user = [self userWithSession:[msg session]];
 	_connectedUser = user;
 
@@ -289,7 +321,8 @@
 - (void) connection:(MKConnection *)conn handlePermissionQueryMessage: (MPPermissionQuery *)msg {
 }
 
-#pragma mark MKVoiceDataHandler
+#pragma mark -
+#pragma mark MKVoiceDataHandler delegate
 
 - (void) connection:(MKConnection *)conn session:(NSUInteger)session sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType voiceData:(NSMutableData *)data {
 	MKUser *speakingUser = [self userWithSession:session];
@@ -303,38 +336,26 @@
 	return _connectedUser;
 }
 
-/*
- * Add a new user.
- *
- * @param  userSession   The session of the new user.
- * @param  userName      The username of the new user.
- *
- * @return
- * Returns the allocated User on success. Returns nil on failure. The returned User
- * is owned by the User module itself, and should not be retained or otherwise fiddled
- * with.
- */
 - (MKUser *) addUserWithSession:(NSUInteger)userSession name:(NSString *)userName {
 	MKUser *user = [[MKUser alloc] init];
 	[user setSession:userSession];
 	[user setUserName:userName];
 
-	[userMapLock writeLock];
-	[userMap setObject:user forKey:[NSNumber numberWithUnsignedInt:userSession]];
-	[userMapLock unlock];
+	[_userMapLock writeLock];
+	[_userMap setObject:user forKey:[NSNumber numberWithUnsignedInt:userSession]];
+	[_userMapLock unlock];
 
 	return user;
 }
 
 - (MKUser *) userWithSession:(NSUInteger)session {
-	[userMapLock readLock];
-	MKUser *u = [userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
-	[userMapLock unlock];
+	[_userMapLock readLock];
+	MKUser *u = [_userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
+	[_userMapLock unlock];
 	return u;
 }
 
 - (MKUser *) userWithHash:(NSString *)hash {
-	NSLog(@"userWithHash: notimpl.");
 	return nil;
 }
 
@@ -354,7 +375,7 @@
 		[user setSelfDeafened:[msg selfDeaf]];
 	}
 
-	if ([self serverInfoSynced]) {
+	if (_connectedUser) {
 		// This is what the desktop client does.  There's no state for
 		// 'user unmuted and undeafened'.
 		if ([user isSelfMuted] && [user isSelfDeafened]) {
@@ -384,7 +405,7 @@
 
 	MKUser *actor = [self userWithSession:[msg actor]];
 
-	if ([self serverInfoSynced]) {
+	if (_connectedUser) {
 		if ([msg hasMute] && [msg hasDeaf] && [user isMuted] && [user isDeafened]) {
 			[_delegate serverModel:self userMutedAndDeafened:user byUser:actor];
 		} else if ([msg hasMute] && [msg hasDeaf] && ![user isMuted] && ![user isDeafened]) {
@@ -427,7 +448,7 @@
 
 - (void) setPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker {
 	[user setPrioritySpeaker:prioritySpeaker];
-	if ([self serverInfoSynced])
+	if (_connectedUser)
 		[_delegate serverModel:self userPrioritySpeakerChanged:user];
 }
 
@@ -447,9 +468,6 @@
 	STUB;
 }
 
-//
-// Move a user to a channel.
-//
 - (void) moveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover {
 	MKChannel *currentChannel = [user channel];
 	MKChannel *destChannel = chan;
@@ -460,9 +478,6 @@
 	[_delegate serverModel:self userMoved:user toChannel:chan byUser:mover];
 }
 
-//
-// Remove a user from the model.
-//
 - (void) removeUser:(MKUser *)user {
 	STUB;
 }
@@ -473,66 +488,160 @@
 	return _rootChannel;
 }
 
-/*
- * Add a channel.
- */
-- (MKChannel *) addChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent {
-
+// Add a new channel to our model
+- (MKChannel *) internalAddChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent {
 	MKChannel *chan = [[MKChannel alloc] init];
 	[chan setChannelId:chanId];
 	[chan setChannelName:chanName];
 	[chan setParent:parent];
 
-	[channelMapLock writeLock];
-	[channelMap setObject:chan forKey:[NSNumber numberWithUnsignedInt:chanId]];
-	[channelMapLock unlock];
+	[_channelMapLock writeLock];
+	[_channelMap setObject:chan forKey:[NSNumber numberWithUnsignedInt:chanId]];
+	[_channelMapLock unlock];
 
 	[parent addChannel:chan];
 
 	return chan;
 }
 
-- (MKChannel *) channelWithId:(NSUInteger)chanId {
-	[channelMapLock readLock];
-	MKChannel *c = [channelMap objectForKey:[NSNumber numberWithUnsignedInt:chanId]];
-	[channelMapLock unlock];
-	return c;
+// Handle the 'links' list from a ChannelState message
+- (void) internalSetLinks:(NSArray *)links forChannel:(MKChannel *)chan {
+	[chan unlinkAll];
+	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:[links count]];
+	for (NSNumber *number in links) {
+		NSUInteger channelId = [number unsignedIntegerValue];
+		MKChannel *linkedChan = [self channelWithId:channelId];
+		[channels addObject:linkedChan];
+
+		[chan linkToChannel:linkedChan];
+	}
+
+	if (_connectedUser) {
+		[_delegate serverModel:self linksSet:channels forChannel:chan];
+		[_delegate serverModel:self linksChangedForChannel:chan];
+	}
+
+	[channels release];
 }
 
-- (void) renameChannel:(MKChannel *)chan to:(NSString *)newName {
-	STUB;
+// Handle the 'links_add' list from a ChannelState message
+- (void) internalAddLinks:(NSArray *)links toChannel:(MKChannel *)chan {
+	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:[links count]];
+	for (NSNumber *number in links) {
+		NSUInteger channelId = [number unsignedIntegerValue];
+		MKChannel *linkedChan = [self channelWithId:channelId];
+		[channels addObject:linkedChan];
+
+		[chan linkToChannel:linkedChan];
+	}
+
+	if (_connectedUser) {
+		[_delegate serverModel:self linksAdded:channels toChannel:chan];
+		[_delegate serverModel:self linksChangedForChannel:chan];
+	}
+
+	[channels release];
 }
 
-- (void) repositionChannel:(MKChannel *)chan to:(NSInteger)pos {
-	STUB;
+// Handle the 'links_remove' list from a ChannelState message
+- (void) internalRemoveLinks:(NSArray *)links fromChannel:(MKChannel *)chan {
+	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:[links count]];
+	for (NSNumber *number in links) {
+		NSUInteger channelId = [number unsignedIntegerValue];
+		MKChannel *linkedChan = [self channelWithId:channelId];
+		[channels addObject:linkedChan];
+
+		[chan unlinkFromChannel:chan];
+	}
+
+	if (_connectedUser) {
+		[_delegate serverModel:self linksRemoved:channels fromChannel:chan];
+		[_delegate serverModel:self linksChangedForChannel:chan];
+	}
+
+	[channels release];
 }
 
-- (void) setCommentForChannel:(MKChannel *)chan to:(NSString *)newComment {
-	STUB;
+
+// Handle a channel rename (from a ChannelState message)
+- (void) internalRenameChannel:(MKChannel *)chan to:(NSString *)newName {
+	[chan setChannelName:newName];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self channelRenamed:chan];
+	}
 }
 
-- (void) moveChannel:(MKChannel *)chan toChannel:(MKChannel *)newParent {
-	STUB;
+// Handle a channel position change (from a ChannelState message)
+- (void) internalRepositionChannel:(MKChannel *)chan to:(NSInteger)pos {
+	[chan setPosition:pos];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self channelPositionChanged:chan];
+	}
 }
 
-- (void) removeChannel:(MKChannel *)chan {
-	STUB;
+// Handle a description set in a ChannelState message.
+- (void) internalSetDescriptionForChannel:(MKChannel *)chan to:(NSString *)desc {
+	[chan setChannelDescription:desc];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self channelDescriptionChanged:chan];
+	}
 }
 
-- (void) linkChannel:(MKChannel *)chan withChannels:(NSArray *)channelLinks {
-	STUB;
+// Handle a description hash set in a ChannelState message.
+- (void) internalSetDescriptionHashForChannel:(MKChannel *)chan to:(NSData *)hash {
+	[chan setChannelDescriptionHash:hash];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self channelDescriptionChanged:chan];
+	}
 }
 
-- (void) unlinkChannel:(MKChannel *)chan fromChannels:(NSArray *)channelLinks {
-	STUB;
+// Handle a channel move (from a ChannelState message)
+- (void) internalMoveChannel:(MKChannel *)chan toChannel:(MKChannel *)newParent {
+	MKChannel *p = newParent;
+
+	// Don't allow channel to be moved into itself.
+	while (p) {
+		if (p == chan)
+			return;
+		p = [p parent];
+	}
+
+	[chan setParent:newParent];
+
+	if (_connectedUser) {
+		[_delegate serverModel:self channelMoved:(MKChannel *)chan];
+	}
 }
 
-- (void) unlinkAllFromChannel:(MKChannel *)chan {
-	STUB;
+// Handle a channel remove (from a ChannelState message)
+- (void) internalRemoveChannel:(MKChannel *)chan {
+	if (_connectedUser) {
+		[_delegate serverModel:self channelRemoved:chan];
+	}
+
+	[_channelMapLock writeLock];
+	[_channelMap removeObjectForKey:[NSNumber numberWithInteger:[chan channelId]]];
+	[_channelMapLock unlock];
+
+	// todo(mkrautz): Remove model object also.
 }
 
 #pragma mark -
+#pragma mark Channel operations
 
+// Lookup a channel by its channelId.
+- (MKChannel *) channelWithId:(NSUInteger)channelId {
+	[_channelMapLock readLock];
+	MKChannel *c = [_channelMap objectForKey:[NSNumber numberWithUnsignedInt:channelId]];
+	[_channelMapLock unlock];
+	return c;
+}
+
+// Request to join a channel.
 - (void) joinChannel:(MKChannel *)chan {
 	MPUserState_Builder *userState = [MPUserState builder];
 	[userState setSession:[[self connectedUser] session]];
@@ -540,8 +649,6 @@
 
 	NSData *data = [[userState build] data];
 	[_connection sendMessageWithType:UserStateMessage data:data];
-
-	NSLog(@"requested to join channel %i", [chan channelId]);
 }
 
 @end

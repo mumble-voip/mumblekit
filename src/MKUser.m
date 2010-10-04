@@ -29,6 +29,8 @@
 */
 
 #import <MumbleKit/MKUser.h>
+#import "MKUserPrivate.h"
+
 #import <MumbleKit/MKReadWriteLock.h>
 #import <MumbleKit/MKChannel.h>
 
