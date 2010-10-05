@@ -31,8 +31,8 @@
 #import <MumbleKit/MKUser.h>
 #import "MKUserPrivate.h"
 
-#import <MumbleKit/MKReadWriteLock.h>
 #import <MumbleKit/MKChannel.h>
+#import "MKChannelPrivate.h"
 
 @implementation MKUser
 
@@ -42,13 +42,17 @@
 	}
 	return self;
 }
-
 - (void) dealloc {
+	[_channel removeUser:self];
 	[_username release];
 	[super dealloc];
 }
 
 #pragma mark -
+
+- (void) removeFromChannel {
+	[_channel removeUser:self];
+}
 
 - (void) setSession:(NSUInteger)session {
 	_session = session;
@@ -198,7 +202,7 @@
 	_comment = [comment copy];
 }
 
-- (NSData *) comment {
+- (NSString *) comment {
 	return _comment;
 }
 

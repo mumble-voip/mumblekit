@@ -91,13 +91,11 @@
 - (void) serverModel:(MKServerModel *)model linksChangedForChannel:(MKChannel *)chan;
 @end
 
-@interface MKServerModel : NSObject {
+@interface MKServerModel : NSObject <MKMessageHandler> {
 	MKConnection                              *_connection;
 	MKChannel                                 *_rootChannel;
 	MKUser                                    *_connectedUser;
-	MKReadWriteLock                           *_userMapLock;
 	NSMutableDictionary                       *_userMap;
-	MKReadWriteLock                           *_channelMapLock;
 	NSMutableDictionary                       *_channelMap;
 	MulticastDelegate<MKServerModelDelegate>  *_delegate;
 }

@@ -46,6 +46,8 @@
 }
 
 - (void) dealloc {
+	NSAssert([_users count] == 0, @"Attempt to remove channel with users in it");
+	NSAssert([_channels count] == 0, @"Attempt to remove channel with subchannels.");
 	[_channelName release];
 	[_channels release];
 	[_users release];
@@ -54,6 +56,10 @@
 }
 
 #pragma mark -
+
+- (void) removeFromParent {
+	[_parent removeChannel:self];
+}
 
 - (void) addChannel:(MKChannel *)child {
 	[child setParent:self];
@@ -78,15 +84,15 @@
 }
 
 - (NSArray *) channels {
-	return [[_channels copy] autorelease];
+	return _channels;
 }
 
 - (NSArray *) users {
-	return [[_users copy] autorelease];
+	return _users;
 }
 
 - (NSArray *) linkedChannels {
-	return [[_linked copy] autorelease];
+	return _linked;
 }
 
 - (BOOL) isLinkedToChannel:(MKChannel*)chan {
@@ -158,7 +164,6 @@
 - (void) setChannelDescriptionHash:(NSData *)hash {
 	[_channelDescriptionHash release];
 	_channelDescriptionHash = [hash copy];
-
 }
 
 - (NSData *) channelDescriptionHash {

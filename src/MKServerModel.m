@@ -81,17 +81,14 @@
 	if (self = [super init]) {
 		_delegate = [[MulticastDelegate alloc] init];
 
-		_userMapLock = [[MKReadWriteLock alloc] init];
 		_userMap = [[NSMutableDictionary alloc] init];
-
-		_channelMapLock = [[MKReadWriteLock alloc] init];
 		_channelMap = [[NSMutableDictionary alloc] init];
 
 		_rootChannel = [[MKChannel alloc] init];
 		[_rootChannel setChannelId:0];
 		[_rootChannel setChannelName:@"Root"];
 
-		[_channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInt:0]];
+		[_channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInteger:0]];
 
 		_connection = conn;
 		[_connection setMessageHandler:self];
@@ -281,13 +278,13 @@
 	}
 }
 
-- (void) connection:(MKConnection *) handleChannelRemoveMessage:(MPChannelRemove *)msg {
+- (void) connection:(MKConnection *)conn handleChannelRemoveMessage:(MPChannelRemove *)msg {
 	if (! [msg hasChannelId]) {
 		return;
 	}
 
 	MKChannel *chan = [self channelWithId:[msg channelId]];
-	if (chan && [chan channelId] != 0 && _connectedUser) {
+	if (chan && [chan channelId] != 0) {
 		[self internalRemoveChannel:chan];
 	}
 }
@@ -359,10 +356,8 @@
 	MKUser *user = [[MKUser alloc] init];
 	[user setSession:userSession];
 	[user setUserName:userName];
-
-	[_userMapLock writeLock];
 	[_userMap setObject:user forKey:[NSNumber numberWithUnsignedInt:userSession]];
-	[_userMapLock unlock];
+	[user release];
 
 	return user;
 }
@@ -527,7 +522,8 @@
 		[_delegate serverModel:self userLeft:user];
 	}
 
-	// todo(mkrautz): Get rid of model object...
+	[_userMap removeObjectForKey:[NSNumber numberWithUnsignedInteger:[msg session]]];
+	[user removeFromChannel];
 }
 
 #pragma mark -
@@ -539,11 +535,9 @@
 	[chan setChannelName:chanName];
 	[chan setParent:parent];
 
-	[_channelMapLock writeLock];
 	[_channelMap setObject:chan forKey:[NSNumber numberWithUnsignedInt:chanId]];
-	[_channelMapLock unlock];
-
 	[parent addChannel:chan];
+	[chan release];
 
 	return chan;
 }
@@ -667,11 +661,8 @@
 		[_delegate serverModel:self channelRemoved:chan];
 	}
 
-	[_channelMapLock writeLock];
-	[_channelMap removeObjectForKey:[NSNumber numberWithInteger:[chan channelId]]];
-	[_channelMapLock unlock];
-
-	// todo(mkrautz): Remove model object also.
+	[_channelMap removeObjectForKey:[NSNumber numberWithUnsignedInt:[chan channelId]]];
+	[chan removeFromParent];
 }
 
 #pragma mark -
@@ -686,10 +677,7 @@
 }
 
 - (MKUser *) userWithSession:(NSUInteger)session {
-	[_userMapLock readLock];
-	MKUser *u = [_userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
-	[_userMapLock unlock];
-	return u;
+	return [_userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
 }
 
 - (MKUser *) userWithHash:(NSString *)hash {
@@ -698,10 +686,7 @@
 
 // Lookup a channel by its channelId.
 - (MKChannel *) channelWithId:(NSUInteger)channelId {
-	[_channelMapLock readLock];
-	MKChannel *c = [_channelMap objectForKey:[NSNumber numberWithUnsignedInt:channelId]];
-	[_channelMapLock unlock];
-	return c;
+	return [_channelMap objectForKey:[NSNumber numberWithUnsignedInt:channelId]];
 }
 
 // Request to join a channel.

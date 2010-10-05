@@ -29,6 +29,7 @@
 */
 
 @interface MKUser (PrivateMethods)
+- (void) removeFromChannel;
 - (void) setSession:(NSUInteger)session;
 - (void) setUserName:(NSString *)name;
 - (void) setUserId:(NSInteger)userId;

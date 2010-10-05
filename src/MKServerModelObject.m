@@ -33,22 +33,7 @@
 @implementation MKServerModelObject
 
 - (id) copyWithZone:(NSZone *)zone {
-	return self;
-}
-
-- (id) retain {
-	return self;
-}
-
-- (NSUInteger) retainCount {
-	return NSUIntegerMax;
-}
-
-- (void) release {
-}
-
-- (id) autorelease {
-	return self;
+	return [self retain];
 }
 
 @end

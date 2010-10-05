@@ -29,6 +29,8 @@
 */
 
 @interface MKChannel (PrivateMethods)
+- (void) removeFromParent;
+
 - (void) setChannelId:(NSUInteger)channelId;
 - (void) setChannelName:(NSString *)name;
 - (void) setTemporary:(BOOL)flag;

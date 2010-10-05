@@ -28,14 +28,6 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <Foundation/Foundation.h>
-
 @interface MKServerModelObject : NSObject
-
 - (id) copyWithZone:(NSZone *)zone;
-- (id) retain;
-- (NSUInteger) retainCount;
-- (void) release;
-- (id) autorelease;
-
 @end
