@@ -264,34 +264,30 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 }
 
 - (void) removeBuffer:(MKAudioOutputUser *)u {
-	[outputLock writeLock];
-
-	MKUser *user = [u user];
-	NSUInteger session = [user session];
-	[outputs removeObjectForKey:[NSNumber numberWithUnsignedInt:session]];
-
-	[outputLock unlock];
+	// hack(mkrautz): output sources should be a subclass, but should implement a protocol instead.
+	if ([u respondsToSelector:@selector(userSession)]) {
+		[outputLock writeLock];
+		[outputs removeObjectForKey:[NSNumber numberWithUnsignedInt:[(id)u userSession]]];
+		[outputLock unlock];
+	}
 }
 
-- (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType {
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType {
 	if (numChannels == 0)
 		return;
 
 	[outputLock readLock];
-	NSInteger session = [user session];
 	MKAudioOutputSpeech *outputUser = [outputs objectForKey:[NSNumber numberWithUnsignedInt:session]];
-	if (outputUser == nil || [outputUser messageType] != msgType) {
-		[outputLock unlock];
+	[outputLock unlock];
 
+	if (outputUser == nil || [outputUser messageType] != msgType) {
 		if (outputUser != nil) {
 			[self removeBuffer:outputUser];
 		}
-
-		NSLog(@"AudioOutput: No AudioOutputSpeech for user %@, allocating.", [user userName]);
-
+		outputUser = [[MKAudioOutputSpeech alloc] initWithSession:session sampleRate:mixerFrequency messageType:msgType];
 		[outputLock writeLock];
-		outputUser = [[MKAudioOutputSpeech alloc] initWithUser:user sampleRate:mixerFrequency messageType:msgType];
 		[outputs setObject:outputUser forKey:[NSNumber numberWithUnsignedInt:session]];
+		[outputLock unlock];
 		[outputUser release];
 	}
 

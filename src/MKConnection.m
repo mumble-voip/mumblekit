@@ -420,15 +420,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	return _msgHandler;
 }
 
-- (void) setVoiceDataHandler:(id<MKVoiceDataHandler>)voiceDataHandler {
-	_voiceDataHandler = voiceDataHandler;
-}
-
-- (id<MKVoiceDataHandler>) voiceDataHandler {
-	return _voiceDataHandler;
-}
-
-
 #pragma mark -
 
 /*
@@ -856,7 +847,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // This is the entry point for UDP packets after they've been decrypted,
 // and also for UDP packets that are tunneled through the TCP stream.
 - (void) _udpMessageReceived:(NSData *)data {
-	dispatch_queue_t main_queue = dispatch_get_main_queue();
 	unsigned char *buf = (unsigned char *)[data bytes];
 	MKUDPMessageType messageType = ((buf[0] >> 5) & 0x7);
 	unsigned int messageFlags = buf[0] & 0x1f;
@@ -868,27 +858,18 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	switch (messageType) {
 		case UDPVoiceCELTAlphaMessage:
 		case UDPVoiceCELTBetaMessage:
-		case UDPVoiceSpeexMessage:
-			// Call VoiceDataHandler.
-		{
-			MK_UNUSED NSUInteger session = [pds getUnsignedInt];
+		case UDPVoiceSpeexMessage: {
+			NSUInteger session = [pds getUnsignedInt];
 			NSUInteger seq = [pds getUnsignedInt];
-
 			NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];
 			[voicePacketData setLength:[pds left]+1];
-
 			unsigned char *bytes = [voicePacketData mutableBytes];
 			bytes[0] = (unsigned char)messageFlags;
 			memcpy(bytes+1, [pds dataPtr], [pds left]);
-
-			// fixme(mkrautz): No need to route voice packets through the main thread.
-			if ([_voiceDataHandler respondsToSelector:@selector(connection:session:sequence:type:voiceData:)]) {
-				dispatch_async(main_queue, ^{
-					[_voiceDataHandler connection:self session:session sequence:seq type:messageType voiceData:voicePacketData];
-				});
-			}
-		}
+			[[MKAudio sharedAudio] addFrameToBufferWithSession:session data:voicePacketData sequence:seq type:messageType];
+			[voicePacketData release];
 			break;
+		}
 
 		case UDPPingMessage: {
 			uint64_t timeStamp = [pds getVarint];

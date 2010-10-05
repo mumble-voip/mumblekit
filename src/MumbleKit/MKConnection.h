@@ -116,13 +116,6 @@ typedef enum {
 - (void) connection:(MKConnection *)conn handleCodecVersionMessage: /* MPCodecVersion */ (id)msg;
 @end
 
-/*
- * MKVoiceDataHandler
- */
-@protocol MKVoiceDataHandler
-- (void) connection:(MKConnection *)conn session:(NSUInteger)session sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType voiceData:(NSMutableData *)data;
-@end
-
 @interface MKConnection : NSThread <NSStreamDelegate> {
 	MKCryptState   *_crypt;
 
@@ -143,7 +136,6 @@ typedef enum {
 	NSInputStream  *_inputStream;
 	BOOL           _connectionEstablished;
 	BOOL           _ignoreSSLVerification;
-	id             _voiceDataHandler;
 	id             _msgHandler;
 	id             _delegate;
 	int            _socket;
@@ -185,8 +177,6 @@ typedef enum {
 
 #pragma mark -
 
-- (void) setVoiceDataHandler: (id<MKVoiceDataHandler>)voiceDataHandler;
-- (id) voiceDataHandler;
 - (void) setMessageHandler: (id<MKMessageHandler>)messageHandler;
 - (id) messageHandler;
 - (void) setDelegate: (id<MKConnectionDelegate>)delegate;

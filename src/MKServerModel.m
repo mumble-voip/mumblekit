@@ -45,6 +45,9 @@
 #import "MulticastDelegate.h"
 
 @interface MKServerModel (InternalPrivate)
+// Notifications
+- (void) notificationUserTalkStateChanged:(NSNotification *)notification;
+
 // Internal user operations
 - (MKUser *) internalAddUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
 - (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)actor;
@@ -91,14 +94,16 @@
 		[_channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInt:0]];
 
 		_connection = conn;
-
 		[_connection setMessageHandler:self];
-		[_connection setVoiceDataHandler:self];
+
+		// Listens to notifications form MKAudioOutput and MKAudioInput
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUserTalkStateChanged:) name:@"MKAudioUserTalkStateChanged" object:nil];
 	}
 	return self;
 }
 
 - (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"MKAudioUserTalkStateChanged" object:nil];
 	[super dealloc];
 }
 
@@ -325,12 +330,26 @@
 }
 
 #pragma mark -
-#pragma mark MKVoiceDataHandler delegate
+#pragma mark MKAudio notification
 
-- (void) connection:(MKConnection *)conn session:(NSUInteger)session sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType voiceData:(NSMutableData *)data {
-	MKUser *speakingUser = [self userWithSession:session];
-	[[MKAudio sharedAudio] addFrameToBufferWithUser:speakingUser data:data sequence:seq type:msgType];
-	[data release];
+- (void) notificationUserTalkStateChanged:(NSNotification *)notification {
+	NSDictionary *infoDict = [notification object];
+	NSNumber *session = [infoDict objectForKey:@"userSession"];
+	NSNumber *talkState = [infoDict objectForKey:@"talkState"];
+	MKUser *user = nil;
+
+	if (talkState) {
+		// An infoDict with a missing userSession means that our own talkState changed.
+		if (session == nil) {
+			user = _connectedUser;
+		} else {
+			user = [self userWithSession:[session unsignedIntegerValue]];
+		}
+		[user setTalkState:(MKTalkState)[talkState unsignedIntValue]];
+	}
+	if (_connectedUser && user) {
+		[_delegate serverModel:self userTalkStateChanged:user];
+	}
 }
 
 #pragma mark -

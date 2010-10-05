@@ -71,7 +71,7 @@ typedef struct _MKAudioBenchmark {
 - (MKAudioSettings *) audioSettings;
 - (void) updateAudioSettings:(MKAudioSettings *)settings;
 
-- (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
 
 - (BOOL) forceTransmit;
 - (void) setForceTransmit:(BOOL)flag;

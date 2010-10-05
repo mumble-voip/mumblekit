@@ -42,6 +42,7 @@
 
 // User changes
 - (void) serverModel:(MKServerModel *)model userJoined:(MKUser *)user;
+- (void) serverModel:(MKServerModel *)model userTalkStateChanged:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userRenamed:(MKUser *)user;
 - (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 - (void) serverModel:(MKServerModel *)model userCommentChanged:(MKUser *)user;

@@ -32,9 +32,6 @@
 #import <MumbleKit/MKAudioOutputSpeech.h>
 #import <MumbleKit/MKPacketDataStream.h>
 
-#import <MumbleKit/MKUser.h>
-#import "MKUserPrivate.h"
-
 #include <pthread.h>
 
 #include <speex/speex.h>
@@ -56,7 +53,7 @@ struct MKAudioOutputSpeechPrivate {
 
 @implementation MKAudioOutputSpeech
 
-- (id) initWithUser:(MKUser *)u sampleRate:(NSUInteger)freq messageType:(MKMessageType)type {
+- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type {
 	self = [super init];
 	if (self == nil)
 		return nil;
@@ -68,7 +65,8 @@ struct MKAudioOutputSpeechPrivate {
 	_private->speexDecoder = NULL;
 	_private->resampler = NULL;
 
-	user = u;
+	_userSession = session;
+	_talkState = MKTalkStatePassive;
 	messageType = type;
 
 	NSUInteger sampleRate;
@@ -155,8 +153,8 @@ struct MKAudioOutputSpeechPrivate {
 	[super dealloc];
 }
 
-- (MKUser *) user {
-	return user;
+- (NSUInteger) userSession {
+	return _userSession;
 }
 
 - (MKMessageType) messageType {
@@ -200,7 +198,6 @@ struct MKAudioOutputSpeechPrivate {
 	jbp.timestamp = frameSize * seq;
 
 	jitter_buffer_put(_private->jitter, &jbp);
-
 	[pds release];
 
 	err = pthread_mutex_unlock(&jitterMutex);
@@ -243,7 +240,7 @@ struct MKAudioOutputSpeechPrivate {
 			int ts = jitter_buffer_get_pointer_timestamp(_private->jitter);
 			jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
 
-			if (user && (ts == 0)) {
+			if (ts == 0) {
 				int want = (int)averageAvailable; // fixme(mkrautz): Was iroundf.
 				if (avail < want) {
 					++missCount;
@@ -305,7 +302,6 @@ struct MKAudioOutputSpeechPrivate {
 						averageAvailable *= 0.99f;
 					}
 				} else {
-					NSLog(@"AudioOutputSpeech: Nothing in jitter buffer...");
 					jitter_buffer_update_delay(_private->jitter, &jbp, NULL);
 
 					++missCount;
@@ -392,34 +388,34 @@ struct MKAudioOutputSpeechPrivate {
 			jitter_buffer_tick(_private->jitter);
 		}
 
-		if (user) {
-			if (! nextAlive)
-				flags = 0xff;
 
-			MKTalkState prevTalkState = [user talkState];
-			MKTalkState newTalkState;
+		if (! nextAlive)
+			flags = 0xff;
 
-			switch (flags) {
-				case 0:
-					newTalkState = MKTalkStateTalking;
-					break;
-				case 1:
-					newTalkState = MKTalkStateShouting;
-					break;
-				case 0xff:
-					newTalkState = MKTalkStatePassive;
-					break;
-				default:
-					newTalkState = MKTalkStateWhispering;
-					break;
-			}
+		MKTalkState prevTalkState = _talkState;
+		switch (flags) {
+			case 0:
+				_talkState = MKTalkStateTalking;
+				break;
+			case 1:
+				_talkState = MKTalkStateShouting;
+				break;
+			case 0xff:
+				_talkState = MKTalkStatePassive;
+				break;
+			default:
+				_talkState = MKTalkStateWhispering;
+				break;
+		}
 
-			if (prevTalkState != newTalkState) {
-				[user setTalkState:newTalkState];
-				NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-				NSNotification *talkNotification = [NSNotification notificationWithName:@"MKUserTalkStateChanged" object:user];
-				[center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
-			}
+		if (prevTalkState != _talkState) {
+			NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+			NSDictionary *talkStateDict = [NSDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithUnsignedInteger:_talkState], @"talkState",
+												[NSNumber numberWithUnsignedInteger:_userSession], @"userSession",
+										   nil];
+			NSNotification *talkNotification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
+			[center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
 		}
 
 nextframe:

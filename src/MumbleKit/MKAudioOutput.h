@@ -63,6 +63,6 @@
 
 - (void) removeBuffer:(MKAudioOutputUser *)u;
 - (BOOL) mixFrames: (void *)frames amount:(unsigned int)nframes;
-- (void) addFrameToBufferWithUser:(MKUser *)user data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
 
 @end

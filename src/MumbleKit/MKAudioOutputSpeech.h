@@ -59,17 +59,19 @@ struct MKAudioOutputSpeechPrivate;
 		NSMutableArray *frames;
 		unsigned char flags;
 
-		MKUser *user;
+		NSUInteger _userSession;
 		float powerMin, powerMax;
 		float averageAvailable;
+
+		MKTalkState _talkState;
 
 		pthread_mutex_t jitterMutex;
 }
 
-- (id) initWithUser:(MKUser *)user sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;
+- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;
 - (void) dealloc;
 
-- (MKUser *) user;
+- (NSUInteger) userSession;
 - (MKMessageType) messageType;
 
 - (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq;

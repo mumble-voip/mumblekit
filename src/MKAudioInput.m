@@ -547,18 +547,14 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	_doTransmit = _forceTransmit;
 	if (_lastTransmit != _doTransmit) {
+		// fixme(mkrautz): Handle more talkstates
+		MKTalkState talkState = _doTransmit ? MKTalkStateTalking : MKTalkStatePassive;
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-		NSNotification *talkNotification = nil;
-
-		// fixme(mkrautz): Make these more general sometime in the future. We'd probably
-		//                 like to support whispering and such things as well, sometime.
-		if (_doTransmit) {
-			talkNotification = [NSNotification notificationWithName:@"MKAudioTransmitStarted" object:nil];
-		} else {
-			talkNotification = [NSNotification notificationWithName:@"MKAudioTransmitStopped" object:nil];
-		}
-
-		[center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
+		NSDictionary *talkStateDict = [NSDictionary dictionaryWithObjectsAndKeys:
+											[NSNumber numberWithUnsignedInteger:talkState], @"talkState",
+									   nil];
+		NSNotification *notification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
+		[center performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
 	}
 
 	if (_doTransmit) {
