@@ -292,7 +292,6 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 	}
 
 	[outputUser addFrame:data forSequence:seq];
-	[outputLock unlock];
 }
 
 @end
