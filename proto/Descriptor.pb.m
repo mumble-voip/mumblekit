@@ -3298,6 +3298,9 @@ static PBMethodDescriptorProto* defaultPBMethodDescriptorProtoInstance = nil;
 @property (retain) NSString* javaOuterClassname;
 @property BOOL javaMultipleFiles;
 @property PBFileOptions_OptimizeMode optimizeFor;
+@property BOOL ccGenericServices;
+@property BOOL javaGenericServices;
+@property BOOL pyGenericServices;
 @property (retain) NSMutableArray* mutableUninterpretedOptionList;
 @end
 
@@ -3336,6 +3339,42 @@ static PBMethodDescriptorProto* defaultPBMethodDescriptorProtoInstance = nil;
   hasOptimizeFor_ = !!value;
 }
 @synthesize optimizeFor;
+- (BOOL) hasCcGenericServices {
+  return !!hasCcGenericServices_;
+}
+- (void) setHasCcGenericServices:(BOOL) value {
+  hasCcGenericServices_ = !!value;
+}
+- (BOOL) ccGenericServices {
+  return !!ccGenericServices_;
+}
+- (void) setCcGenericServices:(BOOL) value {
+  ccGenericServices_ = !!value;
+}
+- (BOOL) hasJavaGenericServices {
+  return !!hasJavaGenericServices_;
+}
+- (void) setHasJavaGenericServices:(BOOL) value {
+  hasJavaGenericServices_ = !!value;
+}
+- (BOOL) javaGenericServices {
+  return !!javaGenericServices_;
+}
+- (void) setJavaGenericServices:(BOOL) value {
+  javaGenericServices_ = !!value;
+}
+- (BOOL) hasPyGenericServices {
+  return !!hasPyGenericServices_;
+}
+- (void) setHasPyGenericServices:(BOOL) value {
+  hasPyGenericServices_ = !!value;
+}
+- (BOOL) pyGenericServices {
+  return !!pyGenericServices_;
+}
+- (void) setPyGenericServices:(BOOL) value {
+  pyGenericServices_ = !!value;
+}
 @synthesize mutableUninterpretedOptionList;
 - (void) dealloc {
   self.javaPackage = nil;
@@ -3349,6 +3388,9 @@ static PBMethodDescriptorProto* defaultPBMethodDescriptorProtoInstance = nil;
     self.javaOuterClassname = @"";
     self.javaMultipleFiles = NO;
     self.optimizeFor = PBFileOptions_OptimizeModeSpeed;
+    self.ccGenericServices = YES;
+    self.javaGenericServices = YES;
+    self.pyGenericServices = YES;
   }
   return self;
 }
@@ -3395,6 +3437,15 @@ static PBFileOptions* defaultPBFileOptionsInstance = nil;
   if (self.hasJavaMultipleFiles) {
     [output writeBool:10 value:self.javaMultipleFiles];
   }
+  if (self.hasCcGenericServices) {
+    [output writeBool:16 value:self.ccGenericServices];
+  }
+  if (self.hasJavaGenericServices) {
+    [output writeBool:17 value:self.javaGenericServices];
+  }
+  if (self.hasPyGenericServices) {
+    [output writeBool:18 value:self.pyGenericServices];
+  }
   for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
     [output writeMessage:999 value:element];
   }
@@ -3421,6 +3472,15 @@ static PBFileOptions* defaultPBFileOptionsInstance = nil;
   }
   if (self.hasJavaMultipleFiles) {
     size += computeBoolSize(10, self.javaMultipleFiles);
+  }
+  if (self.hasCcGenericServices) {
+    size += computeBoolSize(16, self.ccGenericServices);
+  }
+  if (self.hasJavaGenericServices) {
+    size += computeBoolSize(17, self.javaGenericServices);
+  }
+  if (self.hasPyGenericServices) {
+    size += computeBoolSize(18, self.pyGenericServices);
   }
   for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
     size += computeMessageSize(999, element);
@@ -3523,6 +3583,15 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
   if (other.hasOptimizeFor) {
     [self setOptimizeFor:other.optimizeFor];
   }
+  if (other.hasCcGenericServices) {
+    [self setCcGenericServices:other.ccGenericServices];
+  }
+  if (other.hasJavaGenericServices) {
+    [self setJavaGenericServices:other.javaGenericServices];
+  }
+  if (other.hasPyGenericServices) {
+    [self setPyGenericServices:other.pyGenericServices];
+  }
   if (other.mutableUninterpretedOptionList.count > 0) {
     if (result.mutableUninterpretedOptionList == nil) {
       result.mutableUninterpretedOptionList = [NSMutableArray array];
@@ -3570,6 +3639,18 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
       }
       case 80: {
         [self setJavaMultipleFiles:[input readBool]];
+        break;
+      }
+      case 128: {
+        [self setCcGenericServices:[input readBool]];
+        break;
+      }
+      case 136: {
+        [self setJavaGenericServices:[input readBool]];
+        break;
+      }
+      case 144: {
+        [self setPyGenericServices:[input readBool]];
         break;
       }
       case 7994: {
@@ -3643,6 +3724,54 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
 - (PBFileOptions_Builder*) clearOptimizeFor {
   result.hasOptimizeFor = NO;
   result.optimizeFor = PBFileOptions_OptimizeModeSpeed;
+  return self;
+}
+- (BOOL) hasCcGenericServices {
+  return result.hasCcGenericServices;
+}
+- (BOOL) ccGenericServices {
+  return result.ccGenericServices;
+}
+- (PBFileOptions_Builder*) setCcGenericServices:(BOOL) value {
+  result.hasCcGenericServices = YES;
+  result.ccGenericServices = value;
+  return self;
+}
+- (PBFileOptions_Builder*) clearCcGenericServices {
+  result.hasCcGenericServices = NO;
+  result.ccGenericServices = YES;
+  return self;
+}
+- (BOOL) hasJavaGenericServices {
+  return result.hasJavaGenericServices;
+}
+- (BOOL) javaGenericServices {
+  return result.javaGenericServices;
+}
+- (PBFileOptions_Builder*) setJavaGenericServices:(BOOL) value {
+  result.hasJavaGenericServices = YES;
+  result.javaGenericServices = value;
+  return self;
+}
+- (PBFileOptions_Builder*) clearJavaGenericServices {
+  result.hasJavaGenericServices = NO;
+  result.javaGenericServices = YES;
+  return self;
+}
+- (BOOL) hasPyGenericServices {
+  return result.hasPyGenericServices;
+}
+- (BOOL) pyGenericServices {
+  return result.pyGenericServices;
+}
+- (PBFileOptions_Builder*) setPyGenericServices:(BOOL) value {
+  result.hasPyGenericServices = YES;
+  result.pyGenericServices = value;
+  return self;
+}
+- (PBFileOptions_Builder*) clearPyGenericServices {
+  result.hasPyGenericServices = NO;
+  result.pyGenericServices = YES;
   return self;
 }
 - (NSArray*) uninterpretedOptionList {
@@ -4027,7 +4156,7 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
 }
 - (id) init {
   if ((self = [super init])) {
-    self.ctype = PBFieldOptions_CTypeCord;
+    self.ctype = PBFieldOptions_CTypeString;
     self.packed = NO;
     self.deprecated = NO;
     self.experimentalMapKey = @"";
@@ -4143,6 +4272,7 @@ static PBFieldOptions* defaultPBFieldOptionsInstance = nil;
 
 BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value) {
   switch (value) {
+    case PBFieldOptions_CTypeString:
     case PBFieldOptions_CTypeCord:
     case PBFieldOptions_CTypeStringPiece:
       return YES;
@@ -4275,7 +4405,7 @@ BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value) {
 }
 - (PBFieldOptions_Builder*) clearCtype {
   result.hasCtype = NO;
-  result.ctype = PBFieldOptions_CTypeCord;
+  result.ctype = PBFieldOptions_CTypeString;
   return self;
 }
 - (BOOL) hasPacked {

@@ -1,16 +1,25 @@
 #!/bin/bash
+# Note: This script requires a protobuf installation in /usr/local/, including
+# a compiled protc-gen-objc in there as well. The ObjC plugin can be built by
+# issuing these commands from the root of th MumbleKit source tree:
+#  cd 3rdparty/protobuf/
+#  ./autogen.sh
+#  ./configure --prefix=/usr/local
+#  make
+#  sudo make install
 
 #
 # Grab the latest Mumble.proto file from desktop Mumble.
 #
 curl "http://mumble.git.sourceforge.net/git/gitweb.cgi?p=mumble/mumble;a=blob_plain;f=src/Mumble.proto;hb=HEAD" > Mumble.proto.clean
 cat Mumble.proto.objc Mumble.proto.clean > Mumble.proto
-../3rdparty/protobuf/src/protoc --objc_out=. \
-	-I../3rdparty/protobuf/src/ \
+/usr/local/bin/protoc --objc_out=. \
 	-I. \
+	-I../3rdparty/protobuf/src/compiler/ \
+	-I/usr/local/include \
 	Mumble.proto \
-	../3rdparty/protobuf/src/google/protobuf/descriptor.proto \
-	../3rdparty/protobuf/src/google/protobuf/objectivec-descriptor.proto
+	/usr/local/include/google/protobuf/descriptor.proto \
+	../3rdparty/protobuf/src/compiler/google/protobuf/objectivec-descriptor.proto
 rm Mumble.proto.clean
 
 #

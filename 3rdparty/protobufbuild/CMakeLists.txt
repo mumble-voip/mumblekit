@@ -1,4 +1,4 @@
-set(SRCDIR ${PROJECT_SOURCE_DIR}/3rdparty/protobuf/objectivec)
+set(SRCDIR ${PROJECT_SOURCE_DIR}/3rdparty/protobuf/src/runtime)
 
 INCLUDE_DIRECTORIES(
 	${SRCDIR}/Classes
@@ -23,6 +23,7 @@ ADD_LIBRARY(ProtocolBuffers STATIC
 	${SRCDIR}/Classes/MutableExtensionRegistry.m
 	${SRCDIR}/Classes/ExtendableMessage_Builder.m
 	${SRCDIR}/Classes/ConcreteExtensionField.m
+	${SRCDIR}/Classes/RingBuffer.m
 )
 
 TARGET_LINK_LIBRARIES(ProtocolBuffers)

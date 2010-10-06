@@ -76,6 +76,7 @@ typedef enum {
 BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value);
 
 typedef enum {
+  PBFieldOptions_CTypeString = 0,
   PBFieldOptions_CTypeCord = 1,
   PBFieldOptions_CTypeStringPiece = 2,
 } PBFieldOptions_CType;
@@ -821,10 +822,16 @@ BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value);
 @interface PBFileOptions : PBExtendableMessage {
 @private
   BOOL hasJavaMultipleFiles_:1;
+  BOOL hasCcGenericServices_:1;
+  BOOL hasJavaGenericServices_:1;
+  BOOL hasPyGenericServices_:1;
   BOOL hasJavaPackage_:1;
   BOOL hasJavaOuterClassname_:1;
   BOOL hasOptimizeFor_:1;
   BOOL javaMultipleFiles_:1;
+  BOOL ccGenericServices_:1;
+  BOOL javaGenericServices_:1;
+  BOOL pyGenericServices_:1;
   NSString* javaPackage;
   NSString* javaOuterClassname;
   PBFileOptions_OptimizeMode optimizeFor;
@@ -834,10 +841,16 @@ BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value);
 - (BOOL) hasJavaOuterClassname;
 - (BOOL) hasJavaMultipleFiles;
 - (BOOL) hasOptimizeFor;
+- (BOOL) hasCcGenericServices;
+- (BOOL) hasJavaGenericServices;
+- (BOOL) hasPyGenericServices;
 @property (readonly, retain) NSString* javaPackage;
 @property (readonly, retain) NSString* javaOuterClassname;
 - (BOOL) javaMultipleFiles;
 @property (readonly) PBFileOptions_OptimizeMode optimizeFor;
+- (BOOL) ccGenericServices;
+- (BOOL) javaGenericServices;
+- (BOOL) pyGenericServices;
 - (NSArray*) uninterpretedOptionList;
 - (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index;
 
@@ -894,6 +907,21 @@ BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value);
 - (PBFileOptions_OptimizeMode) optimizeFor;
 - (PBFileOptions_Builder*) setOptimizeFor:(PBFileOptions_OptimizeMode) value;
 - (PBFileOptions_Builder*) clearOptimizeFor;
+
+- (BOOL) hasCcGenericServices;
+- (BOOL) ccGenericServices;
+- (PBFileOptions_Builder*) setCcGenericServices:(BOOL) value;
+- (PBFileOptions_Builder*) clearCcGenericServices;
+
+- (BOOL) hasJavaGenericServices;
+- (BOOL) javaGenericServices;
+- (PBFileOptions_Builder*) setJavaGenericServices:(BOOL) value;
+- (PBFileOptions_Builder*) clearJavaGenericServices;
+
+- (BOOL) hasPyGenericServices;
+- (BOOL) pyGenericServices;
+- (PBFileOptions_Builder*) setPyGenericServices:(BOOL) value;
+- (PBFileOptions_Builder*) clearPyGenericServices;
 
 - (NSArray*) uninterpretedOptionList;
 - (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index;

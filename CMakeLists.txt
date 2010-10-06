@@ -12,7 +12,7 @@ INCLUDE_DIRECTORIES(
 	3rdparty/speex/include
 	3rdparty/celt-0.7.0/libcelt
 	3rdparty/openssl/include
-	3rdparty/protobuf/objectivec/Classes/
+	3rdparty/protobuf/src/runtime/Classes
 )
 
 SET(SOURCES
