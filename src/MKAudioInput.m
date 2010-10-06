@@ -155,7 +155,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	/* Allocate buffer list. */
 	frameList = [[NSMutableArray alloc] initWithCapacity: 20]; /* should be iAudioFrames. */
 
-	udpMessageType = UDPVoiceCELTAlphaMessage;
+	udpMessageType = ~0;
 
 	return self;
 }
@@ -468,6 +468,29 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 			encoder = _private->celtEncoder;
 		}
 
+		// Make sure our messageType is set up correctly....
+		// This is just temporary. We should have a MKCodecController that should handle this.
+		static const NSInteger ourCodec = 0x8000000b;
+		NSArray *conns = [[MKConnectionController sharedController] allConnections];
+		if ([conns count] > 0) {
+			MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
+			if ([conn connected]) {
+				NSInteger alpha = [conn alphaCodec];
+				NSInteger beta = [conn betaCodec];
+				BOOL preferAlpha = [conn preferAlphaCodec];
+				NSInteger newCodec = preferAlpha ? alpha : beta;
+				NSInteger msgType = preferAlpha ? UDPVoiceCELTAlphaMessage : UDPVoiceCELTBetaMessage;
+				if (newCodec != ourCodec) {
+					newCodec = preferAlpha ? beta : alpha;
+					msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
+				}
+				if (newCodec == ourCodec && msgType != udpMessageType) {
+					udpMessageType = msgType;
+					NSLog(@"MKAudioInput: udpMessageType changed to %i", msgType);
+				}
+			}
+		}
+
 		if (!previousVoice) {
 			celt_encoder_ctl(encoder, CELT_RESET_STATE);
 			NSLog(@"AudioInput: Reset CELT state.");
@@ -491,6 +514,8 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		len = speex_bits_write(&_private->speexBits, (char *)buffer, 127);
 		speex_bits_reset(&_private->speexBits);
 		bitrate = len * 50 * 8;
+		udpMessageType = UDPVoiceSpeexMessage;
+		NSLog(@"MKAudioInput: udpMessageType changed to 0x%x", udpMessageType);
 	}
 
 	NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];

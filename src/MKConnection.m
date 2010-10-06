@@ -73,6 +73,7 @@
 - (void) _versionMessageReceived:(MPVersion *)msg;
 - (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
 - (void) _connectionRejected:(MPReject *)rejectMessage;
+- (void) _codecChange:(MPCodecVersion *)codecVersion;
 
 // TCP
 - (void) _sendMessageHelper:(NSDictionary *)dict;
@@ -790,6 +791,27 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		_serverOSVersion = [[msg osVersion] copy];
 }
 
+// Handle codec changes
+- (void) _codecChange:(MPCodecVersion *)codec {
+	static const unsigned int ourCodec = 0x8000000b;
+
+	NSInteger alpha = [codec hasAlpha] ? [codec alpha] : -1;
+	NSInteger beta = [codec hasBeta] ? [codec beta] : -1;
+	BOOL pref = [codec hasPreferAlpha] ? [codec preferAlpha] : NO;
+
+	if ((alpha != -1) && (alpha != _alphaCodec)) {
+		if (pref && alpha != ourCodec)
+			pref = ! pref;
+	}
+	if ((beta != -1) && (beta != _betaCodec)) {
+		if (! pref && beta != ourCodec)
+			pref = ! pref;
+	}
+
+	_alphaCodec = alpha;
+	_betaCodec = beta;
+	_preferAlpha = pref;
+}
 
 - (void) _handleError:(NSError *)streamError {
 	NSInteger errorCode = [streamError code];
@@ -1045,15 +1067,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			}
 			break;
 		}
-		case CodecVersionMessage: {
-			MPCodecVersion *codecVersion = [MPCodecVersion parseFromData:data];
-			if ([_msgHandler respondsToSelector:@selector(connection:handleCodecVersionMessage:)]) {
-				dispatch_async(main_queue, ^{
-					[_msgHandler connection:self handleCodecVersionMessage:codecVersion];
-				});
-			}
-			break;
-		}
 
 		//
 		// Internally handled packets.
@@ -1079,12 +1092,29 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			[self _doCryptSetup:cs];
 			break;
 		}
+		case CodecVersionMessage: {
+			MPCodecVersion *codecVersion = [MPCodecVersion parseFromData:data];
+			[self _codecChange:codecVersion];
+			break;
+		}
 
 		default: {
 			NSLog(@"MKConnection: Unknown packet type recieved. Discarding. (type=%u)", packetType);
 			break;
 		}
 	}
+}
+
+- (NSInteger) alphaCodec {
+	return _alphaCodec;
+}
+
+- (NSInteger) betaCodec {
+	return _betaCodec;
+}
+
+- (BOOL) preferAlphaCodec {
+	return _preferAlpha;
 }
 
 @end

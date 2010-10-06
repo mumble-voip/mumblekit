@@ -115,17 +115,6 @@
 #pragma mark -
 #pragma mark MKMessageHandler delegate
 
--(void) connection:(MKConnection *)conn handleCodecVersionMessage:(MPCodecVersion *)codec {
-	NSLog(@"MKServerModel: Received CodecVersion message");
-
-	if ([codec hasAlpha])
-		NSLog(@"alpha = 0x%x", [codec alpha]);
-	if ([codec hasBeta])
-		NSLog(@"beta = 0x%x", [codec beta]);
-	if ([codec hasPreferAlpha])
-		NSLog(@"preferAlpha = %i", [codec preferAlpha]);
-}
-
 - (void) connection:(MKConnection *)conn handleUserStateMessage:(MPUserState *)msg {
 	BOOL newUser = NO;
 

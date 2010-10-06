@@ -93,11 +93,7 @@ typedef enum {
 - (void) connection:(MKConnection *)conn rejectedWithReason:(MKRejectReason)reason explanation:(NSString *)explanation;
 @end
 
-/*
- * MKMessageHandler
- */
 @protocol MKMessageHandler
-- (void) connection:(MKConnection *)conn handleAuthenticateMessage: /* MPAuthenticate */ (id)msg;
 - (void) connection:(MKConnection *)conn handleBanListMessage: /* MPBanList */ (id)msg;
 - (void) connection:(MKConnection *)conn handleServerSyncMessage: /* MPServerSync */ (id)msg;
 - (void) connection:(MKConnection *)conn handlePermissionDeniedMessage: /* MPPermissionDenied */ (id)msg;
@@ -113,7 +109,6 @@ typedef enum {
 - (void) connection:(MKConnection *)conn handleUserListMessage: /* MPUserList */ (id)msg;
 - (void) connection:(MKConnection *)conn handleVoiceTargetMessage: /* MPVoiceTarget */ (id)msg;
 - (void) connection:(MKConnection *)conn handlePermissionQueryMessage: /* MPPermissionQuery */ (id)msg;
-- (void) connection:(MKConnection *)conn handleCodecVersionMessage: /* MPCodecVersion */ (id)msg;
 @end
 
 @interface MKConnection : NSThread <NSStreamDelegate> {
@@ -141,6 +136,11 @@ typedef enum {
 	int            _socket;
 	CFSocketRef    _udpSock;
 	SecIdentityRef _clientIdentity;
+
+	// Codec info
+	NSInteger      _alphaCodec;
+	NSInteger      _betaCodec;
+	BOOL           _preferAlpha;
 
 	// Server info.
 	NSString       *_serverVersion;
@@ -192,5 +192,11 @@ typedef enum {
 
 - (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;
 - (void) sendVoiceData:(NSData *)data;
+
+#pragma mark -
+
+- (NSInteger) alphaCodec;
+- (NSInteger) betaCodec;
+- (BOOL) preferAlphaCodec;
 
 @end
