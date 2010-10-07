@@ -97,6 +97,9 @@ struct MKCryptStatePrivate {
 }
 
 - (NSData *) decryptData:(NSData *)data {
+	if (!([data length] > 4))
+		return nil;
+
 	NSMutableData *plain = [[NSMutableData alloc] initWithLength:[data length]-4];
 	if (_priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], [data length])) {
 		return plain;

@@ -639,9 +639,11 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // These tunelled UDP messages do not go through this method, but go directly
 // to the _udpMessageReceived: method instead.
 - (void) _udpDataReady:(NSData *)crypted {
-	NSData *plain = [_crypt decryptData:crypted];
-	[self _udpMessageReceived:plain];
-	[plain release];
+	if ([crypted length] > 4) {
+		NSData *plain = [_crypt decryptData:crypted];
+		[self _udpMessageReceived:plain];
+		[plain release];
+	}
 }
 
 // This method is called by our NSStream delegate methods whenever
