@@ -600,15 +600,19 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 - (void) _sendMessageHelper:(NSDictionary *)dict {
 	NSData *data = [dict objectForKey:@"data"];
 	MKMessageType messageType = (MKMessageType)[[dict objectForKey:@"messageType"] intValue];
-	const unsigned char *buf = [data bytes];
-	NSUInteger len = [data length];
-
 	UInt16 type = CFSwapInt16HostToBig((UInt16)messageType);
-	UInt32 length = CFSwapInt32HostToBig(len);
+	UInt32 length = CFSwapInt32HostToBig([data length]);
 
-	[_outputStream write:(unsigned char *)&type maxLength:sizeof(UInt16)];
-	[_outputStream write:(unsigned char *)&length maxLength:sizeof(UInt32)];
-	[_outputStream write:buf maxLength:len];
+	NSUInteger expectedLength = sizeof(UInt16) + sizeof(UInt32) + [data length];
+	NSMutableData *msg = [[NSMutableData alloc] initWithCapacity:expectedLength];
+	[msg appendBytes:&type length:sizeof(UInt16)];
+	[msg appendBytes:&length length:sizeof(UInt32)];
+	[msg appendData:data];
+
+	if ([_outputStream write:[msg bytes] maxLength:[msg length]] != expectedLength)
+		NSLog(@"MKConnection: write error");
+
+	[msg release];
 }
 
 // Send a voice packet to the server.  The method will automagically figure
