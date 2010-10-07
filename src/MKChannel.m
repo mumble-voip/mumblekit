@@ -115,7 +115,8 @@
 }
 
 - (void) unlinkAll {
-	for (MKChannel *chan in _linked) {
+	NSArray *linkedChannels = [[_linked copy] autorelease];
+	for (MKChannel *chan in linkedChannels) {
 		[self unlinkFromChannel:chan];
 	}
 }
