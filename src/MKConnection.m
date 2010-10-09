@@ -639,6 +639,12 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // These tunelled UDP messages do not go through this method, but go directly
 // to the _udpMessageReceived: method instead.
 - (void) _udpDataReady:(NSData *)crypted {
+	// For now, let's just do this to enable UDP. fixme(mkrautz): Better detection.
+	if (! _udpAvailable) {
+		_udpAvailable = true;
+		NSLog(@"MKConnection: UDP is now available!");
+	}
+
 	if ([crypted length] > 4) {
 		NSData *plain = [_crypt decryptData:crypted];
 		[self _udpMessageReceived:plain];
@@ -880,9 +886,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	unsigned int messageFlags = buf[0] & 0x1f;
 	MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:buf+1 length:[data length]-1]; // fixme(-1)?
 
-	// For now, let's just do this to enable UDP. fixme(mkrautz): Better detection.
-	_udpAvailable = true;
-
 	switch (messageType) {
 		case UDPVoiceCELTAlphaMessage:
 		case UDPVoiceCELTBetaMessage:
@@ -929,16 +932,18 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			[self _udpMessageReceived:data];
 			break;
 		}
-		case AuthenticateMessage: {
-			MPAuthenticate *auth = [MPAuthenticate parseFromData:data];
-			if ([_msgHandler respondsToSelector:@selector(handleAuthenticateMessage:)]) {
-				dispatch_async(main_queue, ^{
-					[_msgHandler connection:self handleAuthenticateMessage:auth];
-				});
-			}
-			break;
-		}
 		case ServerSyncMessage: {
+			if (_forceTCP) {
+				// Send a dummy UDPTunnel message so the server knows that we're running
+				// in TCP mode.
+				NSLog(@"MKConnection: Sending dummy UDPTunnel message.");
+				NSMutableData *msg = [[NSMutableData alloc] initWithLength:3];
+				char *buf = [msg mutableBytes];
+				memset(buf, 0, 3);
+				[self sendMessageWithType:UDPTunnelMessage data:msg];
+				[msg release];
+			}
+
 			MPServerSync *serverSync = [MPServerSync parseFromData:data];
 			if ([_msgHandler respondsToSelector:@selector(connection:handleServerSyncMessage:)]) {
 				dispatch_async(main_queue, ^{
