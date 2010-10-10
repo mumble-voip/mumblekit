@@ -40,11 +40,15 @@
 
 static MKAudio *audioSingleton = nil;
 
-static void MKAudio_InterruptCallback(void *udata, UInt32 interruptionState) {
-	MK_UNUSED MKAudio *audio = (MKAudio *) udata;
-	NSLog(@"MKAudio: Interruption state callback called.");
-}
+static void MKAudio_InterruptCallback(void *udata, UInt32 interrupt) {
+	MKAudio *audio = (MKAudio *) udata;
 
+	if (interrupt == kAudioSessionBeginInterruption) {
+		[audio stop];
+	} else if (interrupt == kAudioSessionEndInterruption) {
+		[audio start];
+	}
+}
 
 #if TARGET_OS_IPHONE == 1
 static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionPropertyID prop, UInt32 len, uint32_t *avail) {
@@ -173,25 +177,9 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 		return nil;
 	}
 
-	// Activate our audio session
-	err = AudioSessionSetActive(TRUE);
-	if (err != kAudioSessionNoError) {
-			NSLog(@"MKAudio: Unable to set session as active.");
-			return nil;
-	}
-
-	// Query for the actual sample rate we're to cope with.
-	valSize = sizeof(Float64);
-	err = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate, &valSize, &fval);
-	if (err != kAudioSessionNoError) {
-		NSLog(@"MKAudio: Unable to query for current hardware sample rate.");
-		return nil;
-	}
 #elif TARGET_OS_MAC == 1
 	audioInputAvailable = YES;
 #endif
-
-	NSLog(@"MKAudio: Current hardware sample rate = %.2fHz.", fval);
 
 	return self;
 }
@@ -223,13 +211,35 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 	memcpy(&_audioSettings, settings, sizeof(MKAudioSettings));
 }
 
-- (void) restart {
+// Has MKAudio been started?
+- (BOOL) isRunning {
+	return _running;
+}
+
+// Stop the audio engine
+- (void) stop {
 	[_audioInput release];
+	_audioInput = nil;
 	[_audioOutput release];
+	_audioOutput = nil;
+	AudioSessionSetActive(NO);
+	_running = NO;
+}
+
+// Start the audio engine
+- (void) start {
+	AudioSessionSetActive(YES);
 	_audioInput = [[MKAudioInput alloc] initWithSettings:&_audioSettings];
 	_audioOutput = [[MKAudioOutput alloc] initWithSettings:&_audioSettings];
 	[_audioInput setupDevice];
 	[_audioOutput setupDevice];
+	_running = YES;
+}
+
+// Restart the audio engine
+- (void) restart {
+	[self stop];
+	[self start];
 }
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType {

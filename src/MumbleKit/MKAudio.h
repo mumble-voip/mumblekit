@@ -62,10 +62,14 @@ typedef struct _MKAudioBenchmark {
 	MKAudioInput     *_audioInput;
 	MKAudioOutput    *_audioOutput;
 	MKAudioSettings  _audioSettings;
+	BOOL             _running;
 }
 
 + (MKAudio *) sharedAudio;
 
+- (BOOL) isRunning;
+- (void) start;
+- (void) stop;
 - (void) restart;
 
 - (MKAudioSettings *) audioSettings;
