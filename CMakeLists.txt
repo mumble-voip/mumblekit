@@ -37,7 +37,6 @@ SET(SOURCES
 	src/MulticastDelegate.m
 
 	# protobuf
-	proto/Descriptor.pb.m
 	proto/Mumble.pb.m
 	proto/ObjectivecDescriptor.pb.m
 )

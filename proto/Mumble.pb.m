@@ -498,8 +498,8 @@ static MPUDPTunnel* defaultMPUDPTunnelInstance = nil;
 @interface MPAuthenticate ()
 @property (retain) NSString* username;
 @property (retain) NSString* password;
-@property (retain) NSMutableArray* mutableTokensList;
-@property (retain) NSMutableArray* mutableCeltVersionsList;
+@property (retain) PBAppendableArray * tokensArray;
+@property (retain) PBAppendableArray * celtVersionsArray;
 @end
 
 @implementation MPAuthenticate
@@ -518,13 +518,15 @@ static MPUDPTunnel* defaultMPUDPTunnelInstance = nil;
   hasPassword_ = !!value;
 }
 @synthesize password;
-@synthesize mutableTokensList;
-@synthesize mutableCeltVersionsList;
+@synthesize tokensArray;
+@dynamic tokens;
+@synthesize celtVersionsArray;
+@dynamic celtVersions;
 - (void) dealloc {
   self.username = nil;
   self.password = nil;
-  self.mutableTokensList = nil;
-  self.mutableCeltVersionsList = nil;
+  self.tokensArray = nil;
+  self.celtVersionsArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -546,19 +548,17 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
 - (MPAuthenticate*) defaultInstance {
   return defaultMPAuthenticateInstance;
 }
-- (NSArray*) tokensList {
-  return mutableTokensList;
+- (PBArray *)tokens {
+  return tokensArray;
 }
-- (NSString*) tokensAtIndex:(int32_t) index {
-  id value = [mutableTokensList objectAtIndex:index];
-  return value;
+- (NSString*)tokensAtIndex:(NSUInteger)index {
+  return [tokensArray objectAtIndex:index];
 }
-- (NSArray*) celtVersionsList {
-  return mutableCeltVersionsList;
+- (PBArray *)celtVersions {
+  return celtVersionsArray;
 }
-- (int32_t) celtVersionsAtIndex:(int32_t) index {
-  id value = [mutableCeltVersionsList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)celtVersionsAtIndex:(NSUInteger)index {
+  return [celtVersionsArray int32AtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
@@ -570,11 +570,19 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
   if (self.hasPassword) {
     [output writeString:2 value:self.password];
   }
-  for (NSString* element in self.mutableTokensList) {
-    [output writeString:3 value:element];
+  const NSUInteger tokensArrayCount = self.tokensArray.count;
+  if (tokensArrayCount > 0) {
+    const NSString* *values = (const NSString* *)self.tokensArray.data;
+    for (NSUInteger i = 0; i < tokensArrayCount; ++i) {
+      [output writeString:3 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableCeltVersionsList) {
-    [output writeInt32:4 value:[value intValue]];
+  const NSUInteger celtVersionsArrayCount = self.celtVersionsArray.count;
+  if (celtVersionsArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.celtVersionsArray.data;
+    for (NSUInteger i = 0; i < celtVersionsArrayCount; ++i) {
+      [output writeInt32:4 value:values[i]];
+    }
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -593,19 +601,23 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSString* element in self.mutableTokensList) {
-      dataSize += computeStringSizeNoTag(element);
+    const NSUInteger count = self.tokensArray.count;
+    const NSString* *values = (const NSString* *)self.tokensArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeStringSizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableTokensList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableCeltVersionsList) {
-      dataSize += computeInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.celtVersionsArray.count;
+    const int32_t *values = (const int32_t *)self.celtVersionsArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableCeltVersionsList.count;
+    size += 1 * count;
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -688,17 +700,19 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
   if (other.hasPassword) {
     [self setPassword:other.password];
   }
-  if (other.mutableTokensList.count > 0) {
-    if (result.mutableTokensList == nil) {
-      result.mutableTokensList = [NSMutableArray array];
+  if (other.tokensArray.count > 0) {
+    if (result.tokensArray == nil) {
+      result.tokensArray = [other.tokensArray copyWithZone:[other.tokensArray zone]];
+    } else {
+      [result.tokensArray appendArray:other.tokensArray];
     }
-    [result.mutableTokensList addObjectsFromArray:other.mutableTokensList];
   }
-  if (other.mutableCeltVersionsList.count > 0) {
-    if (result.mutableCeltVersionsList == nil) {
-      result.mutableCeltVersionsList = [NSMutableArray array];
+  if (other.celtVersionsArray.count > 0) {
+    if (result.celtVersionsArray == nil) {
+      result.celtVersionsArray = [other.celtVersionsArray copyWithZone:[other.celtVersionsArray zone]];
+    } else {
+      [result.celtVersionsArray appendArray:other.celtVersionsArray];
     }
-    [result.mutableCeltVersionsList addObjectsFromArray:other.mutableCeltVersionsList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -772,66 +786,54 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
   result.password = @"";
   return self;
 }
-- (NSArray*) tokensList {
-  if (result.mutableTokensList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableTokensList;
+- (PBAppendableArray *)tokens {
+  return result.tokensArray;
 }
-- (NSString*) tokensAtIndex:(int32_t) index {
+- (NSString*)tokensAtIndex:(NSUInteger)index {
   return [result tokensAtIndex:index];
 }
-- (MPAuthenticate_Builder*) replaceTokensAtIndex:(int32_t) index with:(NSString*) value {
-  [result.mutableTokensList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPAuthenticate_Builder*) addTokens:(NSString*) value {
-  if (result.mutableTokensList == nil) {
-    result.mutableTokensList = [NSMutableArray array];
+- (MPAuthenticate_Builder *)addTokens:(NSString*)value {
+  if (result.tokensArray == nil) {
+    result.tokensArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableTokensList addObject:value];
+  [result.tokensArray addObject:value];
   return self;
 }
-- (MPAuthenticate_Builder*) addAllTokens:(NSArray*) values {
-  if (result.mutableTokensList == nil) {
-    result.mutableTokensList = [NSMutableArray array];
-  }
-  [result.mutableTokensList addObjectsFromArray:values];
+- (MPAuthenticate_Builder *)setTokensArray:(NSArray *)array {
+  result.tokensArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPAuthenticate_Builder*) clearTokensList {
-  result.mutableTokensList = nil;
+- (MPAuthenticate_Builder *)setTokensValues:(const NSString* *)values count:(NSUInteger)count {
+  result.tokensArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) celtVersionsList {
-  if (result.mutableCeltVersionsList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableCeltVersionsList;
+- (MPAuthenticate_Builder *)clearTokens {
+  result.tokensArray = nil;
+  return self;
 }
-- (int32_t) celtVersionsAtIndex:(int32_t) index {
+- (PBAppendableArray *)celtVersions {
+  return result.celtVersionsArray;
+}
+- (int32_t)celtVersionsAtIndex:(NSUInteger)index {
   return [result celtVersionsAtIndex:index];
 }
-- (MPAuthenticate_Builder*) replaceCeltVersionsAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableCeltVersionsList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPAuthenticate_Builder*) addCeltVersions:(int32_t) value {
-  if (result.mutableCeltVersionsList == nil) {
-    result.mutableCeltVersionsList = [NSMutableArray array];
+- (MPAuthenticate_Builder *)addCeltVersions:(int32_t)value {
+  if (result.celtVersionsArray == nil) {
+    result.celtVersionsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeInt32];
   }
-  [result.mutableCeltVersionsList addObject:[NSNumber numberWithInt:value]];
+  [result.celtVersionsArray addInt32:value];
   return self;
 }
-- (MPAuthenticate_Builder*) addAllCeltVersions:(NSArray*) values {
-  if (result.mutableCeltVersionsList == nil) {
-    result.mutableCeltVersionsList = [NSMutableArray array];
-  }
-  [result.mutableCeltVersionsList addObjectsFromArray:values];
+- (MPAuthenticate_Builder *)setCeltVersionsArray:(NSArray *)array {
+  result.celtVersionsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeInt32];
   return self;
 }
-- (MPAuthenticate_Builder*) clearCeltVersionsList {
-  result.mutableCeltVersionsList = nil;
+- (MPAuthenticate_Builder *)setCeltVersionsValues:(const int32_t *)values count:(NSUInteger)count {
+  result.celtVersionsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeInt32];
+  return self;
+}
+- (MPAuthenticate_Builder *)clearCeltVersions {
+  result.celtVersionsArray = nil;
   return self;
 }
 @end
@@ -2440,10 +2442,10 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
 @property int32_t channelId;
 @property int32_t parent;
 @property (retain) NSString* name;
-@property (retain) NSMutableArray* mutableLinksList;
+@property (retain) PBAppendableArray * linksArray;
 @property (retain) NSString* description;
-@property (retain) NSMutableArray* mutableLinksAddList;
-@property (retain) NSMutableArray* mutableLinksRemoveList;
+@property (retain) PBAppendableArray * linksAddArray;
+@property (retain) PBAppendableArray * linksRemoveArray;
 @property BOOL temporary;
 @property int32_t position;
 @property (retain) NSData* descriptionHash;
@@ -2472,7 +2474,8 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
   hasName_ = !!value;
 }
 @synthesize name;
-@synthesize mutableLinksList;
+@synthesize linksArray;
+@dynamic links;
 - (BOOL) hasDescription {
   return !!hasDescription_;
 }
@@ -2480,8 +2483,10 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
   hasDescription_ = !!value;
 }
 @synthesize description;
-@synthesize mutableLinksAddList;
-@synthesize mutableLinksRemoveList;
+@synthesize linksAddArray;
+@dynamic linksAdd;
+@synthesize linksRemoveArray;
+@dynamic linksRemove;
 - (BOOL) hasTemporary {
   return !!hasTemporary_;
 }
@@ -2510,10 +2515,10 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
 @synthesize descriptionHash;
 - (void) dealloc {
   self.name = nil;
-  self.mutableLinksList = nil;
+  self.linksArray = nil;
   self.description = nil;
-  self.mutableLinksAddList = nil;
-  self.mutableLinksRemoveList = nil;
+  self.linksAddArray = nil;
+  self.linksRemoveArray = nil;
   self.descriptionHash = nil;
   [super dealloc];
 }
@@ -2541,26 +2546,23 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (MPChannelState*) defaultInstance {
   return defaultMPChannelStateInstance;
 }
-- (NSArray*) linksList {
-  return mutableLinksList;
+- (PBArray *)links {
+  return linksArray;
 }
-- (int32_t) linksAtIndex:(int32_t) index {
-  id value = [mutableLinksList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)linksAtIndex:(NSUInteger)index {
+  return [linksArray uint32AtIndex:index];
 }
-- (NSArray*) linksAddList {
-  return mutableLinksAddList;
+- (PBArray *)linksAdd {
+  return linksAddArray;
 }
-- (int32_t) linksAddAtIndex:(int32_t) index {
-  id value = [mutableLinksAddList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)linksAddAtIndex:(NSUInteger)index {
+  return [linksAddArray uint32AtIndex:index];
 }
-- (NSArray*) linksRemoveList {
-  return mutableLinksRemoveList;
+- (PBArray *)linksRemove {
+  return linksRemoveArray;
 }
-- (int32_t) linksRemoveAtIndex:(int32_t) index {
-  id value = [mutableLinksRemoveList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)linksRemoveAtIndex:(NSUInteger)index {
+  return [linksRemoveArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
@@ -2575,17 +2577,29 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   if (self.hasName) {
     [output writeString:3 value:self.name];
   }
-  for (NSNumber* value in self.mutableLinksList) {
-    [output writeUInt32:4 value:[value intValue]];
+  const NSUInteger linksArrayCount = self.linksArray.count;
+  if (linksArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.linksArray.data;
+    for (NSUInteger i = 0; i < linksArrayCount; ++i) {
+      [output writeUInt32:4 value:values[i]];
+    }
   }
   if (self.hasDescription) {
     [output writeString:5 value:self.description];
   }
-  for (NSNumber* value in self.mutableLinksAddList) {
-    [output writeUInt32:6 value:[value intValue]];
+  const NSUInteger linksAddArrayCount = self.linksAddArray.count;
+  if (linksAddArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.linksAddArray.data;
+    for (NSUInteger i = 0; i < linksAddArrayCount; ++i) {
+      [output writeUInt32:6 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableLinksRemoveList) {
-    [output writeUInt32:7 value:[value intValue]];
+  const NSUInteger linksRemoveArrayCount = self.linksRemoveArray.count;
+  if (linksRemoveArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.linksRemoveArray.data;
+    for (NSUInteger i = 0; i < linksRemoveArrayCount; ++i) {
+      [output writeUInt32:7 value:values[i]];
+    }
   }
   if (self.hasTemporary) {
     [output writeBool:8 value:self.temporary];
@@ -2616,30 +2630,36 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableLinksList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.linksArray.count;
+    const int32_t *values = (const int32_t *)self.linksArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableLinksList.count;
+    size += 1 * count;
   }
   if (self.hasDescription) {
     size += computeStringSize(5, self.description);
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableLinksAddList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.linksAddArray.count;
+    const int32_t *values = (const int32_t *)self.linksAddArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableLinksAddList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableLinksRemoveList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.linksRemoveArray.count;
+    const int32_t *values = (const int32_t *)self.linksRemoveArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableLinksRemoveList.count;
+    size += 1 * count;
   }
   if (self.hasTemporary) {
     size += computeBoolSize(8, self.temporary);
@@ -2734,26 +2754,29 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   if (other.hasName) {
     [self setName:other.name];
   }
-  if (other.mutableLinksList.count > 0) {
-    if (result.mutableLinksList == nil) {
-      result.mutableLinksList = [NSMutableArray array];
+  if (other.linksArray.count > 0) {
+    if (result.linksArray == nil) {
+      result.linksArray = [other.linksArray copyWithZone:[other.linksArray zone]];
+    } else {
+      [result.linksArray appendArray:other.linksArray];
     }
-    [result.mutableLinksList addObjectsFromArray:other.mutableLinksList];
   }
   if (other.hasDescription) {
     [self setDescription:other.description];
   }
-  if (other.mutableLinksAddList.count > 0) {
-    if (result.mutableLinksAddList == nil) {
-      result.mutableLinksAddList = [NSMutableArray array];
+  if (other.linksAddArray.count > 0) {
+    if (result.linksAddArray == nil) {
+      result.linksAddArray = [other.linksAddArray copyWithZone:[other.linksAddArray zone]];
+    } else {
+      [result.linksAddArray appendArray:other.linksAddArray];
     }
-    [result.mutableLinksAddList addObjectsFromArray:other.mutableLinksAddList];
   }
-  if (other.mutableLinksRemoveList.count > 0) {
-    if (result.mutableLinksRemoveList == nil) {
-      result.mutableLinksRemoveList = [NSMutableArray array];
+  if (other.linksRemoveArray.count > 0) {
+    if (result.linksRemoveArray == nil) {
+      result.linksRemoveArray = [other.linksRemoveArray copyWithZone:[other.linksRemoveArray zone]];
+    } else {
+      [result.linksRemoveArray appendArray:other.linksRemoveArray];
     }
-    [result.mutableLinksRemoveList addObjectsFromArray:other.mutableLinksRemoveList];
   }
   if (other.hasTemporary) {
     [self setTemporary:other.temporary];
@@ -2876,35 +2899,29 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   result.name = @"";
   return self;
 }
-- (NSArray*) linksList {
-  if (result.mutableLinksList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableLinksList;
+- (PBAppendableArray *)links {
+  return result.linksArray;
 }
-- (int32_t) linksAtIndex:(int32_t) index {
+- (int32_t)linksAtIndex:(NSUInteger)index {
   return [result linksAtIndex:index];
 }
-- (MPChannelState_Builder*) replaceLinksAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableLinksList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPChannelState_Builder*) addLinks:(int32_t) value {
-  if (result.mutableLinksList == nil) {
-    result.mutableLinksList = [NSMutableArray array];
+- (MPChannelState_Builder *)addLinks:(int32_t)value {
+  if (result.linksArray == nil) {
+    result.linksArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableLinksList addObject:[NSNumber numberWithInt:value]];
+  [result.linksArray addUint32:value];
   return self;
 }
-- (MPChannelState_Builder*) addAllLinks:(NSArray*) values {
-  if (result.mutableLinksList == nil) {
-    result.mutableLinksList = [NSMutableArray array];
-  }
-  [result.mutableLinksList addObjectsFromArray:values];
+- (MPChannelState_Builder *)setLinksArray:(NSArray *)array {
+  result.linksArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPChannelState_Builder*) clearLinksList {
-  result.mutableLinksList = nil;
+- (MPChannelState_Builder *)setLinksValues:(const int32_t *)values count:(NSUInteger)count {
+  result.linksArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
+  return self;
+}
+- (MPChannelState_Builder *)clearLinks {
+  result.linksArray = nil;
   return self;
 }
 - (BOOL) hasDescription {
@@ -2923,66 +2940,54 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   result.description = @"";
   return self;
 }
-- (NSArray*) linksAddList {
-  if (result.mutableLinksAddList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableLinksAddList;
+- (PBAppendableArray *)linksAdd {
+  return result.linksAddArray;
 }
-- (int32_t) linksAddAtIndex:(int32_t) index {
+- (int32_t)linksAddAtIndex:(NSUInteger)index {
   return [result linksAddAtIndex:index];
 }
-- (MPChannelState_Builder*) replaceLinksAddAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableLinksAddList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPChannelState_Builder*) addLinksAdd:(int32_t) value {
-  if (result.mutableLinksAddList == nil) {
-    result.mutableLinksAddList = [NSMutableArray array];
+- (MPChannelState_Builder *)addLinksAdd:(int32_t)value {
+  if (result.linksAddArray == nil) {
+    result.linksAddArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableLinksAddList addObject:[NSNumber numberWithInt:value]];
+  [result.linksAddArray addUint32:value];
   return self;
 }
-- (MPChannelState_Builder*) addAllLinksAdd:(NSArray*) values {
-  if (result.mutableLinksAddList == nil) {
-    result.mutableLinksAddList = [NSMutableArray array];
-  }
-  [result.mutableLinksAddList addObjectsFromArray:values];
+- (MPChannelState_Builder *)setLinksAddArray:(NSArray *)array {
+  result.linksAddArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPChannelState_Builder*) clearLinksAddList {
-  result.mutableLinksAddList = nil;
+- (MPChannelState_Builder *)setLinksAddValues:(const int32_t *)values count:(NSUInteger)count {
+  result.linksAddArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) linksRemoveList {
-  if (result.mutableLinksRemoveList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableLinksRemoveList;
+- (MPChannelState_Builder *)clearLinksAdd {
+  result.linksAddArray = nil;
+  return self;
 }
-- (int32_t) linksRemoveAtIndex:(int32_t) index {
+- (PBAppendableArray *)linksRemove {
+  return result.linksRemoveArray;
+}
+- (int32_t)linksRemoveAtIndex:(NSUInteger)index {
   return [result linksRemoveAtIndex:index];
 }
-- (MPChannelState_Builder*) replaceLinksRemoveAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableLinksRemoveList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPChannelState_Builder*) addLinksRemove:(int32_t) value {
-  if (result.mutableLinksRemoveList == nil) {
-    result.mutableLinksRemoveList = [NSMutableArray array];
+- (MPChannelState_Builder *)addLinksRemove:(int32_t)value {
+  if (result.linksRemoveArray == nil) {
+    result.linksRemoveArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableLinksRemoveList addObject:[NSNumber numberWithInt:value]];
+  [result.linksRemoveArray addUint32:value];
   return self;
 }
-- (MPChannelState_Builder*) addAllLinksRemove:(NSArray*) values {
-  if (result.mutableLinksRemoveList == nil) {
-    result.mutableLinksRemoveList = [NSMutableArray array];
-  }
-  [result.mutableLinksRemoveList addObjectsFromArray:values];
+- (MPChannelState_Builder *)setLinksRemoveArray:(NSArray *)array {
+  result.linksRemoveArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPChannelState_Builder*) clearLinksRemoveList {
-  result.mutableLinksRemoveList = nil;
+- (MPChannelState_Builder *)setLinksRemoveValues:(const int32_t *)values count:(NSUInteger)count {
+  result.linksRemoveArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
+  return self;
+}
+- (MPChannelState_Builder *)clearLinksRemove {
+  result.linksRemoveArray = nil;
   return self;
 }
 - (BOOL) hasTemporary {
@@ -4240,13 +4245,14 @@ static MPUserState* defaultMPUserStateInstance = nil;
 @end
 
 @interface MPBanList ()
-@property (retain) NSMutableArray* mutableBansList;
+@property (retain) PBAppendableArray * bansArray;
 @property BOOL query;
 @end
 
 @implementation MPBanList
 
-@synthesize mutableBansList;
+@synthesize bansArray;
+@dynamic bans;
 - (BOOL) hasQuery {
   return !!hasQuery_;
 }
@@ -4260,7 +4266,7 @@ static MPUserState* defaultMPUserStateInstance = nil;
   query_ = !!value;
 }
 - (void) dealloc {
-  self.mutableBansList = nil;
+  self.bansArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4281,15 +4287,14 @@ static MPBanList* defaultMPBanListInstance = nil;
 - (MPBanList*) defaultInstance {
   return defaultMPBanListInstance;
 }
-- (NSArray*) bansList {
-  return mutableBansList;
+- (PBArray *)bans {
+  return bansArray;
 }
-- (MPBanList_BanEntry*) bansAtIndex:(int32_t) index {
-  id value = [mutableBansList objectAtIndex:index];
-  return value;
+- (MPBanList_BanEntry*)bansAtIndex:(NSUInteger)index {
+  return [bansArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (MPBanList_BanEntry* element in self.bansList) {
+  for (MPBanList_BanEntry* element in self.bans) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -4297,7 +4302,7 @@ static MPBanList* defaultMPBanListInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (MPBanList_BanEntry* element in self.bansList) {
+  for (MPBanList_BanEntry *element in self.bansArray) {
     [output writeMessage:1 value:element];
   }
   if (self.hasQuery) {
@@ -4312,7 +4317,7 @@ static MPBanList* defaultMPBanListInstance = nil;
   }
 
   size = 0;
-  for (MPBanList_BanEntry* element in self.bansList) {
+  for (MPBanList_BanEntry *element in self.bansArray) {
     size += computeMessageSize(1, element);
   }
   if (self.hasQuery) {
@@ -4809,11 +4814,12 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   if (other == [MPBanList defaultInstance]) {
     return self;
   }
-  if (other.mutableBansList.count > 0) {
-    if (result.mutableBansList == nil) {
-      result.mutableBansList = [NSMutableArray array];
+  if (other.bansArray.count > 0) {
+    if (result.bansArray == nil) {
+      result.bansArray = [other.bansArray copyWithZone:[other.bansArray zone]];
+    } else {
+      [result.bansArray appendArray:other.bansArray];
     }
-    [result.mutableBansList addObjectsFromArray:other.mutableBansList];
   }
   if (other.hasQuery) {
     [self setQuery:other.query];
@@ -4852,33 +4858,29 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
     }
   }
 }
-- (NSArray*) bansList {
-  if (result.mutableBansList == nil) { return [NSArray array]; }
-  return result.mutableBansList;
+- (PBAppendableArray *)bans {
+  return result.bansArray;
 }
-- (MPBanList_BanEntry*) bansAtIndex:(int32_t) index {
+- (MPBanList_BanEntry*)bansAtIndex:(NSUInteger)index {
   return [result bansAtIndex:index];
 }
-- (MPBanList_Builder*) replaceBansAtIndex:(int32_t) index with:(MPBanList_BanEntry*) value {
-  [result.mutableBansList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPBanList_Builder*) addAllBans:(NSArray*) values {
-  if (result.mutableBansList == nil) {
-    result.mutableBansList = [NSMutableArray array];
+- (MPBanList_Builder *)addBans:(MPBanList_BanEntry*)value {
+  if (result.bansArray == nil) {
+    result.bansArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableBansList addObjectsFromArray:values];
+  [result.bansArray addObject:value];
   return self;
 }
-- (MPBanList_Builder*) clearBansList {
-  result.mutableBansList = nil;
+- (MPBanList_Builder *)setBansArray:(NSArray *)array {
+  result.bansArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPBanList_Builder*) addBans:(MPBanList_BanEntry*) value {
-  if (result.mutableBansList == nil) {
-    result.mutableBansList = [NSMutableArray array];
-  }
-  [result.mutableBansList addObject:value];
+- (MPBanList_Builder *)setBansValues:(const MPBanList_BanEntry* *)values count:(NSUInteger)count {
+  result.bansArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (MPBanList_Builder *)clearBans {
+  result.bansArray = nil;
   return self;
 }
 - (BOOL) hasQuery {
@@ -4901,9 +4903,9 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
 
 @interface MPTextMessage ()
 @property int32_t actor;
-@property (retain) NSMutableArray* mutableSessionList;
-@property (retain) NSMutableArray* mutableChannelIdList;
-@property (retain) NSMutableArray* mutableTreeIdList;
+@property (retain) PBAppendableArray * sessionArray;
+@property (retain) PBAppendableArray * channelIdArray;
+@property (retain) PBAppendableArray * treeIdArray;
 @property (retain) NSString* message;
 @end
 
@@ -4916,9 +4918,12 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   hasActor_ = !!value;
 }
 @synthesize actor;
-@synthesize mutableSessionList;
-@synthesize mutableChannelIdList;
-@synthesize mutableTreeIdList;
+@synthesize sessionArray;
+@dynamic session;
+@synthesize channelIdArray;
+@dynamic channelId;
+@synthesize treeIdArray;
+@dynamic treeId;
 - (BOOL) hasMessage {
   return !!hasMessage_;
 }
@@ -4927,9 +4932,9 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
 }
 @synthesize message;
 - (void) dealloc {
-  self.mutableSessionList = nil;
-  self.mutableChannelIdList = nil;
-  self.mutableTreeIdList = nil;
+  self.sessionArray = nil;
+  self.channelIdArray = nil;
+  self.treeIdArray = nil;
   self.message = nil;
   [super dealloc];
 }
@@ -4952,26 +4957,23 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 - (MPTextMessage*) defaultInstance {
   return defaultMPTextMessageInstance;
 }
-- (NSArray*) sessionList {
-  return mutableSessionList;
+- (PBArray *)session {
+  return sessionArray;
 }
-- (int32_t) sessionAtIndex:(int32_t) index {
-  id value = [mutableSessionList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)sessionAtIndex:(NSUInteger)index {
+  return [sessionArray uint32AtIndex:index];
 }
-- (NSArray*) channelIdList {
-  return mutableChannelIdList;
+- (PBArray *)channelId {
+  return channelIdArray;
 }
-- (int32_t) channelIdAtIndex:(int32_t) index {
-  id value = [mutableChannelIdList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)channelIdAtIndex:(NSUInteger)index {
+  return [channelIdArray uint32AtIndex:index];
 }
-- (NSArray*) treeIdList {
-  return mutableTreeIdList;
+- (PBArray *)treeId {
+  return treeIdArray;
 }
-- (int32_t) treeIdAtIndex:(int32_t) index {
-  id value = [mutableTreeIdList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)treeIdAtIndex:(NSUInteger)index {
+  return [treeIdArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
   if (!self.hasMessage) {
@@ -4983,14 +4985,26 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   if (self.hasActor) {
     [output writeUInt32:1 value:self.actor];
   }
-  for (NSNumber* value in self.mutableSessionList) {
-    [output writeUInt32:2 value:[value intValue]];
+  const NSUInteger sessionArrayCount = self.sessionArray.count;
+  if (sessionArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    for (NSUInteger i = 0; i < sessionArrayCount; ++i) {
+      [output writeUInt32:2 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableChannelIdList) {
-    [output writeUInt32:3 value:[value intValue]];
+  const NSUInteger channelIdArrayCount = self.channelIdArray.count;
+  if (channelIdArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.channelIdArray.data;
+    for (NSUInteger i = 0; i < channelIdArrayCount; ++i) {
+      [output writeUInt32:3 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableTreeIdList) {
-    [output writeUInt32:4 value:[value intValue]];
+  const NSUInteger treeIdArrayCount = self.treeIdArray.count;
+  if (treeIdArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.treeIdArray.data;
+    for (NSUInteger i = 0; i < treeIdArrayCount; ++i) {
+      [output writeUInt32:4 value:values[i]];
+    }
   }
   if (self.hasMessage) {
     [output writeString:5 value:self.message];
@@ -5009,27 +5023,33 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableSessionList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.sessionArray.count;
+    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableSessionList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableChannelIdList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.channelIdArray.count;
+    const int32_t *values = (const int32_t *)self.channelIdArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableChannelIdList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableTreeIdList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.treeIdArray.count;
+    const int32_t *values = (const int32_t *)self.treeIdArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableTreeIdList.count;
+    size += 1 * count;
   }
   if (self.hasMessage) {
     size += computeStringSize(5, self.message);
@@ -5112,23 +5132,26 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   if (other.hasActor) {
     [self setActor:other.actor];
   }
-  if (other.mutableSessionList.count > 0) {
-    if (result.mutableSessionList == nil) {
-      result.mutableSessionList = [NSMutableArray array];
+  if (other.sessionArray.count > 0) {
+    if (result.sessionArray == nil) {
+      result.sessionArray = [other.sessionArray copyWithZone:[other.sessionArray zone]];
+    } else {
+      [result.sessionArray appendArray:other.sessionArray];
     }
-    [result.mutableSessionList addObjectsFromArray:other.mutableSessionList];
   }
-  if (other.mutableChannelIdList.count > 0) {
-    if (result.mutableChannelIdList == nil) {
-      result.mutableChannelIdList = [NSMutableArray array];
+  if (other.channelIdArray.count > 0) {
+    if (result.channelIdArray == nil) {
+      result.channelIdArray = [other.channelIdArray copyWithZone:[other.channelIdArray zone]];
+    } else {
+      [result.channelIdArray appendArray:other.channelIdArray];
     }
-    [result.mutableChannelIdList addObjectsFromArray:other.mutableChannelIdList];
   }
-  if (other.mutableTreeIdList.count > 0) {
-    if (result.mutableTreeIdList == nil) {
-      result.mutableTreeIdList = [NSMutableArray array];
+  if (other.treeIdArray.count > 0) {
+    if (result.treeIdArray == nil) {
+      result.treeIdArray = [other.treeIdArray copyWithZone:[other.treeIdArray zone]];
+    } else {
+      [result.treeIdArray appendArray:other.treeIdArray];
     }
-    [result.mutableTreeIdList addObjectsFromArray:other.mutableTreeIdList];
   }
   if (other.hasMessage) {
     [self setMessage:other.message];
@@ -5193,97 +5216,79 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   result.actor = 0;
   return self;
 }
-- (NSArray*) sessionList {
-  if (result.mutableSessionList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableSessionList;
+- (PBAppendableArray *)session {
+  return result.sessionArray;
 }
-- (int32_t) sessionAtIndex:(int32_t) index {
+- (int32_t)sessionAtIndex:(NSUInteger)index {
   return [result sessionAtIndex:index];
 }
-- (MPTextMessage_Builder*) replaceSessionAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableSessionList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPTextMessage_Builder*) addSession:(int32_t) value {
-  if (result.mutableSessionList == nil) {
-    result.mutableSessionList = [NSMutableArray array];
+- (MPTextMessage_Builder *)addSession:(int32_t)value {
+  if (result.sessionArray == nil) {
+    result.sessionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableSessionList addObject:[NSNumber numberWithInt:value]];
+  [result.sessionArray addUint32:value];
   return self;
 }
-- (MPTextMessage_Builder*) addAllSession:(NSArray*) values {
-  if (result.mutableSessionList == nil) {
-    result.mutableSessionList = [NSMutableArray array];
-  }
-  [result.mutableSessionList addObjectsFromArray:values];
+- (MPTextMessage_Builder *)setSessionArray:(NSArray *)array {
+  result.sessionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPTextMessage_Builder*) clearSessionList {
-  result.mutableSessionList = nil;
+- (MPTextMessage_Builder *)setSessionValues:(const int32_t *)values count:(NSUInteger)count {
+  result.sessionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) channelIdList {
-  if (result.mutableChannelIdList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableChannelIdList;
+- (MPTextMessage_Builder *)clearSession {
+  result.sessionArray = nil;
+  return self;
 }
-- (int32_t) channelIdAtIndex:(int32_t) index {
+- (PBAppendableArray *)channelId {
+  return result.channelIdArray;
+}
+- (int32_t)channelIdAtIndex:(NSUInteger)index {
   return [result channelIdAtIndex:index];
 }
-- (MPTextMessage_Builder*) replaceChannelIdAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableChannelIdList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPTextMessage_Builder*) addChannelId:(int32_t) value {
-  if (result.mutableChannelIdList == nil) {
-    result.mutableChannelIdList = [NSMutableArray array];
+- (MPTextMessage_Builder *)addChannelId:(int32_t)value {
+  if (result.channelIdArray == nil) {
+    result.channelIdArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableChannelIdList addObject:[NSNumber numberWithInt:value]];
+  [result.channelIdArray addUint32:value];
   return self;
 }
-- (MPTextMessage_Builder*) addAllChannelId:(NSArray*) values {
-  if (result.mutableChannelIdList == nil) {
-    result.mutableChannelIdList = [NSMutableArray array];
-  }
-  [result.mutableChannelIdList addObjectsFromArray:values];
+- (MPTextMessage_Builder *)setChannelIdArray:(NSArray *)array {
+  result.channelIdArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPTextMessage_Builder*) clearChannelIdList {
-  result.mutableChannelIdList = nil;
+- (MPTextMessage_Builder *)setChannelIdValues:(const int32_t *)values count:(NSUInteger)count {
+  result.channelIdArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) treeIdList {
-  if (result.mutableTreeIdList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableTreeIdList;
+- (MPTextMessage_Builder *)clearChannelId {
+  result.channelIdArray = nil;
+  return self;
 }
-- (int32_t) treeIdAtIndex:(int32_t) index {
+- (PBAppendableArray *)treeId {
+  return result.treeIdArray;
+}
+- (int32_t)treeIdAtIndex:(NSUInteger)index {
   return [result treeIdAtIndex:index];
 }
-- (MPTextMessage_Builder*) replaceTreeIdAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableTreeIdList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPTextMessage_Builder*) addTreeId:(int32_t) value {
-  if (result.mutableTreeIdList == nil) {
-    result.mutableTreeIdList = [NSMutableArray array];
+- (MPTextMessage_Builder *)addTreeId:(int32_t)value {
+  if (result.treeIdArray == nil) {
+    result.treeIdArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableTreeIdList addObject:[NSNumber numberWithInt:value]];
+  [result.treeIdArray addUint32:value];
   return self;
 }
-- (MPTextMessage_Builder*) addAllTreeId:(NSArray*) values {
-  if (result.mutableTreeIdList == nil) {
-    result.mutableTreeIdList = [NSMutableArray array];
-  }
-  [result.mutableTreeIdList addObjectsFromArray:values];
+- (MPTextMessage_Builder *)setTreeIdArray:(NSArray *)array {
+  result.treeIdArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPTextMessage_Builder*) clearTreeIdList {
-  result.mutableTreeIdList = nil;
+- (MPTextMessage_Builder *)setTreeIdValues:(const int32_t *)values count:(NSUInteger)count {
+  result.treeIdArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
+  return self;
+}
+- (MPTextMessage_Builder *)clearTreeId {
+  result.treeIdArray = nil;
   return self;
 }
 - (BOOL) hasMessage {
@@ -5698,8 +5703,8 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
 @interface MPACL ()
 @property int32_t channelId;
 @property BOOL inheritAcls;
-@property (retain) NSMutableArray* mutableGroupsList;
-@property (retain) NSMutableArray* mutableAclsList;
+@property (retain) PBAppendableArray * groupsArray;
+@property (retain) PBAppendableArray * aclsArray;
 @property BOOL query;
 @end
 
@@ -5724,8 +5729,10 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
 - (void) setInheritAcls:(BOOL) value {
   inheritAcls_ = !!value;
 }
-@synthesize mutableGroupsList;
-@synthesize mutableAclsList;
+@synthesize groupsArray;
+@dynamic groups;
+@synthesize aclsArray;
+@dynamic acls;
 - (BOOL) hasQuery {
   return !!hasQuery_;
 }
@@ -5739,8 +5746,8 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
   query_ = !!value;
 }
 - (void) dealloc {
-  self.mutableGroupsList = nil;
-  self.mutableAclsList = nil;
+  self.groupsArray = nil;
+  self.aclsArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -5763,25 +5770,23 @@ static MPACL* defaultMPACLInstance = nil;
 - (MPACL*) defaultInstance {
   return defaultMPACLInstance;
 }
-- (NSArray*) groupsList {
-  return mutableGroupsList;
+- (PBArray *)groups {
+  return groupsArray;
 }
-- (MPACL_ChanGroup*) groupsAtIndex:(int32_t) index {
-  id value = [mutableGroupsList objectAtIndex:index];
-  return value;
+- (MPACL_ChanGroup*)groupsAtIndex:(NSUInteger)index {
+  return [groupsArray objectAtIndex:index];
 }
-- (NSArray*) aclsList {
-  return mutableAclsList;
+- (PBArray *)acls {
+  return aclsArray;
 }
-- (MPACL_ChanACL*) aclsAtIndex:(int32_t) index {
-  id value = [mutableAclsList objectAtIndex:index];
-  return value;
+- (MPACL_ChanACL*)aclsAtIndex:(NSUInteger)index {
+  return [aclsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   if (!self.hasChannelId) {
     return NO;
   }
-  for (MPACL_ChanGroup* element in self.groupsList) {
+  for (MPACL_ChanGroup* element in self.groups) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -5795,10 +5800,10 @@ static MPACL* defaultMPACLInstance = nil;
   if (self.hasInheritAcls) {
     [output writeBool:2 value:self.inheritAcls];
   }
-  for (MPACL_ChanGroup* element in self.groupsList) {
+  for (MPACL_ChanGroup *element in self.groupsArray) {
     [output writeMessage:3 value:element];
   }
-  for (MPACL_ChanACL* element in self.aclsList) {
+  for (MPACL_ChanACL *element in self.aclsArray) {
     [output writeMessage:4 value:element];
   }
   if (self.hasQuery) {
@@ -5819,10 +5824,10 @@ static MPACL* defaultMPACLInstance = nil;
   if (self.hasInheritAcls) {
     size += computeBoolSize(2, self.inheritAcls);
   }
-  for (MPACL_ChanGroup* element in self.groupsList) {
+  for (MPACL_ChanGroup *element in self.groupsArray) {
     size += computeMessageSize(3, element);
   }
-  for (MPACL_ChanACL* element in self.aclsList) {
+  for (MPACL_ChanACL *element in self.aclsArray) {
     size += computeMessageSize(4, element);
   }
   if (self.hasQuery) {
@@ -5866,9 +5871,9 @@ static MPACL* defaultMPACLInstance = nil;
 @property BOOL inherited;
 @property BOOL inherit;
 @property BOOL inheritable;
-@property (retain) NSMutableArray* mutableAddList;
-@property (retain) NSMutableArray* mutableRemoveList;
-@property (retain) NSMutableArray* mutableInheritedMembersList;
+@property (retain) PBAppendableArray * addArray;
+@property (retain) PBAppendableArray * removeArray;
+@property (retain) PBAppendableArray * inheritedMembersArray;
 @end
 
 @implementation MPACL_ChanGroup
@@ -5916,14 +5921,17 @@ static MPACL* defaultMPACLInstance = nil;
 - (void) setInheritable:(BOOL) value {
   inheritable_ = !!value;
 }
-@synthesize mutableAddList;
-@synthesize mutableRemoveList;
-@synthesize mutableInheritedMembersList;
+@synthesize addArray;
+@dynamic add;
+@synthesize removeArray;
+@dynamic remove;
+@synthesize inheritedMembersArray;
+@dynamic inheritedMembers;
 - (void) dealloc {
   self.name = nil;
-  self.mutableAddList = nil;
-  self.mutableRemoveList = nil;
-  self.mutableInheritedMembersList = nil;
+  self.addArray = nil;
+  self.removeArray = nil;
+  self.inheritedMembersArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -5947,26 +5955,23 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 - (MPACL_ChanGroup*) defaultInstance {
   return defaultMPACL_ChanGroupInstance;
 }
-- (NSArray*) addList {
-  return mutableAddList;
+- (PBArray *)add {
+  return addArray;
 }
-- (int32_t) addAtIndex:(int32_t) index {
-  id value = [mutableAddList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)addAtIndex:(NSUInteger)index {
+  return [addArray uint32AtIndex:index];
 }
-- (NSArray*) removeList {
-  return mutableRemoveList;
+- (PBArray *)remove {
+  return removeArray;
 }
-- (int32_t) removeAtIndex:(int32_t) index {
-  id value = [mutableRemoveList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)removeAtIndex:(NSUInteger)index {
+  return [removeArray uint32AtIndex:index];
 }
-- (NSArray*) inheritedMembersList {
-  return mutableInheritedMembersList;
+- (PBArray *)inheritedMembers {
+  return inheritedMembersArray;
 }
-- (int32_t) inheritedMembersAtIndex:(int32_t) index {
-  id value = [mutableInheritedMembersList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)inheritedMembersAtIndex:(NSUInteger)index {
+  return [inheritedMembersArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
   if (!self.hasName) {
@@ -5987,14 +5992,26 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   if (self.hasInheritable) {
     [output writeBool:4 value:self.inheritable];
   }
-  for (NSNumber* value in self.mutableAddList) {
-    [output writeUInt32:5 value:[value intValue]];
+  const NSUInteger addArrayCount = self.addArray.count;
+  if (addArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.addArray.data;
+    for (NSUInteger i = 0; i < addArrayCount; ++i) {
+      [output writeUInt32:5 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableRemoveList) {
-    [output writeUInt32:6 value:[value intValue]];
+  const NSUInteger removeArrayCount = self.removeArray.count;
+  if (removeArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.removeArray.data;
+    for (NSUInteger i = 0; i < removeArrayCount; ++i) {
+      [output writeUInt32:6 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableInheritedMembersList) {
-    [output writeUInt32:7 value:[value intValue]];
+  const NSUInteger inheritedMembersArrayCount = self.inheritedMembersArray.count;
+  if (inheritedMembersArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.inheritedMembersArray.data;
+    for (NSUInteger i = 0; i < inheritedMembersArrayCount; ++i) {
+      [output writeUInt32:7 value:values[i]];
+    }
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -6019,27 +6036,33 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableAddList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.addArray.count;
+    const int32_t *values = (const int32_t *)self.addArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableAddList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableRemoveList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.removeArray.count;
+    const int32_t *values = (const int32_t *)self.removeArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableRemoveList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableInheritedMembersList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.inheritedMembersArray.count;
+    const int32_t *values = (const int32_t *)self.inheritedMembersArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableInheritedMembersList.count;
+    size += 1 * count;
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -6128,23 +6151,26 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   if (other.hasInheritable) {
     [self setInheritable:other.inheritable];
   }
-  if (other.mutableAddList.count > 0) {
-    if (result.mutableAddList == nil) {
-      result.mutableAddList = [NSMutableArray array];
+  if (other.addArray.count > 0) {
+    if (result.addArray == nil) {
+      result.addArray = [other.addArray copyWithZone:[other.addArray zone]];
+    } else {
+      [result.addArray appendArray:other.addArray];
     }
-    [result.mutableAddList addObjectsFromArray:other.mutableAddList];
   }
-  if (other.mutableRemoveList.count > 0) {
-    if (result.mutableRemoveList == nil) {
-      result.mutableRemoveList = [NSMutableArray array];
+  if (other.removeArray.count > 0) {
+    if (result.removeArray == nil) {
+      result.removeArray = [other.removeArray copyWithZone:[other.removeArray zone]];
+    } else {
+      [result.removeArray appendArray:other.removeArray];
     }
-    [result.mutableRemoveList addObjectsFromArray:other.mutableRemoveList];
   }
-  if (other.mutableInheritedMembersList.count > 0) {
-    if (result.mutableInheritedMembersList == nil) {
-      result.mutableInheritedMembersList = [NSMutableArray array];
+  if (other.inheritedMembersArray.count > 0) {
+    if (result.inheritedMembersArray == nil) {
+      result.inheritedMembersArray = [other.inheritedMembersArray copyWithZone:[other.inheritedMembersArray zone]];
+    } else {
+      [result.inheritedMembersArray appendArray:other.inheritedMembersArray];
     }
-    [result.mutableInheritedMembersList addObjectsFromArray:other.mutableInheritedMembersList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -6262,97 +6288,79 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   result.inheritable = YES;
   return self;
 }
-- (NSArray*) addList {
-  if (result.mutableAddList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableAddList;
+- (PBAppendableArray *)add {
+  return result.addArray;
 }
-- (int32_t) addAtIndex:(int32_t) index {
+- (int32_t)addAtIndex:(NSUInteger)index {
   return [result addAtIndex:index];
 }
-- (MPACL_ChanGroup_Builder*) replaceAddAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableAddList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPACL_ChanGroup_Builder*) addAdd:(int32_t) value {
-  if (result.mutableAddList == nil) {
-    result.mutableAddList = [NSMutableArray array];
+- (MPACL_ChanGroup_Builder *)addAdd:(int32_t)value {
+  if (result.addArray == nil) {
+    result.addArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableAddList addObject:[NSNumber numberWithInt:value]];
+  [result.addArray addUint32:value];
   return self;
 }
-- (MPACL_ChanGroup_Builder*) addAllAdd:(NSArray*) values {
-  if (result.mutableAddList == nil) {
-    result.mutableAddList = [NSMutableArray array];
-  }
-  [result.mutableAddList addObjectsFromArray:values];
+- (MPACL_ChanGroup_Builder *)setAddArray:(NSArray *)array {
+  result.addArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPACL_ChanGroup_Builder*) clearAddList {
-  result.mutableAddList = nil;
+- (MPACL_ChanGroup_Builder *)setAddValues:(const int32_t *)values count:(NSUInteger)count {
+  result.addArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) removeList {
-  if (result.mutableRemoveList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableRemoveList;
+- (MPACL_ChanGroup_Builder *)clearAdd {
+  result.addArray = nil;
+  return self;
 }
-- (int32_t) removeAtIndex:(int32_t) index {
+- (PBAppendableArray *)remove {
+  return result.removeArray;
+}
+- (int32_t)removeAtIndex:(NSUInteger)index {
   return [result removeAtIndex:index];
 }
-- (MPACL_ChanGroup_Builder*) replaceRemoveAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableRemoveList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPACL_ChanGroup_Builder*) addRemove:(int32_t) value {
-  if (result.mutableRemoveList == nil) {
-    result.mutableRemoveList = [NSMutableArray array];
+- (MPACL_ChanGroup_Builder *)addRemove:(int32_t)value {
+  if (result.removeArray == nil) {
+    result.removeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableRemoveList addObject:[NSNumber numberWithInt:value]];
+  [result.removeArray addUint32:value];
   return self;
 }
-- (MPACL_ChanGroup_Builder*) addAllRemove:(NSArray*) values {
-  if (result.mutableRemoveList == nil) {
-    result.mutableRemoveList = [NSMutableArray array];
-  }
-  [result.mutableRemoveList addObjectsFromArray:values];
+- (MPACL_ChanGroup_Builder *)setRemoveArray:(NSArray *)array {
+  result.removeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPACL_ChanGroup_Builder*) clearRemoveList {
-  result.mutableRemoveList = nil;
+- (MPACL_ChanGroup_Builder *)setRemoveValues:(const int32_t *)values count:(NSUInteger)count {
+  result.removeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) inheritedMembersList {
-  if (result.mutableInheritedMembersList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableInheritedMembersList;
+- (MPACL_ChanGroup_Builder *)clearRemove {
+  result.removeArray = nil;
+  return self;
 }
-- (int32_t) inheritedMembersAtIndex:(int32_t) index {
+- (PBAppendableArray *)inheritedMembers {
+  return result.inheritedMembersArray;
+}
+- (int32_t)inheritedMembersAtIndex:(NSUInteger)index {
   return [result inheritedMembersAtIndex:index];
 }
-- (MPACL_ChanGroup_Builder*) replaceInheritedMembersAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableInheritedMembersList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPACL_ChanGroup_Builder*) addInheritedMembers:(int32_t) value {
-  if (result.mutableInheritedMembersList == nil) {
-    result.mutableInheritedMembersList = [NSMutableArray array];
+- (MPACL_ChanGroup_Builder *)addInheritedMembers:(int32_t)value {
+  if (result.inheritedMembersArray == nil) {
+    result.inheritedMembersArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableInheritedMembersList addObject:[NSNumber numberWithInt:value]];
+  [result.inheritedMembersArray addUint32:value];
   return self;
 }
-- (MPACL_ChanGroup_Builder*) addAllInheritedMembers:(NSArray*) values {
-  if (result.mutableInheritedMembersList == nil) {
-    result.mutableInheritedMembersList = [NSMutableArray array];
-  }
-  [result.mutableInheritedMembersList addObjectsFromArray:values];
+- (MPACL_ChanGroup_Builder *)setInheritedMembersArray:(NSArray *)array {
+  result.inheritedMembersArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPACL_ChanGroup_Builder*) clearInheritedMembersList {
-  result.mutableInheritedMembersList = nil;
+- (MPACL_ChanGroup_Builder *)setInheritedMembersValues:(const int32_t *)values count:(NSUInteger)count {
+  result.inheritedMembersArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
+  return self;
+}
+- (MPACL_ChanGroup_Builder *)clearInheritedMembers {
+  result.inheritedMembersArray = nil;
   return self;
 }
 @end
@@ -6826,17 +6834,19 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
   if (other.hasInheritAcls) {
     [self setInheritAcls:other.inheritAcls];
   }
-  if (other.mutableGroupsList.count > 0) {
-    if (result.mutableGroupsList == nil) {
-      result.mutableGroupsList = [NSMutableArray array];
+  if (other.groupsArray.count > 0) {
+    if (result.groupsArray == nil) {
+      result.groupsArray = [other.groupsArray copyWithZone:[other.groupsArray zone]];
+    } else {
+      [result.groupsArray appendArray:other.groupsArray];
     }
-    [result.mutableGroupsList addObjectsFromArray:other.mutableGroupsList];
   }
-  if (other.mutableAclsList.count > 0) {
-    if (result.mutableAclsList == nil) {
-      result.mutableAclsList = [NSMutableArray array];
+  if (other.aclsArray.count > 0) {
+    if (result.aclsArray == nil) {
+      result.aclsArray = [other.aclsArray copyWithZone:[other.aclsArray zone]];
+    } else {
+      [result.aclsArray appendArray:other.aclsArray];
     }
-    [result.mutableAclsList addObjectsFromArray:other.mutableAclsList];
   }
   if (other.hasQuery) {
     [self setQuery:other.query];
@@ -6921,62 +6931,54 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
   result.inheritAcls = YES;
   return self;
 }
-- (NSArray*) groupsList {
-  if (result.mutableGroupsList == nil) { return [NSArray array]; }
-  return result.mutableGroupsList;
+- (PBAppendableArray *)groups {
+  return result.groupsArray;
 }
-- (MPACL_ChanGroup*) groupsAtIndex:(int32_t) index {
+- (MPACL_ChanGroup*)groupsAtIndex:(NSUInteger)index {
   return [result groupsAtIndex:index];
 }
-- (MPACL_Builder*) replaceGroupsAtIndex:(int32_t) index with:(MPACL_ChanGroup*) value {
-  [result.mutableGroupsList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPACL_Builder*) addAllGroups:(NSArray*) values {
-  if (result.mutableGroupsList == nil) {
-    result.mutableGroupsList = [NSMutableArray array];
+- (MPACL_Builder *)addGroups:(MPACL_ChanGroup*)value {
+  if (result.groupsArray == nil) {
+    result.groupsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableGroupsList addObjectsFromArray:values];
+  [result.groupsArray addObject:value];
   return self;
 }
-- (MPACL_Builder*) clearGroupsList {
-  result.mutableGroupsList = nil;
+- (MPACL_Builder *)setGroupsArray:(NSArray *)array {
+  result.groupsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPACL_Builder*) addGroups:(MPACL_ChanGroup*) value {
-  if (result.mutableGroupsList == nil) {
-    result.mutableGroupsList = [NSMutableArray array];
-  }
-  [result.mutableGroupsList addObject:value];
+- (MPACL_Builder *)setGroupsValues:(const MPACL_ChanGroup* *)values count:(NSUInteger)count {
+  result.groupsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) aclsList {
-  if (result.mutableAclsList == nil) { return [NSArray array]; }
-  return result.mutableAclsList;
+- (MPACL_Builder *)clearGroups {
+  result.groupsArray = nil;
+  return self;
 }
-- (MPACL_ChanACL*) aclsAtIndex:(int32_t) index {
+- (PBAppendableArray *)acls {
+  return result.aclsArray;
+}
+- (MPACL_ChanACL*)aclsAtIndex:(NSUInteger)index {
   return [result aclsAtIndex:index];
 }
-- (MPACL_Builder*) replaceAclsAtIndex:(int32_t) index with:(MPACL_ChanACL*) value {
-  [result.mutableAclsList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPACL_Builder*) addAllAcls:(NSArray*) values {
-  if (result.mutableAclsList == nil) {
-    result.mutableAclsList = [NSMutableArray array];
+- (MPACL_Builder *)addAcls:(MPACL_ChanACL*)value {
+  if (result.aclsArray == nil) {
+    result.aclsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableAclsList addObjectsFromArray:values];
+  [result.aclsArray addObject:value];
   return self;
 }
-- (MPACL_Builder*) clearAclsList {
-  result.mutableAclsList = nil;
+- (MPACL_Builder *)setAclsArray:(NSArray *)array {
+  result.aclsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPACL_Builder*) addAcls:(MPACL_ChanACL*) value {
-  if (result.mutableAclsList == nil) {
-    result.mutableAclsList = [NSMutableArray array];
-  }
-  [result.mutableAclsList addObject:value];
+- (MPACL_Builder *)setAclsValues:(const MPACL_ChanACL* *)values count:(NSUInteger)count {
+  result.aclsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (MPACL_Builder *)clearAcls {
+  result.aclsArray = nil;
   return self;
 }
 - (BOOL) hasQuery {
@@ -6998,17 +7000,19 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
 @end
 
 @interface MPQueryUsers ()
-@property (retain) NSMutableArray* mutableIdsList;
-@property (retain) NSMutableArray* mutableNamesList;
+@property (retain) PBAppendableArray * idsArray;
+@property (retain) PBAppendableArray * namesArray;
 @end
 
 @implementation MPQueryUsers
 
-@synthesize mutableIdsList;
-@synthesize mutableNamesList;
+@synthesize idsArray;
+@dynamic ids;
+@synthesize namesArray;
+@dynamic names;
 - (void) dealloc {
-  self.mutableIdsList = nil;
-  self.mutableNamesList = nil;
+  self.idsArray = nil;
+  self.namesArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -7028,29 +7032,35 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
 - (MPQueryUsers*) defaultInstance {
   return defaultMPQueryUsersInstance;
 }
-- (NSArray*) idsList {
-  return mutableIdsList;
+- (PBArray *)ids {
+  return idsArray;
 }
-- (int32_t) idsAtIndex:(int32_t) index {
-  id value = [mutableIdsList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)idsAtIndex:(NSUInteger)index {
+  return [idsArray uint32AtIndex:index];
 }
-- (NSArray*) namesList {
-  return mutableNamesList;
+- (PBArray *)names {
+  return namesArray;
 }
-- (NSString*) namesAtIndex:(int32_t) index {
-  id value = [mutableNamesList objectAtIndex:index];
-  return value;
+- (NSString*)namesAtIndex:(NSUInteger)index {
+  return [namesArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (NSNumber* value in self.mutableIdsList) {
-    [output writeUInt32:1 value:[value intValue]];
+  const NSUInteger idsArrayCount = self.idsArray.count;
+  if (idsArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.idsArray.data;
+    for (NSUInteger i = 0; i < idsArrayCount; ++i) {
+      [output writeUInt32:1 value:values[i]];
+    }
   }
-  for (NSString* element in self.mutableNamesList) {
-    [output writeString:2 value:element];
+  const NSUInteger namesArrayCount = self.namesArray.count;
+  if (namesArrayCount > 0) {
+    const NSString* *values = (const NSString* *)self.namesArray.data;
+    for (NSUInteger i = 0; i < namesArrayCount; ++i) {
+      [output writeString:2 value:values[i]];
+    }
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -7063,19 +7073,23 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
   size = 0;
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableIdsList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.idsArray.count;
+    const int32_t *values = (const int32_t *)self.idsArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableIdsList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSString* element in self.mutableNamesList) {
-      dataSize += computeStringSizeNoTag(element);
+    const NSUInteger count = self.namesArray.count;
+    const NSString* *values = (const NSString* *)self.namesArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeStringSizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableNamesList.count;
+    size += 1 * count;
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -7152,17 +7166,19 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
   if (other == [MPQueryUsers defaultInstance]) {
     return self;
   }
-  if (other.mutableIdsList.count > 0) {
-    if (result.mutableIdsList == nil) {
-      result.mutableIdsList = [NSMutableArray array];
+  if (other.idsArray.count > 0) {
+    if (result.idsArray == nil) {
+      result.idsArray = [other.idsArray copyWithZone:[other.idsArray zone]];
+    } else {
+      [result.idsArray appendArray:other.idsArray];
     }
-    [result.mutableIdsList addObjectsFromArray:other.mutableIdsList];
   }
-  if (other.mutableNamesList.count > 0) {
-    if (result.mutableNamesList == nil) {
-      result.mutableNamesList = [NSMutableArray array];
+  if (other.namesArray.count > 0) {
+    if (result.namesArray == nil) {
+      result.namesArray = [other.namesArray copyWithZone:[other.namesArray zone]];
+    } else {
+      [result.namesArray appendArray:other.namesArray];
     }
-    [result.mutableNamesList addObjectsFromArray:other.mutableNamesList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -7196,66 +7212,54 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
     }
   }
 }
-- (NSArray*) idsList {
-  if (result.mutableIdsList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableIdsList;
+- (PBAppendableArray *)ids {
+  return result.idsArray;
 }
-- (int32_t) idsAtIndex:(int32_t) index {
+- (int32_t)idsAtIndex:(NSUInteger)index {
   return [result idsAtIndex:index];
 }
-- (MPQueryUsers_Builder*) replaceIdsAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableIdsList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPQueryUsers_Builder*) addIds:(int32_t) value {
-  if (result.mutableIdsList == nil) {
-    result.mutableIdsList = [NSMutableArray array];
+- (MPQueryUsers_Builder *)addIds:(int32_t)value {
+  if (result.idsArray == nil) {
+    result.idsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableIdsList addObject:[NSNumber numberWithInt:value]];
+  [result.idsArray addUint32:value];
   return self;
 }
-- (MPQueryUsers_Builder*) addAllIds:(NSArray*) values {
-  if (result.mutableIdsList == nil) {
-    result.mutableIdsList = [NSMutableArray array];
-  }
-  [result.mutableIdsList addObjectsFromArray:values];
+- (MPQueryUsers_Builder *)setIdsArray:(NSArray *)array {
+  result.idsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPQueryUsers_Builder*) clearIdsList {
-  result.mutableIdsList = nil;
+- (MPQueryUsers_Builder *)setIdsValues:(const int32_t *)values count:(NSUInteger)count {
+  result.idsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) namesList {
-  if (result.mutableNamesList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableNamesList;
+- (MPQueryUsers_Builder *)clearIds {
+  result.idsArray = nil;
+  return self;
 }
-- (NSString*) namesAtIndex:(int32_t) index {
+- (PBAppendableArray *)names {
+  return result.namesArray;
+}
+- (NSString*)namesAtIndex:(NSUInteger)index {
   return [result namesAtIndex:index];
 }
-- (MPQueryUsers_Builder*) replaceNamesAtIndex:(int32_t) index with:(NSString*) value {
-  [result.mutableNamesList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPQueryUsers_Builder*) addNames:(NSString*) value {
-  if (result.mutableNamesList == nil) {
-    result.mutableNamesList = [NSMutableArray array];
+- (MPQueryUsers_Builder *)addNames:(NSString*)value {
+  if (result.namesArray == nil) {
+    result.namesArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableNamesList addObject:value];
+  [result.namesArray addObject:value];
   return self;
 }
-- (MPQueryUsers_Builder*) addAllNames:(NSArray*) values {
-  if (result.mutableNamesList == nil) {
-    result.mutableNamesList = [NSMutableArray array];
-  }
-  [result.mutableNamesList addObjectsFromArray:values];
+- (MPQueryUsers_Builder *)setNamesArray:(NSArray *)array {
+  result.namesArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPQueryUsers_Builder*) clearNamesList {
-  result.mutableNamesList = nil;
+- (MPQueryUsers_Builder *)setNamesValues:(const NSString* *)values count:(NSUInteger)count {
+  result.namesArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (MPQueryUsers_Builder *)clearNames {
+  result.namesArray = nil;
   return self;
 }
 @end
@@ -8045,14 +8049,15 @@ static MPContextAction* defaultMPContextActionInstance = nil;
 @end
 
 @interface MPUserList ()
-@property (retain) NSMutableArray* mutableUsersList;
+@property (retain) PBAppendableArray * usersArray;
 @end
 
 @implementation MPUserList
 
-@synthesize mutableUsersList;
+@synthesize usersArray;
+@dynamic users;
 - (void) dealloc {
-  self.mutableUsersList = nil;
+  self.usersArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -8072,15 +8077,14 @@ static MPUserList* defaultMPUserListInstance = nil;
 - (MPUserList*) defaultInstance {
   return defaultMPUserListInstance;
 }
-- (NSArray*) usersList {
-  return mutableUsersList;
+- (PBArray *)users {
+  return usersArray;
 }
-- (MPUserList_User*) usersAtIndex:(int32_t) index {
-  id value = [mutableUsersList objectAtIndex:index];
-  return value;
+- (MPUserList_User*)usersAtIndex:(NSUInteger)index {
+  return [usersArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (MPUserList_User* element in self.usersList) {
+  for (MPUserList_User* element in self.users) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -8088,7 +8092,7 @@ static MPUserList* defaultMPUserListInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (MPUserList_User* element in self.usersList) {
+  for (MPUserList_User *element in self.usersArray) {
     [output writeMessage:1 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
@@ -8100,7 +8104,7 @@ static MPUserList* defaultMPUserListInstance = nil;
   }
 
   size = 0;
-  for (MPUserList_User* element in self.usersList) {
+  for (MPUserList_User *element in self.usersArray) {
     size += computeMessageSize(1, element);
   }
   size += self.unknownFields.serializedSize;
@@ -8397,11 +8401,12 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
   if (other == [MPUserList defaultInstance]) {
     return self;
   }
-  if (other.mutableUsersList.count > 0) {
-    if (result.mutableUsersList == nil) {
-      result.mutableUsersList = [NSMutableArray array];
+  if (other.usersArray.count > 0) {
+    if (result.usersArray == nil) {
+      result.usersArray = [other.usersArray copyWithZone:[other.usersArray zone]];
+    } else {
+      [result.usersArray appendArray:other.usersArray];
     }
-    [result.mutableUsersList addObjectsFromArray:other.mutableUsersList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -8433,40 +8438,36 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
     }
   }
 }
-- (NSArray*) usersList {
-  if (result.mutableUsersList == nil) { return [NSArray array]; }
-  return result.mutableUsersList;
+- (PBAppendableArray *)users {
+  return result.usersArray;
 }
-- (MPUserList_User*) usersAtIndex:(int32_t) index {
+- (MPUserList_User*)usersAtIndex:(NSUInteger)index {
   return [result usersAtIndex:index];
 }
-- (MPUserList_Builder*) replaceUsersAtIndex:(int32_t) index with:(MPUserList_User*) value {
-  [result.mutableUsersList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPUserList_Builder*) addAllUsers:(NSArray*) values {
-  if (result.mutableUsersList == nil) {
-    result.mutableUsersList = [NSMutableArray array];
+- (MPUserList_Builder *)addUsers:(MPUserList_User*)value {
+  if (result.usersArray == nil) {
+    result.usersArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUsersList addObjectsFromArray:values];
+  [result.usersArray addObject:value];
   return self;
 }
-- (MPUserList_Builder*) clearUsersList {
-  result.mutableUsersList = nil;
+- (MPUserList_Builder *)setUsersArray:(NSArray *)array {
+  result.usersArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPUserList_Builder*) addUsers:(MPUserList_User*) value {
-  if (result.mutableUsersList == nil) {
-    result.mutableUsersList = [NSMutableArray array];
-  }
-  [result.mutableUsersList addObject:value];
+- (MPUserList_Builder *)setUsersValues:(const MPUserList_User* *)values count:(NSUInteger)count {
+  result.usersArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (MPUserList_Builder *)clearUsers {
+  result.usersArray = nil;
   return self;
 }
 @end
 
 @interface MPVoiceTarget ()
 @property int32_t id;
-@property (retain) NSMutableArray* mutableTargetsList;
+@property (retain) PBAppendableArray * targetsArray;
 @end
 
 @implementation MPVoiceTarget
@@ -8478,9 +8479,10 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
   hasId_ = !!value;
 }
 @synthesize id;
-@synthesize mutableTargetsList;
+@synthesize targetsArray;
+@dynamic targets;
 - (void) dealloc {
-  self.mutableTargetsList = nil;
+  self.targetsArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -8501,12 +8503,11 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
 - (MPVoiceTarget*) defaultInstance {
   return defaultMPVoiceTargetInstance;
 }
-- (NSArray*) targetsList {
-  return mutableTargetsList;
+- (PBArray *)targets {
+  return targetsArray;
 }
-- (MPVoiceTarget_Target*) targetsAtIndex:(int32_t) index {
-  id value = [mutableTargetsList objectAtIndex:index];
-  return value;
+- (MPVoiceTarget_Target*)targetsAtIndex:(NSUInteger)index {
+  return [targetsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
@@ -8515,7 +8516,7 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
   if (self.hasId) {
     [output writeUInt32:1 value:self.id];
   }
-  for (MPVoiceTarget_Target* element in self.targetsList) {
+  for (MPVoiceTarget_Target *element in self.targetsArray) {
     [output writeMessage:2 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
@@ -8530,7 +8531,7 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
   if (self.hasId) {
     size += computeUInt32Size(1, self.id);
   }
-  for (MPVoiceTarget_Target* element in self.targetsList) {
+  for (MPVoiceTarget_Target *element in self.targetsArray) {
     size += computeMessageSize(2, element);
   }
   size += self.unknownFields.serializedSize;
@@ -8567,7 +8568,7 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
 @end
 
 @interface MPVoiceTarget_Target ()
-@property (retain) NSMutableArray* mutableSessionList;
+@property (retain) PBAppendableArray * sessionArray;
 @property int32_t channelId;
 @property (retain) NSString* group;
 @property BOOL links;
@@ -8576,7 +8577,8 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
 
 @implementation MPVoiceTarget_Target
 
-@synthesize mutableSessionList;
+@synthesize sessionArray;
+@dynamic session;
 - (BOOL) hasChannelId {
   return !!hasChannelId_;
 }
@@ -8616,7 +8618,7 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
   children_ = !!value;
 }
 - (void) dealloc {
-  self.mutableSessionList = nil;
+  self.sessionArray = nil;
   self.group = nil;
   [super dealloc];
 }
@@ -8641,19 +8643,22 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (MPVoiceTarget_Target*) defaultInstance {
   return defaultMPVoiceTarget_TargetInstance;
 }
-- (NSArray*) sessionList {
-  return mutableSessionList;
+- (PBArray *)session {
+  return sessionArray;
 }
-- (int32_t) sessionAtIndex:(int32_t) index {
-  id value = [mutableSessionList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)sessionAtIndex:(NSUInteger)index {
+  return [sessionArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (NSNumber* value in self.mutableSessionList) {
-    [output writeUInt32:1 value:[value intValue]];
+  const NSUInteger sessionArrayCount = self.sessionArray.count;
+  if (sessionArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    for (NSUInteger i = 0; i < sessionArrayCount; ++i) {
+      [output writeUInt32:1 value:values[i]];
+    }
   }
   if (self.hasChannelId) {
     [output writeUInt32:2 value:self.channelId];
@@ -8678,11 +8683,13 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   size = 0;
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableSessionList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.sessionArray.count;
+    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableSessionList.count;
+    size += 1 * count;
   }
   if (self.hasChannelId) {
     size += computeUInt32Size(2, self.channelId);
@@ -8771,11 +8778,12 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   if (other == [MPVoiceTarget_Target defaultInstance]) {
     return self;
   }
-  if (other.mutableSessionList.count > 0) {
-    if (result.mutableSessionList == nil) {
-      result.mutableSessionList = [NSMutableArray array];
+  if (other.sessionArray.count > 0) {
+    if (result.sessionArray == nil) {
+      result.sessionArray = [other.sessionArray copyWithZone:[other.sessionArray zone]];
+    } else {
+      [result.sessionArray appendArray:other.sessionArray];
     }
-    [result.mutableSessionList addObjectsFromArray:other.mutableSessionList];
   }
   if (other.hasChannelId) {
     [self setChannelId:other.channelId];
@@ -8833,35 +8841,29 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
     }
   }
 }
-- (NSArray*) sessionList {
-  if (result.mutableSessionList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableSessionList;
+- (PBAppendableArray *)session {
+  return result.sessionArray;
 }
-- (int32_t) sessionAtIndex:(int32_t) index {
+- (int32_t)sessionAtIndex:(NSUInteger)index {
   return [result sessionAtIndex:index];
 }
-- (MPVoiceTarget_Target_Builder*) replaceSessionAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableSessionList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPVoiceTarget_Target_Builder*) addSession:(int32_t) value {
-  if (result.mutableSessionList == nil) {
-    result.mutableSessionList = [NSMutableArray array];
+- (MPVoiceTarget_Target_Builder *)addSession:(int32_t)value {
+  if (result.sessionArray == nil) {
+    result.sessionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableSessionList addObject:[NSNumber numberWithInt:value]];
+  [result.sessionArray addUint32:value];
   return self;
 }
-- (MPVoiceTarget_Target_Builder*) addAllSession:(NSArray*) values {
-  if (result.mutableSessionList == nil) {
-    result.mutableSessionList = [NSMutableArray array];
-  }
-  [result.mutableSessionList addObjectsFromArray:values];
+- (MPVoiceTarget_Target_Builder *)setSessionArray:(NSArray *)array {
+  result.sessionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPVoiceTarget_Target_Builder*) clearSessionList {
-  result.mutableSessionList = nil;
+- (MPVoiceTarget_Target_Builder *)setSessionValues:(const int32_t *)values count:(NSUInteger)count {
+  result.sessionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
+  return self;
+}
+- (MPVoiceTarget_Target_Builder *)clearSession {
+  result.sessionArray = nil;
   return self;
 }
 - (BOOL) hasChannelId {
@@ -8975,11 +8977,12 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   if (other.hasId) {
     [self setId:other.id];
   }
-  if (other.mutableTargetsList.count > 0) {
-    if (result.mutableTargetsList == nil) {
-      result.mutableTargetsList = [NSMutableArray array];
+  if (other.targetsArray.count > 0) {
+    if (result.targetsArray == nil) {
+      result.targetsArray = [other.targetsArray copyWithZone:[other.targetsArray zone]];
+    } else {
+      [result.targetsArray appendArray:other.targetsArray];
     }
-    [result.mutableTargetsList addObjectsFromArray:other.mutableTargetsList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -9031,33 +9034,29 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   result.id = 0;
   return self;
 }
-- (NSArray*) targetsList {
-  if (result.mutableTargetsList == nil) { return [NSArray array]; }
-  return result.mutableTargetsList;
+- (PBAppendableArray *)targets {
+  return result.targetsArray;
 }
-- (MPVoiceTarget_Target*) targetsAtIndex:(int32_t) index {
+- (MPVoiceTarget_Target*)targetsAtIndex:(NSUInteger)index {
   return [result targetsAtIndex:index];
 }
-- (MPVoiceTarget_Builder*) replaceTargetsAtIndex:(int32_t) index with:(MPVoiceTarget_Target*) value {
-  [result.mutableTargetsList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPVoiceTarget_Builder*) addAllTargets:(NSArray*) values {
-  if (result.mutableTargetsList == nil) {
-    result.mutableTargetsList = [NSMutableArray array];
+- (MPVoiceTarget_Builder *)addTargets:(MPVoiceTarget_Target*)value {
+  if (result.targetsArray == nil) {
+    result.targetsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableTargetsList addObjectsFromArray:values];
+  [result.targetsArray addObject:value];
   return self;
 }
-- (MPVoiceTarget_Builder*) clearTargetsList {
-  result.mutableTargetsList = nil;
+- (MPVoiceTarget_Builder *)setTargetsArray:(NSArray *)array {
+  result.targetsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPVoiceTarget_Builder*) addTargets:(MPVoiceTarget_Target*) value {
-  if (result.mutableTargetsList == nil) {
-    result.mutableTargetsList = [NSMutableArray array];
-  }
-  [result.mutableTargetsList addObject:value];
+- (MPVoiceTarget_Builder *)setTargetsValues:(const MPVoiceTarget_Target* *)values count:(NSUInteger)count {
+  result.targetsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (MPVoiceTarget_Builder *)clearTargets {
+  result.targetsArray = nil;
   return self;
 }
 @end
@@ -9590,7 +9589,7 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
 @interface MPUserStats ()
 @property int32_t session;
 @property BOOL statsOnly;
-@property (retain) NSMutableArray* mutableCertificatesList;
+@property (retain) PBAppendableArray * certificatesArray;
 @property (retain) MPUserStats_Stats* fromClient;
 @property (retain) MPUserStats_Stats* fromServer;
 @property int32_t udpPackets;
@@ -9600,7 +9599,7 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
 @property Float32 tcpPingAvg;
 @property Float32 tcpPingVar;
 @property (retain) MPVersion* version;
-@property (retain) NSMutableArray* mutableCeltVersionsList;
+@property (retain) PBAppendableArray * celtVersionsArray;
 @property (retain) NSData* address;
 @property int32_t bandwidth;
 @property int32_t onlinesecs;
@@ -9629,7 +9628,8 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
 - (void) setStatsOnly:(BOOL) value {
   statsOnly_ = !!value;
 }
-@synthesize mutableCertificatesList;
+@synthesize certificatesArray;
+@dynamic certificates;
 - (BOOL) hasFromClient {
   return !!hasFromClient_;
 }
@@ -9693,7 +9693,8 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
   hasVersion_ = !!value;
 }
 @synthesize version;
-@synthesize mutableCeltVersionsList;
+@synthesize celtVersionsArray;
+@dynamic celtVersions;
 - (BOOL) hasAddress {
   return !!hasAddress_;
 }
@@ -9735,11 +9736,11 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
   strongCertificate_ = !!value;
 }
 - (void) dealloc {
-  self.mutableCertificatesList = nil;
+  self.certificatesArray = nil;
   self.fromClient = nil;
   self.fromServer = nil;
   self.version = nil;
-  self.mutableCeltVersionsList = nil;
+  self.celtVersionsArray = nil;
   self.address = nil;
   [super dealloc];
 }
@@ -9776,19 +9777,17 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
 - (MPUserStats*) defaultInstance {
   return defaultMPUserStatsInstance;
 }
-- (NSArray*) certificatesList {
-  return mutableCertificatesList;
+- (PBArray *)certificates {
+  return certificatesArray;
 }
-- (NSData*) certificatesAtIndex:(int32_t) index {
-  id value = [mutableCertificatesList objectAtIndex:index];
-  return value;
+- (NSData*)certificatesAtIndex:(NSUInteger)index {
+  return [certificatesArray objectAtIndex:index];
 }
-- (NSArray*) celtVersionsList {
-  return mutableCeltVersionsList;
+- (PBArray *)celtVersions {
+  return celtVersionsArray;
 }
-- (int32_t) celtVersionsAtIndex:(int32_t) index {
-  id value = [mutableCeltVersionsList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)celtVersionsAtIndex:(NSUInteger)index {
+  return [celtVersionsArray int32AtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
@@ -9800,8 +9799,12 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
   if (self.hasStatsOnly) {
     [output writeBool:2 value:self.statsOnly];
   }
-  for (NSData* element in self.mutableCertificatesList) {
-    [output writeData:3 value:element];
+  const NSUInteger certificatesArrayCount = self.certificatesArray.count;
+  if (certificatesArrayCount > 0) {
+    const NSData* *values = (const NSData* *)self.certificatesArray.data;
+    for (NSUInteger i = 0; i < certificatesArrayCount; ++i) {
+      [output writeData:3 value:values[i]];
+    }
   }
   if (self.hasFromClient) {
     [output writeMessage:4 value:self.fromClient];
@@ -9830,8 +9833,12 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
   if (self.hasVersion) {
     [output writeMessage:12 value:self.version];
   }
-  for (NSNumber* value in self.mutableCeltVersionsList) {
-    [output writeInt32:13 value:[value intValue]];
+  const NSUInteger celtVersionsArrayCount = self.celtVersionsArray.count;
+  if (celtVersionsArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.celtVersionsArray.data;
+    for (NSUInteger i = 0; i < celtVersionsArrayCount; ++i) {
+      [output writeInt32:13 value:values[i]];
+    }
   }
   if (self.hasAddress) {
     [output writeData:14 value:self.address];
@@ -9865,11 +9872,13 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSData* element in self.mutableCertificatesList) {
-      dataSize += computeDataSizeNoTag(element);
+    const NSUInteger count = self.certificatesArray.count;
+    const NSData* *values = (const NSData* *)self.certificatesArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeDataSizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableCertificatesList.count;
+    size += 1 * count;
   }
   if (self.hasFromClient) {
     size += computeMessageSize(4, self.fromClient);
@@ -9900,11 +9909,13 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableCeltVersionsList) {
-      dataSize += computeInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.celtVersionsArray.count;
+    const int32_t *values = (const int32_t *)self.celtVersionsArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableCeltVersionsList.count;
+    size += 1 * count;
   }
   if (self.hasAddress) {
     size += computeDataSize(14, self.address);
@@ -10293,11 +10304,12 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   if (other.hasStatsOnly) {
     [self setStatsOnly:other.statsOnly];
   }
-  if (other.mutableCertificatesList.count > 0) {
-    if (result.mutableCertificatesList == nil) {
-      result.mutableCertificatesList = [NSMutableArray array];
+  if (other.certificatesArray.count > 0) {
+    if (result.certificatesArray == nil) {
+      result.certificatesArray = [other.certificatesArray copyWithZone:[other.certificatesArray zone]];
+    } else {
+      [result.certificatesArray appendArray:other.certificatesArray];
     }
-    [result.mutableCertificatesList addObjectsFromArray:other.mutableCertificatesList];
   }
   if (other.hasFromClient) {
     [self mergeFromClient:other.fromClient];
@@ -10326,11 +10338,12 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   if (other.hasVersion) {
     [self mergeVersion:other.version];
   }
-  if (other.mutableCeltVersionsList.count > 0) {
-    if (result.mutableCeltVersionsList == nil) {
-      result.mutableCeltVersionsList = [NSMutableArray array];
+  if (other.celtVersionsArray.count > 0) {
+    if (result.celtVersionsArray == nil) {
+      result.celtVersionsArray = [other.celtVersionsArray copyWithZone:[other.celtVersionsArray zone]];
+    } else {
+      [result.celtVersionsArray appendArray:other.celtVersionsArray];
     }
-    [result.mutableCeltVersionsList addObjectsFromArray:other.mutableCeltVersionsList];
   }
   if (other.hasAddress) {
     [self setAddress:other.address];
@@ -10490,35 +10503,29 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   result.statsOnly = NO;
   return self;
 }
-- (NSArray*) certificatesList {
-  if (result.mutableCertificatesList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableCertificatesList;
+- (PBAppendableArray *)certificates {
+  return result.certificatesArray;
 }
-- (NSData*) certificatesAtIndex:(int32_t) index {
+- (NSData*)certificatesAtIndex:(NSUInteger)index {
   return [result certificatesAtIndex:index];
 }
-- (MPUserStats_Builder*) replaceCertificatesAtIndex:(int32_t) index with:(NSData*) value {
-  [result.mutableCertificatesList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (MPUserStats_Builder*) addCertificates:(NSData*) value {
-  if (result.mutableCertificatesList == nil) {
-    result.mutableCertificatesList = [NSMutableArray array];
+- (MPUserStats_Builder *)addCertificates:(NSData*)value {
+  if (result.certificatesArray == nil) {
+    result.certificatesArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableCertificatesList addObject:value];
+  [result.certificatesArray addObject:value];
   return self;
 }
-- (MPUserStats_Builder*) addAllCertificates:(NSArray*) values {
-  if (result.mutableCertificatesList == nil) {
-    result.mutableCertificatesList = [NSMutableArray array];
-  }
-  [result.mutableCertificatesList addObjectsFromArray:values];
+- (MPUserStats_Builder *)setCertificatesArray:(NSArray *)array {
+  result.certificatesArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (MPUserStats_Builder*) clearCertificatesList {
-  result.mutableCertificatesList = nil;
+- (MPUserStats_Builder *)setCertificatesValues:(const NSData* *)values count:(NSUInteger)count {
+  result.certificatesArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (MPUserStats_Builder *)clearCertificates {
+  result.certificatesArray = nil;
   return self;
 }
 - (BOOL) hasFromClient {
@@ -10707,35 +10714,29 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   result.version = [MPVersion defaultInstance];
   return self;
 }
-- (NSArray*) celtVersionsList {
-  if (result.mutableCeltVersionsList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableCeltVersionsList;
+- (PBAppendableArray *)celtVersions {
+  return result.celtVersionsArray;
 }
-- (int32_t) celtVersionsAtIndex:(int32_t) index {
+- (int32_t)celtVersionsAtIndex:(NSUInteger)index {
   return [result celtVersionsAtIndex:index];
 }
-- (MPUserStats_Builder*) replaceCeltVersionsAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableCeltVersionsList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPUserStats_Builder*) addCeltVersions:(int32_t) value {
-  if (result.mutableCeltVersionsList == nil) {
-    result.mutableCeltVersionsList = [NSMutableArray array];
+- (MPUserStats_Builder *)addCeltVersions:(int32_t)value {
+  if (result.celtVersionsArray == nil) {
+    result.celtVersionsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeInt32];
   }
-  [result.mutableCeltVersionsList addObject:[NSNumber numberWithInt:value]];
+  [result.celtVersionsArray addInt32:value];
   return self;
 }
-- (MPUserStats_Builder*) addAllCeltVersions:(NSArray*) values {
-  if (result.mutableCeltVersionsList == nil) {
-    result.mutableCeltVersionsList = [NSMutableArray array];
-  }
-  [result.mutableCeltVersionsList addObjectsFromArray:values];
+- (MPUserStats_Builder *)setCeltVersionsArray:(NSArray *)array {
+  result.celtVersionsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeInt32];
   return self;
 }
-- (MPUserStats_Builder*) clearCeltVersionsList {
-  result.mutableCeltVersionsList = nil;
+- (MPUserStats_Builder *)setCeltVersionsValues:(const int32_t *)values count:(NSUInteger)count {
+  result.celtVersionsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeInt32];
+  return self;
+}
+- (MPUserStats_Builder *)clearCeltVersions {
+  result.celtVersionsArray = nil;
   return self;
 }
 - (BOOL) hasAddress {
@@ -10821,20 +10822,23 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 @end
 
 @interface MPRequestBlob ()
-@property (retain) NSMutableArray* mutableSessionTextureList;
-@property (retain) NSMutableArray* mutableSessionCommentList;
-@property (retain) NSMutableArray* mutableChannelDescriptionList;
+@property (retain) PBAppendableArray * sessionTextureArray;
+@property (retain) PBAppendableArray * sessionCommentArray;
+@property (retain) PBAppendableArray * channelDescriptionArray;
 @end
 
 @implementation MPRequestBlob
 
-@synthesize mutableSessionTextureList;
-@synthesize mutableSessionCommentList;
-@synthesize mutableChannelDescriptionList;
+@synthesize sessionTextureArray;
+@dynamic sessionTexture;
+@synthesize sessionCommentArray;
+@dynamic sessionComment;
+@synthesize channelDescriptionArray;
+@dynamic channelDescription;
 - (void) dealloc {
-  self.mutableSessionTextureList = nil;
-  self.mutableSessionCommentList = nil;
-  self.mutableChannelDescriptionList = nil;
+  self.sessionTextureArray = nil;
+  self.sessionCommentArray = nil;
+  self.channelDescriptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -10854,39 +10858,48 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 - (MPRequestBlob*) defaultInstance {
   return defaultMPRequestBlobInstance;
 }
-- (NSArray*) sessionTextureList {
-  return mutableSessionTextureList;
+- (PBArray *)sessionTexture {
+  return sessionTextureArray;
 }
-- (int32_t) sessionTextureAtIndex:(int32_t) index {
-  id value = [mutableSessionTextureList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)sessionTextureAtIndex:(NSUInteger)index {
+  return [sessionTextureArray uint32AtIndex:index];
 }
-- (NSArray*) sessionCommentList {
-  return mutableSessionCommentList;
+- (PBArray *)sessionComment {
+  return sessionCommentArray;
 }
-- (int32_t) sessionCommentAtIndex:(int32_t) index {
-  id value = [mutableSessionCommentList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)sessionCommentAtIndex:(NSUInteger)index {
+  return [sessionCommentArray uint32AtIndex:index];
 }
-- (NSArray*) channelDescriptionList {
-  return mutableChannelDescriptionList;
+- (PBArray *)channelDescription {
+  return channelDescriptionArray;
 }
-- (int32_t) channelDescriptionAtIndex:(int32_t) index {
-  id value = [mutableChannelDescriptionList objectAtIndex:index];
-  return [value intValue];
+- (int32_t)channelDescriptionAtIndex:(NSUInteger)index {
+  return [channelDescriptionArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (NSNumber* value in self.mutableSessionTextureList) {
-    [output writeUInt32:1 value:[value intValue]];
+  const NSUInteger sessionTextureArrayCount = self.sessionTextureArray.count;
+  if (sessionTextureArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.sessionTextureArray.data;
+    for (NSUInteger i = 0; i < sessionTextureArrayCount; ++i) {
+      [output writeUInt32:1 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableSessionCommentList) {
-    [output writeUInt32:2 value:[value intValue]];
+  const NSUInteger sessionCommentArrayCount = self.sessionCommentArray.count;
+  if (sessionCommentArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.sessionCommentArray.data;
+    for (NSUInteger i = 0; i < sessionCommentArrayCount; ++i) {
+      [output writeUInt32:2 value:values[i]];
+    }
   }
-  for (NSNumber* value in self.mutableChannelDescriptionList) {
-    [output writeUInt32:3 value:[value intValue]];
+  const NSUInteger channelDescriptionArrayCount = self.channelDescriptionArray.count;
+  if (channelDescriptionArrayCount > 0) {
+    const int32_t *values = (const int32_t *)self.channelDescriptionArray.data;
+    for (NSUInteger i = 0; i < channelDescriptionArrayCount; ++i) {
+      [output writeUInt32:3 value:values[i]];
+    }
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -10899,27 +10912,33 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   size = 0;
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableSessionTextureList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.sessionTextureArray.count;
+    const int32_t *values = (const int32_t *)self.sessionTextureArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableSessionTextureList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableSessionCommentList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.sessionCommentArray.count;
+    const int32_t *values = (const int32_t *)self.sessionCommentArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableSessionCommentList.count;
+    size += 1 * count;
   }
   {
     int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableChannelDescriptionList) {
-      dataSize += computeUInt32SizeNoTag([value intValue]);
+    const NSUInteger count = self.channelDescriptionArray.count;
+    const int32_t *values = (const int32_t *)self.channelDescriptionArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeUInt32SizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableChannelDescriptionList.count;
+    size += 1 * count;
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -10996,23 +11015,26 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   if (other == [MPRequestBlob defaultInstance]) {
     return self;
   }
-  if (other.mutableSessionTextureList.count > 0) {
-    if (result.mutableSessionTextureList == nil) {
-      result.mutableSessionTextureList = [NSMutableArray array];
+  if (other.sessionTextureArray.count > 0) {
+    if (result.sessionTextureArray == nil) {
+      result.sessionTextureArray = [other.sessionTextureArray copyWithZone:[other.sessionTextureArray zone]];
+    } else {
+      [result.sessionTextureArray appendArray:other.sessionTextureArray];
     }
-    [result.mutableSessionTextureList addObjectsFromArray:other.mutableSessionTextureList];
   }
-  if (other.mutableSessionCommentList.count > 0) {
-    if (result.mutableSessionCommentList == nil) {
-      result.mutableSessionCommentList = [NSMutableArray array];
+  if (other.sessionCommentArray.count > 0) {
+    if (result.sessionCommentArray == nil) {
+      result.sessionCommentArray = [other.sessionCommentArray copyWithZone:[other.sessionCommentArray zone]];
+    } else {
+      [result.sessionCommentArray appendArray:other.sessionCommentArray];
     }
-    [result.mutableSessionCommentList addObjectsFromArray:other.mutableSessionCommentList];
   }
-  if (other.mutableChannelDescriptionList.count > 0) {
-    if (result.mutableChannelDescriptionList == nil) {
-      result.mutableChannelDescriptionList = [NSMutableArray array];
+  if (other.channelDescriptionArray.count > 0) {
+    if (result.channelDescriptionArray == nil) {
+      result.channelDescriptionArray = [other.channelDescriptionArray copyWithZone:[other.channelDescriptionArray zone]];
+    } else {
+      [result.channelDescriptionArray appendArray:other.channelDescriptionArray];
     }
-    [result.mutableChannelDescriptionList addObjectsFromArray:other.mutableChannelDescriptionList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -11050,97 +11072,79 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
     }
   }
 }
-- (NSArray*) sessionTextureList {
-  if (result.mutableSessionTextureList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableSessionTextureList;
+- (PBAppendableArray *)sessionTexture {
+  return result.sessionTextureArray;
 }
-- (int32_t) sessionTextureAtIndex:(int32_t) index {
+- (int32_t)sessionTextureAtIndex:(NSUInteger)index {
   return [result sessionTextureAtIndex:index];
 }
-- (MPRequestBlob_Builder*) replaceSessionTextureAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableSessionTextureList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPRequestBlob_Builder*) addSessionTexture:(int32_t) value {
-  if (result.mutableSessionTextureList == nil) {
-    result.mutableSessionTextureList = [NSMutableArray array];
+- (MPRequestBlob_Builder *)addSessionTexture:(int32_t)value {
+  if (result.sessionTextureArray == nil) {
+    result.sessionTextureArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableSessionTextureList addObject:[NSNumber numberWithInt:value]];
+  [result.sessionTextureArray addUint32:value];
   return self;
 }
-- (MPRequestBlob_Builder*) addAllSessionTexture:(NSArray*) values {
-  if (result.mutableSessionTextureList == nil) {
-    result.mutableSessionTextureList = [NSMutableArray array];
-  }
-  [result.mutableSessionTextureList addObjectsFromArray:values];
+- (MPRequestBlob_Builder *)setSessionTextureArray:(NSArray *)array {
+  result.sessionTextureArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPRequestBlob_Builder*) clearSessionTextureList {
-  result.mutableSessionTextureList = nil;
+- (MPRequestBlob_Builder *)setSessionTextureValues:(const int32_t *)values count:(NSUInteger)count {
+  result.sessionTextureArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) sessionCommentList {
-  if (result.mutableSessionCommentList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableSessionCommentList;
+- (MPRequestBlob_Builder *)clearSessionTexture {
+  result.sessionTextureArray = nil;
+  return self;
 }
-- (int32_t) sessionCommentAtIndex:(int32_t) index {
+- (PBAppendableArray *)sessionComment {
+  return result.sessionCommentArray;
+}
+- (int32_t)sessionCommentAtIndex:(NSUInteger)index {
   return [result sessionCommentAtIndex:index];
 }
-- (MPRequestBlob_Builder*) replaceSessionCommentAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableSessionCommentList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPRequestBlob_Builder*) addSessionComment:(int32_t) value {
-  if (result.mutableSessionCommentList == nil) {
-    result.mutableSessionCommentList = [NSMutableArray array];
+- (MPRequestBlob_Builder *)addSessionComment:(int32_t)value {
+  if (result.sessionCommentArray == nil) {
+    result.sessionCommentArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableSessionCommentList addObject:[NSNumber numberWithInt:value]];
+  [result.sessionCommentArray addUint32:value];
   return self;
 }
-- (MPRequestBlob_Builder*) addAllSessionComment:(NSArray*) values {
-  if (result.mutableSessionCommentList == nil) {
-    result.mutableSessionCommentList = [NSMutableArray array];
-  }
-  [result.mutableSessionCommentList addObjectsFromArray:values];
+- (MPRequestBlob_Builder *)setSessionCommentArray:(NSArray *)array {
+  result.sessionCommentArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPRequestBlob_Builder*) clearSessionCommentList {
-  result.mutableSessionCommentList = nil;
+- (MPRequestBlob_Builder *)setSessionCommentValues:(const int32_t *)values count:(NSUInteger)count {
+  result.sessionCommentArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (NSArray*) channelDescriptionList {
-  if (result.mutableChannelDescriptionList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableChannelDescriptionList;
+- (MPRequestBlob_Builder *)clearSessionComment {
+  result.sessionCommentArray = nil;
+  return self;
 }
-- (int32_t) channelDescriptionAtIndex:(int32_t) index {
+- (PBAppendableArray *)channelDescription {
+  return result.channelDescriptionArray;
+}
+- (int32_t)channelDescriptionAtIndex:(NSUInteger)index {
   return [result channelDescriptionAtIndex:index];
 }
-- (MPRequestBlob_Builder*) replaceChannelDescriptionAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableChannelDescriptionList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (MPRequestBlob_Builder*) addChannelDescription:(int32_t) value {
-  if (result.mutableChannelDescriptionList == nil) {
-    result.mutableChannelDescriptionList = [NSMutableArray array];
+- (MPRequestBlob_Builder *)addChannelDescription:(int32_t)value {
+  if (result.channelDescriptionArray == nil) {
+    result.channelDescriptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
-  [result.mutableChannelDescriptionList addObject:[NSNumber numberWithInt:value]];
+  [result.channelDescriptionArray addUint32:value];
   return self;
 }
-- (MPRequestBlob_Builder*) addAllChannelDescription:(NSArray*) values {
-  if (result.mutableChannelDescriptionList == nil) {
-    result.mutableChannelDescriptionList = [NSMutableArray array];
-  }
-  [result.mutableChannelDescriptionList addObjectsFromArray:values];
+- (MPRequestBlob_Builder *)setChannelDescriptionArray:(NSArray *)array {
+  result.channelDescriptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPRequestBlob_Builder*) clearChannelDescriptionList {
-  result.mutableChannelDescriptionList = nil;
+- (MPRequestBlob_Builder *)setChannelDescriptionValues:(const int32_t *)values count:(NSUInteger)count {
+  result.channelDescriptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
+  return self;
+}
+- (MPRequestBlob_Builder *)clearChannelDescription {
+  result.channelDescriptionArray = nil;
   return self;
 }
 @end

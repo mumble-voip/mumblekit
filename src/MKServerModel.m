@@ -250,16 +250,16 @@
 		[self internalRepositionChannel:chan to:[msg position]];
 	}
 
-	if ([[msg linksList] count] > 0) {
-		[self internalSetLinks:[msg linksList] forChannel:chan];
+	if ([[msg linksArray] count] > 0) {
+		[self internalSetLinks:[msg linksArray] forChannel:chan];
 	}
 
-	if ([[msg linksAddList] count] > 0) {
-		[self internalAddLinks:[msg linksAddList] toChannel:chan];
+	if ([[msg linksAddArray] count] > 0) {
+		[self internalAddLinks:[msg linksAddArray] toChannel:chan];
 	}
 
-	if ([[msg linksRemoveList] count] > 0) {
-		[self internalRemoveLinks:[msg linksRemoveList] fromChannel:chan];
+	if ([[msg linksRemoveArray] count] > 0) {
+		[self internalRemoveLinks:[msg linksRemoveArray] fromChannel:chan];
 	}
 
 	if (newChannel && _connectedUser) {
@@ -532,14 +532,14 @@
 }
 
 // Handle the 'links' list from a ChannelState message
-- (void) internalSetLinks:(NSArray *)links forChannel:(MKChannel *)chan {
+- (void) internalSetLinks:(PBArray *)links forChannel:(MKChannel *)chan {
 	[chan unlinkAll];
-	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:[links count]];
-	for (NSNumber *number in links) {
-		NSUInteger channelId = [number unsignedIntegerValue];
-		MKChannel *linkedChan = [self channelWithId:channelId];
-		[channels addObject:linkedChan];
 
+	int i, numLinks = [links count];
+	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
+	for (int i = 0; i < numLinks; i++) {
+		MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];
+		[channels addObject:linkedChan];
 		[chan linkToChannel:linkedChan];
 	}
 
@@ -552,13 +552,12 @@
 }
 
 // Handle the 'links_add' list from a ChannelState message
-- (void) internalAddLinks:(NSArray *)links toChannel:(MKChannel *)chan {
-	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:[links count]];
-	for (NSNumber *number in links) {
-		NSUInteger channelId = [number unsignedIntegerValue];
-		MKChannel *linkedChan = [self channelWithId:channelId];
+- (void) internalAddLinks:(PBArray *)links toChannel:(MKChannel *)chan {
+	int i, numLinks = [links count];
+	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
+	for (i = 0; i < numLinks; i++) {
+		MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];
 		[channels addObject:linkedChan];
-
 		[chan linkToChannel:linkedChan];
 	}
 
@@ -571,13 +570,12 @@
 }
 
 // Handle the 'links_remove' list from a ChannelState message
-- (void) internalRemoveLinks:(NSArray *)links fromChannel:(MKChannel *)chan {
-	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:[links count]];
-	for (NSNumber *number in links) {
-		NSUInteger channelId = [number unsignedIntegerValue];
-		MKChannel *linkedChan = [self channelWithId:channelId];
+- (void) internalRemoveLinks:(PBArray *)links fromChannel:(MKChannel *)chan {
+	int i, numLinks = [links count];
+	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
+	for (i = 0; i < numLinks; i++) {
+		MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];
 		[channels addObject:linkedChan];
-
 		[chan unlinkFromChannel:chan];
 	}
 

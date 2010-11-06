@@ -21,6 +21,9 @@ cat Mumble.proto.objc Mumble.proto.clean > Mumble.proto
 	/usr/local/include/google/protobuf/descriptor.proto \
 	../3rdparty/protobuf/src/compiler/google/protobuf/objectivec-descriptor.proto
 rm Mumble.proto.clean
+# Mangle headers so they work with our slightly wonky setup.
+sed -i '' -e 's,<ProtocolBuffers/ProtocolBuffers.h>,"ProtocolBuffers.h",' Mumble.pb.h
+sed -i '' -e 's,<ProtocolBuffers/ProtocolBuffers.h>,"ProtocolBuffers.h",' ObjectivecDescriptor.pb.h
 
 #
 # Patch the generated Descriptor.pb.m if needed.

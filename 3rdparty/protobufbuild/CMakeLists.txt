@@ -9,7 +9,10 @@ ADD_LIBRARY(ProtocolBuffers STATIC
 	${SRCDIR}/Classes/AbstractMessage_Builder.m
 	${SRCDIR}/Classes/CodedInputStream.m
 	${SRCDIR}/Classes/CodedOutputStream.m
+	${SRCDIR}/Classes/ConcreteExtensionField.m
+	${SRCDIR}/Classes/Descriptor.pb.m
 	${SRCDIR}/Classes/ExtendableMessage.m
+	${SRCDIR}/Classes/ExtendableMessage_Builder.m
 	${SRCDIR}/Classes/ExtensionRegistry.m
 	${SRCDIR}/Classes/Field.m
 	${SRCDIR}/Classes/GeneratedMessage.m
@@ -21,8 +24,8 @@ ADD_LIBRARY(ProtocolBuffers STATIC
 	${SRCDIR}/Classes/Utilities.m
 	${SRCDIR}/Classes/WireFormat.m
 	${SRCDIR}/Classes/MutableExtensionRegistry.m
-	${SRCDIR}/Classes/ExtendableMessage_Builder.m
-	${SRCDIR}/Classes/ConcreteExtensionField.m
+	${SRCDIR}/Classes/RingBuffer.m
+	${SRCDIR}/Classes/PBArray.m
 	${SRCDIR}/Classes/RingBuffer.m
 )
 

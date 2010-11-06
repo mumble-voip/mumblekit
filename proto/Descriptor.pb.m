@@ -21,14 +21,15 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @end
 
 @interface PBFileDescriptorSet ()
-@property (retain) NSMutableArray* mutableFileList;
+@property (retain) PBAppendableArray * fileArray;
 @end
 
 @implementation PBFileDescriptorSet
 
-@synthesize mutableFileList;
+@synthesize fileArray;
+@dynamic file;
 - (void) dealloc {
-  self.mutableFileList = nil;
+  self.fileArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -48,15 +49,14 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
 - (PBFileDescriptorSet*) defaultInstance {
   return defaultPBFileDescriptorSetInstance;
 }
-- (NSArray*) fileList {
-  return mutableFileList;
+- (PBArray *)file {
+  return fileArray;
 }
-- (PBFileDescriptorProto*) fileAtIndex:(int32_t) index {
-  id value = [mutableFileList objectAtIndex:index];
-  return value;
+- (PBFileDescriptorProto*)fileAtIndex:(NSUInteger)index {
+  return [fileArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBFileDescriptorProto* element in self.fileList) {
+  for (PBFileDescriptorProto* element in self.file) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -64,7 +64,7 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (PBFileDescriptorProto* element in self.fileList) {
+  for (PBFileDescriptorProto *element in self.fileArray) {
     [output writeMessage:1 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
@@ -76,7 +76,7 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
   }
 
   size = 0;
-  for (PBFileDescriptorProto* element in self.fileList) {
+  for (PBFileDescriptorProto *element in self.fileArray) {
     size += computeMessageSize(1, element);
   }
   size += self.unknownFields.serializedSize;
@@ -154,11 +154,12 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
   if (other == [PBFileDescriptorSet defaultInstance]) {
     return self;
   }
-  if (other.mutableFileList.count > 0) {
-    if (result.mutableFileList == nil) {
-      result.mutableFileList = [NSMutableArray array];
+  if (other.fileArray.count > 0) {
+    if (result.fileArray == nil) {
+      result.fileArray = [other.fileArray copyWithZone:[other.fileArray zone]];
+    } else {
+      [result.fileArray appendArray:other.fileArray];
     }
-    [result.mutableFileList addObjectsFromArray:other.mutableFileList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -190,33 +191,29 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
     }
   }
 }
-- (NSArray*) fileList {
-  if (result.mutableFileList == nil) { return [NSArray array]; }
-  return result.mutableFileList;
+- (PBAppendableArray *)file {
+  return result.fileArray;
 }
-- (PBFileDescriptorProto*) fileAtIndex:(int32_t) index {
+- (PBFileDescriptorProto*)fileAtIndex:(NSUInteger)index {
   return [result fileAtIndex:index];
 }
-- (PBFileDescriptorSet_Builder*) replaceFileAtIndex:(int32_t) index with:(PBFileDescriptorProto*) value {
-  [result.mutableFileList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileDescriptorSet_Builder*) addAllFile:(NSArray*) values {
-  if (result.mutableFileList == nil) {
-    result.mutableFileList = [NSMutableArray array];
+- (PBFileDescriptorSet_Builder *)addFile:(PBFileDescriptorProto*)value {
+  if (result.fileArray == nil) {
+    result.fileArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableFileList addObjectsFromArray:values];
+  [result.fileArray addObject:value];
   return self;
 }
-- (PBFileDescriptorSet_Builder*) clearFileList {
-  result.mutableFileList = nil;
+- (PBFileDescriptorSet_Builder *)setFileArray:(NSArray *)array {
+  result.fileArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileDescriptorSet_Builder*) addFile:(PBFileDescriptorProto*) value {
-  if (result.mutableFileList == nil) {
-    result.mutableFileList = [NSMutableArray array];
-  }
-  [result.mutableFileList addObject:value];
+- (PBFileDescriptorSet_Builder *)setFileValues:(const PBFileDescriptorProto* *)values count:(NSUInteger)count {
+  result.fileArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBFileDescriptorSet_Builder *)clearFile {
+  result.fileArray = nil;
   return self;
 }
 @end
@@ -224,11 +221,11 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
 @interface PBFileDescriptorProto ()
 @property (retain) NSString* name;
 @property (retain) NSString* package;
-@property (retain) NSMutableArray* mutableDependencyList;
-@property (retain) NSMutableArray* mutableMessageTypeList;
-@property (retain) NSMutableArray* mutableEnumTypeList;
-@property (retain) NSMutableArray* mutableServiceList;
-@property (retain) NSMutableArray* mutableExtensionList;
+@property (retain) PBAppendableArray * dependencyArray;
+@property (retain) PBAppendableArray * messageTypeArray;
+@property (retain) PBAppendableArray * enumTypeArray;
+@property (retain) PBAppendableArray * serviceArray;
+@property (retain) PBAppendableArray * extensionArray;
 @property (retain) PBFileOptions* options;
 @end
 
@@ -248,11 +245,16 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
   hasPackage_ = !!value;
 }
 @synthesize package;
-@synthesize mutableDependencyList;
-@synthesize mutableMessageTypeList;
-@synthesize mutableEnumTypeList;
-@synthesize mutableServiceList;
-@synthesize mutableExtensionList;
+@synthesize dependencyArray;
+@dynamic dependency;
+@synthesize messageTypeArray;
+@dynamic messageType;
+@synthesize enumTypeArray;
+@dynamic enumType;
+@synthesize serviceArray;
+@dynamic service;
+@synthesize extensionArray;
+@dynamic extension;
 - (BOOL) hasOptions {
   return !!hasOptions_;
 }
@@ -263,11 +265,11 @@ static PBFileDescriptorSet* defaultPBFileDescriptorSetInstance = nil;
 - (void) dealloc {
   self.name = nil;
   self.package = nil;
-  self.mutableDependencyList = nil;
-  self.mutableMessageTypeList = nil;
-  self.mutableEnumTypeList = nil;
-  self.mutableServiceList = nil;
-  self.mutableExtensionList = nil;
+  self.dependencyArray = nil;
+  self.messageTypeArray = nil;
+  self.enumTypeArray = nil;
+  self.serviceArray = nil;
+  self.extensionArray = nil;
   self.options = nil;
   [super dealloc];
 }
@@ -291,58 +293,53 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
 - (PBFileDescriptorProto*) defaultInstance {
   return defaultPBFileDescriptorProtoInstance;
 }
-- (NSArray*) dependencyList {
-  return mutableDependencyList;
+- (PBArray *)dependency {
+  return dependencyArray;
 }
-- (NSString*) dependencyAtIndex:(int32_t) index {
-  id value = [mutableDependencyList objectAtIndex:index];
-  return value;
+- (NSString*)dependencyAtIndex:(NSUInteger)index {
+  return [dependencyArray objectAtIndex:index];
 }
-- (NSArray*) messageTypeList {
-  return mutableMessageTypeList;
+- (PBArray *)messageType {
+  return messageTypeArray;
 }
-- (PBDescriptorProto*) messageTypeAtIndex:(int32_t) index {
-  id value = [mutableMessageTypeList objectAtIndex:index];
-  return value;
+- (PBDescriptorProto*)messageTypeAtIndex:(NSUInteger)index {
+  return [messageTypeArray objectAtIndex:index];
 }
-- (NSArray*) enumTypeList {
-  return mutableEnumTypeList;
+- (PBArray *)enumType {
+  return enumTypeArray;
 }
-- (PBEnumDescriptorProto*) enumTypeAtIndex:(int32_t) index {
-  id value = [mutableEnumTypeList objectAtIndex:index];
-  return value;
+- (PBEnumDescriptorProto*)enumTypeAtIndex:(NSUInteger)index {
+  return [enumTypeArray objectAtIndex:index];
 }
-- (NSArray*) serviceList {
-  return mutableServiceList;
+- (PBArray *)service {
+  return serviceArray;
 }
-- (PBServiceDescriptorProto*) serviceAtIndex:(int32_t) index {
-  id value = [mutableServiceList objectAtIndex:index];
-  return value;
+- (PBServiceDescriptorProto*)serviceAtIndex:(NSUInteger)index {
+  return [serviceArray objectAtIndex:index];
 }
-- (NSArray*) extensionList {
-  return mutableExtensionList;
+- (PBArray *)extension {
+  return extensionArray;
 }
-- (PBFieldDescriptorProto*) extensionAtIndex:(int32_t) index {
-  id value = [mutableExtensionList objectAtIndex:index];
-  return value;
+- (PBFieldDescriptorProto*)extensionAtIndex:(NSUInteger)index {
+  return [extensionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBDescriptorProto* element in self.messageTypeList) {
+  for (PBDescriptorProto* element in self.messageType) {
     if (!element.isInitialized) {
       return NO;
     }
   }
-  for (PBEnumDescriptorProto* element in self.enumTypeList) {
+  for (PBEnumDescriptorProto* element in self.enumType) {
     if (!element.isInitialized) {
       return NO;
     }
   }
-  for (PBServiceDescriptorProto* element in self.serviceList) {
+  for (PBServiceDescriptorProto* element in self.service) {
     if (!element.isInitialized) {
       return NO;
     }
   }
-  for (PBFieldDescriptorProto* element in self.extensionList) {
+  for (PBFieldDescriptorProto* element in self.extension) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -361,19 +358,23 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
   if (self.hasPackage) {
     [output writeString:2 value:self.package];
   }
-  for (NSString* element in self.mutableDependencyList) {
-    [output writeString:3 value:element];
+  const NSUInteger dependencyArrayCount = self.dependencyArray.count;
+  if (dependencyArrayCount > 0) {
+    const NSString* *values = (const NSString* *)self.dependencyArray.data;
+    for (NSUInteger i = 0; i < dependencyArrayCount; ++i) {
+      [output writeString:3 value:values[i]];
+    }
   }
-  for (PBDescriptorProto* element in self.messageTypeList) {
+  for (PBDescriptorProto *element in self.messageTypeArray) {
     [output writeMessage:4 value:element];
   }
-  for (PBEnumDescriptorProto* element in self.enumTypeList) {
+  for (PBEnumDescriptorProto *element in self.enumTypeArray) {
     [output writeMessage:5 value:element];
   }
-  for (PBServiceDescriptorProto* element in self.serviceList) {
+  for (PBServiceDescriptorProto *element in self.serviceArray) {
     [output writeMessage:6 value:element];
   }
-  for (PBFieldDescriptorProto* element in self.extensionList) {
+  for (PBFieldDescriptorProto *element in self.extensionArray) {
     [output writeMessage:7 value:element];
   }
   if (self.hasOptions) {
@@ -396,22 +397,24 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSString* element in self.mutableDependencyList) {
-      dataSize += computeStringSizeNoTag(element);
+    const NSUInteger count = self.dependencyArray.count;
+    const NSString* *values = (const NSString* *)self.dependencyArray.data;
+    for (NSUInteger i = 0; i < count; ++i) {
+      dataSize += computeStringSizeNoTag(values[i]);
     }
     size += dataSize;
-    size += 1 * self.mutableDependencyList.count;
+    size += 1 * count;
   }
-  for (PBDescriptorProto* element in self.messageTypeList) {
+  for (PBDescriptorProto *element in self.messageTypeArray) {
     size += computeMessageSize(4, element);
   }
-  for (PBEnumDescriptorProto* element in self.enumTypeList) {
+  for (PBEnumDescriptorProto *element in self.enumTypeArray) {
     size += computeMessageSize(5, element);
   }
-  for (PBServiceDescriptorProto* element in self.serviceList) {
+  for (PBServiceDescriptorProto *element in self.serviceArray) {
     size += computeMessageSize(6, element);
   }
-  for (PBFieldDescriptorProto* element in self.extensionList) {
+  for (PBFieldDescriptorProto *element in self.extensionArray) {
     size += computeMessageSize(7, element);
   }
   if (self.hasOptions) {
@@ -498,35 +501,40 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
   if (other.hasPackage) {
     [self setPackage:other.package];
   }
-  if (other.mutableDependencyList.count > 0) {
-    if (result.mutableDependencyList == nil) {
-      result.mutableDependencyList = [NSMutableArray array];
+  if (other.dependencyArray.count > 0) {
+    if (result.dependencyArray == nil) {
+      result.dependencyArray = [other.dependencyArray copyWithZone:[other.dependencyArray zone]];
+    } else {
+      [result.dependencyArray appendArray:other.dependencyArray];
     }
-    [result.mutableDependencyList addObjectsFromArray:other.mutableDependencyList];
   }
-  if (other.mutableMessageTypeList.count > 0) {
-    if (result.mutableMessageTypeList == nil) {
-      result.mutableMessageTypeList = [NSMutableArray array];
+  if (other.messageTypeArray.count > 0) {
+    if (result.messageTypeArray == nil) {
+      result.messageTypeArray = [other.messageTypeArray copyWithZone:[other.messageTypeArray zone]];
+    } else {
+      [result.messageTypeArray appendArray:other.messageTypeArray];
     }
-    [result.mutableMessageTypeList addObjectsFromArray:other.mutableMessageTypeList];
   }
-  if (other.mutableEnumTypeList.count > 0) {
-    if (result.mutableEnumTypeList == nil) {
-      result.mutableEnumTypeList = [NSMutableArray array];
+  if (other.enumTypeArray.count > 0) {
+    if (result.enumTypeArray == nil) {
+      result.enumTypeArray = [other.enumTypeArray copyWithZone:[other.enumTypeArray zone]];
+    } else {
+      [result.enumTypeArray appendArray:other.enumTypeArray];
     }
-    [result.mutableEnumTypeList addObjectsFromArray:other.mutableEnumTypeList];
   }
-  if (other.mutableServiceList.count > 0) {
-    if (result.mutableServiceList == nil) {
-      result.mutableServiceList = [NSMutableArray array];
+  if (other.serviceArray.count > 0) {
+    if (result.serviceArray == nil) {
+      result.serviceArray = [other.serviceArray copyWithZone:[other.serviceArray zone]];
+    } else {
+      [result.serviceArray appendArray:other.serviceArray];
     }
-    [result.mutableServiceList addObjectsFromArray:other.mutableServiceList];
   }
-  if (other.mutableExtensionList.count > 0) {
-    if (result.mutableExtensionList == nil) {
-      result.mutableExtensionList = [NSMutableArray array];
+  if (other.extensionArray.count > 0) {
+    if (result.extensionArray == nil) {
+      result.extensionArray = [other.extensionArray copyWithZone:[other.extensionArray zone]];
+    } else {
+      [result.extensionArray appendArray:other.extensionArray];
     }
-    [result.mutableExtensionList addObjectsFromArray:other.mutableExtensionList];
   }
   if (other.hasOptions) {
     [self mergeOptions:other.options];
@@ -632,151 +640,129 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
   result.package = @"";
   return self;
 }
-- (NSArray*) dependencyList {
-  if (result.mutableDependencyList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableDependencyList;
+- (PBAppendableArray *)dependency {
+  return result.dependencyArray;
 }
-- (NSString*) dependencyAtIndex:(int32_t) index {
+- (NSString*)dependencyAtIndex:(NSUInteger)index {
   return [result dependencyAtIndex:index];
 }
-- (PBFileDescriptorProto_Builder*) replaceDependencyAtIndex:(int32_t) index with:(NSString*) value {
-  [result.mutableDependencyList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileDescriptorProto_Builder*) addDependency:(NSString*) value {
-  if (result.mutableDependencyList == nil) {
-    result.mutableDependencyList = [NSMutableArray array];
+- (PBFileDescriptorProto_Builder *)addDependency:(NSString*)value {
+  if (result.dependencyArray == nil) {
+    result.dependencyArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableDependencyList addObject:value];
+  [result.dependencyArray addObject:value];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) addAllDependency:(NSArray*) values {
-  if (result.mutableDependencyList == nil) {
-    result.mutableDependencyList = [NSMutableArray array];
-  }
-  [result.mutableDependencyList addObjectsFromArray:values];
+- (PBFileDescriptorProto_Builder *)setDependencyArray:(NSArray *)array {
+  result.dependencyArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) clearDependencyList {
-  result.mutableDependencyList = nil;
+- (PBFileDescriptorProto_Builder *)setDependencyValues:(const NSString* *)values count:(NSUInteger)count {
+  result.dependencyArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) messageTypeList {
-  if (result.mutableMessageTypeList == nil) { return [NSArray array]; }
-  return result.mutableMessageTypeList;
+- (PBFileDescriptorProto_Builder *)clearDependency {
+  result.dependencyArray = nil;
+  return self;
 }
-- (PBDescriptorProto*) messageTypeAtIndex:(int32_t) index {
+- (PBAppendableArray *)messageType {
+  return result.messageTypeArray;
+}
+- (PBDescriptorProto*)messageTypeAtIndex:(NSUInteger)index {
   return [result messageTypeAtIndex:index];
 }
-- (PBFileDescriptorProto_Builder*) replaceMessageTypeAtIndex:(int32_t) index with:(PBDescriptorProto*) value {
-  [result.mutableMessageTypeList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileDescriptorProto_Builder*) addAllMessageType:(NSArray*) values {
-  if (result.mutableMessageTypeList == nil) {
-    result.mutableMessageTypeList = [NSMutableArray array];
+- (PBFileDescriptorProto_Builder *)addMessageType:(PBDescriptorProto*)value {
+  if (result.messageTypeArray == nil) {
+    result.messageTypeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableMessageTypeList addObjectsFromArray:values];
+  [result.messageTypeArray addObject:value];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) clearMessageTypeList {
-  result.mutableMessageTypeList = nil;
+- (PBFileDescriptorProto_Builder *)setMessageTypeArray:(NSArray *)array {
+  result.messageTypeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) addMessageType:(PBDescriptorProto*) value {
-  if (result.mutableMessageTypeList == nil) {
-    result.mutableMessageTypeList = [NSMutableArray array];
-  }
-  [result.mutableMessageTypeList addObject:value];
+- (PBFileDescriptorProto_Builder *)setMessageTypeValues:(const PBDescriptorProto* *)values count:(NSUInteger)count {
+  result.messageTypeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) enumTypeList {
-  if (result.mutableEnumTypeList == nil) { return [NSArray array]; }
-  return result.mutableEnumTypeList;
+- (PBFileDescriptorProto_Builder *)clearMessageType {
+  result.messageTypeArray = nil;
+  return self;
 }
-- (PBEnumDescriptorProto*) enumTypeAtIndex:(int32_t) index {
+- (PBAppendableArray *)enumType {
+  return result.enumTypeArray;
+}
+- (PBEnumDescriptorProto*)enumTypeAtIndex:(NSUInteger)index {
   return [result enumTypeAtIndex:index];
 }
-- (PBFileDescriptorProto_Builder*) replaceEnumTypeAtIndex:(int32_t) index with:(PBEnumDescriptorProto*) value {
-  [result.mutableEnumTypeList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileDescriptorProto_Builder*) addAllEnumType:(NSArray*) values {
-  if (result.mutableEnumTypeList == nil) {
-    result.mutableEnumTypeList = [NSMutableArray array];
+- (PBFileDescriptorProto_Builder *)addEnumType:(PBEnumDescriptorProto*)value {
+  if (result.enumTypeArray == nil) {
+    result.enumTypeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableEnumTypeList addObjectsFromArray:values];
+  [result.enumTypeArray addObject:value];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) clearEnumTypeList {
-  result.mutableEnumTypeList = nil;
+- (PBFileDescriptorProto_Builder *)setEnumTypeArray:(NSArray *)array {
+  result.enumTypeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) addEnumType:(PBEnumDescriptorProto*) value {
-  if (result.mutableEnumTypeList == nil) {
-    result.mutableEnumTypeList = [NSMutableArray array];
-  }
-  [result.mutableEnumTypeList addObject:value];
+- (PBFileDescriptorProto_Builder *)setEnumTypeValues:(const PBEnumDescriptorProto* *)values count:(NSUInteger)count {
+  result.enumTypeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) serviceList {
-  if (result.mutableServiceList == nil) { return [NSArray array]; }
-  return result.mutableServiceList;
+- (PBFileDescriptorProto_Builder *)clearEnumType {
+  result.enumTypeArray = nil;
+  return self;
 }
-- (PBServiceDescriptorProto*) serviceAtIndex:(int32_t) index {
+- (PBAppendableArray *)service {
+  return result.serviceArray;
+}
+- (PBServiceDescriptorProto*)serviceAtIndex:(NSUInteger)index {
   return [result serviceAtIndex:index];
 }
-- (PBFileDescriptorProto_Builder*) replaceServiceAtIndex:(int32_t) index with:(PBServiceDescriptorProto*) value {
-  [result.mutableServiceList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileDescriptorProto_Builder*) addAllService:(NSArray*) values {
-  if (result.mutableServiceList == nil) {
-    result.mutableServiceList = [NSMutableArray array];
+- (PBFileDescriptorProto_Builder *)addService:(PBServiceDescriptorProto*)value {
+  if (result.serviceArray == nil) {
+    result.serviceArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableServiceList addObjectsFromArray:values];
+  [result.serviceArray addObject:value];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) clearServiceList {
-  result.mutableServiceList = nil;
+- (PBFileDescriptorProto_Builder *)setServiceArray:(NSArray *)array {
+  result.serviceArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) addService:(PBServiceDescriptorProto*) value {
-  if (result.mutableServiceList == nil) {
-    result.mutableServiceList = [NSMutableArray array];
-  }
-  [result.mutableServiceList addObject:value];
+- (PBFileDescriptorProto_Builder *)setServiceValues:(const PBServiceDescriptorProto* *)values count:(NSUInteger)count {
+  result.serviceArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) extensionList {
-  if (result.mutableExtensionList == nil) { return [NSArray array]; }
-  return result.mutableExtensionList;
+- (PBFileDescriptorProto_Builder *)clearService {
+  result.serviceArray = nil;
+  return self;
 }
-- (PBFieldDescriptorProto*) extensionAtIndex:(int32_t) index {
+- (PBAppendableArray *)extension {
+  return result.extensionArray;
+}
+- (PBFieldDescriptorProto*)extensionAtIndex:(NSUInteger)index {
   return [result extensionAtIndex:index];
 }
-- (PBFileDescriptorProto_Builder*) replaceExtensionAtIndex:(int32_t) index with:(PBFieldDescriptorProto*) value {
-  [result.mutableExtensionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileDescriptorProto_Builder*) addAllExtension:(NSArray*) values {
-  if (result.mutableExtensionList == nil) {
-    result.mutableExtensionList = [NSMutableArray array];
+- (PBFileDescriptorProto_Builder *)addExtension:(PBFieldDescriptorProto*)value {
+  if (result.extensionArray == nil) {
+    result.extensionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableExtensionList addObjectsFromArray:values];
+  [result.extensionArray addObject:value];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) clearExtensionList {
-  result.mutableExtensionList = nil;
+- (PBFileDescriptorProto_Builder *)setExtensionArray:(NSArray *)array {
+  result.extensionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileDescriptorProto_Builder*) addExtension:(PBFieldDescriptorProto*) value {
-  if (result.mutableExtensionList == nil) {
-    result.mutableExtensionList = [NSMutableArray array];
-  }
-  [result.mutableExtensionList addObject:value];
+- (PBFileDescriptorProto_Builder *)setExtensionValues:(const PBFieldDescriptorProto* *)values count:(NSUInteger)count {
+  result.extensionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBFileDescriptorProto_Builder *)clearExtension {
+  result.extensionArray = nil;
   return self;
 }
 - (BOOL) hasOptions {
@@ -813,11 +799,11 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
 
 @interface PBDescriptorProto ()
 @property (retain) NSString* name;
-@property (retain) NSMutableArray* mutableFieldList;
-@property (retain) NSMutableArray* mutableExtensionList;
-@property (retain) NSMutableArray* mutableNestedTypeList;
-@property (retain) NSMutableArray* mutableEnumTypeList;
-@property (retain) NSMutableArray* mutableExtensionRangeList;
+@property (retain) PBAppendableArray * fieldArray;
+@property (retain) PBAppendableArray * extensionArray;
+@property (retain) PBAppendableArray * nestedTypeArray;
+@property (retain) PBAppendableArray * enumTypeArray;
+@property (retain) PBAppendableArray * extensionRangeArray;
 @property (retain) PBMessageOptions* options;
 @end
 
@@ -830,11 +816,16 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
   hasName_ = !!value;
 }
 @synthesize name;
-@synthesize mutableFieldList;
-@synthesize mutableExtensionList;
-@synthesize mutableNestedTypeList;
-@synthesize mutableEnumTypeList;
-@synthesize mutableExtensionRangeList;
+@synthesize fieldArray;
+@dynamic field;
+@synthesize extensionArray;
+@dynamic extension;
+@synthesize nestedTypeArray;
+@dynamic nestedType;
+@synthesize enumTypeArray;
+@dynamic enumType;
+@synthesize extensionRangeArray;
+@dynamic extensionRange;
 - (BOOL) hasOptions {
   return !!hasOptions_;
 }
@@ -844,11 +835,11 @@ static PBFileDescriptorProto* defaultPBFileDescriptorProtoInstance = nil;
 @synthesize options;
 - (void) dealloc {
   self.name = nil;
-  self.mutableFieldList = nil;
-  self.mutableExtensionList = nil;
-  self.mutableNestedTypeList = nil;
-  self.mutableEnumTypeList = nil;
-  self.mutableExtensionRangeList = nil;
+  self.fieldArray = nil;
+  self.extensionArray = nil;
+  self.nestedTypeArray = nil;
+  self.enumTypeArray = nil;
+  self.extensionRangeArray = nil;
   self.options = nil;
   [super dealloc];
 }
@@ -871,58 +862,53 @@ static PBDescriptorProto* defaultPBDescriptorProtoInstance = nil;
 - (PBDescriptorProto*) defaultInstance {
   return defaultPBDescriptorProtoInstance;
 }
-- (NSArray*) fieldList {
-  return mutableFieldList;
+- (PBArray *)field {
+  return fieldArray;
 }
-- (PBFieldDescriptorProto*) fieldAtIndex:(int32_t) index {
-  id value = [mutableFieldList objectAtIndex:index];
-  return value;
+- (PBFieldDescriptorProto*)fieldAtIndex:(NSUInteger)index {
+  return [fieldArray objectAtIndex:index];
 }
-- (NSArray*) extensionList {
-  return mutableExtensionList;
+- (PBArray *)extension {
+  return extensionArray;
 }
-- (PBFieldDescriptorProto*) extensionAtIndex:(int32_t) index {
-  id value = [mutableExtensionList objectAtIndex:index];
-  return value;
+- (PBFieldDescriptorProto*)extensionAtIndex:(NSUInteger)index {
+  return [extensionArray objectAtIndex:index];
 }
-- (NSArray*) nestedTypeList {
-  return mutableNestedTypeList;
+- (PBArray *)nestedType {
+  return nestedTypeArray;
 }
-- (PBDescriptorProto*) nestedTypeAtIndex:(int32_t) index {
-  id value = [mutableNestedTypeList objectAtIndex:index];
-  return value;
+- (PBDescriptorProto*)nestedTypeAtIndex:(NSUInteger)index {
+  return [nestedTypeArray objectAtIndex:index];
 }
-- (NSArray*) enumTypeList {
-  return mutableEnumTypeList;
+- (PBArray *)enumType {
+  return enumTypeArray;
 }
-- (PBEnumDescriptorProto*) enumTypeAtIndex:(int32_t) index {
-  id value = [mutableEnumTypeList objectAtIndex:index];
-  return value;
+- (PBEnumDescriptorProto*)enumTypeAtIndex:(NSUInteger)index {
+  return [enumTypeArray objectAtIndex:index];
 }
-- (NSArray*) extensionRangeList {
-  return mutableExtensionRangeList;
+- (PBArray *)extensionRange {
+  return extensionRangeArray;
 }
-- (PBDescriptorProto_ExtensionRange*) extensionRangeAtIndex:(int32_t) index {
-  id value = [mutableExtensionRangeList objectAtIndex:index];
-  return value;
+- (PBDescriptorProto_ExtensionRange*)extensionRangeAtIndex:(NSUInteger)index {
+  return [extensionRangeArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBFieldDescriptorProto* element in self.fieldList) {
+  for (PBFieldDescriptorProto* element in self.field) {
     if (!element.isInitialized) {
       return NO;
     }
   }
-  for (PBFieldDescriptorProto* element in self.extensionList) {
+  for (PBFieldDescriptorProto* element in self.extension) {
     if (!element.isInitialized) {
       return NO;
     }
   }
-  for (PBDescriptorProto* element in self.nestedTypeList) {
+  for (PBDescriptorProto* element in self.nestedType) {
     if (!element.isInitialized) {
       return NO;
     }
   }
-  for (PBEnumDescriptorProto* element in self.enumTypeList) {
+  for (PBEnumDescriptorProto* element in self.enumType) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -938,19 +924,19 @@ static PBDescriptorProto* defaultPBDescriptorProtoInstance = nil;
   if (self.hasName) {
     [output writeString:1 value:self.name];
   }
-  for (PBFieldDescriptorProto* element in self.fieldList) {
+  for (PBFieldDescriptorProto *element in self.fieldArray) {
     [output writeMessage:2 value:element];
   }
-  for (PBDescriptorProto* element in self.nestedTypeList) {
+  for (PBDescriptorProto *element in self.nestedTypeArray) {
     [output writeMessage:3 value:element];
   }
-  for (PBEnumDescriptorProto* element in self.enumTypeList) {
+  for (PBEnumDescriptorProto *element in self.enumTypeArray) {
     [output writeMessage:4 value:element];
   }
-  for (PBDescriptorProto_ExtensionRange* element in self.extensionRangeList) {
+  for (PBDescriptorProto_ExtensionRange *element in self.extensionRangeArray) {
     [output writeMessage:5 value:element];
   }
-  for (PBFieldDescriptorProto* element in self.extensionList) {
+  for (PBFieldDescriptorProto *element in self.extensionArray) {
     [output writeMessage:6 value:element];
   }
   if (self.hasOptions) {
@@ -968,19 +954,19 @@ static PBDescriptorProto* defaultPBDescriptorProtoInstance = nil;
   if (self.hasName) {
     size += computeStringSize(1, self.name);
   }
-  for (PBFieldDescriptorProto* element in self.fieldList) {
+  for (PBFieldDescriptorProto *element in self.fieldArray) {
     size += computeMessageSize(2, element);
   }
-  for (PBDescriptorProto* element in self.nestedTypeList) {
+  for (PBDescriptorProto *element in self.nestedTypeArray) {
     size += computeMessageSize(3, element);
   }
-  for (PBEnumDescriptorProto* element in self.enumTypeList) {
+  for (PBEnumDescriptorProto *element in self.enumTypeArray) {
     size += computeMessageSize(4, element);
   }
-  for (PBDescriptorProto_ExtensionRange* element in self.extensionRangeList) {
+  for (PBDescriptorProto_ExtensionRange *element in self.extensionRangeArray) {
     size += computeMessageSize(5, element);
   }
-  for (PBFieldDescriptorProto* element in self.extensionList) {
+  for (PBFieldDescriptorProto *element in self.extensionArray) {
     size += computeMessageSize(6, element);
   }
   if (self.hasOptions) {
@@ -1279,35 +1265,40 @@ static PBDescriptorProto_ExtensionRange* defaultPBDescriptorProto_ExtensionRange
   if (other.hasName) {
     [self setName:other.name];
   }
-  if (other.mutableFieldList.count > 0) {
-    if (result.mutableFieldList == nil) {
-      result.mutableFieldList = [NSMutableArray array];
+  if (other.fieldArray.count > 0) {
+    if (result.fieldArray == nil) {
+      result.fieldArray = [other.fieldArray copyWithZone:[other.fieldArray zone]];
+    } else {
+      [result.fieldArray appendArray:other.fieldArray];
     }
-    [result.mutableFieldList addObjectsFromArray:other.mutableFieldList];
   }
-  if (other.mutableExtensionList.count > 0) {
-    if (result.mutableExtensionList == nil) {
-      result.mutableExtensionList = [NSMutableArray array];
+  if (other.extensionArray.count > 0) {
+    if (result.extensionArray == nil) {
+      result.extensionArray = [other.extensionArray copyWithZone:[other.extensionArray zone]];
+    } else {
+      [result.extensionArray appendArray:other.extensionArray];
     }
-    [result.mutableExtensionList addObjectsFromArray:other.mutableExtensionList];
   }
-  if (other.mutableNestedTypeList.count > 0) {
-    if (result.mutableNestedTypeList == nil) {
-      result.mutableNestedTypeList = [NSMutableArray array];
+  if (other.nestedTypeArray.count > 0) {
+    if (result.nestedTypeArray == nil) {
+      result.nestedTypeArray = [other.nestedTypeArray copyWithZone:[other.nestedTypeArray zone]];
+    } else {
+      [result.nestedTypeArray appendArray:other.nestedTypeArray];
     }
-    [result.mutableNestedTypeList addObjectsFromArray:other.mutableNestedTypeList];
   }
-  if (other.mutableEnumTypeList.count > 0) {
-    if (result.mutableEnumTypeList == nil) {
-      result.mutableEnumTypeList = [NSMutableArray array];
+  if (other.enumTypeArray.count > 0) {
+    if (result.enumTypeArray == nil) {
+      result.enumTypeArray = [other.enumTypeArray copyWithZone:[other.enumTypeArray zone]];
+    } else {
+      [result.enumTypeArray appendArray:other.enumTypeArray];
     }
-    [result.mutableEnumTypeList addObjectsFromArray:other.mutableEnumTypeList];
   }
-  if (other.mutableExtensionRangeList.count > 0) {
-    if (result.mutableExtensionRangeList == nil) {
-      result.mutableExtensionRangeList = [NSMutableArray array];
+  if (other.extensionRangeArray.count > 0) {
+    if (result.extensionRangeArray == nil) {
+      result.extensionRangeArray = [other.extensionRangeArray copyWithZone:[other.extensionRangeArray zone]];
+    } else {
+      [result.extensionRangeArray appendArray:other.extensionRangeArray];
     }
-    [result.mutableExtensionRangeList addObjectsFromArray:other.mutableExtensionRangeList];
   }
   if (other.hasOptions) {
     [self mergeOptions:other.options];
@@ -1395,149 +1386,129 @@ static PBDescriptorProto_ExtensionRange* defaultPBDescriptorProto_ExtensionRange
   result.name = @"";
   return self;
 }
-- (NSArray*) fieldList {
-  if (result.mutableFieldList == nil) { return [NSArray array]; }
-  return result.mutableFieldList;
+- (PBAppendableArray *)field {
+  return result.fieldArray;
 }
-- (PBFieldDescriptorProto*) fieldAtIndex:(int32_t) index {
+- (PBFieldDescriptorProto*)fieldAtIndex:(NSUInteger)index {
   return [result fieldAtIndex:index];
 }
-- (PBDescriptorProto_Builder*) replaceFieldAtIndex:(int32_t) index with:(PBFieldDescriptorProto*) value {
-  [result.mutableFieldList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBDescriptorProto_Builder*) addAllField:(NSArray*) values {
-  if (result.mutableFieldList == nil) {
-    result.mutableFieldList = [NSMutableArray array];
+- (PBDescriptorProto_Builder *)addField:(PBFieldDescriptorProto*)value {
+  if (result.fieldArray == nil) {
+    result.fieldArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableFieldList addObjectsFromArray:values];
+  [result.fieldArray addObject:value];
   return self;
 }
-- (PBDescriptorProto_Builder*) clearFieldList {
-  result.mutableFieldList = nil;
+- (PBDescriptorProto_Builder *)setFieldArray:(NSArray *)array {
+  result.fieldArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBDescriptorProto_Builder*) addField:(PBFieldDescriptorProto*) value {
-  if (result.mutableFieldList == nil) {
-    result.mutableFieldList = [NSMutableArray array];
-  }
-  [result.mutableFieldList addObject:value];
+- (PBDescriptorProto_Builder *)setFieldValues:(const PBFieldDescriptorProto* *)values count:(NSUInteger)count {
+  result.fieldArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) extensionList {
-  if (result.mutableExtensionList == nil) { return [NSArray array]; }
-  return result.mutableExtensionList;
+- (PBDescriptorProto_Builder *)clearField {
+  result.fieldArray = nil;
+  return self;
 }
-- (PBFieldDescriptorProto*) extensionAtIndex:(int32_t) index {
+- (PBAppendableArray *)extension {
+  return result.extensionArray;
+}
+- (PBFieldDescriptorProto*)extensionAtIndex:(NSUInteger)index {
   return [result extensionAtIndex:index];
 }
-- (PBDescriptorProto_Builder*) replaceExtensionAtIndex:(int32_t) index with:(PBFieldDescriptorProto*) value {
-  [result.mutableExtensionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBDescriptorProto_Builder*) addAllExtension:(NSArray*) values {
-  if (result.mutableExtensionList == nil) {
-    result.mutableExtensionList = [NSMutableArray array];
+- (PBDescriptorProto_Builder *)addExtension:(PBFieldDescriptorProto*)value {
+  if (result.extensionArray == nil) {
+    result.extensionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableExtensionList addObjectsFromArray:values];
+  [result.extensionArray addObject:value];
   return self;
 }
-- (PBDescriptorProto_Builder*) clearExtensionList {
-  result.mutableExtensionList = nil;
+- (PBDescriptorProto_Builder *)setExtensionArray:(NSArray *)array {
+  result.extensionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBDescriptorProto_Builder*) addExtension:(PBFieldDescriptorProto*) value {
-  if (result.mutableExtensionList == nil) {
-    result.mutableExtensionList = [NSMutableArray array];
-  }
-  [result.mutableExtensionList addObject:value];
+- (PBDescriptorProto_Builder *)setExtensionValues:(const PBFieldDescriptorProto* *)values count:(NSUInteger)count {
+  result.extensionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) nestedTypeList {
-  if (result.mutableNestedTypeList == nil) { return [NSArray array]; }
-  return result.mutableNestedTypeList;
+- (PBDescriptorProto_Builder *)clearExtension {
+  result.extensionArray = nil;
+  return self;
 }
-- (PBDescriptorProto*) nestedTypeAtIndex:(int32_t) index {
+- (PBAppendableArray *)nestedType {
+  return result.nestedTypeArray;
+}
+- (PBDescriptorProto*)nestedTypeAtIndex:(NSUInteger)index {
   return [result nestedTypeAtIndex:index];
 }
-- (PBDescriptorProto_Builder*) replaceNestedTypeAtIndex:(int32_t) index with:(PBDescriptorProto*) value {
-  [result.mutableNestedTypeList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBDescriptorProto_Builder*) addAllNestedType:(NSArray*) values {
-  if (result.mutableNestedTypeList == nil) {
-    result.mutableNestedTypeList = [NSMutableArray array];
+- (PBDescriptorProto_Builder *)addNestedType:(PBDescriptorProto*)value {
+  if (result.nestedTypeArray == nil) {
+    result.nestedTypeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableNestedTypeList addObjectsFromArray:values];
+  [result.nestedTypeArray addObject:value];
   return self;
 }
-- (PBDescriptorProto_Builder*) clearNestedTypeList {
-  result.mutableNestedTypeList = nil;
+- (PBDescriptorProto_Builder *)setNestedTypeArray:(NSArray *)array {
+  result.nestedTypeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBDescriptorProto_Builder*) addNestedType:(PBDescriptorProto*) value {
-  if (result.mutableNestedTypeList == nil) {
-    result.mutableNestedTypeList = [NSMutableArray array];
-  }
-  [result.mutableNestedTypeList addObject:value];
+- (PBDescriptorProto_Builder *)setNestedTypeValues:(const PBDescriptorProto* *)values count:(NSUInteger)count {
+  result.nestedTypeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) enumTypeList {
-  if (result.mutableEnumTypeList == nil) { return [NSArray array]; }
-  return result.mutableEnumTypeList;
+- (PBDescriptorProto_Builder *)clearNestedType {
+  result.nestedTypeArray = nil;
+  return self;
 }
-- (PBEnumDescriptorProto*) enumTypeAtIndex:(int32_t) index {
+- (PBAppendableArray *)enumType {
+  return result.enumTypeArray;
+}
+- (PBEnumDescriptorProto*)enumTypeAtIndex:(NSUInteger)index {
   return [result enumTypeAtIndex:index];
 }
-- (PBDescriptorProto_Builder*) replaceEnumTypeAtIndex:(int32_t) index with:(PBEnumDescriptorProto*) value {
-  [result.mutableEnumTypeList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBDescriptorProto_Builder*) addAllEnumType:(NSArray*) values {
-  if (result.mutableEnumTypeList == nil) {
-    result.mutableEnumTypeList = [NSMutableArray array];
+- (PBDescriptorProto_Builder *)addEnumType:(PBEnumDescriptorProto*)value {
+  if (result.enumTypeArray == nil) {
+    result.enumTypeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableEnumTypeList addObjectsFromArray:values];
+  [result.enumTypeArray addObject:value];
   return self;
 }
-- (PBDescriptorProto_Builder*) clearEnumTypeList {
-  result.mutableEnumTypeList = nil;
+- (PBDescriptorProto_Builder *)setEnumTypeArray:(NSArray *)array {
+  result.enumTypeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBDescriptorProto_Builder*) addEnumType:(PBEnumDescriptorProto*) value {
-  if (result.mutableEnumTypeList == nil) {
-    result.mutableEnumTypeList = [NSMutableArray array];
-  }
-  [result.mutableEnumTypeList addObject:value];
+- (PBDescriptorProto_Builder *)setEnumTypeValues:(const PBEnumDescriptorProto* *)values count:(NSUInteger)count {
+  result.enumTypeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
   return self;
 }
-- (NSArray*) extensionRangeList {
-  if (result.mutableExtensionRangeList == nil) { return [NSArray array]; }
-  return result.mutableExtensionRangeList;
+- (PBDescriptorProto_Builder *)clearEnumType {
+  result.enumTypeArray = nil;
+  return self;
 }
-- (PBDescriptorProto_ExtensionRange*) extensionRangeAtIndex:(int32_t) index {
+- (PBAppendableArray *)extensionRange {
+  return result.extensionRangeArray;
+}
+- (PBDescriptorProto_ExtensionRange*)extensionRangeAtIndex:(NSUInteger)index {
   return [result extensionRangeAtIndex:index];
 }
-- (PBDescriptorProto_Builder*) replaceExtensionRangeAtIndex:(int32_t) index with:(PBDescriptorProto_ExtensionRange*) value {
-  [result.mutableExtensionRangeList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBDescriptorProto_Builder*) addAllExtensionRange:(NSArray*) values {
-  if (result.mutableExtensionRangeList == nil) {
-    result.mutableExtensionRangeList = [NSMutableArray array];
+- (PBDescriptorProto_Builder *)addExtensionRange:(PBDescriptorProto_ExtensionRange*)value {
+  if (result.extensionRangeArray == nil) {
+    result.extensionRangeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableExtensionRangeList addObjectsFromArray:values];
+  [result.extensionRangeArray addObject:value];
   return self;
 }
-- (PBDescriptorProto_Builder*) clearExtensionRangeList {
-  result.mutableExtensionRangeList = nil;
+- (PBDescriptorProto_Builder *)setExtensionRangeArray:(NSArray *)array {
+  result.extensionRangeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBDescriptorProto_Builder*) addExtensionRange:(PBDescriptorProto_ExtensionRange*) value {
-  if (result.mutableExtensionRangeList == nil) {
-    result.mutableExtensionRangeList = [NSMutableArray array];
-  }
-  [result.mutableExtensionRangeList addObject:value];
+- (PBDescriptorProto_Builder *)setExtensionRangeValues:(const PBDescriptorProto_ExtensionRange* *)values count:(NSUInteger)count {
+  result.extensionRangeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBDescriptorProto_Builder *)clearExtensionRange {
+  result.extensionRangeArray = nil;
   return self;
 }
 - (BOOL) hasOptions {
@@ -2091,7 +2062,7 @@ BOOL PBFieldDescriptorProto_LabelIsValidValue(PBFieldDescriptorProto_Label value
 
 @interface PBEnumDescriptorProto ()
 @property (retain) NSString* name;
-@property (retain) NSMutableArray* mutableValueList;
+@property (retain) PBAppendableArray * valueArray;
 @property (retain) PBEnumOptions* options;
 @end
 
@@ -2104,7 +2075,8 @@ BOOL PBFieldDescriptorProto_LabelIsValidValue(PBFieldDescriptorProto_Label value
   hasName_ = !!value;
 }
 @synthesize name;
-@synthesize mutableValueList;
+@synthesize valueArray;
+@dynamic value;
 - (BOOL) hasOptions {
   return !!hasOptions_;
 }
@@ -2114,7 +2086,7 @@ BOOL PBFieldDescriptorProto_LabelIsValidValue(PBFieldDescriptorProto_Label value
 @synthesize options;
 - (void) dealloc {
   self.name = nil;
-  self.mutableValueList = nil;
+  self.valueArray = nil;
   self.options = nil;
   [super dealloc];
 }
@@ -2137,15 +2109,14 @@ static PBEnumDescriptorProto* defaultPBEnumDescriptorProtoInstance = nil;
 - (PBEnumDescriptorProto*) defaultInstance {
   return defaultPBEnumDescriptorProtoInstance;
 }
-- (NSArray*) valueList {
-  return mutableValueList;
+- (PBArray *)value {
+  return valueArray;
 }
-- (PBEnumValueDescriptorProto*) valueAtIndex:(int32_t) index {
-  id value = [mutableValueList objectAtIndex:index];
-  return value;
+- (PBEnumValueDescriptorProto*)valueAtIndex:(NSUInteger)index {
+  return [valueArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBEnumValueDescriptorProto* element in self.valueList) {
+  for (PBEnumValueDescriptorProto* element in self.value) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -2161,7 +2132,7 @@ static PBEnumDescriptorProto* defaultPBEnumDescriptorProtoInstance = nil;
   if (self.hasName) {
     [output writeString:1 value:self.name];
   }
-  for (PBEnumValueDescriptorProto* element in self.valueList) {
+  for (PBEnumValueDescriptorProto *element in self.valueArray) {
     [output writeMessage:2 value:element];
   }
   if (self.hasOptions) {
@@ -2179,7 +2150,7 @@ static PBEnumDescriptorProto* defaultPBEnumDescriptorProtoInstance = nil;
   if (self.hasName) {
     size += computeStringSize(1, self.name);
   }
-  for (PBEnumValueDescriptorProto* element in self.valueList) {
+  for (PBEnumValueDescriptorProto *element in self.valueArray) {
     size += computeMessageSize(2, element);
   }
   if (self.hasOptions) {
@@ -2263,11 +2234,12 @@ static PBEnumDescriptorProto* defaultPBEnumDescriptorProtoInstance = nil;
   if (other.hasName) {
     [self setName:other.name];
   }
-  if (other.mutableValueList.count > 0) {
-    if (result.mutableValueList == nil) {
-      result.mutableValueList = [NSMutableArray array];
+  if (other.valueArray.count > 0) {
+    if (result.valueArray == nil) {
+      result.valueArray = [other.valueArray copyWithZone:[other.valueArray zone]];
+    } else {
+      [result.valueArray appendArray:other.valueArray];
     }
-    [result.mutableValueList addObjectsFromArray:other.mutableValueList];
   }
   if (other.hasOptions) {
     [self mergeOptions:other.options];
@@ -2331,33 +2303,29 @@ static PBEnumDescriptorProto* defaultPBEnumDescriptorProtoInstance = nil;
   result.name = @"";
   return self;
 }
-- (NSArray*) valueList {
-  if (result.mutableValueList == nil) { return [NSArray array]; }
-  return result.mutableValueList;
+- (PBAppendableArray *)value {
+  return result.valueArray;
 }
-- (PBEnumValueDescriptorProto*) valueAtIndex:(int32_t) index {
+- (PBEnumValueDescriptorProto*)valueAtIndex:(NSUInteger)index {
   return [result valueAtIndex:index];
 }
-- (PBEnumDescriptorProto_Builder*) replaceValueAtIndex:(int32_t) index with:(PBEnumValueDescriptorProto*) value {
-  [result.mutableValueList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBEnumDescriptorProto_Builder*) addAllValue:(NSArray*) values {
-  if (result.mutableValueList == nil) {
-    result.mutableValueList = [NSMutableArray array];
+- (PBEnumDescriptorProto_Builder *)addValue:(PBEnumValueDescriptorProto*)value {
+  if (result.valueArray == nil) {
+    result.valueArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableValueList addObjectsFromArray:values];
+  [result.valueArray addObject:value];
   return self;
 }
-- (PBEnumDescriptorProto_Builder*) clearValueList {
-  result.mutableValueList = nil;
+- (PBEnumDescriptorProto_Builder *)setValueArray:(NSArray *)array {
+  result.valueArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBEnumDescriptorProto_Builder*) addValue:(PBEnumValueDescriptorProto*) value {
-  if (result.mutableValueList == nil) {
-    result.mutableValueList = [NSMutableArray array];
-  }
-  [result.mutableValueList addObject:value];
+- (PBEnumDescriptorProto_Builder *)setValueValues:(const PBEnumValueDescriptorProto* *)values count:(NSUInteger)count {
+  result.valueArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBEnumDescriptorProto_Builder *)clearValue {
+  result.valueArray = nil;
   return self;
 }
 - (BOOL) hasOptions {
@@ -2673,7 +2641,7 @@ static PBEnumValueDescriptorProto* defaultPBEnumValueDescriptorProtoInstance = n
 
 @interface PBServiceDescriptorProto ()
 @property (retain) NSString* name;
-@property (retain) NSMutableArray* mutableMethodList;
+@property (retain) PBAppendableArray * methodArray;
 @property (retain) PBServiceOptions* options;
 @end
 
@@ -2686,7 +2654,8 @@ static PBEnumValueDescriptorProto* defaultPBEnumValueDescriptorProtoInstance = n
   hasName_ = !!value;
 }
 @synthesize name;
-@synthesize mutableMethodList;
+@synthesize methodArray;
+@dynamic method;
 - (BOOL) hasOptions {
   return !!hasOptions_;
 }
@@ -2696,7 +2665,7 @@ static PBEnumValueDescriptorProto* defaultPBEnumValueDescriptorProtoInstance = n
 @synthesize options;
 - (void) dealloc {
   self.name = nil;
-  self.mutableMethodList = nil;
+  self.methodArray = nil;
   self.options = nil;
   [super dealloc];
 }
@@ -2719,15 +2688,14 @@ static PBServiceDescriptorProto* defaultPBServiceDescriptorProtoInstance = nil;
 - (PBServiceDescriptorProto*) defaultInstance {
   return defaultPBServiceDescriptorProtoInstance;
 }
-- (NSArray*) methodList {
-  return mutableMethodList;
+- (PBArray *)method {
+  return methodArray;
 }
-- (PBMethodDescriptorProto*) methodAtIndex:(int32_t) index {
-  id value = [mutableMethodList objectAtIndex:index];
-  return value;
+- (PBMethodDescriptorProto*)methodAtIndex:(NSUInteger)index {
+  return [methodArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBMethodDescriptorProto* element in self.methodList) {
+  for (PBMethodDescriptorProto* element in self.method) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -2743,7 +2711,7 @@ static PBServiceDescriptorProto* defaultPBServiceDescriptorProtoInstance = nil;
   if (self.hasName) {
     [output writeString:1 value:self.name];
   }
-  for (PBMethodDescriptorProto* element in self.methodList) {
+  for (PBMethodDescriptorProto *element in self.methodArray) {
     [output writeMessage:2 value:element];
   }
   if (self.hasOptions) {
@@ -2761,7 +2729,7 @@ static PBServiceDescriptorProto* defaultPBServiceDescriptorProtoInstance = nil;
   if (self.hasName) {
     size += computeStringSize(1, self.name);
   }
-  for (PBMethodDescriptorProto* element in self.methodList) {
+  for (PBMethodDescriptorProto *element in self.methodArray) {
     size += computeMessageSize(2, element);
   }
   if (self.hasOptions) {
@@ -2845,11 +2813,12 @@ static PBServiceDescriptorProto* defaultPBServiceDescriptorProtoInstance = nil;
   if (other.hasName) {
     [self setName:other.name];
   }
-  if (other.mutableMethodList.count > 0) {
-    if (result.mutableMethodList == nil) {
-      result.mutableMethodList = [NSMutableArray array];
+  if (other.methodArray.count > 0) {
+    if (result.methodArray == nil) {
+      result.methodArray = [other.methodArray copyWithZone:[other.methodArray zone]];
+    } else {
+      [result.methodArray appendArray:other.methodArray];
     }
-    [result.mutableMethodList addObjectsFromArray:other.mutableMethodList];
   }
   if (other.hasOptions) {
     [self mergeOptions:other.options];
@@ -2913,33 +2882,29 @@ static PBServiceDescriptorProto* defaultPBServiceDescriptorProtoInstance = nil;
   result.name = @"";
   return self;
 }
-- (NSArray*) methodList {
-  if (result.mutableMethodList == nil) { return [NSArray array]; }
-  return result.mutableMethodList;
+- (PBAppendableArray *)method {
+  return result.methodArray;
 }
-- (PBMethodDescriptorProto*) methodAtIndex:(int32_t) index {
+- (PBMethodDescriptorProto*)methodAtIndex:(NSUInteger)index {
   return [result methodAtIndex:index];
 }
-- (PBServiceDescriptorProto_Builder*) replaceMethodAtIndex:(int32_t) index with:(PBMethodDescriptorProto*) value {
-  [result.mutableMethodList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBServiceDescriptorProto_Builder*) addAllMethod:(NSArray*) values {
-  if (result.mutableMethodList == nil) {
-    result.mutableMethodList = [NSMutableArray array];
+- (PBServiceDescriptorProto_Builder *)addMethod:(PBMethodDescriptorProto*)value {
+  if (result.methodArray == nil) {
+    result.methodArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableMethodList addObjectsFromArray:values];
+  [result.methodArray addObject:value];
   return self;
 }
-- (PBServiceDescriptorProto_Builder*) clearMethodList {
-  result.mutableMethodList = nil;
+- (PBServiceDescriptorProto_Builder *)setMethodArray:(NSArray *)array {
+  result.methodArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBServiceDescriptorProto_Builder*) addMethod:(PBMethodDescriptorProto*) value {
-  if (result.mutableMethodList == nil) {
-    result.mutableMethodList = [NSMutableArray array];
-  }
-  [result.mutableMethodList addObject:value];
+- (PBServiceDescriptorProto_Builder *)setMethodValues:(const PBMethodDescriptorProto* *)values count:(NSUInteger)count {
+  result.methodArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBServiceDescriptorProto_Builder *)clearMethod {
+  result.methodArray = nil;
   return self;
 }
 - (BOOL) hasOptions {
@@ -3301,7 +3266,7 @@ static PBMethodDescriptorProto* defaultPBMethodDescriptorProtoInstance = nil;
 @property BOOL ccGenericServices;
 @property BOOL javaGenericServices;
 @property BOOL pyGenericServices;
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBFileOptions
@@ -3375,11 +3340,12 @@ static PBMethodDescriptorProto* defaultPBMethodDescriptorProtoInstance = nil;
 - (void) setPyGenericServices:(BOOL) value {
   pyGenericServices_ = !!value;
 }
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
   self.javaPackage = nil;
   self.javaOuterClassname = nil;
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -3406,15 +3372,14 @@ static PBFileOptions* defaultPBFileOptionsInstance = nil;
 - (PBFileOptions*) defaultInstance {
   return defaultPBFileOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -3446,7 +3411,7 @@ static PBFileOptions* defaultPBFileOptionsInstance = nil;
   if (self.hasPyGenericServices) {
     [output writeBool:18 value:self.pyGenericServices];
   }
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -3482,7 +3447,7 @@ static PBFileOptions* defaultPBFileOptionsInstance = nil;
   if (self.hasPyGenericServices) {
     size += computeBoolSize(18, self.pyGenericServices);
   }
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -3592,11 +3557,12 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
   if (other.hasPyGenericServices) {
     [self setPyGenericServices:other.pyGenericServices];
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -3774,33 +3740,29 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
   result.pyGenericServices = YES;
   return self;
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBFileOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFileOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBFileOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBFileOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBFileOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFileOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBFileOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBFileOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
@@ -3808,7 +3770,7 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
 @interface PBMessageOptions ()
 @property BOOL messageSetWireFormat;
 @property BOOL noStandardDescriptorAccessor;
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBMessageOptions
@@ -3837,9 +3799,10 @@ BOOL PBFileOptions_OptimizeModeIsValidValue(PBFileOptions_OptimizeMode value) {
 - (void) setNoStandardDescriptorAccessor:(BOOL) value {
   noStandardDescriptorAccessor_ = !!value;
 }
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -3861,15 +3824,14 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
 - (PBMessageOptions*) defaultInstance {
   return defaultPBMessageOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -3886,7 +3848,7 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
   if (self.hasNoStandardDescriptorAccessor) {
     [output writeBool:2 value:self.noStandardDescriptorAccessor];
   }
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -3907,7 +3869,7 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
   if (self.hasNoStandardDescriptorAccessor) {
     size += computeBoolSize(2, self.noStandardDescriptorAccessor);
   }
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -3992,11 +3954,12 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
   if (other.hasNoStandardDescriptorAccessor) {
     [self setNoStandardDescriptorAccessor:other.noStandardDescriptorAccessor];
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -4069,33 +4032,29 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
   result.noStandardDescriptorAccessor = NO;
   return self;
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBMessageOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBMessageOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBMessageOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBMessageOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBMessageOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBMessageOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBMessageOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBMessageOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
@@ -4105,7 +4064,7 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
 @property BOOL packed;
 @property BOOL deprecated;
 @property (retain) NSString* experimentalMapKey;
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBFieldOptions
@@ -4148,10 +4107,11 @@ static PBMessageOptions* defaultPBMessageOptionsInstance = nil;
   hasExperimentalMapKey_ = !!value;
 }
 @synthesize experimentalMapKey;
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
   self.experimentalMapKey = nil;
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4175,15 +4135,14 @@ static PBFieldOptions* defaultPBFieldOptionsInstance = nil;
 - (PBFieldOptions*) defaultInstance {
   return defaultPBFieldOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -4206,7 +4165,7 @@ static PBFieldOptions* defaultPBFieldOptionsInstance = nil;
   if (self.hasExperimentalMapKey) {
     [output writeString:9 value:self.experimentalMapKey];
   }
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -4233,7 +4192,7 @@ static PBFieldOptions* defaultPBFieldOptionsInstance = nil;
   if (self.hasExperimentalMapKey) {
     size += computeStringSize(9, self.experimentalMapKey);
   }
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -4334,11 +4293,12 @@ BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value) {
   if (other.hasExperimentalMapKey) {
     [self setExperimentalMapKey:other.experimentalMapKey];
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -4456,46 +4416,43 @@ BOOL PBFieldOptions_CTypeIsValidValue(PBFieldOptions_CType value) {
   result.experimentalMapKey = @"";
   return self;
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBFieldOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBFieldOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBFieldOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBFieldOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBFieldOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBFieldOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBFieldOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBFieldOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
 
 @interface PBEnumOptions ()
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBEnumOptions
 
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4515,15 +4472,14 @@ static PBEnumOptions* defaultPBEnumOptionsInstance = nil;
 - (PBEnumOptions*) defaultInstance {
   return defaultPBEnumOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -4534,7 +4490,7 @@ static PBEnumOptions* defaultPBEnumOptionsInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -4549,7 +4505,7 @@ static PBEnumOptions* defaultPBEnumOptionsInstance = nil;
   }
 
   size = 0;
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -4628,11 +4584,12 @@ static PBEnumOptions* defaultPBEnumOptionsInstance = nil;
   if (other == [PBEnumOptions defaultInstance]) {
     return self;
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -4665,46 +4622,43 @@ static PBEnumOptions* defaultPBEnumOptionsInstance = nil;
     }
   }
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBEnumOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBEnumOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBEnumOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBEnumOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBEnumOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBEnumOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBEnumOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBEnumOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
 
 @interface PBEnumValueOptions ()
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBEnumValueOptions
 
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4724,15 +4678,14 @@ static PBEnumValueOptions* defaultPBEnumValueOptionsInstance = nil;
 - (PBEnumValueOptions*) defaultInstance {
   return defaultPBEnumValueOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -4743,7 +4696,7 @@ static PBEnumValueOptions* defaultPBEnumValueOptionsInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -4758,7 +4711,7 @@ static PBEnumValueOptions* defaultPBEnumValueOptionsInstance = nil;
   }
 
   size = 0;
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -4837,11 +4790,12 @@ static PBEnumValueOptions* defaultPBEnumValueOptionsInstance = nil;
   if (other == [PBEnumValueOptions defaultInstance]) {
     return self;
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -4874,46 +4828,43 @@ static PBEnumValueOptions* defaultPBEnumValueOptionsInstance = nil;
     }
   }
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBEnumValueOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBEnumValueOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBEnumValueOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBEnumValueOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBEnumValueOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBEnumValueOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBEnumValueOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBEnumValueOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
 
 @interface PBServiceOptions ()
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBServiceOptions
 
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4933,15 +4884,14 @@ static PBServiceOptions* defaultPBServiceOptionsInstance = nil;
 - (PBServiceOptions*) defaultInstance {
   return defaultPBServiceOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -4952,7 +4902,7 @@ static PBServiceOptions* defaultPBServiceOptionsInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -4967,7 +4917,7 @@ static PBServiceOptions* defaultPBServiceOptionsInstance = nil;
   }
 
   size = 0;
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -5046,11 +4996,12 @@ static PBServiceOptions* defaultPBServiceOptionsInstance = nil;
   if (other == [PBServiceOptions defaultInstance]) {
     return self;
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -5083,46 +5034,43 @@ static PBServiceOptions* defaultPBServiceOptionsInstance = nil;
     }
   }
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBServiceOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBServiceOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBServiceOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBServiceOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBServiceOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBServiceOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBServiceOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBServiceOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
 
 @interface PBMethodOptions ()
-@property (retain) NSMutableArray* mutableUninterpretedOptionList;
+@property (retain) PBAppendableArray * uninterpretedOptionArray;
 @end
 
 @implementation PBMethodOptions
 
-@synthesize mutableUninterpretedOptionList;
+@synthesize uninterpretedOptionArray;
+@dynamic uninterpretedOption;
 - (void) dealloc {
-  self.mutableUninterpretedOptionList = nil;
+  self.uninterpretedOptionArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -5142,15 +5090,14 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
 - (PBMethodOptions*) defaultInstance {
   return defaultPBMethodOptionsInstance;
 }
-- (NSArray*) uninterpretedOptionList {
-  return mutableUninterpretedOptionList;
+- (PBArray *)uninterpretedOption {
+  return uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
-  id value = [mutableUninterpretedOptionList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
+  return [uninterpretedOptionArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption* element in self.uninterpretedOption) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -5161,7 +5108,7 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     [output writeMessage:999 value:element];
   }
   [self writeExtensionsToCodedOutputStream:output
@@ -5176,7 +5123,7 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
   }
 
   size = 0;
-  for (PBUninterpretedOption* element in self.uninterpretedOptionList) {
+  for (PBUninterpretedOption *element in self.uninterpretedOptionArray) {
     size += computeMessageSize(999, element);
   }
   size += [self extensionsSerializedSize];
@@ -5255,11 +5202,12 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
   if (other == [PBMethodOptions defaultInstance]) {
     return self;
   }
-  if (other.mutableUninterpretedOptionList.count > 0) {
-    if (result.mutableUninterpretedOptionList == nil) {
-      result.mutableUninterpretedOptionList = [NSMutableArray array];
+  if (other.uninterpretedOptionArray.count > 0) {
+    if (result.uninterpretedOptionArray == nil) {
+      result.uninterpretedOptionArray = [other.uninterpretedOptionArray copyWithZone:[other.uninterpretedOptionArray zone]];
+    } else {
+      [result.uninterpretedOptionArray appendArray:other.uninterpretedOptionArray];
     }
-    [result.mutableUninterpretedOptionList addObjectsFromArray:other.mutableUninterpretedOptionList];
   }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
@@ -5292,39 +5240,35 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
     }
   }
 }
-- (NSArray*) uninterpretedOptionList {
-  if (result.mutableUninterpretedOptionList == nil) { return [NSArray array]; }
-  return result.mutableUninterpretedOptionList;
+- (PBAppendableArray *)uninterpretedOption {
+  return result.uninterpretedOptionArray;
 }
-- (PBUninterpretedOption*) uninterpretedOptionAtIndex:(int32_t) index {
+- (PBUninterpretedOption*)uninterpretedOptionAtIndex:(NSUInteger)index {
   return [result uninterpretedOptionAtIndex:index];
 }
-- (PBMethodOptions_Builder*) replaceUninterpretedOptionAtIndex:(int32_t) index with:(PBUninterpretedOption*) value {
-  [result.mutableUninterpretedOptionList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBMethodOptions_Builder*) addAllUninterpretedOption:(NSArray*) values {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
+- (PBMethodOptions_Builder *)addUninterpretedOption:(PBUninterpretedOption*)value {
+  if (result.uninterpretedOptionArray == nil) {
+    result.uninterpretedOptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableUninterpretedOptionList addObjectsFromArray:values];
+  [result.uninterpretedOptionArray addObject:value];
   return self;
 }
-- (PBMethodOptions_Builder*) clearUninterpretedOptionList {
-  result.mutableUninterpretedOptionList = nil;
+- (PBMethodOptions_Builder *)setUninterpretedOptionArray:(NSArray *)array {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBMethodOptions_Builder*) addUninterpretedOption:(PBUninterpretedOption*) value {
-  if (result.mutableUninterpretedOptionList == nil) {
-    result.mutableUninterpretedOptionList = [NSMutableArray array];
-  }
-  [result.mutableUninterpretedOptionList addObject:value];
+- (PBMethodOptions_Builder *)setUninterpretedOptionValues:(const PBUninterpretedOption* *)values count:(NSUInteger)count {
+  result.uninterpretedOptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBMethodOptions_Builder *)clearUninterpretedOption {
+  result.uninterpretedOptionArray = nil;
   return self;
 }
 @end
 
 @interface PBUninterpretedOption ()
-@property (retain) NSMutableArray* mutableNameList;
+@property (retain) PBAppendableArray * nameArray;
 @property (retain) NSString* identifierValue;
 @property int64_t positiveIntValue;
 @property int64_t negativeIntValue;
@@ -5334,7 +5278,8 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
 
 @implementation PBUninterpretedOption
 
-@synthesize mutableNameList;
+@synthesize nameArray;
+@dynamic name;
 - (BOOL) hasIdentifierValue {
   return !!hasIdentifierValue_;
 }
@@ -5371,7 +5316,7 @@ static PBMethodOptions* defaultPBMethodOptionsInstance = nil;
 }
 @synthesize stringValue;
 - (void) dealloc {
-  self.mutableNameList = nil;
+  self.nameArray = nil;
   self.identifierValue = nil;
   self.stringValue = nil;
   [super dealloc];
@@ -5398,15 +5343,14 @@ static PBUninterpretedOption* defaultPBUninterpretedOptionInstance = nil;
 - (PBUninterpretedOption*) defaultInstance {
   return defaultPBUninterpretedOptionInstance;
 }
-- (NSArray*) nameList {
-  return mutableNameList;
+- (PBArray *)name {
+  return nameArray;
 }
-- (PBUninterpretedOption_NamePart*) nameAtIndex:(int32_t) index {
-  id value = [mutableNameList objectAtIndex:index];
-  return value;
+- (PBUninterpretedOption_NamePart*)nameAtIndex:(NSUInteger)index {
+  return [nameArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (PBUninterpretedOption_NamePart* element in self.nameList) {
+  for (PBUninterpretedOption_NamePart* element in self.name) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -5414,7 +5358,7 @@ static PBUninterpretedOption* defaultPBUninterpretedOptionInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (PBUninterpretedOption_NamePart* element in self.nameList) {
+  for (PBUninterpretedOption_NamePart *element in self.nameArray) {
     [output writeMessage:2 value:element];
   }
   if (self.hasIdentifierValue) {
@@ -5441,7 +5385,7 @@ static PBUninterpretedOption* defaultPBUninterpretedOptionInstance = nil;
   }
 
   size = 0;
-  for (PBUninterpretedOption_NamePart* element in self.nameList) {
+  for (PBUninterpretedOption_NamePart *element in self.nameArray) {
     size += computeMessageSize(2, element);
   }
   if (self.hasIdentifierValue) {
@@ -5761,11 +5705,12 @@ static PBUninterpretedOption_NamePart* defaultPBUninterpretedOption_NamePartInst
   if (other == [PBUninterpretedOption defaultInstance]) {
     return self;
   }
-  if (other.mutableNameList.count > 0) {
-    if (result.mutableNameList == nil) {
-      result.mutableNameList = [NSMutableArray array];
+  if (other.nameArray.count > 0) {
+    if (result.nameArray == nil) {
+      result.nameArray = [other.nameArray copyWithZone:[other.nameArray zone]];
+    } else {
+      [result.nameArray appendArray:other.nameArray];
     }
-    [result.mutableNameList addObjectsFromArray:other.mutableNameList];
   }
   if (other.hasIdentifierValue) {
     [self setIdentifierValue:other.identifierValue];
@@ -5832,33 +5777,29 @@ static PBUninterpretedOption_NamePart* defaultPBUninterpretedOption_NamePartInst
     }
   }
 }
-- (NSArray*) nameList {
-  if (result.mutableNameList == nil) { return [NSArray array]; }
-  return result.mutableNameList;
+- (PBAppendableArray *)name {
+  return result.nameArray;
 }
-- (PBUninterpretedOption_NamePart*) nameAtIndex:(int32_t) index {
+- (PBUninterpretedOption_NamePart*)nameAtIndex:(NSUInteger)index {
   return [result nameAtIndex:index];
 }
-- (PBUninterpretedOption_Builder*) replaceNameAtIndex:(int32_t) index with:(PBUninterpretedOption_NamePart*) value {
-  [result.mutableNameList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (PBUninterpretedOption_Builder*) addAllName:(NSArray*) values {
-  if (result.mutableNameList == nil) {
-    result.mutableNameList = [NSMutableArray array];
+- (PBUninterpretedOption_Builder *)addName:(PBUninterpretedOption_NamePart*)value {
+  if (result.nameArray == nil) {
+    result.nameArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableNameList addObjectsFromArray:values];
+  [result.nameArray addObject:value];
   return self;
 }
-- (PBUninterpretedOption_Builder*) clearNameList {
-  result.mutableNameList = nil;
+- (PBUninterpretedOption_Builder *)setNameArray:(NSArray *)array {
+  result.nameArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (PBUninterpretedOption_Builder*) addName:(PBUninterpretedOption_NamePart*) value {
-  if (result.mutableNameList == nil) {
-    result.mutableNameList = [NSMutableArray array];
-  }
-  [result.mutableNameList addObject:value];
+- (PBUninterpretedOption_Builder *)setNameValues:(const PBUninterpretedOption_NamePart* *)values count:(NSUInteger)count {
+  result.nameArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (PBUninterpretedOption_Builder *)clearName {
+  result.nameArray = nil;
   return self;
 }
 - (BOOL) hasIdentifierValue {
