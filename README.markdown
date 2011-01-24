@@ -35,6 +35,7 @@ MumbleKit uses CMake to generate its Xcode project files. If
 you're on Mac OS X, you can download CMake from the CMake
 website at http://www.cmake.org/. If you're a user of Homebrew,
 MacPorts or Fink, there are packages available in there, too.
+Note: CMake 2.8.3 or later required.
 
 To generate a MumbleKit.xcodeproj that targets iOS, use:
 
@@ -43,27 +44,6 @@ To generate a MumbleKit.xcodeproj that targets iOS, use:
 To generate a MumbleKit.xcodeproj that targets Mac OS X, use:
 
     $ cmake -G Xcode . -DMACOSX_BUILD=1
-
-Note: There's a bug in the current (2.8.2) release of CMake that
-makes it hard to generate .xcodeprojs that use the built-in
-Xcode "standard architectures" for iOS (armv6 and armv7 for device
-builds, i386 for simulator builds). Please see the following CMake
-bug report for more info: http://www.vtk.org/Bug/view.php?id=11244
-
-Patches for the issue:
-
- * http://cmake.org/gitweb?p=cmake.git;a=patch;h=a8ded533
-
- * http://cmake.org/gitweb?p=cmake.git;a=patch;h=0790af3b
-
-If you use Homebrew as your package manager, the current forumla for
-CMake 2.8.2 has been patched to fix these issues. Simply upgrade to
-the latest version:
-
-    $ brew install --force cmake
-
-To work around this issue, you can pass -DBROKEN_CMAKE=1 to simply
-use whatever defaults architectures CMake wants to use.
 
 Building it (Xcode.app)
 -----------------------
