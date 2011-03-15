@@ -6,18 +6,24 @@ build/
 3rdparty/opensslbuil/build/
 
 MumbleKit.xcodeproj/xcuserdata/
-3rdparty/celt-0.7.0-build/CELT-0.7.0.xcodeproj/xcuserdata/
-3rdparty/celt-0.8.0-build/CELT-0.8.0.xcodeproj/xcuserdata/
+MumbleKit.xcodeproj/project.xcworkspace/xcuserdata/
+3rdparty/celt-0.7.0-build/CELT-0.7.xcodeproj/xcuserdata/
+3rdparty/celt-0.7.0-build/CELT-0.7.xcodeproj/project.xcworkspace/xcuserdata/
 3rdparty/opensslbuild/OpenSSL.xcodeproj/xcuserdata/
+3rdparty/opensslbuild/OpenSSL.xcodeproj/project.xcworkspace/xcuserdata/
 3rdparty/protobufbuild/ProtocolBuffers.xcodeproj/xcuserdata/
+3rdparty/protobufbuild/ProtocolBuffers.xcodeproj/project.xcworkspace/xcuserdata/
 3rdparty/speexbuild/Speex.xcodeproj/xcuserdata/
+3rdparty/speexbuild/Speex.xcodeproj/project.xcworkspace/xcuserdata/
 3rdparty/speexdspbuild/SpeexDSP.xcodeproj/xcuserdata/
+3rdparty/speexdspbuild/SpeexDSP.xcodeproj/project.xcworkspace/xcuserdata/
 
 .DS_Store
 *.pbxuser
 *.mode1v3
 *.rej
 *.orig
+*.xcuserstate
 
 Makefile
 CMakeFiles
@@ -31,4 +37,3 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 Debug
 Release
-MumbleKit.xcodeproj

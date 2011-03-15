@@ -1,2 +1,7 @@
-// fix missing sig_atomic_t in ui_openssl.c
-#include <sys/signal.h>
+//
+// Prefix header for all source files of the 'OpenSSL' target in the 'OpenSSL' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

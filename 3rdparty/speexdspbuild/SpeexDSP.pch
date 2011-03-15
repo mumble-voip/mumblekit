@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'SpeexDSP' target in the 'SpeexDSP' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

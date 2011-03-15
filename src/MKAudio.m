@@ -40,6 +40,7 @@
 
 static MKAudio *audioSingleton = nil;
 
+#if TARGET_OS_IPHONE == 1
 static void MKAudio_InterruptCallback(void *udata, UInt32 interrupt) {
 	MKAudio *audio = (MKAudio *) udata;
 
@@ -50,7 +51,6 @@ static void MKAudio_InterruptCallback(void *udata, UInt32 interrupt) {
 	}
 }
 
-#if TARGET_OS_IPHONE == 1
 static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionPropertyID prop, UInt32 len, uint32_t *avail) {
 	BOOL audioInputAvailable;
 	UInt32 val;
@@ -222,13 +222,18 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 	_audioInput = nil;
 	[_audioOutput release];
 	_audioOutput = nil;
+#if TARGET_OS_IPHONE == 1
 	AudioSessionSetActive(NO);
+#endif
 	_running = NO;
 }
 
 // Start the audio engine
 - (void) start {
+#if TARGET_OS_IPHONE == 1
 	AudioSessionSetActive(YES);
+#endif
+
 	_audioInput = [[MKAudioInput alloc] initWithSettings:&_audioSettings];
 	_audioOutput = [[MKAudioOutput alloc] initWithSettings:&_audioSettings];
 	[_audioInput setupDevice];
