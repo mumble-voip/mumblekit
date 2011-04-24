@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		282F6B0813624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; };
+		282F6B0913624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
+		282F6B0B13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
 		2845A794132D9C220034D631 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2845A781132D9C220034D631 /* CryptState.cpp */; };
 		2845A795132D9C220034D631 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2845A781132D9C220034D631 /* CryptState.cpp */; };
 		2845A796132D9C220034D631 /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A782132D9C220034D631 /* MKAudio.m */; };
@@ -243,6 +247,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		282F6B0613624187008F555B /* MKServerPinger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerPinger.h; path = src/MumbleKit/MKServerPinger.h; sourceTree = SOURCE_ROOT; };
+		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
 		2845A71A132D9B2F0034D631 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A781132D9C220034D631 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = SOURCE_ROOT; };
 		2845A782132D9C220034D631 /* MKAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudio.m; path = src/MKAudio.m; sourceTree = SOURCE_ROOT; };
@@ -398,6 +404,7 @@
 				2845A78D132D9C220034D631 /* MKReadWriteLock.m */,
 				2845A78E132D9C220034D631 /* MKServerModel.m */,
 				2845A78F132D9C220034D631 /* MKServerModelObject.m */,
+				282F6B0713624187008F555B /* MKServerPinger.m */,
 				2845A790132D9C220034D631 /* MKServices.m */,
 				2845A791132D9C220034D631 /* MKUser.m */,
 				2845A792132D9C220034D631 /* MKVersion.m */,
@@ -423,6 +430,7 @@
 				2845A7D2132D9C520034D631 /* MKReadWriteLock.h */,
 				2845A7D3132D9C520034D631 /* MKServerModel.h */,
 				2845A7D4132D9C520034D631 /* MKServerModelObject.h */,
+				282F6B0613624187008F555B /* MKServerPinger.h */,
 				2845A7D5132D9C520034D631 /* MKServices.h */,
 				2845A7D6132D9C520034D631 /* MKUser.h */,
 				2845A7D7132D9C520034D631 /* MKUtils.h */,
@@ -562,6 +570,7 @@
 				2845A7F8132D9C520034D631 /* MKUser.h in Headers */,
 				2845A7FA132D9C520034D631 /* MKUtils.h in Headers */,
 				2845A7FC132D9C520034D631 /* MKVersion.h in Headers */,
+				282F6B0913624187008F555B /* MKServerPinger.h in Headers */,
 				2845A7BF132D9C400034D631 /* MKUserPrivate.h in Headers */,
 				2845A7C1132D9C400034D631 /* MulticastDelegate.h in Headers */,
 				2845A7C3132D9C400034D631 /* timedelta.h in Headers */,
@@ -595,6 +604,7 @@
 				2845A7F7132D9C520034D631 /* MKUser.h in Headers */,
 				2845A7F9132D9C520034D631 /* MKUtils.h in Headers */,
 				2845A7FB132D9C520034D631 /* MKVersion.h in Headers */,
+				282F6B0813624187008F555B /* MKServerPinger.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -796,6 +806,7 @@
 				2845A7B9132D9C220034D631 /* MulticastDelegate.m in Sources */,
 				28CC36FB132ED92500241269 /* Mumble.pb.m in Sources */,
 				28CC36FD132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */,
+				282F6B0B13624187008F555B /* MKServerPinger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,6 +835,7 @@
 				2845A7B8132D9C220034D631 /* MulticastDelegate.m in Sources */,
 				28CC36FA132ED92500241269 /* Mumble.pb.m in Sources */,
 				28CC36FC132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */,
+				282F6B0A13624187008F555B /* MKServerPinger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
