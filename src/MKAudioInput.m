@@ -233,7 +233,11 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	desc.componentType = kAudioUnitType_Output;
 #if TARGET_OS_IPHONE == 1
+# ifdef USE_VPIO
+    desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
+# else
 	desc.componentSubType = kAudioUnitSubType_RemoteIO;
+# endif
 #elif TARGET_OS_MAC == 1
 	desc.componentSubType = kAudioUnitSubType_HALOutput;
 #endif
@@ -297,14 +301,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
-	err = AudioUnitInitialize(audioUnit);
-	if (err != noErr) {
-		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
-		return NO;
-	}
-#endif
-
 	len = sizeof(AudioStreamBasicDescription);
 	err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &fmt, &len);
 	if (err != noErr) {
@@ -342,6 +338,32 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		NSLog(@"AudioInput: Unable to set stream format for output device. (input scope)");
 		return NO;
 	}*/
+
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
+#ifdef USE_VPIO
+    val = 1;
+    len = sizeof(UInt32);
+    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);
+    if (err != noErr) {
+        NSLog(@"AudioInput: Unable to disable VPIO voice processing.");
+        return NO;
+    }
+
+    val = 0;
+    len = sizeof(UInt32);
+    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingEnableAGC, kAudioUnitScope_Global, 0, &val, len);
+    if (err != noErr) {
+        NSLog(@"AudioInput: Unable to disable VPIO AGC.");
+        return NO;
+    }
+#endif
+
+	err = AudioUnitInitialize(audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
+		return NO;
+	}
+#endif
 
 	err = AudioOutputUnitStart(audioUnit);
 	if (err != noErr) {
