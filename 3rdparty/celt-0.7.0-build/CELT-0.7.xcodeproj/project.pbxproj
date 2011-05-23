@@ -370,6 +370,53 @@
 			};
 			name = Release;
 		};
+		28498F25138AB6D5000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = BetaDist;
+		};
+		28498F26138AB6D5000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/CELT_0_7.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CELT-0.7.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "CELT-0.7.0";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = BetaDist;
+		};
+		28498F27138AB6D5000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CELT-0.7.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "CELT-0.7.0";
+				SDKROOT = macosx;
+			};
+			name = BetaDist;
+		};
 		2865611B132AE7A80011637C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -421,6 +468,7 @@
 			buildConfigurations = (
 				280D5F8D132AE73C00540C3D /* Debug */,
 				280D5F8E132AE73C00540C3D /* Release */,
+				28498F25138AB6D5000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -430,6 +478,7 @@
 			buildConfigurations = (
 				280D5F90132AE73C00540C3D /* Debug */,
 				280D5F91132AE73C00540C3D /* Release */,
+				28498F26138AB6D5000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -439,6 +488,7 @@
 			buildConfigurations = (
 				2865611B132AE7A80011637C /* Debug */,
 				2865611C132AE7A80011637C /* Release */,
+				28498F27138AB6D5000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

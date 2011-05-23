@@ -239,6 +239,58 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		28498F2D138AB6E2000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../speex/libspeex",
+					"$(PROJECT_DIR)/../speex/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = BetaDist;
+		};
+		28498F2E138AB6E2000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/SpeexDSP.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = SpeexDSP.pch;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = SpeexDSP;
+			};
+			name = BetaDist;
+		};
+		28498F2F138AB6E2000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = SpeexDSP.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = SpeexDSP;
+				SDKROOT = macosx;
+			};
+			name = BetaDist;
+		};
 		28877EC6132D96F300793CC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -357,6 +409,7 @@
 			buildConfigurations = (
 				28877EC6132D96F300793CC5 /* Debug */,
 				28877EC7132D96F300793CC5 /* Release */,
+				28498F2D138AB6E2000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -366,6 +419,7 @@
 			buildConfigurations = (
 				28877EC9132D96F300793CC5 /* Debug */,
 				28877ECA132D96F300793CC5 /* Release */,
+				28498F2E138AB6E2000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -375,6 +429,7 @@
 			buildConfigurations = (
 				28877EDA132D975D00793CC5 /* Debug */,
 				28877EDB132D975D00793CC5 /* Release */,
+				28498F2F138AB6E2000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

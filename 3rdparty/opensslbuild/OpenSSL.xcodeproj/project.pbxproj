@@ -4389,6 +4389,63 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		28498F1D138AB6C0000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREFIX_HEADER = OpenSSL.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NO_WINDOWS_BRAINDEATH=1",
+					"OPENSSL_NO_INLINE_ASM=1",
+					"OPENSSL_NO_ASM=1",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../openssl",
+					"$(PROJECT_DIR)/../openssl/include",
+					"$(PROJECT_DIR)/../openssl/crypto",
+					"$(PROJECT_DIR)/../openssl/crypto/asn1",
+					"$(PROJECT_DIR)/../openssl/crypto/evp",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = BetaDist;
+		};
+		28498F1E138AB6C0000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/OpenSSL.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = OpenSSL;
+			};
+			name = BetaDist;
+		};
+		28498F1F138AB6C0000509DD /* BetaDist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = OpenSSL;
+				SDKROOT = macosx;
+			};
+			name = BetaDist;
+		};
 		28F58C4E132AF1070053C348 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4515,6 +4572,7 @@
 			buildConfigurations = (
 				28F58C4E132AF1070053C348 /* Debug */,
 				28F58C4F132AF1070053C348 /* Release */,
+				28498F1D138AB6C0000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4524,6 +4582,7 @@
 			buildConfigurations = (
 				28F58C51132AF1070053C348 /* Debug */,
 				28F58C52132AF1070053C348 /* Release */,
+				28498F1E138AB6C0000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4533,6 +4592,7 @@
 			buildConfigurations = (
 				28F58C62132AF1170053C348 /* Debug */,
 				28F58C63132AF1170053C348 /* Release */,
+				28498F1F138AB6C0000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
