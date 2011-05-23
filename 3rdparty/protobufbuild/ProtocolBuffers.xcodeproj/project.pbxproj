@@ -357,6 +357,7 @@
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ProtocolBuffers;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -369,6 +370,7 @@
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ProtocolBuffers;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -438,6 +440,7 @@
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ProtocolBuffers;
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};

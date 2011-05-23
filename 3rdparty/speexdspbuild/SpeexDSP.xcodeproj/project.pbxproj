@@ -267,6 +267,7 @@
 				GCC_PREFIX_HEADER = SpeexDSP.pch;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = SpeexDSP;
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -343,6 +344,7 @@
 				GCC_PREFIX_HEADER = SpeexDSP.pch;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = SpeexDSP;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -355,6 +357,7 @@
 				GCC_PREFIX_HEADER = SpeexDSP.pch;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = SpeexDSP;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};

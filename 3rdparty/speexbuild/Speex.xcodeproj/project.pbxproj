@@ -433,6 +433,7 @@
 				GCC_PREFIX_HEADER = Speex.pch;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Speex;
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -509,6 +510,7 @@
 				GCC_PREFIX_HEADER = Speex.pch;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Speex;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -521,6 +523,7 @@
 				GCC_PREFIX_HEADER = Speex.pch;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Speex;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};

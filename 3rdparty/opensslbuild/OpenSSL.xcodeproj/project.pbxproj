@@ -4423,6 +4423,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OpenSSL;
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -4509,6 +4510,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OpenSSL;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -4520,6 +4522,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OpenSSL;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};

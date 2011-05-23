@@ -353,6 +353,7 @@
 				GCC_PREFIX_HEADER = "CELT-0.7.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "CELT-0.7.0";
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -366,6 +367,7 @@
 				GCC_PREFIX_HEADER = "CELT-0.7.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "CELT-0.7.0";
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -392,6 +394,7 @@
 				GCC_PREFIX_HEADER = "CELT-0.7.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "CELT-0.7.0";
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = BetaDist;
