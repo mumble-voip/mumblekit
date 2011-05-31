@@ -209,6 +209,10 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 // Set new settings for the audio engine
 - (void) updateAudioSettings:(MKAudioSettings *)settings {
 	memcpy(&_audioSettings, settings, sizeof(MKAudioSettings));
+#ifdef ARCH_ARMV6
+    // fixme(mkrautz): Unconditionally disable preprocessor for ARMv6
+    _audioSettings.enablePreprocessor = NO;
+#endif
 }
 
 // Has MKAudio been started?

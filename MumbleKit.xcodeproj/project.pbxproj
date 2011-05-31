@@ -1014,6 +1014,12 @@
 					3rdparty/protobuf/src/runtime/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = (
+					"-Xarch_armv6",
+					"-DARCH_ARMV6",
+					"-Xarch_armv6",
+					"-DARCH_ARMV7",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1035,6 +1041,12 @@
 					3rdparty/protobuf/src/runtime/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = (
+					"-Xarch_armv6",
+					"-DARCH_ARMV6",
+					"-Xarch_armv6",
+					"-DARCH_ARMV7",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Release;
