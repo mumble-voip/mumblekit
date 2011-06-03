@@ -323,6 +323,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -336,6 +337,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -351,6 +353,7 @@
 				DSTROOT = /tmp/CELT_0_7.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CELT-0.7.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "CELT-0.7.0";
 				SKIP_INSTALL = YES;
@@ -365,6 +368,7 @@
 				DSTROOT = /tmp/CELT_0_7.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CELT-0.7.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "CELT-0.7.0";
 				SKIP_INSTALL = YES;
@@ -377,6 +381,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -392,6 +397,7 @@
 				DSTROOT = /tmp/CELT_0_7.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CELT-0.7.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "CELT-0.7.0";
 				SKIP_INSTALL = YES;

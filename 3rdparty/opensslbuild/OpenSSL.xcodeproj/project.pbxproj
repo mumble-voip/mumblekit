@@ -4400,6 +4400,7 @@
 					"OPENSSL_NO_INLINE_ASM=1",
 					"OPENSSL_NO_ASM=1",
 				);
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -4421,6 +4422,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DSTROOT = /tmp/OpenSSL.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OpenSSL;
 				SKIP_INSTALL = YES;
@@ -4461,6 +4463,8 @@
 					DEBUG,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = YES;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -4487,6 +4491,7 @@
 					"OPENSSL_NO_INLINE_ASM=1",
 					"OPENSSL_NO_ASM=1",
 				);
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -4508,6 +4513,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DSTROOT = /tmp/OpenSSL.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OpenSSL;
 				SKIP_INSTALL = YES;
@@ -4520,6 +4526,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DSTROOT = /tmp/OpenSSL.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OpenSSL;
 				SKIP_INSTALL = YES;
