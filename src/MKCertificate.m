@@ -168,6 +168,60 @@ static int add_ext(X509 * crt, int nid, char *value) {
 	return [cert autorelease];
 }
 
+// Import a PKCS12-encoded certificate, public key and private key using the given password.
++ (MKCertificate *) certificateWithPKCS12:(NSData *)pkcs12 password:(NSString *)password {
+    MKCertificate *retcert = nil;
+    X509 *x509 = NULL;
+    EVP_PKEY *pkey = NULL;
+    PKCS12 *pkcs = NULL;
+    BIO *mem = NULL;
+    STACK_OF(X509) *certs = NULL;
+    int ret;
+
+    mem = BIO_new_mem_buf((void *)[pkcs12 bytes], [pkcs12 length]);
+    (void) BIO_set_close(mem, BIO_NOCLOSE);
+    pkcs = d2i_PKCS12_bio(mem, NULL);
+    if (pkcs) {
+        ret = PKCS12_parse(pkcs, NULL, &pkey, &x509, &certs);
+        if (pkcs && !pkey && !x509 && [password length] > 0) {
+            if (certs) {
+                if (ret)
+                    sk_X509_free(certs);
+                certs = NULL;
+            }
+            ret = PKCS12_parse(pkcs, [password UTF8String], &pkey, &x509, &certs);
+        }
+        if (pkey && x509 && X509_check_private_key(x509, pkey)) {
+            unsigned char *dptr;
+
+            NSMutableData *key = [NSMutableData dataWithLength:i2d_PrivateKey(pkey, NULL)];
+            dptr = [key mutableBytes];
+            i2d_PrivateKey(pkey, &dptr);
+
+            NSMutableData *crt = [NSMutableData dataWithLength:i2d_X509(x509, NULL)];
+            dptr = [crt mutableBytes];
+            i2d_X509(x509, &dptr);
+
+            retcert = [MKCertificate certificateWithCertificate:crt privateKey:key];
+		}
+	}
+
+	if (ret) {
+        if (pkey)
+            EVP_PKEY_free(pkey);
+        if (x509)
+            X509_free(x509);
+        if (certs)
+            sk_X509_free(certs);
+    }
+    if (pkcs)
+        PKCS12_free(pkcs);
+    if (mem)
+        BIO_free(mem);
+
+	return retcert;
+}
+
 // Export a MKCertificate object as a PKCS12-encoded NSData blob. This is useful for
 // APIs that only accept PKCS12 encoded data for import, like some the iOS keychain
 // APIs.
@@ -198,7 +252,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			X509_alias_set1(x509, NULL, 0);
 
 			/* fixme(mkrautz): Currently we only support exporting our own self-signed certs,
-			   which obviously do not have any intermediate certifictes. If we need to add
+			   which obviously do not have any intermediate certificates. If we need to add
 			   this in the future, do this: */
 #if 0
 			for (/* each certificate*/) {

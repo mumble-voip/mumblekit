@@ -50,6 +50,7 @@
 
 + (MKCertificate *) certificateWithCertificate:(NSData *)cert privateKey:(NSData *)privkey;
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email;
++ (MKCertificate *) certificateWithPKCS12:(NSData *)pkcs12 password:(NSString *)password;
 
 - (BOOL) hasCertificate;
 - (BOOL) hasPrivateKey;
