@@ -657,6 +657,9 @@
 /* Begin PBXProject section */
 		28BCF2B8132AE3B40003AEC1 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 28BCF2BB132AE3B40003AEC1 /* Build configuration list for PBXProject "MumbleKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

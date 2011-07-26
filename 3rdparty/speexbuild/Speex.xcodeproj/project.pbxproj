@@ -301,6 +301,9 @@
 /* Begin PBXProject section */
 		28D1DADF132AEB1400456ED6 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 28D1DAE2132AEB1400456ED6 /* Build configuration list for PBXProject "Speex" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

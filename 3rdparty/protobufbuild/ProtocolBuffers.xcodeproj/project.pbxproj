@@ -239,6 +239,9 @@
 /* Begin PBXProject section */
 		2845A69E132D99550034D631 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 2845A6A1132D99550034D631 /* Build configuration list for PBXProject "ProtocolBuffers" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

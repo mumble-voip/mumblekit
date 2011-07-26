@@ -3101,6 +3101,9 @@
 /* Begin PBXProject section */
 		28F58C3D132AF1070053C348 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 28F58C40132AF1070053C348 /* Build configuration list for PBXProject "OpenSSL" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
