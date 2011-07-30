@@ -1,0 +1,9 @@
+#!/bin/bash
+rev=$(git rev-parse HEAD)
+git clone git@github.com:mkrautz/mumblekit.git --branch gh-pages ghpages
+appledoc --project-version $(git rev-parse HEAD) AppledocSettings.plist
+rsync -avz html/* ghpages/
+cd ghpages
+git add .
+git commit -m "doc: update to MumbleKit ${rev}"
+git push git@github.com:mkrautz/mumblekit.git gh-pages

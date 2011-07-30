@@ -64,6 +64,10 @@ typedef struct _MKAudioBenchmark {
  */
 @interface MKAudio : NSObject
 
+///------------------------------------
+/// @name Accessing the audio subsystem
+///------------------------------------
+
 /**
  * Get a shared copy of the MKAudio object for this process.
  *
