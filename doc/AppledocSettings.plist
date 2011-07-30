@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--keep-intermediate-files</key>
+	<true/>
+	<key>--create-docset</key>
+	<false/>
+	<key>--output</key>
+	<string>.</string>
+	<key>--company-id</key>
+	<string>info.mumble</string>
+	<key>--input</key>
+	<array>
+		<string>../src/MumbleKit</string>
+	</array>
+	<key>--logformat</key>
+	<integer>1</integer>
+	<key>--print-settings</key>
+	<true/>
+	<key>--project-company</key>
+	<string>Mumble Developers</string>
+	<key>--project-name</key>
+	<string>MumbleKit</string>
+	<key>--project-version</key>
+	<string>1.0</string>
+	<key>--repeat-first-par</key>
+	<false/>
+	<key>--verbose</key>
+	<integer>3</integer>
+</dict>
+</plist>

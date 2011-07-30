@@ -58,23 +58,87 @@ typedef struct _MKAudioBenchmark {
 	signed long  avgPreprocessorRuntime;
 } MKAudioBenchmark;
 
+
+/**
+ * MKAudio represents the MumbleKit audio subsystem.
+ */
 @interface MKAudio : NSObject
 
+/**
+ * Get a shared copy of the MKAudio object for this process.
+ *
+ * @return Retruns the shared MKAudio object.
+ */
 + (MKAudio *) sharedAudio;
 
+///----------------------------
+/// @name Starting and stopping
+///----------------------------
+
+/**
+ * Returns whether or not the MumbleKit audio subsystem is currently running.
+ */
 - (BOOL) isRunning;
+
+/**
+ * Starts the MumbleKit audio subsytem.
+ */
 - (void) start;
+
+/**
+ * Stops the MumbleKit audio subsystem.
+ */
 - (void) stop;
+
+/**
+ * Restarts MumbleKit's audio subsystem.
+ */
 - (void) restart;
 
+///---------------
+/// @name Settings
+///---------------
+
+/**
+ * Returns the current configuration of the MumbleKit audio subsystem.
+ */
 - (MKAudioSettings *) audioSettings;
+
+/**
+ * Updates the MumbleKit audio subsystem with a new configuration.
+ *
+ * @param settings A pointer to a MKAudioSettings struct with the new audio subsystem settings.
+ */
 - (void) updateAudioSettings:(MKAudioSettings *)settings;
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
 
-- (BOOL) forceTransmit;
-- (void) setForceTransmit:(BOOL)flag;
+///----------------------
+/// @name Forced Transmit
+///----------------------
 
+/**
+ * Returns whether forceTransmit is enabled.
+ * Forced-transmit is used to implemented push-to-talk functionality.
+ */
+- (BOOL) forceTransmit;
+
+/**
+ * Sets the current force-transmit state.
+ * 
+ * @param enableForceTransmit  Whether or not to enable force-transmit.
+ */
+- (void) setForceTransmit:(BOOL)enableForceTransmit;
+
+///----------------
+/// @name Benchmark
+///----------------
+
+/**
+ * Fills a MKAudioBenchmark struct with the current benchmark data.
+ *
+ * @param bench The struct to fill out with benchmark data. Should point to a MKAudioBenchmark struct.
+ */
 - (void) getBenchmarkData:(MKAudioBenchmark *)bench;
 
 - (NSString *) currentAudioRoute;
