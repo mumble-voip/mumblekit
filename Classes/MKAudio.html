@@ -1,0 +1,790 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MKAudio Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MumbleKit </a></h1>
+				<a id="developerHome" href="../index.html">Mumble Developers</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MKAudio Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/sharedAudio">&nbsp;&nbsp;&nbsp;&nbsp;+ sharedAudio</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/audioSettings">&nbsp;&nbsp;&nbsp;&nbsp;- audioSettings</option>
+	
+	<option value="//api/name/forceTransmit">&nbsp;&nbsp;&nbsp;&nbsp;- forceTransmit</option>
+	
+	<option value="//api/name/getBenchmarkData:">&nbsp;&nbsp;&nbsp;&nbsp;- getBenchmarkData:</option>
+	
+	<option value="//api/name/isRunning">&nbsp;&nbsp;&nbsp;&nbsp;- isRunning</option>
+	
+	<option value="//api/name/restart">&nbsp;&nbsp;&nbsp;&nbsp;- restart</option>
+	
+	<option value="//api/name/setForceTransmit:">&nbsp;&nbsp;&nbsp;&nbsp;- setForceTransmit:</option>
+	
+	<option value="//api/name/start">&nbsp;&nbsp;&nbsp;&nbsp;- start</option>
+	
+	<option value="//api/name/stop">&nbsp;&nbsp;&nbsp;&nbsp;- stop</option>
+	
+	<option value="//api/name/updateAudioSettings:">&nbsp;&nbsp;&nbsp;&nbsp;- updateAudioSettings:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Starting and stopping">Starting and stopping</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Settings">Settings</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Forced Transmit">Forced Transmit</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Benchmark">Benchmark</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedAudio">sharedAudio</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/audioSettings">audioSettings</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/forceTransmit">forceTransmit</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/getBenchmarkData:">getBenchmarkData:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isRunning">isRunning</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/restart">restart</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setForceTransmit:">setForceTransmit:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/start">start</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stop">stop</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/updateAudioSettings:">updateAudioSettings:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MKAudio Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MKAudio Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MKAudio.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><a href="MKAudio.html">MKAudio</a> represents the MumbleKit audio subsystem.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sharedAudio">+&nbsp;sharedAudio</a></code>
+		<span class="tooltip"><p>Get a shared copy of the <a href="MKAudio.html">MKAudio</a> object for this process.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Starting and stopping" name="task_Starting and stopping"></a>
+						<h3 class="subsubtitle task-title">Starting and stopping</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isRunning">&ndash;&nbsp;isRunning</a></code>
+		<span class="tooltip"><p>Returns whether or not the MumbleKit audio subsystem is currently running.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/start">&ndash;&nbsp;start</a></code>
+		<span class="tooltip"><p>Starts the MumbleKit audio subsytem.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stop">&ndash;&nbsp;stop</a></code>
+		<span class="tooltip"><p>Stops the MumbleKit audio subsystem.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/restart">&ndash;&nbsp;restart</a></code>
+		<span class="tooltip"><p>Restarts MumbleKit&rsquo;s audio subsystem.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Settings" name="task_Settings"></a>
+						<h3 class="subsubtitle task-title">Settings</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/audioSettings">&ndash;&nbsp;audioSettings</a></code>
+		<span class="tooltip"><p>Returns the current configuration of the MumbleKit audio subsystem.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/updateAudioSettings:">&ndash;&nbsp;updateAudioSettings:</a></code>
+		<span class="tooltip"><p>Updates the MumbleKit audio subsystem with a new configuration.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Forced Transmit" name="task_Forced Transmit"></a>
+						<h3 class="subsubtitle task-title">Forced Transmit</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/forceTransmit">&ndash;&nbsp;forceTransmit</a></code>
+		<span class="tooltip"><p>Returns whether <a href="#//api/name/forceTransmit">forceTransmit</a> is enabled.
+Forced-transmit is used to implemented push-to-talk functionality.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setForceTransmit:">&ndash;&nbsp;setForceTransmit:</a></code>
+		<span class="tooltip"><p>Sets the current force-transmit state.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Benchmark" name="task_Benchmark"></a>
+						<h3 class="subsubtitle task-title">Benchmark</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/getBenchmarkData:">&ndash;&nbsp;getBenchmarkData:</a></code>
+		<span class="tooltip"><p>Fills a MKAudioBenchmark struct with the current benchmark data.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/sharedAudio" title="sharedAudio"></a>
+	<h3 class="subsubtitle method-title">sharedAudio</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Get a shared copy of the <a href="MKAudio.html">MKAudio</a> object for this process.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (MKAudio *)sharedAudio</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Retruns the shared <a href="MKAudio.html">MKAudio</a> object.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/audioSettings" title="audioSettings"></a>
+	<h3 class="subsubtitle method-title">audioSettings</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the current configuration of the MumbleKit audio subsystem.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (MKAudioSettings *)audioSettings</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/forceTransmit" title="forceTransmit"></a>
+	<h3 class="subsubtitle method-title">forceTransmit</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether <a href="#//api/name/forceTransmit">forceTransmit</a> is enabled.
+Forced-transmit is used to implemented push-to-talk functionality.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)forceTransmit</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/getBenchmarkData:" title="getBenchmarkData:"></a>
+	<h3 class="subsubtitle method-title">getBenchmarkData:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Fills a MKAudioBenchmark struct with the current benchmark data.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)getBenchmarkData:(MKAudioBenchmark *)<em>bench</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>bench</em></dt>
+			<dd><p>The struct to fill out with benchmark data. Should point to a MKAudioBenchmark struct.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isRunning" title="isRunning"></a>
+	<h3 class="subsubtitle method-title">isRunning</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the MumbleKit audio subsystem is currently running.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isRunning</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/restart" title="restart"></a>
+	<h3 class="subsubtitle method-title">restart</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Restarts MumbleKit&rsquo;s audio subsystem.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)restart</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setForceTransmit:" title="setForceTransmit:"></a>
+	<h3 class="subsubtitle method-title">setForceTransmit:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Sets the current force-transmit state.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)setForceTransmit:(BOOL)<em>enableForceTransmit</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>enableForceTransmit</em></dt>
+			<dd><p>Whether or not to enable force-transmit.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/start" title="start"></a>
+	<h3 class="subsubtitle method-title">start</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Starts the MumbleKit audio subsytem.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)start</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stop" title="stop"></a>
+	<h3 class="subsubtitle method-title">stop</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Stops the MumbleKit audio subsystem.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)stop</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/updateAudioSettings:" title="updateAudioSettings:"></a>
+	<h3 class="subsubtitle method-title">updateAudioSettings:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Updates the MumbleKit audio subsystem with a new configuration.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)updateAudioSettings:(MKAudioSettings *)<em>settings</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>settings</em></dt>
+			<dd><p>A pointer to a MKAudioSettings struct with the new audio subsystem settings.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-07-31)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>
