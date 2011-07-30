@@ -45,8 +45,6 @@
 
 @end
 
-static MKAudio *audioSingleton = nil;
-
 #if TARGET_OS_IPHONE == 1
 static void MKAudio_InterruptCallback(void *udata, UInt32 interrupt) {
 	MKAudio *audio = (MKAudio *) udata;
@@ -94,9 +92,14 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 @implementation MKAudio
 
 + (MKAudio *) sharedAudio {
-	if (audioSingleton == nil)
-		audioSingleton = [[MKAudio alloc] init];
-	return audioSingleton;
+    static dispatch_once_t pred;
+    static MKAudio *audio;
+
+    dispatch_once(&pred, ^{
+        audio = [[MKAudio alloc] init];
+    });
+
+	return audio;
 }
 
 - (id) init {

@@ -31,8 +31,6 @@
 #import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKConnection.h>
 
-static MKConnectionController *_controllerSingleton = nil;
-
 @interface MKConnectionController () {
     NSMutableArray *_openConnections;
 }
@@ -45,25 +43,26 @@ static MKConnectionController *_controllerSingleton = nil;
 @implementation MKConnectionController
 
 - (id) init {
-	self = [super init];
-	if (self == nil)
-		return nil;
-
-	_openConnections = [[NSMutableArray alloc] init];
-
+	if ((self = [super init])) {
+        _openConnections = [[NSMutableArray alloc] init];
+    }
 	return self;
 }
 
 - (void) dealloc {
 	[_openConnections release];
-
 	[super dealloc];
 }
 
 + (MKConnectionController *) sharedController {
-	if (!_controllerSingleton)
-		_controllerSingleton = [[MKConnectionController alloc] init];
-	return _controllerSingleton;
+    static dispatch_once_t pred;
+    static MKConnectionController *controller;
+
+    dispatch_once(&pred, ^{
+        controller = [[MKConnectionController alloc] init]; 
+    });
+
+    return controller;
 }
 								
 - (void) addConnection:(MKConnection *)conn {
