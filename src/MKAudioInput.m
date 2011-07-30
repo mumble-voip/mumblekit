@@ -52,6 +52,47 @@ struct MKAudioInputPrivate {
 	void *speexEncoder;
 };
 
+@interface MKAudioInput () {
+    @private
+    struct MKAudioInputPrivate *_private;
+    
+    @public
+    AudioUnit audioUnit;
+    AudioBufferList buflist;
+    int micSampleSize;
+    int numMicChannels;
+    
+    @private
+    MKAudioSettings _settings;
+    
+    int frameSize;
+    int micFrequency;
+    int sampleRate;
+    
+    int micFilled;
+    int micLength;
+    BOOL previousVoice;
+    int bitrate;
+    int frameCounter;
+    
+    BOOL doResetPreprocessor;
+    
+    short *psMic;
+    short *psOut;
+    
+    MKUDPMessageType udpMessageType;
+    NSMutableArray *frameList;
+	
+    MKCodecFormat _codecFormat;
+    BOOL _doTransmit;
+    BOOL _forceTransmit;
+    BOOL _lastTransmit;
+    
+    signed long _preprocRunningAvg;
+    signed long _preprocAvgItems;
+}
+@end
+
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
 	MKAudioInput *i = (MKAudioInput *)udata;

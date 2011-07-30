@@ -40,14 +40,12 @@ typedef struct _MKServerPingerResult {
 - (void) serverPingerResult:(MKServerPingerResult *)result;
 @end
 
-@interface MKServerPinger : NSObject {
-    NSData                      *_address;
-    id<MKServerPingerDelegate>  _delegate;
-}
+@interface MKServerPinger : NSObject
 
 - (id) initWithHostname:(NSString *)hostname port:(NSString *)port;
 - (void) dealloc;
 
 - (id<MKServerPingerDelegate>)delegate;
 - (void) setDelegate:(id<MKServerPingerDelegate>)delegate;
+
 @end

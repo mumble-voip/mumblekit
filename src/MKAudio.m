@@ -33,9 +33,16 @@
 #import <MumbleKit/MKAudioInput.h>
 #import <MumbleKit/MKAudioOutput.h>
 
-@interface MKAudio (Private)
+@interface MKAudio () {
+    MKAudioInput     *_audioInput;
+	MKAudioOutput    *_audioOutput;
+	MKAudioSettings  _audioSettings;
+	BOOL             _running;
+}
+
 - (id) init;
 - (void) dealloc;
+
 @end
 
 static MKAudio *audioSingleton = nil;

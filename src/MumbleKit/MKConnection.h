@@ -111,44 +111,7 @@ typedef enum {
 - (void) connection:(MKConnection *)conn handlePermissionQueryMessage: /* MPPermissionQuery */ (id)msg;
 @end
 
-@interface MKConnection : NSThread <NSStreamDelegate> {
-	MKCryptState   *_crypt;
-
-	MKMessageType  packetType;
-	int            packetLength;
-	int            packetBufferOffset;
-	NSMutableData  *packetBuffer;
-	NSString       *_hostname;
-	NSUInteger     _port;
-	BOOL           _keepRunning;
-	BOOL           _reconnect;
-
-	BOOL           _forceTCP;
-	BOOL           _udpAvailable;
-	unsigned long  _connTime;
-	NSTimer        *_pingTimer;
-	NSOutputStream *_outputStream;
-	NSInputStream  *_inputStream;
-	BOOL           _connectionEstablished;
-	BOOL           _ignoreSSLVerification;
-	id             _msgHandler;
-	id             _delegate;
-	int            _socket;
-	CFSocketRef    _udpSock;
-	SecIdentityRef _clientIdentity;
-
-	// Codec info
-	NSInteger      _alphaCodec;
-	NSInteger      _betaCodec;
-	BOOL           _preferAlpha;
-
-	// Server info.
-	NSString       *_serverVersion;
-	NSString       *_serverRelease;
-	NSString       *_serverOSName;
-	NSString       *_serverOSVersion;
-	NSMutableArray *_peerCertificates;
-}
+@interface MKConnection : NSThread <NSStreamDelegate>
 
 - (id) init;
 - (void) dealloc;

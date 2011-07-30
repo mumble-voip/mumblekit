@@ -61,6 +61,21 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 	return noErr;
 }
 
+@interface MKAudioOutput () {
+    MKAudioSettings _settings;
+    
+	AudioUnit audioUnit;
+	int sampleSize;
+	int frameSize;
+	int mixerFrequency;
+	int numChannels;
+	float *speakerVolume;
+    
+	MKReadWriteLock *outputLock;
+	NSMutableDictionary *outputs;
+}
+@end
+
 @implementation MKAudioOutput
 
 - (id) initWithSettings:(MKAudioSettings *)settings {

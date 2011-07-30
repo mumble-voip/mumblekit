@@ -32,18 +32,7 @@
 
 @class MKUser;
 
-@interface MKChannel : MKServerModelObject {
-	MKChannel        *_parent;
-	NSUInteger       _channelId;
-	NSString         *_channelName;
-	BOOL             _temporary;
-	NSInteger        _position;
-	NSMutableArray   *_channels;
-	NSMutableArray   *_users;
-	NSMutableArray   *_linked;
-	NSData           *_channelDescriptionHash;
-	NSString         *_channelDescription;
-}
+@interface MKChannel : MKServerModelObject
 
 - (id) init;
 - (void) dealloc;

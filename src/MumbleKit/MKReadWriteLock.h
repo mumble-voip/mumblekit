@@ -30,9 +30,7 @@
 
 #include <pthread.h>
 
-@interface MKReadWriteLock : NSObject {
-	pthread_rwlock_t rwlock;
-}
+@interface MKReadWriteLock : NSObject
 
 - (id) init;
 - (void) dealloc;

@@ -34,15 +34,7 @@ typedef union _float32u {
 	float f;
 } float32u;
 
-@interface MKPacketDataStream : NSObject {
-	NSMutableData *mutableData;
-	NSData *immutableData;
-	unsigned char *data;
-	NSUInteger maxSize;
-	NSUInteger offset;
-	NSUInteger overshoot;
-	BOOL ok;
-}
+@interface MKPacketDataStream : NSObject
 
 - (id) initWithData:(NSData *)data;
 - (id) initWithMutableData:(NSMutableData *)data;

@@ -41,19 +41,7 @@
 
 @class MKUser;
 
-@interface MKAudioOutput : NSObject {
-	MKAudioSettings _settings;
-
-	AudioUnit audioUnit;
-	int sampleSize;
-	int frameSize;
-	int mixerFrequency;
-	int numChannels;
-	float *speakerVolume;
-
-	MKReadWriteLock *outputLock;
-	NSMutableDictionary *outputs;
-}
+@interface MKAudioOutput : NSObject
 
 - (id) initWithSettings:(MKAudioSettings *)settings;
 - (void) dealloc;

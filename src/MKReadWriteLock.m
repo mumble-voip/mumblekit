@@ -34,6 +34,11 @@
 
 #import <MumbleKit/MKReadWriteLock.h>
 
+@interface MKReadWriteLock () {
+    pthread_rwlock_t rwlock;
+}
+@end
+
 @implementation MKReadWriteLock
 
 - (id) init {

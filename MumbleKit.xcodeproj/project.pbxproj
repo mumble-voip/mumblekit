@@ -119,6 +119,8 @@
 		28CC3715132EDC7300241269 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3710132EDC7300241269 /* libProtocolBuffers.a */; };
 		28CC3716132EDC7300241269 /* libSpeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3711132EDC7300241269 /* libSpeex.a */; };
 		28CC3717132EDC7300241269 /* libSpeexDSP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3712132EDC7300241269 /* libSpeexDSP.a */; };
+		28F2FAD513E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */; };
+		28F2FAD613E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,6 +318,7 @@
 		28CC3710132EDC7300241269 /* libProtocolBuffers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libProtocolBuffers.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CC3711132EDC7300241269 /* libSpeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSpeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CC3712132EDC7300241269 /* libSpeexDSP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSpeexDSP.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputUserPrivate.h; path = src/MKAudioOutputUserPrivate.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -446,6 +449,7 @@
 				2845A7BB132D9C400034D631 /* MKUserPrivate.h */,
 				2845A7BC132D9C400034D631 /* MulticastDelegate.h */,
 				2845A7BD132D9C400034D631 /* timedelta.h */,
+				28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */,
 			);
 			name = "Private Headers";
 			sourceTree = "<group>";
@@ -575,6 +579,7 @@
 				2845A7C1132D9C400034D631 /* MulticastDelegate.h in Headers */,
 				2845A7C3132D9C400034D631 /* timedelta.h in Headers */,
 				2845A7C6132D9C460034D631 /* CryptState.h in Headers */,
+				28F2FAD613E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +610,7 @@
 				2845A7F9132D9C520034D631 /* MKUtils.h in Headers */,
 				2845A7FB132D9C520034D631 /* MKVersion.h in Headers */,
 				282F6B0813624187008F555B /* MKServerPinger.h in Headers */,
+				28F2FAD513E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,7 +942,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1008,7 +1014,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1036,7 +1042,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (

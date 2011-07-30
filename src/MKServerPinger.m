@@ -42,9 +42,14 @@
 #include <netinet/tcp.h>
 #include <netdb.h>
 
-@interface MKServerPinger (Private)
+@interface MKServerPinger () {
+    NSData                      *_address;
+    id<MKServerPingerDelegate>  _delegate;
+}
+
 - (id) initWithAddress:(NSData *)address;
 - (NSData *) address;
+
 @end
 
 @interface MKServerPingerController : NSObject {

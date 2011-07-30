@@ -58,12 +58,7 @@ typedef struct _MKAudioBenchmark {
 	signed long  avgPreprocessorRuntime;
 } MKAudioBenchmark;
 
-@interface MKAudio : NSObject {
-	MKAudioInput     *_audioInput;
-	MKAudioOutput    *_audioOutput;
-	MKAudioSettings  _audioSettings;
-	BOOL             _running;
-}
+@interface MKAudio : NSObject
 
 + (MKAudio *) sharedAudio;
 

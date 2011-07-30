@@ -34,19 +34,7 @@
 #define MKCertificateItemOrganization @"O"
 #define MKCertificateItemSerialNumber @"serialNumber"
 
-@interface MKCertificate : NSObject {
-	NSData          *_derCert;
-	NSData          *_derPrivKey;
-
-	NSDictionary    *_subjectDict;
-	NSDictionary    *_issuerDict;
-
-	NSDate          *_notAfterDate;
-	NSDate          *_notBeforeDate;
-
-	NSMutableArray  *_emailAddresses;
-	NSMutableArray  *_dnsEntries;
-}
+@interface MKCertificate : NSObject
 
 + (MKCertificate *) certificateWithCertificate:(NSData *)cert privateKey:(NSData *)privkey;
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email;

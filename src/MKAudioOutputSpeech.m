@@ -31,6 +31,7 @@
 
 #import <MumbleKit/MKAudioOutputSpeech.h>
 #import <MumbleKit/MKPacketDataStream.h>
+#import "MKAudioOutputUserPrivate.h"
 
 #include <pthread.h>
 
@@ -50,6 +51,37 @@ struct MKAudioOutputSpeechPrivate {
 	void *speexDecoder;
 	SpeexResamplerState *resampler;
 };
+
+@interface MKAudioOutputSpeech () {
+    struct MKAudioOutputSpeechPrivate *_private;
+    
+    MKUDPMessageType messageType;
+    NSUInteger bufferOffset;
+    NSUInteger bufferFilled;
+    NSUInteger outputSize;
+    NSUInteger lastConsume;
+    NSUInteger frameSize;
+    BOOL lastAlive;
+    BOOL hasTerminator;
+    
+    float *fadeIn;
+    float *fadeOut;
+    
+    NSInteger missCount;
+    NSInteger missedFrames;
+    
+    NSMutableArray *frames;
+    unsigned char flags;
+    
+    NSUInteger _userSession;
+    float powerMin, powerMax;
+    float averageAvailable;
+    
+    MKTalkState _talkState;
+    
+    pthread_mutex_t jitterMutex;
+}
+@end
 
 @implementation MKAudioOutputSpeech
 

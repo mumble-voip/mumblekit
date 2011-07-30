@@ -30,10 +30,7 @@
 
 struct MKCryptStatePrivate;
 
-@interface MKCryptState : NSObject {
-	@private
-		struct MKCryptStatePrivate *_priv;
-}
+@interface MKCryptState : NSObject
 
 - (id) init;
 - (void) dealloc;

@@ -47,6 +47,11 @@ struct MKCryptStatePrivate {
 	CryptState cs;
 };
 
+@interface MKCryptState () {
+    struct MKCryptStatePrivate *_priv;
+}
+@end
+
 @implementation MKCryptState
 
 - (id) init {

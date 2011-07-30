@@ -30,6 +30,7 @@
 */
 
 #import <MumbleKit/MKAudioOutputUser.h>
+#import "MKAudioOutputUserPrivate.h"
 
 @implementation MKAudioOutputUser
 

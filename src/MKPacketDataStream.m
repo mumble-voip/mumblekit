@@ -31,6 +31,17 @@
 
 #import <MumbleKit/MKPacketDataStream.h>
 
+@interface MKPacketDataStream () {
+    NSMutableData   *mutableData;
+	NSData          *immutableData;
+	unsigned char   *data;
+	NSUInteger      maxSize;
+	NSUInteger      offset;
+	NSUInteger      overshoot;
+	BOOL            ok;
+}
+@end
+
 @implementation MKPacketDataStream
 
 - (id) initWithData:(NSData *)ourContainer {

@@ -33,9 +33,13 @@
 
 static MKConnectionController *_controllerSingleton = nil;
 
-@interface MKConnectionController (Private)
+@interface MKConnectionController () {
+    NSMutableArray *_openConnections;
+}
+
 - (id) init;
 - (void) dealloc;
+
 @end
 
 @implementation MKConnectionController

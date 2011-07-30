@@ -39,27 +39,7 @@ typedef enum {
 
 @class MKChannel;
 
-@interface MKUser : MKServerModelObject {
-	BOOL         _muted;
-	BOOL         _deafened;
-	BOOL         _suppressed;
-	BOOL         _localMuted;
-	BOOL         _selfMuted;
-	BOOL         _selfDeafened;
-	BOOL         _friend;
-	BOOL         _prioritySpeaker;
-	BOOL         _recording;
-	MKTalkState  _talkState;
-	NSUInteger   _session;
-	NSInteger    _userId;
-	NSString     *_userHash;
-	NSString     *_username;
-	MKChannel    *_channel;
-	NSString     *_comment;
-	NSData       *_commentHash;
-	NSData       *_texture;
-	NSData       *_textureHash;
-}
+@interface MKUser : MKServerModelObject
 
 - (id) init;
 - (void) dealloc;

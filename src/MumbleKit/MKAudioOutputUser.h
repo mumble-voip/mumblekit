@@ -32,13 +32,7 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKAudioOutputUser.h>
 
-@interface MKAudioOutputUser : NSObject {
-	NSString *name;
-	NSUInteger bufferSize;
-	float *buffer;
-	float *volume;
-	float pos[3];
-}
+@interface MKAudioOutputUser : NSObject
 
 - (id) init;
 - (void) dealloc;
@@ -46,7 +40,6 @@
 - (MKUser *) user;
 - (float *) buffer;
 - (NSUInteger) bufferLength;
-
 
 - (BOOL) needSamples:(NSUInteger)nsamples;
 - (void) resizeBuffer:(NSUInteger)newSize;

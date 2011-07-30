@@ -34,6 +34,20 @@
 #import <MumbleKit/MKUser.h>
 #import "MKUserPrivate.h"
 
+@interface MKChannel () {
+    MKChannel        *_parent;
+	NSUInteger       _channelId;
+	NSString         *_channelName;
+	BOOL             _temporary;
+	NSInteger        _position;
+	NSMutableArray   *_channels;
+	NSMutableArray   *_users;
+	NSMutableArray   *_linked;
+	NSData           *_channelDescriptionHash;
+	NSString         *_channelDescription;
+}
+@end
+
 @implementation MKChannel
 
 - (id) init {

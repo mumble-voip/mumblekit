@@ -44,7 +44,15 @@
 
 #import "MulticastDelegate.h"
 
-@interface MKServerModel (InternalPrivate)
+@interface MKServerModel () {
+    MKConnection                              *_connection;
+	MKChannel                                 *_rootChannel;
+	MKUser                                    *_connectedUser;
+	NSMutableDictionary                       *_userMap;
+	NSMutableDictionary                       *_channelMap;
+	MulticastDelegate<MKServerModelDelegate>  *_delegate;    
+}
+
 // Notifications
 - (void) notificationUserTalkStateChanged:(NSNotification *)notification;
 

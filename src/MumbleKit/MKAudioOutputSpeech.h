@@ -36,37 +36,7 @@
 
 struct MKAudioOutputSpeechPrivate;
 
-@interface MKAudioOutputSpeech : MKAudioOutputUser {
-	@private
-		struct MKAudioOutputSpeechPrivate *_private;
-
-	@protected
-		MKUDPMessageType messageType;
-		NSUInteger bufferOffset;
-		NSUInteger bufferFilled;
-		NSUInteger outputSize;
-		NSUInteger lastConsume;
-		NSUInteger frameSize;
-		BOOL lastAlive;
-		BOOL hasTerminator;
-
-		float *fadeIn;
-		float *fadeOut;
-
-		NSInteger missCount;
-		NSInteger missedFrames;
-
-		NSMutableArray *frames;
-		unsigned char flags;
-
-		NSUInteger _userSession;
-		float powerMin, powerMax;
-		float averageAvailable;
-
-		MKTalkState _talkState;
-
-		pthread_mutex_t jitterMutex;
-}
+@interface MKAudioOutputSpeech : MKAudioOutputUser
 
 - (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;
 - (void) dealloc;

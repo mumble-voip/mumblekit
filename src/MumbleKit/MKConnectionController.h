@@ -30,9 +30,7 @@
 
 #import <MumbleKit/MKConnection.h>
 
-@interface MKConnectionController : NSObject {
-	NSMutableArray *_openConnections;
-}
+@interface MKConnectionController : NSObject
 
 + (MKConnectionController *) sharedController;
 

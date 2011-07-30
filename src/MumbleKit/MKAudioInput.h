@@ -34,47 +34,7 @@
 #import <AudioUnit/AUComponent.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-struct MKAudioInputPrivate;
-
-@interface MKAudioInput : NSObject {
-	@private
-		struct MKAudioInputPrivate *_private;
-
-	@public
-		AudioUnit audioUnit;
-		AudioBufferList buflist;
-		int micSampleSize;
-		int numMicChannels;
-
-	@protected
-		MKAudioSettings _settings;
-
-		int frameSize;
-		int micFrequency;
-		int sampleRate;
-
-		int micFilled;
-		int micLength;
-		BOOL previousVoice;
-		int bitrate;
-		int frameCounter;
-
-		BOOL doResetPreprocessor;
-
-		short *psMic;
-		short *psOut;
-
-		MKUDPMessageType udpMessageType;
-		NSMutableArray *frameList;
-	
-		MKCodecFormat _codecFormat;
-		BOOL _doTransmit;
-		BOOL _forceTransmit;
-		BOOL _lastTransmit;
-
-		signed long _preprocRunningAvg;
-		signed long _preprocAvgItems;
-}
+@interface MKAudioInput : NSObject
 
 - (id) initWithSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
@@ -93,6 +53,5 @@ struct MKAudioInputPrivate;
 - (BOOL) forceTransmit;
 
 - (signed long) preprocessorAvgRuntime;
-
 
 @end

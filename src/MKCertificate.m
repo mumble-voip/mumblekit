@@ -54,7 +54,20 @@ static int add_ext(X509 * crt, int nid, char *value) {
 	return 1;
 }
 
-@interface MKCertificate (Private)
+@interface MKCertificate () {
+    NSData          *_derCert;
+	NSData          *_derPrivKey;
+    
+	NSDictionary    *_subjectDict;
+	NSDictionary    *_issuerDict;
+    
+	NSDate          *_notAfterDate;
+	NSDate          *_notBeforeDate;
+    
+	NSMutableArray  *_emailAddresses;
+	NSMutableArray  *_dnsEntries;
+}
+
 - (void) setCertificate:(NSData *)cert;
 - (NSData *) certificate;
 
@@ -62,6 +75,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 - (NSData *) privateKey;
 
 - (void) extractCertInfo;
+
 @end
 
 @implementation MKCertificate
