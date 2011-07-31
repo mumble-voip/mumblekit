@@ -29,6 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import <MumbleKit/MKCertificate.h>
+
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <openssl/bio.h>
@@ -38,7 +40,12 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
-#import <MumbleKit/MKCertificate.h>
+
+NSString *MKCertificateItemCommonName   = @"CN";
+NSString *MKCertificateItemCountry      = @"C";
+NSString *MKCertificateItemOrganization = @"O";
+NSString *MKCertificateItemSerialNumber = @"serialNumber";
+
 
 static int add_ext(X509 * crt, int nid, char *value) {
 	X509_EXTENSION *ex;

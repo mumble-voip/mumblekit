@@ -29,31 +29,206 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#define MKCertificateItemCommonName   @"CN"
-#define MKCertificateItemCountry      @"C"
-#define MKCertificateItemOrganization @"O"
-#define MKCertificateItemSerialNumber @"serialNumber"
 
+///-----------------------------------
+/// @name MKCertificate accessor items
+///-----------------------------------
+
+/**
+ * @constant The Common Name item. (CN)
+ */ 
+extern NSString *MKCertificateItemCommonName;
+/**
+ * @constant The Country item. (C)
+ */
+extern NSString *MKCertificateItemCountry;
+
+/**
+ * @constant The Organization item. (O)
+ */
+extern NSString *MKCertificateItemOrganization;
+
+/**
+ * @constant The serialNumber item. (serialNumber)
+ */
+extern NSString *MKCertificateItemSerialNumber;
+
+
+/**
+ * MKCertificate is a helper class for creating, reading and exporting X.509 certificates.
+ */
 @interface MKCertificate : NSObject
 
+///------------------------------------------
+/// @name Creating and accessing certificates
+///------------------------------------------
+
+/**
+ * Returns a new MKCertificate object from the given certificate and private key.
+ *
+ * @param cert     A DER-encoded X.509 certificate
+ * @param privkey  The private key corresponding to the certificate passed in via cert.
+ *
+ * @returns A MKCertificate object with the given certificate data and optionally the
+ *          given private key. Passing in a private key is mostly used in situations
+ *          where one wants to export the certificate in another format (for example PKCS12).
+ */
 + (MKCertificate *) certificateWithCertificate:(NSData *)cert privateKey:(NSData *)privkey;
+
+/**
+ * Generate a self-signed MKCertificate object using the given name and email address.
+ * This generates a public and private keypair, and uses that key pair to create a self-
+ * signed X.509 certificate that is compatible with Mumble.
+ *
+ * @param name  The name to be used when creating the certificate. This becomes the
+ *              Subject Name of the X.509 certificate.
+ * @param email The email address to embed in the certificate. This value may be nil if
+ *              no email address should be included in the generated X.509 certificate.
+ *
+ * @returns A MKCertificate that backs a self-signed X.509 certificate backed by a random
+ *          public and private keypair.
+ */
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email;
+
+/**
+ * Import a certificate from a PKCS12 file with the given password.
+ *
+ * @param pkcs12    A PKCS12-encoded certificate with a public and private keypair.
+ * @param password  The password to decode the given PKCS12-encoded file.
+ *                  May be nil if no password, or a blank password should be used for decoding
+ *                  the given PKCS12 data.
+ *
+ * @returns A MKCertificate backed by the certificate and public and private keypair
+ *          from the given PKCS12 data.
+ */
 + (MKCertificate *) certificateWithPKCS12:(NSData *)pkcs12 password:(NSString *)password;
 
+///---------------------------------
+/// @name Certificate content status
+///---------------------------------
+
+/**
+ * Determine whether the certificate has a certificate (and public key)
+ *
+ * @return Returns YES if the MKCertificate object has a certificate and public key.
+ *         Otherwise, returns NO.
+ */
 - (BOOL) hasCertificate;
+
+/**
+ * Determine whether the MKCertficiate object has private key data.
+ *
+ * @returns Returns YES if the MKCertificate object has a private key.
+ *          Otherwise, returns NO.
+ */
 - (BOOL) hasPrivateKey;
 
+///--------------------------------
+/// @name Exporting a MKCertificate
+///--------------------------------
+
+/**
+ * Export a MKCertificate object to a PKCS12 data blob using the given password.
+ *
+ * @param password  The password needed to decode the generated PKCS12-blob.
+ *
+ * @returns Returns a NSData object that holds the PKCS12-encoded version of
+ *          the receiver MKCertificate's certificate and public and private keypair.
+ */
 - (NSData *) exportPKCS12WithPassword:(NSString *)password;
 
+///--------------------------
+/// @name Certificate Digests
+///--------------------------
+
+/**
+ * Returns a SHA1 digest of raw DER-data backing the certificate and the public key
+ * of the receiving MKCertificate object.
+ *
+ * @returns An NSData object that holds the calculated SHA1 digest.
+ */
 - (NSData *) digest;
+
+/**
+ * Returns a hex-encoded SHA1 digest of the raw DER-data backing the certifiate and the
+ * public key of the receiving MKCertificate object.
+ *
+ * @returns A NSString with the (lowercase) hex-encoded SHA1 digest.
+ */
 - (NSString *) hexDigest;
 
-- (NSString *) commonName;
-- (NSString *) emailAddress;
-- (NSString *) issuerName;
+///---------------------
+/// @name Validity Dates
+///---------------------
+
+/**
+ * Returns the Not Before date of the X.509 certificate.
+ * This determines the date from which the certificate is deemed valid.
+ *
+ * @returns An NSDate object with the Not Before date.
+ */
 - (NSDate *) notBefore;
+
+/**
+ * Returns the Not After date of the X.509 certificate.
+ * This date expresses the moment at which the certificate stops being deemed valid.
+ * Note that a X.509 certificates can also be revoked, so the Not After date is not
+ * an authoritative method of determining certificate validity.
+ *
+ * @returns An NSDate object with the Not After date.
+ */
 - (NSDate *) notAfter;
+
+///------------------------------------------
+/// @name Certificate Subject and Issuer data
+///------------------------------------------
+
+/**
+ * Retruns the CN (Common Name) value of subjecdt of the X.509 certificate.
+ *
+ * @returns An NSString with the Common Name.
+ */
+- (NSString *) commonName;
+
+/**
+ * Returns the first email address listed in the X.509 certificate.
+ * (This email is looked after in Subject Alt. Names.)
+ *
+ * @returns An NSString with the email address.
+ */
+- (NSString *) emailAddress;
+
+/**
+ * Returns the name of the body that issued the X.509 certificate.
+ *
+ * @returns An NSString with the issuer name.
+ */
+- (NSString *) issuerName;
+
+/**
+ * The issuerItem: method is used to directly access the issuer items of the X.509
+ * certificate.
+ *
+ * @param item  An X.509 subject item key (CN, O, C, etc.)
+ *              (See the 'MKCertificate accessor items' section for a list
+ *               of pre-defined symbolic values for the item keys)
+ *
+ * @returns The value of the looked-up issuer item. Returns nil if the issuer
+ *          item was not found.
+ */
 - (NSString *) issuerItem:(NSString *)item;
+
+/**
+ * The subjectItem: method is used to directly access the subject items of the X.509
+ * certificate.
+ *
+ * @param item  An X.509 issuer item key (CN, O, C, etc.)
+ *              (See the 'MKCertificate accessor items' section for a list
+ *               of pre-defined symbolic values for the item keys)
+ *
+ * @returns The value of the looked-up subject item. Returns nil if the subject item
+ *          was not found.
+ */
 - (NSString *) subjectItem:(NSString *)item;
 
 @end
