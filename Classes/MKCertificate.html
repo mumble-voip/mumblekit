@@ -1,0 +1,1179 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MKCertificate Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MumbleKit </a></h1>
+				<a id="developerHome" href="../index.html">Mumble Developers</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MKCertificate Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/certificateWithCertificate:privateKey:">&nbsp;&nbsp;&nbsp;&nbsp;+ certificateWithCertificate:privateKey:</option>
+	
+	<option value="//api/name/certificateWithPKCS12:password:">&nbsp;&nbsp;&nbsp;&nbsp;+ certificateWithPKCS12:password:</option>
+	
+	<option value="//api/name/selfSignedCertificateWithName:email:">&nbsp;&nbsp;&nbsp;&nbsp;+ selfSignedCertificateWithName:email:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/commonName">&nbsp;&nbsp;&nbsp;&nbsp;- commonName</option>
+	
+	<option value="//api/name/digest">&nbsp;&nbsp;&nbsp;&nbsp;- digest</option>
+	
+	<option value="//api/name/emailAddress">&nbsp;&nbsp;&nbsp;&nbsp;- emailAddress</option>
+	
+	<option value="//api/name/exportPKCS12WithPassword:">&nbsp;&nbsp;&nbsp;&nbsp;- exportPKCS12WithPassword:</option>
+	
+	<option value="//api/name/hasCertificate">&nbsp;&nbsp;&nbsp;&nbsp;- hasCertificate</option>
+	
+	<option value="//api/name/hasPrivateKey">&nbsp;&nbsp;&nbsp;&nbsp;- hasPrivateKey</option>
+	
+	<option value="//api/name/hexDigest">&nbsp;&nbsp;&nbsp;&nbsp;- hexDigest</option>
+	
+	<option value="//api/name/issuerItem:">&nbsp;&nbsp;&nbsp;&nbsp;- issuerItem:</option>
+	
+	<option value="//api/name/issuerName">&nbsp;&nbsp;&nbsp;&nbsp;- issuerName</option>
+	
+	<option value="//api/name/notAfter">&nbsp;&nbsp;&nbsp;&nbsp;- notAfter</option>
+	
+	<option value="//api/name/notBefore">&nbsp;&nbsp;&nbsp;&nbsp;- notBefore</option>
+	
+	<option value="//api/name/subjectItem:">&nbsp;&nbsp;&nbsp;&nbsp;- subjectItem:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creating and accessing certificates">Creating and accessing certificates</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Certificate content status">Certificate content status</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Exporting a MKCertificate">Exporting a MKCertificate</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Certificate Digests">Certificate Digests</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Validity Dates">Validity Dates</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Certificate Subject and Issuer data">Certificate Subject and Issuer data</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/certificateWithCertificate:privateKey:">certificateWithCertificate:privateKey:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/certificateWithPKCS12:password:">certificateWithPKCS12:password:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/selfSignedCertificateWithName:email:">selfSignedCertificateWithName:email:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/commonName">commonName</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/digest">digest</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/emailAddress">emailAddress</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/exportPKCS12WithPassword:">exportPKCS12WithPassword:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasCertificate">hasCertificate</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasPrivateKey">hasPrivateKey</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hexDigest">hexDigest</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/issuerItem:">issuerItem:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/issuerName">issuerName</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/notAfter">notAfter</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/notBefore">notBefore</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/subjectItem:">subjectItem:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MKCertificate Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MKCertificate Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MKCertificate.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><a href="MKCertificate.html">MKCertificate</a> is a helper class for creating, reading and exporting X.509 certificates.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="Creating and accessing certificates" name="task_Creating and accessing certificates"></a>
+						<h3 class="subsubtitle task-title">Creating and accessing certificates</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/certificateWithCertificate:privateKey:">+&nbsp;certificateWithCertificate:privateKey:</a></code>
+		<span class="tooltip"><p>Returns a new <a href="MKCertificate.html">MKCertificate</a> object from the given certificate and private key.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/selfSignedCertificateWithName:email:">+&nbsp;selfSignedCertificateWithName:email:</a></code>
+		<span class="tooltip"><p>Generate a self-signed <a href="MKCertificate.html">MKCertificate</a> object using the given name and email address.
+This generates a public and private keypair, and uses that key pair to create a self-
+signed X.509 certificate that is compatible with Mumble.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/certificateWithPKCS12:password:">+&nbsp;certificateWithPKCS12:password:</a></code>
+		<span class="tooltip"><p>Import a certificate from a PKCS12 file with the given password.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Certificate content status" name="task_Certificate content status"></a>
+						<h3 class="subsubtitle task-title">Certificate content status</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hasCertificate">&ndash;&nbsp;hasCertificate</a></code>
+		<span class="tooltip"><p>Determine whether the certificate has a certificate (and public key)</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hasPrivateKey">&ndash;&nbsp;hasPrivateKey</a></code>
+		<span class="tooltip"><p>Determine whether the MKCertficiate object has private key data.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Exporting a MKCertificate" name="task_Exporting a MKCertificate"></a>
+						<h3 class="subsubtitle task-title">Exporting a MKCertificate</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/exportPKCS12WithPassword:">&ndash;&nbsp;exportPKCS12WithPassword:</a></code>
+		<span class="tooltip"><p>Export a <a href="MKCertificate.html">MKCertificate</a> object to a PKCS12 data blob using the given password.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Certificate Digests" name="task_Certificate Digests"></a>
+						<h3 class="subsubtitle task-title">Certificate Digests</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/digest">&ndash;&nbsp;digest</a></code>
+		<span class="tooltip"><p>Returns a SHA1 <a href="#//api/name/digest">digest</a> of raw DER-data backing the certificate and the public key
+of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hexDigest">&ndash;&nbsp;hexDigest</a></code>
+		<span class="tooltip"><p>Returns a hex-encoded SHA1 <a href="#//api/name/digest">digest</a> of the raw DER-data backing the certifiate and the
+public key of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Validity Dates" name="task_Validity Dates"></a>
+						<h3 class="subsubtitle task-title">Validity Dates</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/notBefore">&ndash;&nbsp;notBefore</a></code>
+		<span class="tooltip"><p>Returns the Not Before date of the X.509 certificate.
+This determines the date from which the certificate is deemed valid.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/notAfter">&ndash;&nbsp;notAfter</a></code>
+		<span class="tooltip"><p>Returns the Not After date of the X.509 certificate.
+This date expresses the moment at which the certificate stops being deemed valid.
+Note that a X.509 certificates can also be revoked, so the Not After date is not
+an authoritative method of determining certificate validity.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Certificate Subject and Issuer data" name="task_Certificate Subject and Issuer data"></a>
+						<h3 class="subsubtitle task-title">Certificate Subject and Issuer data</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/commonName">&ndash;&nbsp;commonName</a></code>
+		<span class="tooltip"><p>Retruns the CN (Common Name) value of subjecdt of the X.509 certificate.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/emailAddress">&ndash;&nbsp;emailAddress</a></code>
+		<span class="tooltip"><p>Returns the first email address listed in the X.509 certificate.
+(This email is looked after in Subject Alt. Names.)</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/issuerName">&ndash;&nbsp;issuerName</a></code>
+		<span class="tooltip"><p>Returns the name of the body that issued the X.509 certificate.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/issuerItem:">&ndash;&nbsp;issuerItem:</a></code>
+		<span class="tooltip"><p>The <a href="#//api/name/issuerItem:">issuerItem:</a> method is used to directly access the issuer items of the X.509
+certificate.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/subjectItem:">&ndash;&nbsp;subjectItem:</a></code>
+		<span class="tooltip"><p>The <a href="#//api/name/subjectItem:">subjectItem:</a> method is used to directly access the subject items of the X.509
+certificate.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/certificateWithCertificate:privateKey:" title="certificateWithCertificate:privateKey:"></a>
+	<h3 class="subsubtitle method-title">certificateWithCertificate:privateKey:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns a new <a href="MKCertificate.html">MKCertificate</a> object from the given certificate and private key.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)certificateWithCertificate:(NSData *)<em>cert</em> privateKey:(NSData *)<em>privkey</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>cert</em></dt>
+			<dd><p>A DER-encoded X.509 certificate</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>privkey</em></dt>
+			<dd><p>The private key corresponding to the certificate passed in via cert.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="MKCertificate.html">MKCertificate</a> object with the given certificate data and optionally the
+given private key. Passing in a private key is mostly used in situations
+where one wants to export the certificate in another format (for example PKCS12).</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/certificateWithPKCS12:password:" title="certificateWithPKCS12:password:"></a>
+	<h3 class="subsubtitle method-title">certificateWithPKCS12:password:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Import a certificate from a PKCS12 file with the given password.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)certificateWithPKCS12:(NSData *)<em>pkcs12</em> password:(NSString *)<em>password</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>pkcs12</em></dt>
+			<dd><p>A PKCS12-encoded certificate with a public and private keypair.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>password</em></dt>
+			<dd><p>The password to decode the given PKCS12-encoded file.
+May be nil if no password, or a blank password should be used for decoding
+the given PKCS12 data.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="MKCertificate.html">MKCertificate</a> backed by the certificate and public and private keypair
+from the given PKCS12 data.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/selfSignedCertificateWithName:email:" title="selfSignedCertificateWithName:email:"></a>
+	<h3 class="subsubtitle method-title">selfSignedCertificateWithName:email:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Generate a self-signed <a href="MKCertificate.html">MKCertificate</a> object using the given name and email address.
+This generates a public and private keypair, and uses that key pair to create a self-
+signed X.509 certificate that is compatible with Mumble.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)selfSignedCertificateWithName:(NSString *)<em>name</em> email:(NSString *)<em>email</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>name</em></dt>
+			<dd><p>The name to be used when creating the certificate. This becomes the
+Subject Name of the X.509 certificate.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>email</em></dt>
+			<dd><p>The email address to embed in the certificate. This value may be nil if
+no email address should be included in the generated X.509 certificate.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="MKCertificate.html">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random
+public and private keypair.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/commonName" title="commonName"></a>
+	<h3 class="subsubtitle method-title">commonName</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retruns the CN (Common Name) value of subjecdt of the X.509 certificate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)commonName</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSString with the Common Name.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/digest" title="digest"></a>
+	<h3 class="subsubtitle method-title">digest</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns a SHA1 <a href="#//api/name/digest">digest</a> of raw DER-data backing the certificate and the public key
+of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSData *)digest</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSData object that holds the calculated SHA1 <a href="#//api/name/digest">digest</a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/emailAddress" title="emailAddress"></a>
+	<h3 class="subsubtitle method-title">emailAddress</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the first email address listed in the X.509 certificate.
+(This email is looked after in Subject Alt. Names.)</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)emailAddress</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSString with the email address.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/exportPKCS12WithPassword:" title="exportPKCS12WithPassword:"></a>
+	<h3 class="subsubtitle method-title">exportPKCS12WithPassword:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Export a <a href="MKCertificate.html">MKCertificate</a> object to a PKCS12 data blob using the given password.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSData *)exportPKCS12WithPassword:(NSString *)<em>password</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>password</em></dt>
+			<dd><p>The password needed to decode the generated PKCS12-blob.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns a NSData object that holds the PKCS12-encoded version of
+the receiver MKCertificate&rsquo;s certificate and public and private keypair.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hasCertificate" title="hasCertificate"></a>
+	<h3 class="subsubtitle method-title">hasCertificate</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Determine whether the certificate has a certificate (and public key)</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)hasCertificate</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns YES if the <a href="MKCertificate.html">MKCertificate</a> object has a certificate and public key.
+Otherwise, returns NO.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hasPrivateKey" title="hasPrivateKey"></a>
+	<h3 class="subsubtitle method-title">hasPrivateKey</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Determine whether the MKCertficiate object has private key data.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)hasPrivateKey</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns YES if the <a href="MKCertificate.html">MKCertificate</a> object has a private key.
+Otherwise, returns NO.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hexDigest" title="hexDigest"></a>
+	<h3 class="subsubtitle method-title">hexDigest</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns a hex-encoded SHA1 <a href="#//api/name/digest">digest</a> of the raw DER-data backing the certifiate and the
+public key of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)hexDigest</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A NSString with the (lowercase) hex-encoded SHA1 <a href="#//api/name/digest">digest</a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/issuerItem:" title="issuerItem:"></a>
+	<h3 class="subsubtitle method-title">issuerItem:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The <a href="#//api/name/issuerItem:">issuerItem:</a> method is used to directly access the issuer items of the X.509
+certificate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)issuerItem:(NSString *)<em>item</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>item</em></dt>
+			<dd><p>An X.509 subject item key (CN, O, C, etc.)
+(See the &lsquo;<a href="MKCertificate.html">MKCertificate</a> accessor items&rsquo; section for a list
+of pre-defined symbolic values for the item keys)</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The value of the looked-up issuer item. Returns nil if the issuer
+item was not found.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/issuerName" title="issuerName"></a>
+	<h3 class="subsubtitle method-title">issuerName</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the name of the body that issued the X.509 certificate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)issuerName</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSString with the issuer name.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/notAfter" title="notAfter"></a>
+	<h3 class="subsubtitle method-title">notAfter</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the Not After date of the X.509 certificate.
+This date expresses the moment at which the certificate stops being deemed valid.
+Note that a X.509 certificates can also be revoked, so the Not After date is not
+an authoritative method of determining certificate validity.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSDate *)notAfter</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSDate object with the Not After date.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/notBefore" title="notBefore"></a>
+	<h3 class="subsubtitle method-title">notBefore</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the Not Before date of the X.509 certificate.
+This determines the date from which the certificate is deemed valid.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSDate *)notBefore</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSDate object with the Not Before date.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/subjectItem:" title="subjectItem:"></a>
+	<h3 class="subsubtitle method-title">subjectItem:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The <a href="#//api/name/subjectItem:">subjectItem:</a> method is used to directly access the subject items of the X.509
+certificate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)subjectItem:(NSString *)<em>item</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>item</em></dt>
+			<dd><p>An X.509 issuer item key (CN, O, C, etc.)
+(See the &lsquo;<a href="MKCertificate.html">MKCertificate</a> accessor items&rsquo; section for a list
+of pre-defined symbolic values for the item keys)</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The value of the looked-up subject item. Returns nil if the subject item
+was not found.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-07-31)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>
