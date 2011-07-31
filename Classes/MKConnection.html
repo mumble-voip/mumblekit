@@ -1,0 +1,1485 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MKConnection Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MumbleKit </a></h1>
+				<a id="developerHome" href="../index.html">Mumble Developers</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MKConnection Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/alphaCodec">&nbsp;&nbsp;&nbsp;&nbsp;- alphaCodec</option>
+	
+	<option value="//api/name/authenticateWithUsername:password:">&nbsp;&nbsp;&nbsp;&nbsp;- authenticateWithUsername:password:</option>
+	
+	<option value="//api/name/betaCodec">&nbsp;&nbsp;&nbsp;&nbsp;- betaCodec</option>
+	
+	<option value="//api/name/clientIdentity">&nbsp;&nbsp;&nbsp;&nbsp;- clientIdentity</option>
+	
+	<option value="//api/name/connected">&nbsp;&nbsp;&nbsp;&nbsp;- connected</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/disconnect">&nbsp;&nbsp;&nbsp;&nbsp;- disconnect</option>
+	
+	<option value="//api/name/forceTCP">&nbsp;&nbsp;&nbsp;&nbsp;- forceTCP</option>
+	
+	<option value="//api/name/hostname">&nbsp;&nbsp;&nbsp;&nbsp;- hostname</option>
+	
+	<option value="//api/name/init">&nbsp;&nbsp;&nbsp;&nbsp;- init</option>
+	
+	<option value="//api/name/peerCertificates">&nbsp;&nbsp;&nbsp;&nbsp;- peerCertificates</option>
+	
+	<option value="//api/name/port">&nbsp;&nbsp;&nbsp;&nbsp;- port</option>
+	
+	<option value="//api/name/preferAlphaCodec">&nbsp;&nbsp;&nbsp;&nbsp;- preferAlphaCodec</option>
+	
+	<option value="//api/name/reconnect">&nbsp;&nbsp;&nbsp;&nbsp;- reconnect</option>
+	
+	<option value="//api/name/sendMessageWithType:data:">&nbsp;&nbsp;&nbsp;&nbsp;- sendMessageWithType:data:</option>
+	
+	<option value="//api/name/sendVoiceData:">&nbsp;&nbsp;&nbsp;&nbsp;- sendVoiceData:</option>
+	
+	<option value="//api/name/serverOSName">&nbsp;&nbsp;&nbsp;&nbsp;- serverOSName</option>
+	
+	<option value="//api/name/serverOSVersion">&nbsp;&nbsp;&nbsp;&nbsp;- serverOSVersion</option>
+	
+	<option value="//api/name/serverRelease">&nbsp;&nbsp;&nbsp;&nbsp;- serverRelease</option>
+	
+	<option value="//api/name/serverVersion">&nbsp;&nbsp;&nbsp;&nbsp;- serverVersion</option>
+	
+	<option value="//api/name/setClientIdentity:">&nbsp;&nbsp;&nbsp;&nbsp;- setClientIdentity:</option>
+	
+	<option value="//api/name/setForceTCP:">&nbsp;&nbsp;&nbsp;&nbsp;- setForceTCP:</option>
+	
+	<option value="//api/name/setIgnoreSSLVerification:">&nbsp;&nbsp;&nbsp;&nbsp;- setIgnoreSSLVerification:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Authenticating with the server">Authenticating with the server</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_TLS connection state">TLS connection state</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Forced TCP mode">Forced TCP mode</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Sending data to the remote server">Sending data to the remote server</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Codec Information">Codec Information</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/alphaCodec">alphaCodec</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/authenticateWithUsername:password:">authenticateWithUsername:password:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/betaCodec">betaCodec</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/clientIdentity">clientIdentity</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connected">connected</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/disconnect">disconnect</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/forceTCP">forceTCP</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hostname">hostname</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/init">init</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/peerCertificates">peerCertificates</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/port">port</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/preferAlphaCodec">preferAlphaCodec</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/reconnect">reconnect</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendMessageWithType:data:">sendMessageWithType:data:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendVoiceData:">sendVoiceData:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverOSName">serverOSName</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverOSVersion">serverOSVersion</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverRelease">serverRelease</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverVersion">serverVersion</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setClientIdentity:">setClientIdentity:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setForceTCP:">setForceTCP:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setIgnoreSSLVerification:">setIgnoreSSLVerification:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MKConnection Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MKConnection Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSThread</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSStreamDelegate</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MKConnection.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><a href="MKConnection.html">MKConnection</a> represents a connection to a Mumble server.
+It is mostly used together with MKServerModel which translates the wire protocol
+to Objective-C delegate callbacks.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/init">&ndash;&nbsp;init</a></code>
+		<span class="tooltip"><p>Initialize a new <a href="MKConnection.html">MKConnection</a> object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		<span class="tooltip"><p>Deallocate a <a href="MKConnection.html">MKConnection</a> object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/reconnect">&ndash;&nbsp;reconnect</a></code>
+		<span class="tooltip"><p>Re-establish the connection. This is often used together with the
+<a href="#//api/name/setIgnoreSSLVerification:">setIgnoreSSLVerification:</a> method to implement an &ldquo;Are You Sure?&rdquo; dialog
+for self-signed certificates.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/disconnect">&ndash;&nbsp;disconnect</a></code>
+		<span class="tooltip"><p>Disconnect from the server.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connected">&ndash;&nbsp;connected</a></code>
+		<span class="tooltip"><p>The current status of the connection.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hostname">&ndash;&nbsp;hostname</a></code>
+		<span class="tooltip"><p>The <a href="#//api/name/hostname">hostname</a> that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/port">&ndash;&nbsp;port</a></code>
+		<span class="tooltip"><p>The <a href="#//api/name/port">port</a> number on the host that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setClientIdentity:">&ndash;&nbsp;setClientIdentity:</a></code>
+		<span class="tooltip"><p>Set a client identity to be used for the <a href="MKConnection.html">MKConnection</a>. This property is only
+used during connection establishment, and as such, chaning this value while the
+<a href="MKConnection.html">MKConnection</a> object is a conncted to a server should not be done.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/clientIdentity">&ndash;&nbsp;clientIdentity</a></code>
+		<span class="tooltip"><p>Returns the client identity that is to be used during the next connection attempt.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverVersion">&ndash;&nbsp;serverVersion</a></code>
+		<span class="tooltip"><p>A textual description of the version number of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverRelease">&ndash;&nbsp;serverRelease</a></code>
+		<span class="tooltip"><p>A textual description of the release name of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverOSName">&ndash;&nbsp;serverOSName</a></code>
+		<span class="tooltip"><p>A textual description of the operating system that powers the Mumble server that the
+<a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverOSVersion">&ndash;&nbsp;serverOSVersion</a></code>
+		<span class="tooltip"><p>A textual description of the version of the operating system that powers the Mumble
+server that the <a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Authenticating with the server" name="task_Authenticating with the server"></a>
+						<h3 class="subsubtitle task-title">Authenticating with the server</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/authenticateWithUsername:password:">&ndash;&nbsp;authenticateWithUsername:password:</a></code>
+		<span class="tooltip"><p>Once a connection has been established (that is, once the connectionOpened: <a href="#//api/name/delegate">delegate</a>
+method has been called), this method must be used to authenticate with the remote
+Mumble server.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="TLS connection state" name="task_TLS connection state"></a>
+						<h3 class="subsubtitle task-title">TLS connection state</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setIgnoreSSLVerification:">&ndash;&nbsp;setIgnoreSSLVerification:</a></code>
+		<span class="tooltip"><p>Signals to the <a href="MKConnection.html">MKConnection</a> that it should ignore most verification
+errors that happen while verifying the server&rsquo;s certificate chain
+during the TLS handshake.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/peerCertificates">&ndash;&nbsp;peerCertificates</a></code>
+		<span class="tooltip"><p>Once a connection is established, this method returns an array
+containing the TLS certificate chain of the remote server.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Forced TCP mode" name="task_Forced TCP mode"></a>
+						<h3 class="subsubtitle task-title">Forced TCP mode</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setForceTCP:">&ndash;&nbsp;setForceTCP:</a></code>
+		<span class="tooltip"><p>Set whether or not the server should force all UDP trafic to be tunelled
+through TCP. If at all possible, this should be kept as NO (which is also
+the default value).</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/forceTCP">&ndash;&nbsp;forceTCP</a></code>
+		<span class="tooltip"><p>Returns the current Forced-TCP status of the <a href="MKConnection.html">MKConnection</a> object.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Sending data to the remote server" name="task_Sending data to the remote server"></a>
+						<h3 class="subsubtitle task-title">Sending data to the remote server</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sendMessageWithType:data:">&ndash;&nbsp;sendMessageWithType:data:</a></code>
+		<span class="tooltip"><p>Transmits a blob of data (presumed to be a message encoded as expected by
+the Mumble server) using the given messageType as the token used for identifying
+how the contents of the message are to be handled by the remote server.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sendVoiceData:">&ndash;&nbsp;sendVoiceData:</a></code>
+		<span class="tooltip"><p>Send a voice packet to the remote server.
+The voice packet will be transported to the server using UDP, unless
+the <a href="#//api/name/forceTCP">forceTCP</a> property has been changed to force all UDP trafic to be
+tunelled through TCP.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Codec Information" name="task_Codec Information"></a>
+						<h3 class="subsubtitle task-title">Codec Information</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/alphaCodec">&ndash;&nbsp;alphaCodec</a></code>
+		<span class="tooltip"><p>The current elected alpha codec, as determined by the server through a mojority vote.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/betaCodec">&ndash;&nbsp;betaCodec</a></code>
+		<span class="tooltip"><p>The currently elected beta codec, as determined by the server through a majority vote.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/preferAlphaCodec">&ndash;&nbsp;preferAlphaCodec</a></code>
+		<span class="tooltip"><p>Returns whether or not clients should prefer the alpha codec over the beta codec (if at
+all possible).</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/alphaCodec" title="alphaCodec"></a>
+	<h3 class="subsubtitle method-title">alphaCodec</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The current elected alpha codec, as determined by the server through a mojority vote.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSInteger)alphaCodec</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/authenticateWithUsername:password:" title="authenticateWithUsername:password:"></a>
+	<h3 class="subsubtitle method-title">authenticateWithUsername:password:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Once a connection has been established (that is, once the connectionOpened: <a href="#//api/name/delegate">delegate</a>
+method has been called), this method must be used to authenticate with the remote
+Mumble server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)authenticateWithUsername:(NSString *)<em>user</em> password:(NSString *)<em>pass</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The username of the user that the <a href="MKConnection.html">MKConnection</a> should authenticate
+itself as. This can be a registered user, or a new user that is currently
+not registered.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>pass</em></dt>
+			<dd><p>The password to authenticate with. If the specified username is that
+of a registered user, the password will be treated as a user password.
+Otherwise, it will be treated as a server password.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/betaCodec" title="betaCodec"></a>
+	<h3 class="subsubtitle method-title">betaCodec</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The currently elected beta codec, as determined by the server through a majority vote.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSInteger)betaCodec</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/clientIdentity" title="clientIdentity"></a>
+	<h3 class="subsubtitle method-title">clientIdentity</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the client identity that is to be used during the next connection attempt.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (SecIdentityRef)clientIdentity</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connected" title="connected"></a>
+	<h3 class="subsubtitle method-title">connected</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The current status of the connection.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)connected</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns YES if the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to a server.
+Returns NO otherwise.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Deallocate a <a href="MKConnection.html">MKConnection</a> object.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)dealloc</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/disconnect" title="disconnect"></a>
+	<h3 class="subsubtitle method-title">disconnect</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Disconnect from the server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)disconnect</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/forceTCP" title="forceTCP"></a>
+	<h3 class="subsubtitle method-title">forceTCP</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the current Forced-TCP status of the <a href="MKConnection.html">MKConnection</a> object.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)forceTCP</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns YES if all UDP trafic to and from the remote server
+is being tunelled through a TCP connection. Returns NO otherwise.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hostname" title="hostname"></a>
+	<h3 class="subsubtitle method-title">hostname</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The <a href="#//api/name/hostname">hostname</a> that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)hostname</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/init" title="init"></a>
+	<h3 class="subsubtitle method-title">init</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Initialize a new <a href="MKConnection.html">MKConnection</a> object.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (id)init</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/peerCertificates" title="peerCertificates"></a>
+	<h3 class="subsubtitle method-title">peerCertificates</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Once a connection is established, this method returns an array
+containing the TLS certificate chain of the remote server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)peerCertificates</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Certificates in the chain are represented by <a href="../Classes/MKCertificate.html">MKCertificate</a> objects.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/port" title="port"></a>
+	<h3 class="subsubtitle method-title">port</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The <a href="#//api/name/port">port</a> number on the host that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)port</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/preferAlphaCodec" title="preferAlphaCodec"></a>
+	<h3 class="subsubtitle method-title">preferAlphaCodec</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not clients should prefer the alpha codec over the beta codec (if at
+all possible).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)preferAlphaCodec</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/reconnect" title="reconnect"></a>
+	<h3 class="subsubtitle method-title">reconnect</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Re-establish the connection. This is often used together with the
+<a href="#//api/name/setIgnoreSSLVerification:">setIgnoreSSLVerification:</a> method to implement an &ldquo;Are You Sure?&rdquo; dialog
+for self-signed certificates.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)reconnect</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sendMessageWithType:data:" title="sendMessageWithType:data:"></a>
+	<h3 class="subsubtitle method-title">sendMessageWithType:data:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Transmits a blob of data (presumed to be a message encoded as expected by
+the Mumble server) using the given messageType as the token used for identifying
+how the contents of the message are to be handled by the remote server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)sendMessageWithType:(MKMessageType)<em>messageType</em> data:(NSData *)<em>data</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>messageType</em></dt>
+			<dd><p>A MKMessageType describing the kind of message that is to be
+transmitted.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>data</em></dt>
+			<dd><p>The raw data to be sent to the remote server. This is presumed to be
+a message encoded as expected by the remote server. (That is,
+<a href="MKConnection.html">MKConnection</a> will not attempt to serialize the passed-in data).</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sendVoiceData:" title="sendVoiceData:"></a>
+	<h3 class="subsubtitle method-title">sendVoiceData:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Send a voice packet to the remote server.
+The voice packet will be transported to the server using UDP, unless
+the <a href="#//api/name/forceTCP">forceTCP</a> property has been changed to force all UDP trafic to be
+tunelled through TCP.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)sendVoiceData:(NSData *)<em>data</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>data</em></dt>
+			<dd><p>A raw Mumble voice packet.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverOSName" title="serverOSName"></a>
+	<h3 class="subsubtitle method-title">serverOSName</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>A textual description of the operating system that powers the Mumble server that the
+<a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)serverOSName</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverOSVersion" title="serverOSVersion"></a>
+	<h3 class="subsubtitle method-title">serverOSVersion</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>A textual description of the version of the operating system that powers the Mumble
+server that the <a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)serverOSVersion</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverRelease" title="serverRelease"></a>
+	<h3 class="subsubtitle method-title">serverRelease</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>A textual description of the release name of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+object is currently <a href="#//api/name/connected">connected</a> to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)serverRelease</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverVersion" title="serverVersion"></a>
+	<h3 class="subsubtitle method-title">serverVersion</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>A textual description of the version number of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+object is currently <a href="#//api/name/connected">connected</a> to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)serverVersion</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setClientIdentity:" title="setClientIdentity:"></a>
+	<h3 class="subsubtitle method-title">setClientIdentity:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set a client identity to be used for the <a href="MKConnection.html">MKConnection</a>. This property is only
+used during connection establishment, and as such, chaning this value while the
+<a href="MKConnection.html">MKConnection</a> object is a conncted to a server should not be done.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)setClientIdentity:(SecIdentityRef)<em>secIdentity</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>secIdentity</em></dt>
+			<dd><p>A SecIdentityRef that should be used as the client identity.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setForceTCP:" title="setForceTCP:"></a>
+	<h3 class="subsubtitle method-title">setForceTCP:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set whether or not the server should force all UDP trafic to be tunelled
+through TCP. If at all possible, this should be kept as NO (which is also
+the default value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)setForceTCP:(BOOL)<em>shouldForceTCP</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>shouldForceTCP</em></dt>
+			<dd><p>Should be YES if the connection shall tunnel all UDP
+trafic through TCP.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setIgnoreSSLVerification:" title="setIgnoreSSLVerification:"></a>
+	<h3 class="subsubtitle method-title">setIgnoreSSLVerification:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Signals to the <a href="MKConnection.html">MKConnection</a> that it should ignore most verification
+errors that happen while verifying the server&rsquo;s certificate chain
+during the TLS handshake.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)setIgnoreSSLVerification:(BOOL)<em>shouldIgnoreVerification</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>shouldIgnoreVerification</em></dt>
+			<dd><p>Should be YES if the connection should
+ignore TLS certificate chain verification
+errors. By default this is set to NO.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This is used to implement user trust of servers with self-signed
+(or perhaps shady) certificates.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-07-31)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

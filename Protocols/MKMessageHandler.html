@@ -1,0 +1,1178 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MKMessageHandler Protocol Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MumbleKit </a></h1>
+				<a id="developerHome" href="../index.html">Mumble Developers</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MKMessageHandler Protocol Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/connection:handleACLMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleACLMessage:</option>
+	
+	<option value="//api/name/connection:handleBanListMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleBanListMessage:</option>
+	
+	<option value="//api/name/connection:handleChannelRemoveMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleChannelRemoveMessage:</option>
+	
+	<option value="//api/name/connection:handleChannelStateMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleChannelStateMessage:</option>
+	
+	<option value="//api/name/connection:handleContextActionAddMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleContextActionAddMessage:</option>
+	
+	<option value="//api/name/connection:handleContextActionMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleContextActionMessage:</option>
+	
+	<option value="//api/name/connection:handlePermissionDeniedMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handlePermissionDeniedMessage:</option>
+	
+	<option value="//api/name/connection:handlePermissionQueryMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handlePermissionQueryMessage:</option>
+	
+	<option value="//api/name/connection:handleQueryUsersMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleQueryUsersMessage:</option>
+	
+	<option value="//api/name/connection:handleServerSyncMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleServerSyncMessage:</option>
+	
+	<option value="//api/name/connection:handleTextMessageMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleTextMessageMessage:</option>
+	
+	<option value="//api/name/connection:handleUserListMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleUserListMessage:</option>
+	
+	<option value="//api/name/connection:handleUserRemoveMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleUserRemoveMessage:</option>
+	
+	<option value="//api/name/connection:handleUserStateMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleUserStateMessage:</option>
+	
+	<option value="//api/name/connection:handleVoiceTargetMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleVoiceTargetMessage:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleACLMessage:">connection:handleACLMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleBanListMessage:">connection:handleBanListMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleChannelRemoveMessage:">connection:handleChannelRemoveMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleChannelStateMessage:">connection:handleChannelStateMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleContextActionAddMessage:">connection:handleContextActionAddMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleContextActionMessage:">connection:handleContextActionMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handlePermissionDeniedMessage:">connection:handlePermissionDeniedMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handlePermissionQueryMessage:">connection:handlePermissionQueryMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleQueryUsersMessage:">connection:handleQueryUsersMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleServerSyncMessage:">connection:handleServerSyncMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleTextMessageMessage:">connection:handleTextMessageMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleUserListMessage:">connection:handleUserListMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleUserRemoveMessage:">connection:handleUserRemoveMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleUserStateMessage:">connection:handleUserStateMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleVoiceTargetMessage:">connection:handleVoiceTargetMessage:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MKMessageHandler Protocol Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MKMessageHandler Protocol Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MKConnection.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><a href="MKMessageHandler.html">MKMessageHandler</a> implements a set of methods that are called on the messageHandler
+object of a <a href="../Classes/MKConnection.html">MKConnection</a> when new control channel messages arrive. Only messages that
+the <a href="../Classes/MKConnection.html">MKConnection</a> itself does not know how to handle are delegated to the messageHandler.</p>
+
+<p>Typically, a consumer of <a href="../Classes/MKConnection.html">MKConnection</a> does not directly set a MKMessage handler, but instead
+wrap the <a href="../Classes/MKConnection.html">MKConnection</a> in a MKServerModel object which</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleBanListMessage:">&ndash;&nbsp;connection:handleBanListMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a ban list message is received. (See MKMessageType&rsquo;s
+BanListMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleServerSyncMessage:">&ndash;&nbsp;connection:handleServerSyncMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a server sync message is received. (See MKMessageType&rsquo;s
+ServerSyncMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handlePermissionDeniedMessage:">&ndash;&nbsp;connection:handlePermissionDeniedMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a permission denied message is received. (See MKMessageType&rsquo;s
+PermissionDeniedMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleUserStateMessage:">&ndash;&nbsp;connection:handleUserStateMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a user state message is receieved. (See MKMessageType&rsquo;s
+UserStateMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleUserRemoveMessage:">&ndash;&nbsp;connection:handleUserRemoveMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a user remove message is received. (See MKMessageType&rsquo;s
+UserRemoveMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleChannelStateMessage:">&ndash;&nbsp;connection:handleChannelStateMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a channel state message is recieved. (See MKMessageType&rsquo;s
+ChannelStateMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleChannelRemoveMessage:">&ndash;&nbsp;connection:handleChannelRemoveMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a channel remove message is received (See MKMessageType&rsquo;s
+ChannelRemoveMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleTextMessageMessage:">&ndash;&nbsp;connection:handleTextMessageMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a text message message is recieved. (See MKMessageType&rsquo;s
+TextMessageMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleACLMessage:">&ndash;&nbsp;connection:handleACLMessage:</a></code>
+		<span class="tooltip"><p>Called whenever an ACL message is receieved. (See MKMessageType&rsquo;s ACLMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleQueryUsersMessage:">&ndash;&nbsp;connection:handleQueryUsersMessage:</a></code>
+		<span class="tooltip"><p>Called whenver a query users message is received. (See MKMessageType&rsquo;s
+QueryUsersMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleContextActionMessage:">&ndash;&nbsp;connection:handleContextActionMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a context action message is receieved. (See MKMessageType&rsquo;s
+ContextActionMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleContextActionAddMessage:">&ndash;&nbsp;connection:handleContextActionAddMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a context action add message is received. (See MKMessageType&rsquo;s
+ContextActionAdd value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleUserListMessage:">&ndash;&nbsp;connection:handleUserListMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a user list message is received. (See MKMessageType&rsquo;s
+UserListMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handleVoiceTargetMessage:">&ndash;&nbsp;connection:handleVoiceTargetMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a voice target message is receieved. (See MKMessageType&rsquo;s
+VoiceTargetMessage value).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:handlePermissionQueryMessage:">&ndash;&nbsp;connection:handlePermissionQueryMessage:</a></code>
+		<span class="tooltip"><p>Called whenever a permission query message is receieved.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleACLMessage:" title="connection:handleACLMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleACLMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever an ACL message is receieved. (See MKMessageType&rsquo;s ACLMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleACLMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of an ACL message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleBanListMessage:" title="connection:handleBanListMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleBanListMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a ban list message is received. (See MKMessageType&rsquo;s
+BanListMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleBanListMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a ban list message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleChannelRemoveMessage:" title="connection:handleChannelRemoveMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleChannelRemoveMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a channel remove message is received (See MKMessageType&rsquo;s
+ChannelRemoveMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleChannelRemoveMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a channel remove message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleChannelStateMessage:" title="connection:handleChannelStateMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleChannelStateMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a channel state message is recieved. (See MKMessageType&rsquo;s
+ChannelStateMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleChannelStateMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a channel state message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleContextActionAddMessage:" title="connection:handleContextActionAddMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleContextActionAddMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a context action add message is received. (See MKMessageType&rsquo;s
+ContextActionAdd value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleContextActionAddMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a context action add message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleContextActionMessage:" title="connection:handleContextActionMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleContextActionMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a context action message is receieved. (See MKMessageType&rsquo;s
+ContextActionMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleContextActionMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a context action message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handlePermissionDeniedMessage:" title="connection:handlePermissionDeniedMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handlePermissionDeniedMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a permission denied message is received. (See MKMessageType&rsquo;s
+PermissionDeniedMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handlePermissionDeniedMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a permission denied message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handlePermissionQueryMessage:" title="connection:handlePermissionQueryMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handlePermissionQueryMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a permission query message is receieved.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handlePermissionQueryMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a permission query message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleQueryUsersMessage:" title="connection:handleQueryUsersMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleQueryUsersMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenver a query users message is received. (See MKMessageType&rsquo;s
+QueryUsersMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleQueryUsersMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a query users message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleServerSyncMessage:" title="connection:handleServerSyncMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleServerSyncMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a server sync message is received. (See MKMessageType&rsquo;s
+ServerSyncMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleServerSyncMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a server sync message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleTextMessageMessage:" title="connection:handleTextMessageMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleTextMessageMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a text message message is recieved. (See MKMessageType&rsquo;s
+TextMessageMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleTextMessageMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a text message message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleUserListMessage:" title="connection:handleUserListMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleUserListMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a user list message is received. (See MKMessageType&rsquo;s
+UserListMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleUserListMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a user list message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleUserRemoveMessage:" title="connection:handleUserRemoveMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleUserRemoveMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a user remove message is received. (See MKMessageType&rsquo;s
+UserRemoveMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleUserRemoveMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a user remove message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleUserStateMessage:" title="connection:handleUserStateMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleUserStateMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a user state message is receieved. (See MKMessageType&rsquo;s
+UserStateMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleUserStateMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a user state message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleVoiceTargetMessage:" title="connection:handleVoiceTargetMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleVoiceTargetMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a voice target message is receieved. (See MKMessageType&rsquo;s
+VoiceTargetMessage value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleVoiceTargetMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a voice target message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-07-31)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

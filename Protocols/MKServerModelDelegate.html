@@ -1,0 +1,815 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MKServerModelDelegate Protocol Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MumbleKit </a></h1>
+				<a id="developerHome" href="../index.html">Mumble Developers</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MKServerModelDelegate Protocol Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/serverModel:joinedServerAsUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:joinedServerAsUser:</option>
+	
+	<option value="//api/name/serverModel:userCommentChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userCommentChanged:</option>
+	
+	<option value="//api/name/serverModel:userJoined:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userJoined:</option>
+	
+	<option value="//api/name/serverModel:userMoved:toChannel:byUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userMoved:toChannel:byUser:</option>
+	
+	<option value="//api/name/serverModel:userRemovedSelfMute:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userRemovedSelfMute:</option>
+	
+	<option value="//api/name/serverModel:userRenamed:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userRenamed:</option>
+	
+	<option value="//api/name/serverModel:userSelfMuted:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userSelfMuted:</option>
+	
+	<option value="//api/name/serverModel:userTalkStateChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userTalkStateChanged:</option>
+	
+	<option value="//api/name/serverModel:userTextureChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userTextureChanged:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:joinedServerAsUser:">serverModel:joinedServerAsUser:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userCommentChanged:">serverModel:userCommentChanged:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userJoined:">serverModel:userJoined:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userMoved:toChannel:byUser:">serverModel:userMoved:toChannel:byUser:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userRemovedSelfMute:">serverModel:userRemovedSelfMute:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userRenamed:">serverModel:userRenamed:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userSelfMuted:">serverModel:userSelfMuted:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userTalkStateChanged:">serverModel:userTalkStateChanged:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userTextureChanged:">serverModel:userTextureChanged:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MKServerModelDelegate Protocol Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MKServerModelDelegate Protocol Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MKServerModel.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><a href="MKServerModelDelegate.html">MKServerModelDelegate</a> is the delegate of MKServerModel.
+It is called to notify any registered delegates of events happening on the server, or
+of replies to previously sent messages.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:joinedServerAsUser:">&ndash;&nbsp;serverModel:joinedServerAsUser:</a></code>
+		<span class="tooltip"><p>Called upon successfully authenticating with a server.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userJoined:">&ndash;&nbsp;serverModel:userJoined:</a></code>
+		<span class="tooltip"><p>Called when a new user joins the server.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userTalkStateChanged:">&ndash;&nbsp;serverModel:userTalkStateChanged:</a></code>
+		<span class="tooltip"><p>Called when the talk state of a user changes.
+This event is fired when the audio subsystem (<a href="../Classes/MKAudio.html">MKAudio</a> and its minions) notify
+the MKServerModel that audio data from a user on the connection handled by the
+server model is being played back.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userRenamed:">&ndash;&nbsp;serverModel:userRenamed:</a></code>
+		<span class="tooltip"><p>Called when a user is renamed.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userMoved:toChannel:byUser:">&ndash;&nbsp;serverModel:userMoved:toChannel:byUser:</a></code>
+		<span class="tooltip"><p>Called when a user is moved to another channel.
+This is also called when a user changes the channel he resides in (in which
+case user is equivalent to mover).</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userCommentChanged:">&ndash;&nbsp;serverModel:userCommentChanged:</a></code>
+		<span class="tooltip"><p>Called when a user&rsquo;s comment is changed.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userTextureChanged:">&ndash;&nbsp;serverModel:userTextureChanged:</a></code>
+		<span class="tooltip"><p>Called when a user&rsquo;s texture is changed.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userSelfMuted:">&ndash;&nbsp;serverModel:userSelfMuted:</a></code>
+		<span class="tooltip"><p>Called when a user self-mutes himself.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userRemovedSelfMute:">&ndash;&nbsp;serverModel:userRemovedSelfMute:</a></code>
+		<span class="tooltip"><p>Called when a user un-self-mutes himself.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:joinedServerAsUser:" title="serverModel:joinedServerAsUser:"></a>
+	<h3 class="subsubtitle method-title">serverModel:joinedServerAsUser:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called upon successfully authenticating with a server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> joinedServerAsUser:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The MKUser object representing the local user.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userCommentChanged:" title="serverModel:userCommentChanged:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userCommentChanged:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user&rsquo;s comment is changed.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userCommentChanged:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user whose comment was changed.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userJoined:" title="serverModel:userJoined:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userJoined:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a new user joins the server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userJoined:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user who joined the server.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userMoved:toChannel:byUser:" title="serverModel:userMoved:toChannel:byUser:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userMoved:toChannel:byUser:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user is moved to another channel.
+This is also called when a user changes the channel he resides in (in which
+case user is equivalent to mover).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMoved:(MKUser *)<em>user</em> toChannel:(MKChannel *)<em>chan</em> byUser:(MKUser *)<em>mover</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user that was moved.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>chan</em></dt>
+			<dd><p>The channel to which user was moved to.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>mover</em></dt>
+			<dd><p>The user that performed the user move. If the move was
+performed by the server, mover is nil.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>In case the server initiated the move, the mover is nil.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userRemovedSelfMute:" title="serverModel:userRemovedSelfMute:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userRemovedSelfMute:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user un-self-mutes himself.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userRemovedSelfMute:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user who removed his self-mute status.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userRenamed:" title="serverModel:userRenamed:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userRenamed:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user is renamed.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userRenamed:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user that was renamed.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userSelfMuted:" title="serverModel:userSelfMuted:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userSelfMuted:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user self-mutes himself.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userSelfMuted:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user who self-muted himself.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userTalkStateChanged:" title="serverModel:userTalkStateChanged:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userTalkStateChanged:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when the talk state of a user changes.
+This event is fired when the audio subsystem (<a href="../Classes/MKAudio.html">MKAudio</a> and its minions) notify
+the MKServerModel that audio data from a user on the connection handled by the
+server model is being played back.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userTalkStateChanged:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user whose talk state changed.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userTextureChanged:" title="serverModel:userTextureChanged:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userTextureChanged:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user&rsquo;s texture is changed.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userTextureChanged:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The MKServerModel in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user whose texture was changed.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-07-31)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>
