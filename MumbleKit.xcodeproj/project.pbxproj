@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
 		282F6B0813624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; };
 		282F6B0913624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
@@ -39,8 +40,6 @@
 		2845A7AD132D9C220034D631 /* MKReadWriteLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78D132D9C220034D631 /* MKReadWriteLock.m */; };
 		2845A7AE132D9C220034D631 /* MKServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78E132D9C220034D631 /* MKServerModel.m */; };
 		2845A7AF132D9C220034D631 /* MKServerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78E132D9C220034D631 /* MKServerModel.m */; };
-		2845A7B0132D9C220034D631 /* MKServerModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78F132D9C220034D631 /* MKServerModelObject.m */; };
-		2845A7B1132D9C220034D631 /* MKServerModelObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78F132D9C220034D631 /* MKServerModelObject.m */; };
 		2845A7B2132D9C220034D631 /* MKServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A790132D9C220034D631 /* MKServices.m */; };
 		2845A7B3132D9C220034D631 /* MKServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A790132D9C220034D631 /* MKServices.m */; };
 		2845A7B4132D9C220034D631 /* MKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A791132D9C220034D631 /* MKUser.m */; };
@@ -60,13 +59,13 @@
 		2845A7D9132D9C520034D631 /* MKAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C7132D9C520034D631 /* MKAudio.h */; };
 		2845A7DA132D9C520034D631 /* MKAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C7132D9C520034D631 /* MKAudio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7DB132D9C520034D631 /* MKAudioInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C8132D9C520034D631 /* MKAudioInput.h */; };
-		2845A7DC132D9C520034D631 /* MKAudioInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C8132D9C520034D631 /* MKAudioInput.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2845A7DC132D9C520034D631 /* MKAudioInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C8132D9C520034D631 /* MKAudioInput.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7DD132D9C520034D631 /* MKAudioOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C9132D9C520034D631 /* MKAudioOutput.h */; };
-		2845A7DE132D9C520034D631 /* MKAudioOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C9132D9C520034D631 /* MKAudioOutput.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2845A7DE132D9C520034D631 /* MKAudioOutput.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7C9132D9C520034D631 /* MKAudioOutput.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7DF132D9C520034D631 /* MKAudioOutputSpeech.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */; };
-		2845A7E0132D9C520034D631 /* MKAudioOutputSpeech.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2845A7E0132D9C520034D631 /* MKAudioOutputSpeech.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7E1132D9C520034D631 /* MKAudioOutputUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */; };
-		2845A7E2132D9C520034D631 /* MKAudioOutputUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2845A7E2132D9C520034D631 /* MKAudioOutputUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7E3132D9C520034D631 /* MKCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CC132D9C520034D631 /* MKCertificate.h */; };
 		2845A7E4132D9C520034D631 /* MKCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CC132D9C520034D631 /* MKCertificate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7E5132D9C520034D631 /* MKChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CD132D9C520034D631 /* MKChannel.h */; };
@@ -76,21 +75,16 @@
 		2845A7E9132D9C520034D631 /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CF132D9C520034D631 /* MKConnectionController.h */; };
 		2845A7EA132D9C520034D631 /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CF132D9C520034D631 /* MKConnectionController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7EB132D9C520034D631 /* MKCryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D0132D9C520034D631 /* MKCryptState.h */; };
-		2845A7EC132D9C520034D631 /* MKCryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D0132D9C520034D631 /* MKCryptState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2845A7EC132D9C520034D631 /* MKCryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D0132D9C520034D631 /* MKCryptState.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7ED132D9C520034D631 /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
-		2845A7EE132D9C520034D631 /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2845A7EF132D9C520034D631 /* MKReadWriteLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D2132D9C520034D631 /* MKReadWriteLock.h */; };
-		2845A7F0132D9C520034D631 /* MKReadWriteLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D2132D9C520034D631 /* MKReadWriteLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7F1132D9C520034D631 /* MKServerModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D3132D9C520034D631 /* MKServerModel.h */; };
 		2845A7F2132D9C520034D631 /* MKServerModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D3132D9C520034D631 /* MKServerModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2845A7F3132D9C520034D631 /* MKServerModelObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D4132D9C520034D631 /* MKServerModelObject.h */; };
-		2845A7F4132D9C520034D631 /* MKServerModelObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D4132D9C520034D631 /* MKServerModelObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7F5132D9C520034D631 /* MKServices.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D5132D9C520034D631 /* MKServices.h */; };
 		2845A7F6132D9C520034D631 /* MKServices.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D5132D9C520034D631 /* MKServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7F7132D9C520034D631 /* MKUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D6132D9C520034D631 /* MKUser.h */; };
 		2845A7F8132D9C520034D631 /* MKUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D6132D9C520034D631 /* MKUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7F9132D9C520034D631 /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D7132D9C520034D631 /* MKUtils.h */; };
-		2845A7FA132D9C520034D631 /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D7132D9C520034D631 /* MKUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2845A7FA132D9C520034D631 /* MKUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D7132D9C520034D631 /* MKUtils.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7FB132D9C520034D631 /* MKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D8132D9C520034D631 /* MKVersion.h */; };
 		2845A7FC132D9C520034D631 /* MKVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D8132D9C520034D631 /* MKVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28492363132ED67E00B4EAAC /* CELT-0.7.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2849235E132ED67E00B4EAAC /* CELT-0.7.0.dylib */; };
@@ -266,7 +260,6 @@
 		2845A78C132D9C220034D631 /* MKPacketDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKPacketDataStream.m; path = src/MKPacketDataStream.m; sourceTree = SOURCE_ROOT; };
 		2845A78D132D9C220034D631 /* MKReadWriteLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKReadWriteLock.m; path = src/MKReadWriteLock.m; sourceTree = SOURCE_ROOT; };
 		2845A78E132D9C220034D631 /* MKServerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerModel.m; path = src/MKServerModel.m; sourceTree = SOURCE_ROOT; };
-		2845A78F132D9C220034D631 /* MKServerModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerModelObject.m; path = src/MKServerModelObject.m; sourceTree = SOURCE_ROOT; };
 		2845A790132D9C220034D631 /* MKServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServices.m; path = src/MKServices.m; sourceTree = SOURCE_ROOT; };
 		2845A791132D9C220034D631 /* MKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKUser.m; path = src/MKUser.m; sourceTree = SOURCE_ROOT; };
 		2845A792132D9C220034D631 /* MKVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKVersion.m; path = src/MKVersion.m; sourceTree = SOURCE_ROOT; };
@@ -276,22 +269,20 @@
 		2845A7BD132D9C400034D631 /* timedelta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timedelta.h; path = src/timedelta.h; sourceTree = SOURCE_ROOT; };
 		2845A7C4132D9C460034D631 /* CryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CryptState.h; path = src/CryptState.h; sourceTree = SOURCE_ROOT; };
 		2845A7C7132D9C520034D631 /* MKAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudio.h; path = src/MumbleKit/MKAudio.h; sourceTree = SOURCE_ROOT; };
-		2845A7C8132D9C520034D631 /* MKAudioInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioInput.h; path = src/MumbleKit/MKAudioInput.h; sourceTree = SOURCE_ROOT; };
-		2845A7C9132D9C520034D631 /* MKAudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutput.h; path = src/MumbleKit/MKAudioOutput.h; sourceTree = SOURCE_ROOT; };
-		2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputSpeech.h; path = src/MumbleKit/MKAudioOutputSpeech.h; sourceTree = SOURCE_ROOT; };
-		2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputUser.h; path = src/MumbleKit/MKAudioOutputUser.h; sourceTree = SOURCE_ROOT; };
+		2845A7C8132D9C520034D631 /* MKAudioInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioInput.h; path = src/MKAudioInput.h; sourceTree = SOURCE_ROOT; };
+		2845A7C9132D9C520034D631 /* MKAudioOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutput.h; path = src/MKAudioOutput.h; sourceTree = SOURCE_ROOT; };
+		2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputSpeech.h; path = src/MKAudioOutputSpeech.h; sourceTree = SOURCE_ROOT; };
+		2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputUser.h; path = src/MKAudioOutputUser.h; sourceTree = SOURCE_ROOT; };
 		2845A7CC132D9C520034D631 /* MKCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCertificate.h; path = src/MumbleKit/MKCertificate.h; sourceTree = SOURCE_ROOT; };
 		2845A7CD132D9C520034D631 /* MKChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannel.h; path = src/MumbleKit/MKChannel.h; sourceTree = SOURCE_ROOT; };
 		2845A7CE132D9C520034D631 /* MKConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKConnection.h; path = src/MumbleKit/MKConnection.h; sourceTree = SOURCE_ROOT; };
 		2845A7CF132D9C520034D631 /* MKConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKConnectionController.h; path = src/MumbleKit/MKConnectionController.h; sourceTree = SOURCE_ROOT; };
-		2845A7D0132D9C520034D631 /* MKCryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCryptState.h; path = src/MumbleKit/MKCryptState.h; sourceTree = SOURCE_ROOT; };
-		2845A7D1132D9C520034D631 /* MKPacketDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKPacketDataStream.h; path = src/MumbleKit/MKPacketDataStream.h; sourceTree = SOURCE_ROOT; };
-		2845A7D2132D9C520034D631 /* MKReadWriteLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKReadWriteLock.h; path = src/MumbleKit/MKReadWriteLock.h; sourceTree = SOURCE_ROOT; };
+		2845A7D0132D9C520034D631 /* MKCryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCryptState.h; path = src/MKCryptState.h; sourceTree = SOURCE_ROOT; };
+		2845A7D1132D9C520034D631 /* MKPacketDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKPacketDataStream.h; path = src/MKPacketDataStream.h; sourceTree = SOURCE_ROOT; };
 		2845A7D3132D9C520034D631 /* MKServerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerModel.h; path = src/MumbleKit/MKServerModel.h; sourceTree = SOURCE_ROOT; };
-		2845A7D4132D9C520034D631 /* MKServerModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerModelObject.h; path = src/MumbleKit/MKServerModelObject.h; sourceTree = SOURCE_ROOT; };
 		2845A7D5132D9C520034D631 /* MKServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServices.h; path = src/MumbleKit/MKServices.h; sourceTree = SOURCE_ROOT; };
 		2845A7D6132D9C520034D631 /* MKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUser.h; path = src/MumbleKit/MKUser.h; sourceTree = SOURCE_ROOT; };
-		2845A7D7132D9C520034D631 /* MKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUtils.h; path = src/MumbleKit/MKUtils.h; sourceTree = SOURCE_ROOT; };
+		2845A7D7132D9C520034D631 /* MKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUtils.h; path = src/MKUtils.h; sourceTree = SOURCE_ROOT; };
 		2845A7D8132D9C520034D631 /* MKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKVersion.h; path = src/MumbleKit/MKVersion.h; sourceTree = SOURCE_ROOT; };
 		28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CELT-0.7.xcodeproj"; path = "3rdparty/celt-0.7.0-build/CELT-0.7.xcodeproj"; sourceTree = "<group>"; };
 		28492321132ED61800B4EAAC /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = 3rdparty/protobufbuild/ProtocolBuffers.xcodeproj; sourceTree = "<group>"; };
@@ -406,7 +397,6 @@
 				2845A78C132D9C220034D631 /* MKPacketDataStream.m */,
 				2845A78D132D9C220034D631 /* MKReadWriteLock.m */,
 				2845A78E132D9C220034D631 /* MKServerModel.m */,
-				2845A78F132D9C220034D631 /* MKServerModelObject.m */,
 				282F6B0713624187008F555B /* MKServerPinger.m */,
 				2845A790132D9C220034D631 /* MKServices.m */,
 				2845A791132D9C220034D631 /* MKUser.m */,
@@ -420,23 +410,14 @@
 			isa = PBXGroup;
 			children = (
 				2845A7C7132D9C520034D631 /* MKAudio.h */,
-				2845A7C8132D9C520034D631 /* MKAudioInput.h */,
-				2845A7C9132D9C520034D631 /* MKAudioOutput.h */,
-				2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */,
-				2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */,
 				2845A7CC132D9C520034D631 /* MKCertificate.h */,
 				2845A7CD132D9C520034D631 /* MKChannel.h */,
 				2845A7CE132D9C520034D631 /* MKConnection.h */,
 				2845A7CF132D9C520034D631 /* MKConnectionController.h */,
-				2845A7D0132D9C520034D631 /* MKCryptState.h */,
-				2845A7D1132D9C520034D631 /* MKPacketDataStream.h */,
-				2845A7D2132D9C520034D631 /* MKReadWriteLock.h */,
 				2845A7D3132D9C520034D631 /* MKServerModel.h */,
-				2845A7D4132D9C520034D631 /* MKServerModelObject.h */,
 				282F6B0613624187008F555B /* MKServerPinger.h */,
 				2845A7D5132D9C520034D631 /* MKServices.h */,
 				2845A7D6132D9C520034D631 /* MKUser.h */,
-				2845A7D7132D9C520034D631 /* MKUtils.h */,
 				2845A7D8132D9C520034D631 /* MKVersion.h */,
 			);
 			name = "Public Headers";
@@ -450,6 +431,13 @@
 				2845A7BC132D9C400034D631 /* MulticastDelegate.h */,
 				2845A7BD132D9C400034D631 /* timedelta.h */,
 				28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */,
+				2845A7C8132D9C520034D631 /* MKAudioInput.h */,
+				2845A7C9132D9C520034D631 /* MKAudioOutput.h */,
+				2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */,
+				2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */,
+				2845A7D7132D9C520034D631 /* MKUtils.h */,
+				2845A7D0132D9C520034D631 /* MKCryptState.h */,
+				2845A7D1132D9C520034D631 /* MKPacketDataStream.h */,
 			);
 			name = "Private Headers";
 			sourceTree = "<group>";
@@ -557,29 +545,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				2845A7DA132D9C520034D631 /* MKAudio.h in Headers */,
-				2845A7DC132D9C520034D631 /* MKAudioInput.h in Headers */,
-				2845A7DE132D9C520034D631 /* MKAudioOutput.h in Headers */,
-				2845A7E0132D9C520034D631 /* MKAudioOutputSpeech.h in Headers */,
-				2845A7E2132D9C520034D631 /* MKAudioOutputUser.h in Headers */,
 				2845A7E4132D9C520034D631 /* MKCertificate.h in Headers */,
 				2845A7E6132D9C520034D631 /* MKChannel.h in Headers */,
 				2845A7E8132D9C520034D631 /* MKConnection.h in Headers */,
 				2845A7EA132D9C520034D631 /* MKConnectionController.h in Headers */,
-				2845A7EC132D9C520034D631 /* MKCryptState.h in Headers */,
-				2845A7EE132D9C520034D631 /* MKPacketDataStream.h in Headers */,
-				2845A7F0132D9C520034D631 /* MKReadWriteLock.h in Headers */,
-				2845A7F2132D9C520034D631 /* MKServerModel.h in Headers */,
-				2845A7F4132D9C520034D631 /* MKServerModelObject.h in Headers */,
 				2845A7F6132D9C520034D631 /* MKServices.h in Headers */,
 				2845A7F8132D9C520034D631 /* MKUser.h in Headers */,
-				2845A7FA132D9C520034D631 /* MKUtils.h in Headers */,
 				2845A7FC132D9C520034D631 /* MKVersion.h in Headers */,
 				282F6B0913624187008F555B /* MKServerPinger.h in Headers */,
+				2845A7EC132D9C520034D631 /* MKCryptState.h in Headers */,
+				2845A7F2132D9C520034D631 /* MKServerModel.h in Headers */,
+				2845A7FA132D9C520034D631 /* MKUtils.h in Headers */,
+				2845A7DC132D9C520034D631 /* MKAudioInput.h in Headers */,
+				2845A7DE132D9C520034D631 /* MKAudioOutput.h in Headers */,
+				2845A7E0132D9C520034D631 /* MKAudioOutputSpeech.h in Headers */,
+				2845A7E2132D9C520034D631 /* MKAudioOutputUser.h in Headers */,
 				2845A7BF132D9C400034D631 /* MKUserPrivate.h in Headers */,
 				2845A7C1132D9C400034D631 /* MulticastDelegate.h in Headers */,
 				2845A7C3132D9C400034D631 /* timedelta.h in Headers */,
 				2845A7C6132D9C460034D631 /* CryptState.h in Headers */,
 				28F2FAD613E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
+				2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,9 +588,7 @@
 				2845A7E9132D9C520034D631 /* MKConnectionController.h in Headers */,
 				2845A7EB132D9C520034D631 /* MKCryptState.h in Headers */,
 				2845A7ED132D9C520034D631 /* MKPacketDataStream.h in Headers */,
-				2845A7EF132D9C520034D631 /* MKReadWriteLock.h in Headers */,
 				2845A7F1132D9C520034D631 /* MKServerModel.h in Headers */,
-				2845A7F3132D9C520034D631 /* MKServerModelObject.h in Headers */,
 				2845A7F5132D9C520034D631 /* MKServices.h in Headers */,
 				2845A7F7132D9C520034D631 /* MKUser.h in Headers */,
 				2845A7F9132D9C520034D631 /* MKUtils.h in Headers */,
@@ -808,7 +792,6 @@
 				2845A7AB132D9C220034D631 /* MKPacketDataStream.m in Sources */,
 				2845A7AD132D9C220034D631 /* MKReadWriteLock.m in Sources */,
 				2845A7AF132D9C220034D631 /* MKServerModel.m in Sources */,
-				2845A7B1132D9C220034D631 /* MKServerModelObject.m in Sources */,
 				2845A7B3132D9C220034D631 /* MKServices.m in Sources */,
 				2845A7B5132D9C220034D631 /* MKUser.m in Sources */,
 				2845A7B7132D9C220034D631 /* MKVersion.m in Sources */,
@@ -837,7 +820,6 @@
 				2845A7AA132D9C220034D631 /* MKPacketDataStream.m in Sources */,
 				2845A7AC132D9C220034D631 /* MKReadWriteLock.m in Sources */,
 				2845A7AE132D9C220034D631 /* MKServerModel.m in Sources */,
-				2845A7B0132D9C220034D631 /* MKServerModelObject.m in Sources */,
 				2845A7B2132D9C220034D631 /* MKServices.m in Sources */,
 				2845A7B4132D9C220034D631 /* MKUser.m in Sources */,
 				2845A7B6132D9C220034D631 /* MKVersion.m in Sources */,

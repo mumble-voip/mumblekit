@@ -31,7 +31,6 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKChannel.h>
 #import <MumbleKit/MKConnection.h>
-#import <MumbleKit/MKReadWriteLock.h>
 
 @class MulticastDelegate;
 @class MKServerModel;

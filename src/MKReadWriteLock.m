@@ -32,7 +32,7 @@
  * MKReadWriteLock - Simple ObjC wrapper around the pthreads read/write lock.
  */
 
-#import <MumbleKit/MKReadWriteLock.h>
+#import "MKReadWriteLock.h"
 
 @interface MKReadWriteLock () {
     pthread_rwlock_t rwlock;

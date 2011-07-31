@@ -29,7 +29,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKPacketDataStream.h>
+#import "MKPacketDataStream.h"
 
 @interface MKPacketDataStream () {
     NSMutableData   *mutableData;

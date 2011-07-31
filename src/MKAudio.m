@@ -28,10 +28,10 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKAudio.h>
-#import <MumbleKit/MKAudioInput.h>
-#import <MumbleKit/MKAudioOutput.h>
+#import "MKUtils.h"
+#import "MKAudioInput.h"
+#import "MKAudioOutput.h"
 
 @interface MKAudio () {
     MKAudioInput     *_audioInput;

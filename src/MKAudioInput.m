@@ -29,10 +29,10 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKAudioInput.h>
-#import <MumbleKit/MKPacketDataStream.h>
 #import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKServerModel.h>
+#import "MKPacketDataStream.h"
+#import "MKAudioInput.h"
 
 #include <speex/speex.h>
 #include <speex/speex_preprocess.h>

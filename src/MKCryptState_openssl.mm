@@ -38,7 +38,7 @@
  * OCB with something else or get yourself a license.
  */
 
-#import <MumbleKit/MKCryptState.h>
+#import "MKCryptState.h"
 #include "CryptState.h"
 
 using namespace MumbleClient;

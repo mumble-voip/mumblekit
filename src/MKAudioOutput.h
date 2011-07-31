@@ -29,21 +29,23 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKAudio.h>
 #import <MumbleKit/MKUser.h>
-#import <MumbleKit/MKAudioOutputUser.h>
+#import <MumbleKit/MKConnection.h>
+#import "MKAudioOutputUser.h"
 
-struct MKAudioOutputSpeechPrivate;
+@class MKUser;
 
-@interface MKAudioOutputSpeech : MKAudioOutputUser
+@interface MKAudioOutput : NSObject
 
-- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;
+- (id) initWithSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
 
-- (NSUInteger) userSession;
-- (MKMessageType) messageType;
+- (BOOL) setupDevice;
+- (BOOL) teardownDevice;
 
-- (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq;
+- (void) removeBuffer:(MKAudioOutputUser *)u;
+- (BOOL) mixFrames: (void *)frames amount:(unsigned int)nframes;
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType;
 
 @end

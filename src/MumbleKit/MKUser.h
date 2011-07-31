@@ -28,8 +28,6 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKServerModelObject.h>
-
 typedef enum {
 	MKTalkStatePassive = 0,
 	MKTalkStateTalking,
@@ -39,7 +37,7 @@ typedef enum {
 
 @class MKChannel;
 
-@interface MKUser : MKServerModelObject
+@interface MKUser : NSObject
 
 - (id) init;
 - (void) dealloc;

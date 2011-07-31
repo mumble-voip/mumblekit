@@ -29,8 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKAudioOutputSpeech.h>
-#import <MumbleKit/MKPacketDataStream.h>
+#import "MKPacketDataStream.h"
+#import "MKAudioOutputSpeech.h"
 #import "MKAudioOutputUserPrivate.h"
 
 #include <pthread.h>

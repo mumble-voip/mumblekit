@@ -1,4 +1,5 @@
 /* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+   Copyright (C) 2005-2010 Thorvald Natvig <thorvald@natvig.com>
 
    All rights reserved.
 
@@ -28,6 +29,21 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-@interface MKServerModelObject : NSObject
-- (id) copyWithZone:(NSZone *)zone;
+#import <MumbleKit/MKConnection.h>
+#import <MumbleKit/MKAudio.h>
+#import <MumbleKit/MKUser.h>
+#import "MKAudioOutputUser.h"
+
+struct MKAudioOutputSpeechPrivate;
+
+@interface MKAudioOutputSpeech : MKAudioOutputUser
+
+- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;
+- (void) dealloc;
+
+- (NSUInteger) userSession;
+- (MKMessageType) messageType;
+
+- (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq;
+
 @end

@@ -28,11 +28,9 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKServerModelObject.h>
-
 @class MKUser;
 
-@interface MKChannel : MKServerModelObject
+@interface MKChannel : NSObject
 
 - (id) init;
 - (void) dealloc;

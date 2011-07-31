@@ -28,15 +28,15 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKConnectionController.h>
-#import <MumbleKit/MKPacketDataStream.h>
-#import <MumbleKit/MKCryptState.h>
 #import <MumbleKit/MKUser.h>
-#import <MumbleKit/MKAudioOutput.h>
 #import <MumbleKit/MKVersion.h>
 #import <MumbleKit/MKCertificate.h>
+#import "MKUtils.h"
+#import "MKAudioOutput.h"
+#import "MKCryptState.h"
+#import "MKPacketDataStream.h"
 
 #include <dispatch/dispatch.h>
 

@@ -29,9 +29,15 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKUtils.h>
-#import <MumbleKit/MKAudioOutput.h>
-#import <MumbleKit/MKAudioOutputSpeech.h>
+#import "MKUtils.h"
+#import "MKAudioOutput.h"
+#import "MKAudioOutputSpeech.h"
+#import "MKAudioOutputUser.h"
+#import "MKReadWriteLock.h"
+
+#import <AudioUnit/AudioUnit.h>
+#import <AudioUnit/AUComponent.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 /*
  * Output callback.

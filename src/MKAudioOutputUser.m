@@ -29,7 +29,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKAudioOutputUser.h>
+#import "MKAudioOutputUser.h"
 #import "MKAudioOutputUserPrivate.h"
 
 @implementation MKAudioOutputUser

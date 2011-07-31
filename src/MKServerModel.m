@@ -31,9 +31,9 @@
 #import <MumbleKit/MKServerModel.h>
 
 #import <MumbleKit/MKConnection.h>
-#import <MumbleKit/MKPacketDataStream.h>
-#import <MumbleKit/MKUtils.h>
 #import <MumbleKit/MKAudio.h>
+#import "MKPacketDataStream.h"
+#import "MKUtils.h"
 #import "Mumble.pb.h"
 
 #import <MumbleKit/MKChannel.h>

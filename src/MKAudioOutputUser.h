@@ -1,4 +1,5 @@
 /* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+   Copyright (C) 2005-2010 Thorvald Natvig <thorvald@natvig.com>
 
    All rights reserved.
 
@@ -28,12 +29,18 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <MumbleKit/MKServerModelObject.h>
+#import <MumbleKit/MKUser.h>
 
-@implementation MKServerModelObject
+@interface MKAudioOutputUser : NSObject
 
-- (id) copyWithZone:(NSZone *)zone {
-	return [self retain];
-}
+- (id) init;
+- (void) dealloc;
+
+- (MKUser *) user;
+- (float *) buffer;
+- (NSUInteger) bufferLength;
+
+- (BOOL) needSamples:(NSUInteger)nsamples;
+- (void) resizeBuffer:(NSUInteger)newSize;
 
 @end
