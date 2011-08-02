@@ -936,6 +936,7 @@
 					3rdparty/protobuf/src/runtime/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = iphoneos;
 			};
 			name = BetaDist;
@@ -1008,6 +1009,7 @@
 					3rdparty/protobuf/src/runtime/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-Xarch_armv6",
 					"-DARCH_ARMV6",
@@ -1036,6 +1038,7 @@
 					3rdparty/protobuf/src/runtime/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-Xarch_armv6",
 					"-DARCH_ARMV6",
