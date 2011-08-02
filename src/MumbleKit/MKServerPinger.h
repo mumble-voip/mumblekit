@@ -40,12 +40,42 @@ typedef struct _MKServerPingerResult {
 - (void) serverPingerResult:(MKServerPingerResult *)result;
 @end
 
+/**
+ * MKServerPinger implements a pinger object that can ping and query Mumble
+ * servers for information typically shown in a server list.
+ *
+ * Once a MKServerPinger object is created, it will continually ping the remote
+ * server until it is destroyed. Whenever the MKServerPinger receives a reply from
+ * the remote server, it will inform its delegate.
+ */
 @interface MKServerPinger : NSObject
 
+/**
+ * Initialize a new MKServerPinger that pings the server running
+ * on the given hostname and port combination.
+ *
+ * @param hostname  The hostname of the server to ping.
+ * @param port      The port number of the server to ping.
+ *
+ * @returns Returns an MKServerPinger object. To get ping results, one must
+ *          register a delegate implementing the MKServerPingerDelegate protocol.
+ */
 - (id) initWithHostname:(NSString *)hostname port:(NSString *)port;
-- (void) dealloc;
 
+/**
+ * Returns the currently-set delegate for the MKServerPinger object.
+ *
+ * @returns Returns an object implementing the MKServerPingerDelegate protocol.
+ */
 - (id<MKServerPingerDelegate>)delegate;
+
+/**
+ * Set the delegate of the MKServerPinger object. The delegate will be called
+ * when the remote server responds to a ping request.
+ *
+ * @param delegate  The objec to register as the MKServerPinger's delegate.
+ *                  Must implement the MKServerPingerDelegate protocol.
+ */
 - (void) setDelegate:(id<MKServerPingerDelegate>)delegate;
 
 @end

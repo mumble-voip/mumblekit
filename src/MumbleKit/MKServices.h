@@ -28,8 +28,24 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/**
+ * MKServices implements convenience methods for accessing publicly available
+ * Mumble services.
+ */
 @interface MKServices : NSObject
+
+/**
+ * Get the hostname of the closest regional services host.
+ */
 + (NSString *) regionalServicesHost;
+
+/**
+ * Get the URL of the server list on a server near the client's current location.
+ */
 + (NSString *) regionalServerList;
+
+/**
+ * Returns an NSURL version of the URL returned by regionalServerList.
+ */
 + (NSURL *) regionalServerListURL;
 @end
