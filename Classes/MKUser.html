@@ -1,0 +1,1178 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MKUser Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MumbleKit </a></h1>
+				<a id="developerHome" href="../index.html">Mumble Developers</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MKUser Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/channel">&nbsp;&nbsp;&nbsp;&nbsp;- channel</option>
+	
+	<option value="//api/name/comment">&nbsp;&nbsp;&nbsp;&nbsp;- comment</option>
+	
+	<option value="//api/name/commentHash">&nbsp;&nbsp;&nbsp;&nbsp;- commentHash</option>
+	
+	<option value="//api/name/isAuthenticated">&nbsp;&nbsp;&nbsp;&nbsp;- isAuthenticated</option>
+	
+	<option value="//api/name/isDeafened">&nbsp;&nbsp;&nbsp;&nbsp;- isDeafened</option>
+	
+	<option value="//api/name/isFriend">&nbsp;&nbsp;&nbsp;&nbsp;- isFriend</option>
+	
+	<option value="//api/name/isLocalMuted">&nbsp;&nbsp;&nbsp;&nbsp;- isLocalMuted</option>
+	
+	<option value="//api/name/isMuted">&nbsp;&nbsp;&nbsp;&nbsp;- isMuted</option>
+	
+	<option value="//api/name/isPrioritySpeaker">&nbsp;&nbsp;&nbsp;&nbsp;- isPrioritySpeaker</option>
+	
+	<option value="//api/name/isRecording">&nbsp;&nbsp;&nbsp;&nbsp;- isRecording</option>
+	
+	<option value="//api/name/isSelfDeafened">&nbsp;&nbsp;&nbsp;&nbsp;- isSelfDeafened</option>
+	
+	<option value="//api/name/isSelfMuted">&nbsp;&nbsp;&nbsp;&nbsp;- isSelfMuted</option>
+	
+	<option value="//api/name/isSuppressed">&nbsp;&nbsp;&nbsp;&nbsp;- isSuppressed</option>
+	
+	<option value="//api/name/session">&nbsp;&nbsp;&nbsp;&nbsp;- session</option>
+	
+	<option value="//api/name/talkState">&nbsp;&nbsp;&nbsp;&nbsp;- talkState</option>
+	
+	<option value="//api/name/texture">&nbsp;&nbsp;&nbsp;&nbsp;- texture</option>
+	
+	<option value="//api/name/textureHash">&nbsp;&nbsp;&nbsp;&nbsp;- textureHash</option>
+	
+	<option value="//api/name/userHash">&nbsp;&nbsp;&nbsp;&nbsp;- userHash</option>
+	
+	<option value="//api/name/userId">&nbsp;&nbsp;&nbsp;&nbsp;- userId</option>
+	
+	<option value="//api/name/userName">&nbsp;&nbsp;&nbsp;&nbsp;- userName</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/channel">channel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/comment">comment</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/commentHash">commentHash</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isAuthenticated">isAuthenticated</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isDeafened">isDeafened</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isFriend">isFriend</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isLocalMuted">isLocalMuted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isMuted">isMuted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isPrioritySpeaker">isPrioritySpeaker</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isRecording">isRecording</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isSelfDeafened">isSelfDeafened</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isSelfMuted">isSelfMuted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isSuppressed">isSuppressed</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/session">session</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/talkState">talkState</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/texture">texture</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textureHash">textureHash</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userHash">userHash</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userId">userId</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userName">userName</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MKUser Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MKUser Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MKUser.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p><a href="MKUser.html">MKUser</a> represents a user on a Mumble server. A user always resides in a <a href="#//api/name/channel">channel</a>, which is
+represented by the <a href="../Classes/MKChannel.html">MKChannel</a> object. <a href="../Classes/MKChannel.html">MKChannel</a> objects are owned by their respective <a href="../Classes/MKServerModel.html">MKServerModel</a>
+instances.</p>
+
+<p>The object&rsquo;s <a href="../Classes/MKServerModel.html">MKServerModel</a> may change properties of the user at any time, but
+all changes are serialized to the main thread.</p>
+
+<p>Generally, as a consumer of this API, most accesses to <a href="MKUser.html">MKUser</a> happen in response to
+<a href="../Protocols/MKServerModelDelegate.html">MKServerModelDelegate</a> callbacks, and all calls to delegate methods of <a href="../Classes/MKServerModel.html">MKServerModel</a> are
+ensured to happen on the same thread that modifies MKChannle objects.</p>
+
+<p>Thus, if all inspection of the MKChannel&rsquo;s properties happen in response to
+<a href="../Protocols/MKServerModelDelegate.html">MKServerModelDelegate</a> callbacks, everything should be OK.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userId">&ndash;&nbsp;userId</a></code>
+		<span class="tooltip"><p>Returns a user&rsquo;s user ID. Only registered users have user IDs.
+For non-registered users, this ID will be negative.
+A user ID of 0 signals that the user is the SuperUser.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/session">&ndash;&nbsp;session</a></code>
+		<span class="tooltip"><p>Returns the user&rsquo;s <a href="#//api/name/session">session</a> ID.
+The <a href="#//api/name/session">session</a> ID is mostly an implementation detail &mdash; it is an identifier that
+uniquely identifies a user on a server, regardless of whether or not that user
+is registered with the server.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userName">&ndash;&nbsp;userName</a></code>
+		<span class="tooltip"><p>Returns the user&rsquo;s username.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userHash">&ndash;&nbsp;userHash</a></code>
+		<span class="tooltip"><p>Returns the user&rsquo;s hash. Typically, the the hash is the SHA1 digest of the user&rsquo;s X.509
+certificate, but could be any unique hash that identifies the user.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/talkState">&ndash;&nbsp;talkState</a></code>
+		<span class="tooltip"><p>Returns the user&rsquo;s current talk state. See MKTalkState for more information.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isAuthenticated">&ndash;&nbsp;isAuthenticated</a></code>
+		<span class="tooltip"><p>Returns whether or not the user is authenticated.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isFriend">&ndash;&nbsp;isFriend</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is a friend.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isMuted">&ndash;&nbsp;isMuted</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is muted.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isDeafened">&ndash;&nbsp;isDeafened</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is deafened.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isSuppressed">&ndash;&nbsp;isSuppressed</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is suppressed by the server.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isLocalMuted">&ndash;&nbsp;isLocalMuted</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is muted by the local client.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isSelfMuted">&ndash;&nbsp;isSelfMuted</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is self-muted.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isSelfDeafened">&ndash;&nbsp;isSelfDeafened</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user is self-deafened.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isPrioritySpeaker">&ndash;&nbsp;isPrioritySpeaker</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user has the priority speaker flag.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isRecording">&ndash;&nbsp;isRecording</a></code>
+		<span class="tooltip"><p>Returns whether or not the receiving user has the recording flag.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/channel">&ndash;&nbsp;channel</a></code>
+		<span class="tooltip"><p>Returns the <a href="#//api/name/channel">channel</a> that the receiving user is currently residing in.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/commentHash">&ndash;&nbsp;commentHash</a></code>
+		<span class="tooltip"><p>Returns the server&rsquo;s hash of the contents of the user&rsquo;s current <a href="#//api/name/comment">comment</a>.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/comment">&ndash;&nbsp;comment</a></code>
+		<span class="tooltip"><p>Return the user&rsquo;s current <a href="#//api/name/comment">comment</a> as an NSString.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textureHash">&ndash;&nbsp;textureHash</a></code>
+		<span class="tooltip"><p>Returns the server&rsquo;s hash of the user&rsquo;s current <a href="#//api/name/texture">texture</a>.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/texture">&ndash;&nbsp;texture</a></code>
+		<span class="tooltip"><p>Returns the user&rsquo;s <a href="#//api/name/texture">texture</a> as an NSData object. The NSData object
+contains the binary representation of the user&rsquo;s <a href="#//api/name/texture">texture</a> as an image
+in either JPEG, PNG or ARGB32 format.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/channel" title="channel"></a>
+	<h3 class="subsubtitle method-title">channel</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the <a href="#//api/name/channel">channel</a> that the receiving user is currently residing in.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (MKChannel *)channel</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/comment" title="comment"></a>
+	<h3 class="subsubtitle method-title">comment</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Return the user&rsquo;s current <a href="#//api/name/comment">comment</a> as an NSString.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)comment</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/commentHash" title="commentHash"></a>
+	<h3 class="subsubtitle method-title">commentHash</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the server&rsquo;s hash of the contents of the user&rsquo;s current <a href="#//api/name/comment">comment</a>.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSData *)commentHash</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isAuthenticated" title="isAuthenticated"></a>
+	<h3 class="subsubtitle method-title">isAuthenticated</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the user is authenticated.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isAuthenticated</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isDeafened" title="isDeafened"></a>
+	<h3 class="subsubtitle method-title">isDeafened</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is deafened.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isDeafened</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isFriend" title="isFriend"></a>
+	<h3 class="subsubtitle method-title">isFriend</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is a friend.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isFriend</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isLocalMuted" title="isLocalMuted"></a>
+	<h3 class="subsubtitle method-title">isLocalMuted</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is muted by the local client.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isLocalMuted</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isMuted" title="isMuted"></a>
+	<h3 class="subsubtitle method-title">isMuted</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is muted.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isMuted</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isPrioritySpeaker" title="isPrioritySpeaker"></a>
+	<h3 class="subsubtitle method-title">isPrioritySpeaker</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user has the priority speaker flag.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isPrioritySpeaker</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isRecording" title="isRecording"></a>
+	<h3 class="subsubtitle method-title">isRecording</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user has the recording flag.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isRecording</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isSelfDeafened" title="isSelfDeafened"></a>
+	<h3 class="subsubtitle method-title">isSelfDeafened</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is self-deafened.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isSelfDeafened</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isSelfMuted" title="isSelfMuted"></a>
+	<h3 class="subsubtitle method-title">isSelfMuted</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is self-muted.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isSelfMuted</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isSuppressed" title="isSuppressed"></a>
+	<h3 class="subsubtitle method-title">isSuppressed</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether or not the receiving user is suppressed by the server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isSuppressed</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/session" title="session"></a>
+	<h3 class="subsubtitle method-title">session</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the user&rsquo;s <a href="#//api/name/session">session</a> ID.
+The <a href="#//api/name/session">session</a> ID is mostly an implementation detail &mdash; it is an identifier that
+uniquely identifies a user on a server, regardless of whether or not that user
+is registered with the server.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)session</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/talkState" title="talkState"></a>
+	<h3 class="subsubtitle method-title">talkState</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the user&rsquo;s current talk state. See MKTalkState for more information.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (MKTalkState)talkState</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/texture" title="texture"></a>
+	<h3 class="subsubtitle method-title">texture</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the user&rsquo;s <a href="#//api/name/texture">texture</a> as an NSData object. The NSData object
+contains the binary representation of the user&rsquo;s <a href="#//api/name/texture">texture</a> as an image
+in either JPEG, PNG or ARGB32 format.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSData *)texture</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/textureHash" title="textureHash"></a>
+	<h3 class="subsubtitle method-title">textureHash</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the server&rsquo;s hash of the user&rsquo;s current <a href="#//api/name/texture">texture</a>.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSData *)textureHash</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userHash" title="userHash"></a>
+	<h3 class="subsubtitle method-title">userHash</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the user&rsquo;s hash. Typically, the the hash is the SHA1 digest of the user&rsquo;s X.509
+certificate, but could be any unique hash that identifies the user.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)userHash</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userId" title="userId"></a>
+	<h3 class="subsubtitle method-title">userId</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns a user&rsquo;s user ID. Only registered users have user IDs.
+For non-registered users, this ID will be negative.
+A user ID of 0 signals that the user is the SuperUser.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSInteger)userId</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userName" title="userName"></a>
+	<h3 class="subsubtitle method-title">userName</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the user&rsquo;s username.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)userName</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKUser.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-08-03)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

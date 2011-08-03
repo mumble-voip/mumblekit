@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>MKConnectionController Class Reference</title>
+		<title>MKServerPinger Class Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">MKConnectionController Class Reference</h1>
+				<h1 class="hideInXcode">MKServerPinger Class Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -40,20 +40,15 @@
 	
 	
 	
-	<option value="class_methods">Class Methods</option>
-	
-	<option value="//api/name/sharedController">&nbsp;&nbsp;&nbsp;&nbsp;+ sharedController</option>
-	
-	
 	
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/addConnection:">&nbsp;&nbsp;&nbsp;&nbsp;- addConnection:</option>
+	<option value="//api/name/delegate">&nbsp;&nbsp;&nbsp;&nbsp;- delegate</option>
 	
-	<option value="//api/name/allConnections">&nbsp;&nbsp;&nbsp;&nbsp;- allConnections</option>
+	<option value="//api/name/initWithHostname:port:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithHostname:port:</option>
 	
-	<option value="//api/name/removeConnection:">&nbsp;&nbsp;&nbsp;&nbsp;- removeConnection:</option>
+	<option value="//api/name/setDelegate:">&nbsp;&nbsp;&nbsp;&nbsp;- setDelegate:</option>
 	
 	
 	
@@ -79,21 +74,15 @@
 
 
 
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedController">sharedController</a></span></li>
-	
-</ul></li>
-
 
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/addConnection:">addConnection:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/delegate">delegate</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/allConnections">allConnections</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithHostname:port:">initWithHostname:port:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeConnection:">removeConnection:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setDelegate:">setDelegate:</a></span></li>
 	
 </ul></li>
 
@@ -102,7 +91,7 @@
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="MKConnectionController Class Reference" name="top"></a>
+				<a title="MKServerPinger Class Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -111,7 +100,7 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">MKConnectionController Class Reference</h1>
+						<h1 class="title title-header">MKServerPinger Class Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
@@ -122,7 +111,7 @@
 	<td class="specification-value">NSObject</td>
 </tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">MKConnectionController.h</td>
+	<td class="specification-value">MKServerPinger.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -132,14 +121,12 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKConnectionController.html">MKConnectionController</a> is a singleton controller object that holds references
-to all active connections (instances of <a href="../Classes/MKConnection.html">MKConnection</a>).</p>
+						<p><a href="MKServerPinger.html">MKServerPinger</a> implements a pinger object that can ping and query Mumble
+servers for information typically shown in a server list.</p>
 
-<p>Internal consumers of this controller include the MKAudioInput class, which
-must transmit audio to all active connections.</p>
-
-<p>External consumers of this controller could for example be a UI component that
-is used to show a list of active Mumble server connections.</p>
+<p>Once a <a href="MKServerPinger.html">MKServerPinger</a> object is created, it will continually ping the remote
+server until it is destroyed. Whenever the <a href="MKServerPinger.html">MKServerPinger</a> receives a reply from
+the remote server, it will inform its <a href="#//api/name/delegate">delegate</a>.</p>
 					</div>
 					
 					
@@ -157,33 +144,24 @@ is used to show a list of active Mumble server connections.</p>
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/sharedController">+&nbsp;sharedController</a></code>
-		<span class="tooltip"><p>Get this process&rsquo;s instance of <a href="MKConnectionController.html">MKConnectionController</a>.</p></span>
+		<code><a href="#//api/name/initWithHostname:port:">&ndash;&nbsp;initWithHostname:port:</a></code>
+		<span class="tooltip"><p>Initialize a new <a href="MKServerPinger.html">MKServerPinger</a> that pings the server running
+on the given hostname and port combination.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/addConnection:">&ndash;&nbsp;addConnection:</a></code>
-		<span class="tooltip"><p>Add a connection to the connection controller.
-Note: This will be removed sooner or later, as it should not be part of the controller&rsquo;s public API.</p></span>
+		<code><a href="#//api/name/delegate">&ndash;&nbsp;delegate</a></code>
+		<span class="tooltip"><p>Returns the currently-set <a href="#//api/name/delegate">delegate</a> for the <a href="MKServerPinger.html">MKServerPinger</a> object.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/removeConnection:">&ndash;&nbsp;removeConnection:</a></code>
-		<span class="tooltip"><p>Remove a connection from the connection controller.
-Note: This will be removed sooner or later, as it should not be part of the controller&rsquo;s public API.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/allConnections">&ndash;&nbsp;allConnections</a></code>
-		<span class="tooltip"><p>Get a reference to an array of active connections.
-This way of accessing connections is very fragile, since concurrent access
-to the array are not currently handled.</p></span>
+		<code><a href="#//api/name/setDelegate:">&ndash;&nbsp;setDelegate:</a></code>
+		<span class="tooltip"><p>Set the <a href="#//api/name/delegate">delegate</a> of the <a href="MKServerPinger.html">MKServerPinger</a> object. The <a href="#//api/name/delegate">delegate</a> will be called
+when the remote server responds to a ping request.</p></span>
 	</span>
 	
 	
@@ -198,46 +176,6 @@ to the array are not currently handled.</p></span>
 					
 					
 					
-					<div class="section section-methods">
-						<a title="Class Methods" name="class_methods"></a>
-						<h2 class="subtitle subtitle-methods">Class Methods</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/sharedController" title="sharedController"></a>
-	<h3 class="subsubtitle method-title">sharedController</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Get this process&rsquo;s instance of <a href="MKConnectionController.html">MKConnectionController</a>.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>+ (MKConnectionController *)sharedController</code></div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKConnectionController.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
-					
 					
 					
 					<div class="section section-methods">
@@ -245,26 +183,122 @@ to the array are not currently handled.</p></span>
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/addConnection:" title="addConnection:"></a>
-	<h3 class="subsubtitle method-title">addConnection:</h3>
+	<a name="//api/name/delegate" title="delegate"></a>
+	<h3 class="subsubtitle method-title">delegate</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Add a connection to the connection controller.
-Note: This will be removed sooner or later, as it should not be part of the controller&rsquo;s public API.</p>
+		<p>Returns the currently-set <a href="#//api/name/delegate">delegate</a> for the <a href="MKServerPinger.html">MKServerPinger</a> object.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (void)addConnection:(MKConnection *)<em>conn</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (id&lt;MKServerPingerDelegate&gt;)delegate</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns an object implementing the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPingerDelegate</a> protocol.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerPinger.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithHostname:port:" title="initWithHostname:port:"></a>
+	<h3 class="subsubtitle method-title">initWithHostname:port:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Initialize a new <a href="MKServerPinger.html">MKServerPinger</a> that pings the server running
+on the given hostname and port combination.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (id)initWithHostname:(NSString *)<em>hostname</em> port:(NSString *)<em>port</em></code></div>
 	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>conn</em></dt>
-			<dd><p>The connection to add.</p></dd>
+			<dt><em>hostname</em></dt>
+			<dd><p>The hostname of the server to ping.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>port</em></dt>
+			<dd><p>The port number of the server to ping.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns an <a href="MKServerPinger.html">MKServerPinger</a> object. To get ping results, one must
+register a <a href="#//api/name/delegate">delegate</a> implementing the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPingerDelegate</a> protocol.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerPinger.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setDelegate:" title="setDelegate:"></a>
+	<h3 class="subsubtitle method-title">setDelegate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the <a href="#//api/name/delegate">delegate</a> of the <a href="MKServerPinger.html">MKServerPinger</a> object. The <a href="#//api/name/delegate">delegate</a> will be called
+when the remote server responds to a ping request.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)setDelegate:(id&lt;MKServerPingerDelegate&gt;)<em>delegate</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>delegate</em></dt>
+			<dd><p>The objec to register as the MKServerPinger&rsquo;s <a href="#//api/name/delegate">delegate</a>.
+Must implement the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPingerDelegate</a> protocol.</p></dd>
 		</dl>
 		
 	</div>
@@ -283,88 +317,7 @@ Note: This will be removed sooner or later, as it should not be part of the cont
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKConnectionController.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/allConnections" title="allConnections"></a>
-	<h3 class="subsubtitle method-title">allConnections</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Get a reference to an array of active connections.
-This way of accessing connections is very fragile, since concurrent access
-to the array are not currently handled.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (NSArray *)allConnections</code></div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKConnectionController.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/removeConnection:" title="removeConnection:"></a>
-	<h3 class="subsubtitle method-title">removeConnection:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Remove a connection from the connection controller.
-Note: This will be removed sooner or later, as it should not be part of the controller&rsquo;s public API.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (void)removeConnection:(MKConnection *)<em>conn</em></code></div>
-	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>conn</em></dt>
-			<dd><p>The connection to remove.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKConnectionController.h</code><br />
+		<code class="declared-in-ref">MKServerPinger.h</code><br />
 	</div>				
 	
 	
