@@ -264,12 +264,12 @@ static MKServerPingerController *_serverPingerControllerSingleton;
             if (iter->ai_family == AF_INET || iter->ai_family == AF_INET6)
                 break;
         }
-
-        NSData *addrData = [NSData dataWithBytes:iter->ai_addr length:iter->ai_addrlen];
-        return [self initWithAddress:addrData];
-    } else {
-        return [self initWithAddress:nil];
+        if (iter) {
+            NSData *addrData = [NSData dataWithBytes:iter->ai_addr length:iter->ai_addrlen];
+            return [self initWithAddress:addrData];
+        }
     }
+    return [self initWithAddress:nil];
 }
 
 - (id) initWithAddress:(NSData *)address {
@@ -281,6 +281,7 @@ static MKServerPingerController *_serverPingerControllerSingleton;
 }
 
 - (void) dealloc {
+    [_address release];
     [[MKServerPingerController sharedController] removePinger:self];
     [super dealloc];
 }

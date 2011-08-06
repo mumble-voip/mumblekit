@@ -197,7 +197,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
     PKCS12 *pkcs = NULL;
     BIO *mem = NULL;
     STACK_OF(X509) *certs = NULL;
-    int ret;
+    int ret = 0;
 
     mem = BIO_new_mem_buf((void *)[pkcs12 bytes], [pkcs12 length]);
     (void) BIO_set_close(mem, BIO_NOCLOSE);
@@ -320,7 +320,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 // Parse a one-line ASCII representation of subject or issuer info
 // from a certificate. Returns a dictionary with the keys and values
 // as-is.
-- (NSDictionary *) dictForOneLineASCIIRepr:(char *)asciiRepr {
+- (NSDictionary *) copyDictForOneLineASCIIRepr:(char *)asciiRepr {
 	char *cur = asciiRepr;
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 	char *key = NULL, *val = NULL;
@@ -353,7 +353,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 //
 // fixme(mkrautz): This needs some testing. And fuzzing.
 //                 Also, are "local time only" times supposed to be handled?
-- (NSDate *) parseASN1Date:(ASN1_TIME *)time {
+- (NSDate *) copyAndParseASN1Date:(ASN1_TIME *)time {
 	int Y = 0, M = 0, D = 0, h = 0, m = 0, s = 0, sfrac = 0, th = 0, tm = 0, sign = 0;
 	unsigned char *p = time->data;
 
@@ -435,7 +435,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			X509_NAME *subject = X509_get_subject_name(x509);
 			char *asciiRepr = X509_NAME_oneline(subject, NULL, 0);
 			if (asciiRepr) {
-				_subjectDict = [self dictForOneLineASCIIRepr:asciiRepr];
+				_subjectDict = [self copyDictForOneLineASCIIRepr:asciiRepr];
 				OPENSSL_free(asciiRepr);
 			}
 		}
@@ -445,7 +445,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			X509_NAME *issuer = X509_get_issuer_name(x509);
 			char *asciiRepr = X509_NAME_oneline(issuer, NULL, 0);
 			if (asciiRepr) {
-				_issuerDict = [self dictForOneLineASCIIRepr:asciiRepr];
+				_issuerDict = [self copyDictForOneLineASCIIRepr:asciiRepr];
 				OPENSSL_free(asciiRepr);
 			}
 		}
@@ -453,11 +453,11 @@ static int add_ext(X509 * crt, int nid, char *value) {
 		// Extract notBefore and notAfter
 		ASN1_TIME *notBefore = X509_get_notBefore(x509);
 		if (notBefore) {
-			_notBeforeDate = [self parseASN1Date:notBefore];
+			_notBeforeDate = [self copyAndParseASN1Date:notBefore];
 		}
 		ASN1_TIME *notAfter = X509_get_notAfter(x509);
 		if (notAfter) {
-			_notAfterDate = [self parseASN1Date:notAfter];
+			_notAfterDate = [self copyAndParseASN1Date:notAfter];
 		}
 
 		// Extract Subject Alt Names
@@ -474,6 +474,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 					ASN1_STRING_to_UTF8(&strPtr, name->d.ia5);
 					NSString *dns = [[NSString alloc] initWithUTF8String:(char *)strPtr];
 					[_dnsEntries addObject:dns];
+                    [dns release];
 					break;
 				}
 				case GEN_EMAIL: {
@@ -482,6 +483,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 					ASN1_STRING_to_UTF8(&strPtr, name->d.ia5);
 					NSString *email = [[NSString alloc] initWithUTF8String:(char *)strPtr];
 					[_emailAddresses addObject:email];
+                    [email release];
 					break;
 				}
 				// fixme(mkrautz): There's an URI alt name as well.

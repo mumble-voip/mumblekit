@@ -98,7 +98,7 @@ struct MKCryptStatePrivate {
 - (NSData *) encryptData:(NSData *)data {
 	NSMutableData *crypted = [[NSMutableData alloc] initWithLength:[data length]+4];
 	_priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], [data length]);
-	return crypted;
+	return [crypted autorelease];
 }
 
 - (NSData *) decryptData:(NSData *)data {
@@ -107,7 +107,7 @@ struct MKCryptStatePrivate {
 
 	NSMutableData *plain = [[NSMutableData alloc] initWithLength:[data length]-4];
 	if (_priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], [data length])) {
-		return plain;
+		return [plain autorelease];
 	} else {
 		[plain release];
 		return nil;

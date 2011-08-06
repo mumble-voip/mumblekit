@@ -509,6 +509,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	// Add the UDP socket to the runloop of the MKConnection thread.
 	CFRunLoopSourceRef src = CFSocketCreateRunLoopSource(NULL, _udpSock, 0);
 	CFRunLoopAddSource(CFRunLoopGetCurrent(), src, kCFRunLoopDefaultMode);
+    CFRelease(src);
 
 	// Get the peer address of the TCP socket (i.e. the host)
 	struct sockaddr sa;
@@ -518,13 +519,12 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		return;
 	}
 
-	NSData *_udpAddr = [[NSData alloc] initWithBytes:&sa length:(NSUInteger)sl];
+	NSData *_udpAddr = [[[NSData alloc] initWithBytes:&sa length:(NSUInteger)sl] autorelease];
 	CFSocketError err = CFSocketConnectToAddress(_udpSock, (CFDataRef)_udpAddr, -1);
 	if (err == kCFSocketError) {
 		NSLog(@"MKConnection: Unable to CFSocketConnectToAddress()");
 		return;
 	}
-	[_udpAddr release];
 }
 
 // Tear down the UDP connection-part of an MKConnection.
@@ -578,6 +578,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		[_peerCertificates addObject:[MKCertificate certificateWithCertificate:data privateKey:nil]];
 		[data release];
 	}];
+    [secCerts release];
 
 	return _peerCertificates;
 }
@@ -608,8 +609,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	if (err != kCFSocketSuccess) {
 		NSLog(@"MKConnection: CFSocketSendData failed with err=%i", (int)err);
 	}
-
-	[crypted release];
 }
 
 // Send a control-channel message to the server.  This may be called from any thread,
@@ -688,7 +687,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	if ([crypted length] > 4) {
 		NSData *plain = [_crypt decryptData:crypted];
 		[self _udpMessageReceived:plain];
-		[plain release];
 	}
 }
 
