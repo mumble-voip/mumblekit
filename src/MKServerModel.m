@@ -72,9 +72,9 @@
 
 // Internal channel operations
 - (MKChannel *) internalAddChannelWithId:(NSUInteger)chanId name:(NSString *)chanName parent:(MKChannel *)parent;
-- (void) internalSetLinks:(NSArray *)links forChannel:(MKChannel *)chan;
-- (void) internalAddLinks:(NSArray *)links toChannel:(MKChannel *)chan;
-- (void) internalRemoveLinks:(NSArray *)links fromChannel:(MKChannel *)chan;
+- (void) internalSetLinks:(PBArray *)links forChannel:(MKChannel *)chan;
+- (void) internalAddLinks:(PBArray *)links toChannel:(MKChannel *)chan;
+- (void) internalRemoveLinks:(PBArray *)links fromChannel:(MKChannel *)chan;
 - (void) internalRenameChannel:(MKChannel *)chan to:(NSString *)newName;
 - (void) internalRepositionChannel:(MKChannel *)chan to:(NSInteger)pos;
 - (void) internalSetDescriptionForChannel:(MKChannel *)chan to:(NSString *)desc;
@@ -258,16 +258,16 @@
 		[self internalRepositionChannel:chan to:[msg position]];
 	}
 
-	if ([[msg linksArray] count] > 0) {
-		[self internalSetLinks:[msg linksArray] forChannel:chan];
+	if ([[msg links] count] > 0) {
+		[self internalSetLinks:[msg links] forChannel:chan];
 	}
 
-	if ([[msg linksAddArray] count] > 0) {
-		[self internalAddLinks:[msg linksAddArray] toChannel:chan];
+	if ([[msg linksAdd] count] > 0) {
+		[self internalAddLinks:[msg linksAdd] toChannel:chan];
 	}
 
-	if ([[msg linksRemoveArray] count] > 0) {
-		[self internalRemoveLinks:[msg linksRemoveArray] fromChannel:chan];
+	if ([[msg linksRemove] count] > 0) {
+		[self internalRemoveLinks:[msg linksRemove] fromChannel:chan];
 	}
 
 	if (newChannel && _connectedUser) {
@@ -543,7 +543,7 @@
 - (void) internalSetLinks:(PBArray *)links forChannel:(MKChannel *)chan {
 	[chan unlinkAll];
 
-	int i, numLinks = [links count];
+	int numLinks = [links count];
 	NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
 	for (int i = 0; i < numLinks; i++) {
 		MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];

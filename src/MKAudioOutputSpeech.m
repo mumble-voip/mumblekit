@@ -55,7 +55,7 @@ struct MKAudioOutputSpeechPrivate {
 @interface MKAudioOutputSpeech () {
     struct MKAudioOutputSpeechPrivate *_private;
     
-    MKUDPMessageType messageType;
+    MKUDPMessageType _msgType;
     NSUInteger bufferOffset;
     NSUInteger bufferFilled;
     NSUInteger outputSize;
@@ -85,7 +85,7 @@ struct MKAudioOutputSpeechPrivate {
 
 @implementation MKAudioOutputSpeech
 
-- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type {
+- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKUDPMessageType)type {
 	self = [super init];
 	if (self == nil)
 		return nil;
@@ -99,7 +99,7 @@ struct MKAudioOutputSpeechPrivate {
 
 	_userSession = session;
 	_talkState = MKTalkStatePassive;
-	messageType = type;
+	_msgType = type;
 
 	NSUInteger sampleRate;
 
@@ -189,8 +189,8 @@ struct MKAudioOutputSpeechPrivate {
 	return _userSession;
 }
 
-- (MKMessageType) messageType {
-	return messageType;
+- (MKUDPMessageType) messageType {
+	return _msgType;
 }
 
 - (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq {
@@ -351,7 +351,7 @@ struct MKAudioOutputSpeechPrivate {
 			if ([frames count] > 0) {
 				NSData *frameData = [frames objectAtIndex:0];
 
-				if (messageType != UDPVoiceSpeexMessage) {
+				if (_msgType != UDPVoiceSpeexMessage) {
 					if ([frameData length] != 0) {
 						celt_decode_float(_private->celtDecoder, [frameData bytes], [frameData length], output);
 					} else {
@@ -398,7 +398,7 @@ struct MKAudioOutputSpeechPrivate {
 					nextAlive = NO;
 				}
 			} else {
-				if (messageType != UDPVoiceSpeexMessage) {
+				if (_msgType != UDPVoiceSpeexMessage) {
 					celt_decode_float(_private->celtDecoder, NULL, 0, output);
 				} else {
 					speex_decode(_private->speexDecoder, NULL, output);

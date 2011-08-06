@@ -261,7 +261,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 	[self start];
 }
 
-- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType {
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType {
 	[_audioOutput addFrameToBufferWithSession:session data:data sequence:seq type:msgType];
 }
 

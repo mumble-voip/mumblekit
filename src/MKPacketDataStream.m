@@ -45,51 +45,26 @@
 @implementation MKPacketDataStream
 
 - (id) initWithData:(NSData *)ourContainer {
-	self = [super init];
-	if (self == nil)
-		return nil;
-
-	immutableData = ourContainer;
-	[immutableData retain];
-
-	data = (unsigned char *)[immutableData bytes];
-	offset = 0;
-	overshoot = 0;
-	maxSize = [immutableData length];
-	ok = YES;
-
-	return self;
-}
-
-- (id) initWithMutableData:(NSMutableData *)ourContainer {
-	self = [super init];
-	if (self == nil)
-		return nil;
-
-	mutableData = ourContainer;
-	[mutableData retain];
-
-	data = [mutableData mutableBytes];
-	offset = 0;
-	overshoot = 0;
-	maxSize = [mutableData capactiy]; // fixme(mkrautz)
-	ok = YES;
-
+	if ((self = [super init])) {
+        immutableData = ourContainer;
+        [immutableData retain];
+        data = (unsigned char *)[immutableData bytes];
+        offset = 0;
+        overshoot = 0;
+        maxSize = [immutableData length];
+        ok = YES;
+    }
 	return self;
 }
 
 - (id) initWithBuffer:(unsigned char *)buffer length:(NSUInteger)len {
-	self = [super init];
-	if (self == nil)
-		return nil;
-
-	mutableData = nil;
-	data = buffer;
-	offset = 0;
-	overshoot = 0;
-	maxSize = len;
-	ok = YES;
-
+	if ((self = [super init])) {
+        data = buffer;
+        offset = 0;
+        overshoot = 0;
+        maxSize = len;
+        ok = YES;
+    }
 	return self;
 }
 

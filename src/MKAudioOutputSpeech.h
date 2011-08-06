@@ -38,11 +38,11 @@ struct MKAudioOutputSpeechPrivate;
 
 @interface MKAudioOutputSpeech : MKAudioOutputUser
 
-- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKMessageType)type;
+- (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKUDPMessageType)type;
 - (void) dealloc;
 
 - (NSUInteger) userSession;
-- (MKMessageType) messageType;
+- (MKUDPMessageType) messageType;
 
 - (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq;
 

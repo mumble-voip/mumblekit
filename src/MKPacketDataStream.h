@@ -37,7 +37,6 @@ typedef union _float32u {
 @interface MKPacketDataStream : NSObject
 
 - (id) initWithData:(NSData *)data;
-- (id) initWithMutableData:(NSMutableData *)data;
 - (id) initWithBuffer:(unsigned char *)buffer length:(NSUInteger)len;
 - (void) dealloc;
 

@@ -284,11 +284,11 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			}
 #endif
 
-			pkcs = PKCS12_create(password ? [password UTF8String] : NULL, "Mumble Identity", pkey, x509, certs, 0, 0, 0, 0, 0);
+			pkcs = PKCS12_create(password ? (char *) [password UTF8String] : NULL, "Mumble Identity", pkey, x509, certs, 0, 0, 0, 0, 0);
 			if (pkcs) {
 				mem = BIO_new(BIO_s_mem());
 				i2d_PKCS12_bio(mem, pkcs);
-				BIO_flush(mem);
+                int _flush __attribute__((unused)) = BIO_flush(mem);
 				size = BIO_get_mem_data(mem, &data);
 				retData = [[NSData alloc] initWithBytes:data length:size];
 			}
@@ -492,7 +492,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 			OPENSSL_free(strPtr);
 		}
 
-		sk_pop_free(subjAltNames, sk_free);
+		sk_pop_free((_STACK *) subjAltNames, (void (*)(void *)) sk_free);
 		X509_free(x509);
 	}
 }

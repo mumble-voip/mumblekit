@@ -293,7 +293,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 	}
 }
 
-- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKMessageType)msgType {
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType {
 	if (numChannels == 0)
 		return;
 
