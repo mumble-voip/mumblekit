@@ -118,6 +118,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		283363C913EE070400A04F04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 280D5F84132AE73C00540C3D;
+			remoteInfo = "CELT-0.7 (iOS)";
+		};
+		283363CB13EE070400A04F04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 28F58C45132AF1070053C348;
+			remoteInfo = "OpenSSL (iOS)";
+		};
+		283363CD13EE070400A04F04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28492321132ED61800B4EAAC /* ProtocolBuffers.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2845A6A6132D99550034D631;
+			remoteInfo = "ProtocolBuffers (iOS)";
+		};
+		283363CF13EE070400A04F04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28492348132ED65700B4EAAC /* SpeexDSP.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 28877EBD132D96F300793CC5;
+			remoteInfo = "SpeexDSP (iOS)";
+		};
+		283363D113EE070400A04F04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2849233C132ED64C00B4EAAC /* Speex.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 28D1DAE7132AEB1400456ED6;
+			remoteInfo = "Speex (iOS)";
+		};
 		2849230F132ED60700B4EAAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
@@ -636,6 +671,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				283363CA13EE070400A04F04 /* PBXTargetDependency */,
+				283363CC13EE070400A04F04 /* PBXTargetDependency */,
+				283363CE13EE070400A04F04 /* PBXTargetDependency */,
+				283363D013EE070400A04F04 /* PBXTargetDependency */,
+				283363D213EE070400A04F04 /* PBXTargetDependency */,
 			);
 			name = "MumbleKit (iOS)";
 			productName = MumbleKit;
@@ -833,6 +873,31 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		283363CA13EE070400A04F04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CELT-0.7 (iOS)";
+			targetProxy = 283363C913EE070400A04F04 /* PBXContainerItemProxy */;
+		};
+		283363CC13EE070400A04F04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenSSL (iOS)";
+			targetProxy = 283363CB13EE070400A04F04 /* PBXContainerItemProxy */;
+		};
+		283363CE13EE070400A04F04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ProtocolBuffers (iOS)";
+			targetProxy = 283363CD13EE070400A04F04 /* PBXContainerItemProxy */;
+		};
+		283363D013EE070400A04F04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SpeexDSP (iOS)";
+			targetProxy = 283363CF13EE070400A04F04 /* PBXContainerItemProxy */;
+		};
+		283363D213EE070400A04F04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Speex (iOS)";
+			targetProxy = 283363D113EE070400A04F04 /* PBXContainerItemProxy */;
+		};
 		28492355132ED66F00B4EAAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "OpenSSL (Mac)";
