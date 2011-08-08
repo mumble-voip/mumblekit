@@ -81,6 +81,9 @@
 - (void) internalSetDescriptionHashForChannel:(MKChannel *)chan to:(NSData *)hash;
 - (void) internalMoveChannel:(MKChannel *)chan toChannel:(MKChannel *)newParent;
 - (void) internalRemoveChannel:(MKChannel *)chan;
+
+- (void) removeAllUsersFromChannel:(MKChannel *)channel;
+- (void) removeAllChannels;
 @end
 
 @implementation MKServerModel
@@ -98,7 +101,7 @@
 
 		[_channelMap setObject:_rootChannel forKey:[NSNumber numberWithUnsignedInteger:0]];
 
-		_connection = conn;
+		_connection = [conn retain];
 		[_connection setMessageHandler:self];
 
 		// Listens to notifications form MKAudioOutput and MKAudioInput
@@ -109,7 +112,49 @@
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"MKAudioUserTalkStateChanged" object:nil];
+
+    [_connection setMessageHandler:nil];
+
+    [_delegate release];
+
+    [self removeAllUsersFromChannel:_rootChannel];
+    [_userMap release];
+
+    [self removeAllChannels];
+    [_channelMap release];
+
+    [_rootChannel release];
+
+    [_connection release];
+
 	[super dealloc];
+}
+
+// Remove all users from their channels.
+// Must be called before removing channels.
+- (void) removeAllUsersFromChannel:(MKChannel *)channel {
+    [channel removeAllUsers];
+    for (MKChannel *subchannel in [channel channels]) {
+        [self removeAllUsersFromChannel:subchannel];
+    }
+}
+
+// Removes all channels, correctly unchaining the mess. (Subchannels retain their parents,
+// and parent channels retain their children implicitly by storing them in an NSArray).
+- (void) removeAllChannels {
+    int nparents;
+    do {
+        nparents = 0;
+        for (MKChannel *channel in _channelMap.allValues) {
+            if ([channel parent] != nil) {
+                if ([[channel channels] count] > 0) {
+                    ++nparents;
+                } else {
+                    [channel removeFromParent];
+                }
+            }
+        }
+    } while (nparents > 0);
 }
 
 - (void) addDelegate:(id)delegate {
@@ -331,7 +376,7 @@
 	NSNumber *session = [infoDict objectForKey:@"userSession"];
 	NSNumber *talkState = [infoDict objectForKey:@"talkState"];
 	MKUser *user = nil;
-
+    
 	if (talkState) {
 		// An infoDict with a missing userSession means that our own talkState changed.
 		if (session == nil) {

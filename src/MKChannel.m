@@ -60,12 +60,15 @@
 }
 
 - (void) dealloc {
-	NSAssert([_users count] == 0, @"Attempt to remove channel with users in it");
-	NSAssert([_channels count] == 0, @"Attempt to remove channel with subchannels.");
+    [self removeFromParent];
+    [self removeAllUsers];
+
 	[_channelName release];
+
 	[_channels release];
 	[_users release];
 	[_linked release];
+
 	[super dealloc];
 }
 
@@ -73,6 +76,8 @@
 
 - (void) removeFromParent {
 	[_parent removeChannel:self];
+    [_parent release];
+    _parent = nil;
 }
 
 - (void) addChannel:(MKChannel *)child {
@@ -95,6 +100,13 @@
 - (void) removeUser:(MKUser *)user {
 	[user setChannel:nil];
 	[_users removeObject:user];
+}
+
+- (void) removeAllUsers {
+    for (MKUser *user in _users) {
+        [user setChannel:nil];
+    }
+    [_users removeAllObjects];
 }
 
 - (NSArray *) channels {
@@ -145,7 +157,7 @@
 }
 
 - (void) setParent:(MKChannel *)chan {
-	_parent = chan;
+	_parent = [chan retain];
 }
 
 - (MKChannel *) parent {

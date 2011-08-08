@@ -42,6 +42,7 @@
 
 - (void) addUser:(MKUser *)user;
 - (void) removeUser:(MKUser *)user;
+- (void) removeAllUsers;
 
 - (void) linkToChannel:(MKChannel *)chan;
 - (void) unlinkFromChannel:(MKChannel *)chan;

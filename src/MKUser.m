@@ -68,6 +68,7 @@
 - (void) dealloc {
 	[_channel removeUser:self];
 	[_username release];
+
 	[super dealloc];
 }
 
