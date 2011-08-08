@@ -12,6 +12,8 @@
 		282F6B0913624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
 		282F6B0B13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
+		283363DD13EF535B00A04F04 /* MKChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 283363DC13EF535B00A04F04 /* MKChannelPrivate.h */; };
+		283363DF13EF536C00A04F04 /* MKUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 283363DE13EF536C00A04F04 /* MKUserPrivate.h */; };
 		2845A794132D9C220034D631 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2845A781132D9C220034D631 /* CryptState.cpp */; };
 		2845A795132D9C220034D631 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2845A781132D9C220034D631 /* CryptState.cpp */; };
 		2845A796132D9C220034D631 /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A782132D9C220034D631 /* MKAudio.m */; };
@@ -280,6 +282,8 @@
 /* Begin PBXFileReference section */
 		282F6B0613624187008F555B /* MKServerPinger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerPinger.h; path = src/MumbleKit/MKServerPinger.h; sourceTree = SOURCE_ROOT; };
 		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
+		283363DC13EF535B00A04F04 /* MKChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelPrivate.h; path = src/MKChannelPrivate.h; sourceTree = SOURCE_ROOT; };
+		283363DE13EF536C00A04F04 /* MKUserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUserPrivate.h; path = src/MKUserPrivate.h; sourceTree = SOURCE_ROOT; };
 		2845A71A132D9B2F0034D631 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A781132D9C220034D631 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = SOURCE_ROOT; };
 		2845A782132D9C220034D631 /* MKAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudio.m; path = src/MKAudio.m; sourceTree = SOURCE_ROOT; };
@@ -473,6 +477,8 @@
 				2845A7D7132D9C520034D631 /* MKUtils.h */,
 				2845A7D0132D9C520034D631 /* MKCryptState.h */,
 				2845A7D1132D9C520034D631 /* MKPacketDataStream.h */,
+				283363DC13EF535B00A04F04 /* MKChannelPrivate.h */,
+				283363DE13EF536C00A04F04 /* MKUserPrivate.h */,
 			);
 			name = "Private Headers";
 			sourceTree = "<group>";
@@ -630,6 +636,8 @@
 				2845A7FB132D9C520034D631 /* MKVersion.h in Headers */,
 				282F6B0813624187008F555B /* MKServerPinger.h in Headers */,
 				28F2FAD513E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
+				283363DD13EF535B00A04F04 /* MKChannelPrivate.h in Headers */,
+				283363DF13EF536C00A04F04 /* MKUserPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
