@@ -41,8 +41,15 @@ typedef enum _MKCodecFormat {
 	MKCodecFormatCELT,
 } MKCodecFormat;
 
+typedef enum _MKTransmitType {
+    MKTransmitTypeVAD,
+    MKTransmitTypeToggle,
+    MKTransmitTypeContinuous,
+} MKTransmitType;
+
 typedef struct _MKAudioSettings {
 	MKCodecFormat   codec;
+    MKTransmitType  transmitType;
 	int             quality;
 	int             audioPerPacket;
 	int             noiseSuppression;
@@ -117,9 +124,14 @@ typedef struct _MKAudioBenchmark {
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
 
-///----------------------
-/// @name Forced Transmit
-///----------------------
+///-------------------
+/// @name Transmission
+///-------------------
+
+/**
+ * Returns the current transmit type (as set by calling setAudioSettings:.
+ */
+- (MKTransmitType) transmitType;
 
 /**
  * Returns whether forceTransmit is enabled.

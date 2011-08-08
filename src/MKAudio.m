@@ -265,6 +265,10 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 	[_audioOutput addFrameToBufferWithSession:session data:data sequence:seq type:msgType];
 }
 
+- (MKTransmitType) transmitType {
+    return _audioSettings.transmitType;
+}
+
 - (BOOL) forceTransmit {
 	return [_audioInput forceTransmit];
 }

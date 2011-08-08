@@ -71,7 +71,6 @@ struct MKAudioInputPrivate {
     
     int micFilled;
     int micLength;
-    BOOL previousVoice;
     int bitrate;
     int frameCounter;
     
@@ -183,7 +182,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	}
 
 	doResetPreprocessor = YES;
-	previousVoice = NO;
+	_lastTransmit = NO;
 
 	numMicChannels = 0;
 	bitrate = 0;
@@ -553,10 +552,8 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 				}
 			}
 		}
-
-		if (!previousVoice) {
+		if (!_lastTransmit) {
 			celt_encoder_ctl(encoder, CELT_RESET_STATE);
-			NSLog(@"AudioInput: Reset CELT state.");
 		}
 
 		celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
@@ -571,29 +568,53 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 			vbr = _settings.quality;
 			speex_encoder_ctl(_private->speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &vbr);
 		}
-		if (! previousVoice)
+		if (!_lastTransmit)
 			speex_encoder_ctl(_private->speexEncoder, SPEEX_RESET_STATE, NULL);
 		speex_encode_int(_private->speexEncoder, psOut, &_private->speexBits);
 		len = speex_bits_write(&_private->speexBits, (char *)buffer, 127);
 		speex_bits_reset(&_private->speexBits);
 		bitrate = len * 50 * 8;
 		udpMessageType = UDPVoiceSpeexMessage;
+
 		NSLog(@"MKAudioInput: udpMessageType changed to 0x%x", udpMessageType);
 	}
 
-	NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
-	[self flushCheck:outputBuffer terminator:NO];
-	[outputBuffer release];
+    // Crude probability-based VAD 
+    if (_settings.transmitType == MKTransmitTypeVAD) {
+        spx_int32_t prob = 0;
+        speex_preprocess_ctl(_private->preprocessorState, SPEEX_PREPROCESS_GET_PROB, &prob);
+        if (!_lastTransmit) {
+            _doTransmit = prob > 75;
+        } else {
+            _doTransmit = prob > 55;
+        }
+    } else if (_settings.transmitType == MKTransmitTypeContinuous) {
+        _doTransmit = YES;
+    } else if (_settings.transmitType == MKTransmitTypeToggle) {
+        _doTransmit = _forceTransmit;
+    }
 
-	previousVoice = YES;
+	if (_lastTransmit != _doTransmit) {
+		// fixme(mkrautz): Handle more talkstates
+		MKTalkState talkState = _doTransmit ? MKTalkStateTalking : MKTalkStatePassive;
+		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+		NSDictionary *talkStateDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [NSNumber numberWithUnsignedInteger:talkState], @"talkState",
+									   nil];
+		NSNotification *notification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
+		[center performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
+	}
+	if (_doTransmit) {
+        NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
+        [self flushCheck:outputBuffer terminator:NO];
+        [outputBuffer release];
+	}
+	_lastTransmit = _doTransmit;
 }
 
-//
 // Flush check.
-//
 // Queue up frames, and send them to the server when enough frames have been
 // queued up.
-//
 - (void) flushCheck:(NSData *)codedSpeech terminator:(BOOL)terminator {
 	[frameList addObject:codedSpeech];
 
@@ -631,34 +652,17 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	[frameList removeAllObjects];
 
 	NSUInteger len = [pds size] + 1;
+
+    // fixme(mkrautz): Fix locking...
+    MKConnectionController *conns = [MKConnectionController sharedController];
+    NSArray *connections = [conns allConnections];
+    NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
+    for (NSValue *val in connections) {
+        MKConnection *conn = [val pointerValue];
+        [conn sendVoiceData:msgData];
+    }
+    [msgData release];
 	[pds release];
-
-	_doTransmit = _forceTransmit;
-	if (_lastTransmit != _doTransmit) {
-		// fixme(mkrautz): Handle more talkstates
-		MKTalkState talkState = _doTransmit ? MKTalkStateTalking : MKTalkStatePassive;
-		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-		NSDictionary *talkStateDict = [NSDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithUnsignedInteger:talkState], @"talkState",
-									   nil];
-		NSNotification *notification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
-		[center performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
-	}
-
-	if (_doTransmit) {
-		MKConnectionController *conns = [MKConnectionController sharedController];
-		NSArray *connections = [conns allConnections];
-		NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
-
-		for (NSValue *val in connections) {
-			MKConnection *conn = [val pointerValue];
-			[conn sendVoiceData:msgData];
-		}
-
-		[msgData release];
-	}
-
-	_lastTransmit = _doTransmit;
 }
 
 - (void) setForceTransmit:(BOOL)flag {
