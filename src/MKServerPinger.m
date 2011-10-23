@@ -71,15 +71,15 @@
 
 @end
 
-static MKServerPingerController *_serverPingerControllerSingleton;
-
 @implementation MKServerPingerController
 
 + (MKServerPingerController *) sharedController {
-    if (_serverPingerControllerSingleton == nil) {
-        _serverPingerControllerSingleton = [[MKServerPingerController alloc] init];
-    }
-    return _serverPingerControllerSingleton;
+    static MKServerPingerController *serverPingerController;
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        serverPingerController = [[MKServerPingerController alloc] init];
+    });
+    return serverPingerController;
 }
 
 - (id) init {
@@ -281,8 +281,8 @@ static MKServerPingerController *_serverPingerControllerSingleton;
 }
 
 - (void) dealloc {
-    [_address release];
     [[MKServerPingerController sharedController] removePinger:self];
+    [_address release];
     [super dealloc];
 }
 
