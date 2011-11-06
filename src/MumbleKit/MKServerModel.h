@@ -45,9 +45,9 @@
 // All members are currently optional.
 @optional
 
-///------------------------------
-/// @name Upon joining the server
-///------------------------------
+///------------------------------------------
+/// @name Connection and disconnection events
+///------------------------------------------
 
 /**
  * Called upon successfully authenticating with a server.
@@ -56,6 +56,13 @@
  * @param user   The MKUser object representing the local user.
  */
 - (void) serverModel:(MKServerModel *)model joinedServerAsUser:(MKUser *)user;
+
+/**
+ * Called when disconnected from the server (forcefully or not).
+ *
+ * @param model  The MKServerModel object in which this event originated.
+ */
+- (void) serverModelDisconnected:(MKServerModel *)model;
 
 ///-------------------
 /// @name User changes

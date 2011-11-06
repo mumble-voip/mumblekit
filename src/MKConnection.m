@@ -1,4 +1,4 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2011 Mikkel Krautz <mikkel@krautz.dk>
 
    All rights reserved.
 
@@ -229,6 +229,12 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		[_pingTimer invalidate];
 		_pingTimer = nil;
 
+		// Tell our delegate that we've been disconnected from the server.
+		if ([_delegate respondsToSelector:@selector(connectionClosed:)]) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[_delegate connectionClosed:self];
+			});
+		}
 	} while (_reconnect);
 
 	[NSThread exit];
@@ -435,6 +441,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 		case NSStreamEventEndEncountered:
 			NSLog(@"MKConnection: EndEncountered");
+			
 			break;
 
 		default:

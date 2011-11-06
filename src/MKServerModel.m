@@ -166,6 +166,13 @@
 }
 
 #pragma mark -
+#pragma mark MKConnection delegate
+
+- (void) connectionClosed:(MKConnection *)conn {
+	[_delegate serverModelDisconnected:self];
+}
+
+#pragma mark -
 #pragma mark MKMessageHandler delegate
 
 - (void) connection:(MKConnection *)conn handleUserStateMessage:(MPUserState *)msg {
