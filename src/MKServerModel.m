@@ -231,13 +231,13 @@
 			actor = [self userWithSession:[msg actor]];
 		}
 		if (chan != oldChan) {
-			[self internalMoveUser:user toChannel:chan byUser:actor];
+			[self internalMoveUser:user toChannel:chan fromChannel:oldChan byUser:actor];
 		}
 
 	// The user has no channel id set, and is a newly connected user.
 	// This means the user's residing in the root channel.
 	} else if (newUser) {
-		[self internalMoveUser:user toChannel:_rootChannel byUser:nil];
+		[self internalMoveUser:user toChannel:_rootChannel fromChannel:nil byUser:nil];
 	}
 
 	if ([msg hasName]) {
@@ -543,11 +543,12 @@
 	}
 }
 
-- (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover {
+- (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan fromChannel:(MKChannel *)prevChan byUser:(MKUser *)mover {
 	[chan addUser:user];
 
 	if (_connectedUser) {
 		[_delegate serverModel:self userMoved:user toChannel:chan byUser:mover];
+		[_delegate serverModel:self userMoved:user toChannel:chan fromChannel:prevChan byUser:mover];
 	}
 }
 

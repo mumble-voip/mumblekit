@@ -112,6 +112,23 @@
 - (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)mover;
 
 /**
+ * Called when a user is moved to another channel.
+ * This is also called when a user changes the channel he resides in (in which
+ * case user is equivalent to mover).
+ *
+ * In case the server initiated the move, the mover is nil.
+ *
+ * @param model     The MKServerModel object in which this event originated.
+ * @param user      The user that was moved.
+ * @param chan      The channel to which user was moved to.
+ * @param prevChan  The channel from which the user was moved. (May be nil)
+ * @param mover     The user that performed the user move. If the move was
+ *                  performed by the server, mover is nil.
+ *
+ */
+- (void) serverModel:(MKServerModel *)model userMoved:(MKUser *)user toChannel:(MKChannel *)chan fromChannel:(MKChannel *)prevChan byUser:(MKUser *)mover;
+
+/**
  * Called when a user's comment is changed.
  *
  * @param model  The MKServerModel in which this event originated.
