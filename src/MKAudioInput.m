@@ -90,35 +90,35 @@ struct MKAudioInputPrivate {
     signed long _preprocRunningAvg;
     signed long _preprocAvgItems;
 }
+- (BOOL) setupMacDevice;
+- (BOOL) setupiOSDevice;
 @end
 
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
 	MKAudioInput *i = (MKAudioInput *)udata;
 	OSStatus err;
+    
+    if (! i->buflist.mBuffers->mData) {
+        NSLog(@"AudioInput: No buffer allocated.");
+        i->buflist.mNumberBuffers = 1;
+        AudioBuffer *b = i->buflist.mBuffers;
+        b->mNumberChannels = i->numMicChannels;
+        b->mDataByteSize = i->micSampleSize * nframes;
+        b->mData = calloc(1, b->mDataByteSize);
+    }
 
-	if (! i->buflist.mBuffers->mData) {
-		NSLog(@"AudioInput: No buffer allocated.");
-		i->buflist.mNumberBuffers = 1;
-		AudioBuffer *b = i->buflist.mBuffers;
-		b->mNumberChannels = i->numMicChannels;
-		b->mDataByteSize = i->micSampleSize * nframes;
-		b->mData = calloc(1, b->mDataByteSize);
-	}
-
-	if (i->buflist.mBuffers->mDataByteSize < (nframes/i->micSampleSize)) {
-		NSLog(@"AudioInput: Buffer too small. Allocating more space.");
-		AudioBuffer *b = i->buflist.mBuffers;
-		free(b->mData);
-		b->mDataByteSize = i->micSampleSize * nframes;
-		b->mData = calloc(1, b->mDataByteSize);
-	}
+    if (i->buflist.mBuffers->mDataByteSize < (nframes/i->micSampleSize)) {
+        NSLog(@"AudioInput: Buffer too small. Allocating more space.");
+        AudioBuffer *b = i->buflist.mBuffers;
+        free(b->mData);
+        b->mDataByteSize = i->micSampleSize * nframes;
+        b->mData = calloc(1, b->mDataByteSize);
+    }
 
 	err = AudioUnitRender(i->audioUnit, flags, ts, busnum, nframes, &i->buflist);
 	if (err != noErr) {
-#if 0
 		NSLog(@"AudioInput: AudioUnitRender failed. err = %i", err);
-#endif
 		return err;
 	}
 
@@ -241,8 +241,10 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	if (psOut)
 		free(psOut);
 
-	if (micFrequency != sampleRate)
+	if (micFrequency != sampleRate) {
 		_private->micResampler = speex_resampler_init(1, micFrequency, sampleRate, 3, &err);
+        NSLog(@"AudioInput: initialized resampler (%iHz -> %iHz)", micFrequency, sampleRate);
+    }
 
 	psMic = malloc(micLength * sizeof(short));
 	psOut = malloc(frameSize * sizeof(short));
@@ -253,13 +255,21 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 }
 
 - (BOOL) setupDevice {
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
+    return [self setupMacDevice];
+#elif TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
+    return [self setupiOSDevice];
+#endif
+}
+
+- (BOOL) setupMacDevice {
+#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	UInt32 len;
 	UInt32 val;
 	OSStatus err;
 	AudioComponent comp;
 	AudioComponentDescription desc;
 	AudioStreamBasicDescription fmt;
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	AudioDeviceID devId;
 
 	// Get default device
@@ -269,18 +279,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		NSLog(@"AudioInput: Unable to query for default device.");
 		return NO;
 	}
-#endif
 
 	desc.componentType = kAudioUnitType_Output;
-#if TARGET_OS_IPHONE == 1
-# ifdef USE_VPIO
-    desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
-# else
-	desc.componentSubType = kAudioUnitSubType_RemoteIO;
-# endif
-#elif TARGET_OS_MAC == 1
 	desc.componentSubType = kAudioUnitSubType_HALOutput;
-#endif
 	desc.componentManufacturer = kAudioUnitManufacturer_Apple;
 	desc.componentFlags = 0;
 	desc.componentFlagsMask = 0;
@@ -297,15 +298,11 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	err = AudioUnitInitialize(audioUnit);
 	if (err != noErr) {
 		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
 		return NO;
 	}
-#endif
-
-	/* fixme(mkrautz): Backport some of this to the desktop CoreAudio backend? */
 
 	val = 1;
 	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &val, sizeof(UInt32));
@@ -321,7 +318,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
 	// Set default device
 	len = sizeof(AudioDeviceID);
 	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &devId, len);
@@ -329,22 +325,11 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		NSLog(@"AudioInput: Unable to set default device.");
 		return NO;
 	}
-#endif
-
-	AURenderCallbackStruct cb;
-	cb.inputProc = inputCallback;
-	cb.inputProcRefCon = self;
-	len = sizeof(AURenderCallbackStruct);
-	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 0, &cb, len);
-	if (err != noErr) {
-		NSLog(@"AudioInput: Unable to setup callback.");
-		return NO;
-	}
 
 	len = sizeof(AudioStreamBasicDescription);
 	err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &fmt, &len);
 	if (err != noErr) {
-		NSLog(@"CoreAudioInput: Unable to query device for stream info.");
+		NSLog(@"AudioInput: Unable to query device for stream info.");
 		return NO;
 	}
 
@@ -352,7 +337,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		NSLog(@"AudioInput: Input device with more than one channel detected. Defaulting to 1.");
 	}
 
-	micFrequency = (int) 48000;
+	micFrequency = (int) fmt.mSampleRate;
 	numMicChannels = 1;
 	[self initializeMixer];
 
@@ -372,38 +357,15 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		return NO;
 	}
 
-/*	len = sizeof(AudioStreamBasicDescription);
-	err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &fmt, len);
+	AURenderCallbackStruct cb;
+	cb.inputProc = inputCallback;
+	cb.inputProcRefCon = self;
+	len = sizeof(AURenderCallbackStruct);
+	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 0, &cb, len);
 	if (err != noErr) {
-		NSLog(@"AudioInput: Unable to set stream format for output device. (input scope)");
-		return NO;
-	}*/
-
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
-#ifdef USE_VPIO
-    val = 1;
-    len = sizeof(UInt32);
-    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);
-    if (err != noErr) {
-        NSLog(@"AudioInput: Unable to disable VPIO voice processing.");
-        return NO;
-    }
-
-    val = 0;
-    len = sizeof(UInt32);
-    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingEnableAGC, kAudioUnitScope_Global, 0, &val, len);
-    if (err != noErr) {
-        NSLog(@"AudioInput: Unable to disable VPIO AGC.");
-        return NO;
-    }
-#endif
-
-	err = AudioUnitInitialize(audioUnit);
-	if (err != noErr) {
-		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
+		NSLog(@"AudioInput: Unable to setup callback.");
 		return NO;
 	}
-#endif
 
 	err = AudioOutputUnitStart(audioUnit);
 	if (err != noErr) {
@@ -412,6 +374,132 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	}
 
 	return YES;
+#else
+    return NO;
+#endif
+}
+
+- (BOOL) setupiOSDevice {
+#if TARGET_OS_IPHONE == 1
+	UInt32 len;
+	UInt32 val;
+	OSStatus err;
+	AudioComponent comp;
+	AudioComponentDescription desc;
+	AudioStreamBasicDescription fmt;
+    
+	desc.componentType = kAudioUnitType_Output;
+#ifdef USE_VPIO
+    desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
+#else
+	desc.componentSubType = kAudioUnitSubType_RemoteIO;
+#endif
+	desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+	desc.componentFlags = 0;
+	desc.componentFlagsMask = 0;
+    
+	comp = AudioComponentFindNext(NULL, &desc);
+	if (! comp) {
+		NSLog(@"AudioInput: Unable to find AudioUnit.");
+		return NO;
+	}
+    
+	err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to instantiate new AudioUnit.");
+		return NO;
+	}
+    
+	/* fixme(mkrautz): Backport some of this to the desktop CoreAudio backend? */
+    
+	val = 1;
+	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &val, sizeof(UInt32));
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to configure input scope on AudioUnit.");
+		return NO;
+	}
+    
+	val = 0;
+	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, 0, &val, sizeof(UInt32));
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to configure output scope on AudioUnit.");
+		return NO;
+	}
+    
+	AURenderCallbackStruct cb;
+	cb.inputProc = inputCallback;
+	cb.inputProcRefCon = self;
+	len = sizeof(AURenderCallbackStruct);
+	err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 0, &cb, len);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to setup callback.");
+		return NO;
+	}
+    
+	len = sizeof(AudioStreamBasicDescription);
+	err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &fmt, &len);
+	if (err != noErr) {
+		NSLog(@"CoreAudioInput: Unable to query device for stream info.");
+		return NO;
+	}
+    
+	if (fmt.mChannelsPerFrame > 1) {
+		NSLog(@"AudioInput: Input device with more than one channel detected. Defaulting to 1.");
+	}
+    
+	micFrequency = (int) 48000;
+	numMicChannels = 1;
+	[self initializeMixer];
+    
+	fmt.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
+	fmt.mBitsPerChannel = sizeof(short) * 8;
+	fmt.mFormatID = kAudioFormatLinearPCM;
+	fmt.mSampleRate = micFrequency;
+	fmt.mChannelsPerFrame = numMicChannels;
+	fmt.mBytesPerFrame = micSampleSize;
+	fmt.mBytesPerPacket = micSampleSize;
+	fmt.mFramesPerPacket = 1;
+    
+	len = sizeof(AudioStreamBasicDescription);
+	err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &fmt, len);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to set stream format for output device. (output scope)");
+		return NO;
+	}
+    
+#ifdef USE_VPIO
+    val = 1;
+    len = sizeof(UInt32);
+    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);
+    if (err != noErr) {
+        NSLog(@"AudioInput: Unable to disable VPIO voice processing.");
+        return NO;
+    }
+    
+    val = 0;
+    len = sizeof(UInt32);
+    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingEnableAGC, kAudioUnitScope_Global, 0, &val, len);
+    if (err != noErr) {
+        NSLog(@"AudioInput: Unable to disable VPIO AGC.");
+        return NO;
+    }
+#endif
+    
+	err = AudioUnitInitialize(audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to initialize AudioUnit.");
+		return NO;
+	}
+    
+	err = AudioOutputUnitStart(audioUnit);
+	if (err != noErr) {
+		NSLog(@"AudioInput: Unable to start AudioUnit.");
+		return NO;
+	}
+    
+	return YES;
+#endif
+    return NO;
 }
 
 - (BOOL) teardownDevice {
@@ -490,7 +578,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 }
 
 - (void) encodeAudioFrame {
-
 	frameCounter++;
 
 	if (doResetPreprocessor) {
@@ -555,11 +642,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		if (!_lastTransmit) {
 			celt_encoder_ctl(encoder, CELT_RESET_STATE);
 		}
-
+        
 		celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
 		celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(_settings.quality));
-		len = celt_encode(encoder, psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
-
+        BOOL resampled = micFrequency != sampleRate;
+		len = celt_encode(encoder, resampled ? psOut : psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
+        
 		bitrate = len * 100 * 8;
 	} else if (_settings.codec == MKCodecFormatSpeex) {
 		int vbr = 0;
@@ -575,8 +663,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 		speex_bits_reset(&_private->speexBits);
 		bitrate = len * 50 * 8;
 		udpMessageType = UDPVoiceSpeexMessage;
-
-		NSLog(@"MKAudioInput: udpMessageType changed to 0x%x", udpMessageType);
 	}
 
     // Crude probability-based VAD 
@@ -652,7 +738,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 	[frameList removeAllObjects];
 
 	NSUInteger len = [pds size] + 1;
-
+    
     // fixme(mkrautz): Fix locking...
     MKConnectionController *conns = [MKConnectionController sharedController];
     NSArray *connections = [conns allConnections];
