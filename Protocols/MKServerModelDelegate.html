@@ -82,6 +82,8 @@
 	
 	<option value="//api/name/serverModel:userMoved:toChannel:byUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userMoved:toChannel:byUser:</option>
 	
+	<option value="//api/name/serverModel:userMoved:toChannel:fromChannel:byUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userMoved:toChannel:fromChannel:byUser:</option>
+	
 	<option value="//api/name/serverModel:userMuteStateChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userMuteStateChanged:</option>
 	
 	<option value="//api/name/serverModel:userMuted:byUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userMuted:byUser:</option>
@@ -118,6 +120,8 @@
 	
 	<option value="//api/name/serverModel:userUnsuppressed:byUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userUnsuppressed:byUser:</option>
 	
+	<option value="//api/name/serverModelDisconnected:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelDisconnected:</option>
+	
 	
 	
 </select>
@@ -134,7 +138,7 @@
 
 <li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Upon joining the server">Upon joining the server</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Connection and disconnection events">Connection and disconnection events</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_User changes">User changes</a></span></li>
 	
@@ -198,6 +202,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userMoved:toChannel:byUser:">serverModel:userMoved:toChannel:byUser:</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userMoved:toChannel:fromChannel:byUser:">serverModel:userMoved:toChannel:fromChannel:byUser:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userMuteStateChanged:">serverModel:userMuteStateChanged:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userMuted:byUser:">serverModel:userMuted:byUser:</a></span></li>
@@ -233,6 +239,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userUnmutedAndUndeafened:byUser:">serverModel:userUnmutedAndUndeafened:byUser:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userUnsuppressed:byUser:">serverModel:userUnsuppressed:byUser:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelDisconnected:">serverModelDisconnected:</a></span></li>
 	
 </ul></li>
 
@@ -282,14 +290,21 @@ of replies to previously sent messages.</p>
 						<h2 class="subtitle subtitle-tasks">Tasks</h2>
 						
 						
-						<a title="Upon joining the server" name="task_Upon joining the server"></a>
-						<h3 class="subsubtitle task-title">Upon joining the server</h3>
+						<a title="Connection and disconnection events" name="task_Connection and disconnection events"></a>
+						<h3 class="subsubtitle task-title">Connection and disconnection events</h3>
 
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverModel:joinedServerAsUser:">&ndash;&nbsp;serverModel:joinedServerAsUser:</a></code>
 		<span class="tooltip"><p>Called upon successfully authenticating with a server.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModelDisconnected:">&ndash;&nbsp;serverModelDisconnected:</a></code>
+		<span class="tooltip"><p>Called when disconnected from the server (forcefully or not).</p></span>
 	</span>
 	
 	
@@ -328,6 +343,15 @@ server model is being played back.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverModel:userMoved:toChannel:byUser:">&ndash;&nbsp;serverModel:userMoved:toChannel:byUser:</a></code>
+		<span class="tooltip"><p>Called when a user is moved to another channel.
+This is also called when a user changes the channel he resides in (in which
+case user is equivalent to mover).</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userMoved:toChannel:fromChannel:byUser:">&ndash;&nbsp;serverModel:userMoved:toChannel:fromChannel:byUser:</a></code>
 		<span class="tooltip"><p>Called when a user is moved to another channel.
 This is also called when a user changes the channel he resides in (in which
 case user is equivalent to mover).</p></span>
@@ -1614,6 +1638,78 @@ performed by the server, mover is nil.</p></dd>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/serverModel:userMoved:toChannel:fromChannel:byUser:" title="serverModel:userMoved:toChannel:fromChannel:byUser:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userMoved:toChannel:fromChannel:byUser:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a user is moved to another channel.
+This is also called when a user changes the channel he resides in (in which
+case user is equivalent to mover).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMoved:(MKUser *)<em>user</em> toChannel:(MKChannel *)<em>chan</em> fromChannel:(MKChannel *)<em>prevChan</em> byUser:(MKUser *)<em>mover</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> object in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user that was moved.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>chan</em></dt>
+			<dd><p>The channel to which user was moved to.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>prevChan</em></dt>
+			<dd><p>The channel from which the user was moved. (May be nil)</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>mover</em></dt>
+			<dd><p>The user that performed the user move. If the move was
+performed by the server, mover is nil.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>In case the server initiated the move, the mover is nil.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/serverModel:userMuteStateChanged:" title="serverModel:userMuteStateChanged:"></a>
 	<h3 class="subsubtitle method-title">serverModel:userMuteStateChanged:</h3>
 	
@@ -2540,6 +2636,50 @@ unsupressed by the server.</p></dd>
 	
 </div>
 						
+						<div class="section-method">
+	<a name="//api/name/serverModelDisconnected:" title="serverModelDisconnected:"></a>
+	<h3 class="subsubtitle method-title">serverModelDisconnected:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when disconnected from the server (forcefully or not).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModelDisconnected:(MKServerModel *)<em>model</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> object in which this event originated.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
 					</div>
 					
 					
@@ -2553,7 +2693,7 @@ unsupressed by the server.</p></dd>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-08-07)</span><br />
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-15)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
 						
