@@ -633,7 +633,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 					newCodec = preferAlpha ? beta : alpha;
 					msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
 				}
-				if (newCodec == ourCodec && msgType != udpMessageType) {
+				if (msgType != udpMessageType) {
 					udpMessageType = msgType;
 					NSLog(@"MKAudioInput: udpMessageType changed to %i", msgType);
 				}
