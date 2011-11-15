@@ -61,6 +61,7 @@
 // these constants are lifted from the Mac OS X version of the header.
 #define errSSLProtocol             -9800
 #define errSSLXCertChainInvalid    -9807
+#define errSSLUnknownRootCert      -9812
 #define errSSLLast                 -9849
 
 @interface MKConnection (Private)
@@ -884,7 +885,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 - (void) _handleSslError:(NSError *)streamError {
 
-	if ([streamError code] == errSSLXCertChainInvalid) {
+	if ([streamError code] == errSSLXCertChainInvalid
+        || [streamError code] == errSSLUnknownRootCert) {
 		SecTrustRef trust = (SecTrustRef) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerTrust);
 		SecTrustResultType trustResult;
 		if (SecTrustEvaluate(trust, &trustResult) != noErr) {
