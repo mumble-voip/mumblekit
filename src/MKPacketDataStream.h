@@ -30,8 +30,8 @@
 */
 
 typedef union _float32u {
-	uint8_t b[4];
-	float f;
+    uint8_t b[4];
+    float f;
 } float32u;
 
 @interface MKPacketDataStream : NSObject

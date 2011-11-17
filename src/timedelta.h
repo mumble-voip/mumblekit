@@ -37,32 +37,32 @@
 #define TIMEDELTA_USEC_PER_SEC 1000000UL
 
 typedef struct _TimeDelta {
-	struct timeval tv1, tv2;
+    struct timeval tv1, tv2;
 } TimeDelta;
 
 static inline void
 TimeDelta_start(TimeDelta *td)
 {
-	assert(gettimeofday(&td->tv1, NULL) == 0);
+    assert(gettimeofday(&td->tv1, NULL) == 0);
 }
 
 static inline void
 TimeDelta_stop(TimeDelta *td)
 {
-	assert(gettimeofday(&td->tv2, NULL) == 0);
+    assert(gettimeofday(&td->tv2, NULL) == 0);
 }
 
 static inline unsigned long
 TimeDelta_usec_delta(TimeDelta *td) {
-	time_t sdt = td->tv2.tv_sec - td->tv1.tv_sec;
-	// sdt > 0 means usec wrap around + (sdt-1)*USEC_PER_SEC
-	unsigned long udt = 0;
-	if (sdt > 0) {
-		udt = (TIMEDELTA_USEC_PER_SEC - td->tv1.tv_usec) + td->tv2.tv_usec + (sdt-1) * TIMEDELTA_USEC_PER_SEC;
-	} else {
-		udt = td->tv2.tv_usec - td->tv1.tv_usec;
-	}
-	return udt;
+    time_t sdt = td->tv2.tv_sec - td->tv1.tv_sec;
+    // sdt > 0 means usec wrap around + (sdt-1)*USEC_PER_SEC
+    unsigned long udt = 0;
+    if (sdt > 0) {
+        udt = (TIMEDELTA_USEC_PER_SEC - td->tv1.tv_usec) + td->tv2.tv_usec + (sdt-1) * TIMEDELTA_USEC_PER_SEC;
+    } else {
+        udt = td->tv2.tv_usec - td->tv1.tv_usec;
+    }
+    return udt;
 }
 
 #endif /* __TIMEDELTA_H__ */

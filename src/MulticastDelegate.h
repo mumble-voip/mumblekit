@@ -31,8 +31,8 @@
 @class MulticastDelegateEnumerator;
 
 struct MulticastDelegateListNode {
-	id delegate;
-	struct MulticastDelegateListNode * prev;
+    id delegate;
+    struct MulticastDelegateListNode * prev;
     struct MulticastDelegateListNode * next;
     NSUInteger retainCount;
 };
@@ -41,7 +41,7 @@ typedef struct MulticastDelegateListNode MulticastDelegateListNode;
 
 @interface MulticastDelegate : NSObject
 {
-	MulticastDelegateListNode *delegateList;
+    MulticastDelegateListNode *delegateList;
 }
 
 - (void)addDelegate:(id)delegate;
@@ -57,9 +57,9 @@ typedef struct MulticastDelegateListNode MulticastDelegateListNode;
 
 @interface MulticastDelegateEnumerator : NSObject
 {
-	NSUInteger numDelegates;
-	NSUInteger currentDelegateIndex;
-	MulticastDelegateListNode **delegates;
+    NSUInteger numDelegates;
+    NSUInteger currentDelegateIndex;
+    MulticastDelegateListNode **delegates;
 }
 
 - (id)nextDelegate;

@@ -37,8 +37,8 @@
 #define SAMPLE_RATE 48000
 
 typedef enum _MKCodecFormat {
-	MKCodecFormatSpeex,
-	MKCodecFormatCELT,
+    MKCodecFormatSpeex,
+    MKCodecFormatCELT,
 } MKCodecFormat;
 
 typedef enum _MKTransmitType {
@@ -48,21 +48,21 @@ typedef enum _MKTransmitType {
 } MKTransmitType;
 
 typedef struct _MKAudioSettings {
-	MKCodecFormat   codec;
+    MKCodecFormat   codec;
     MKTransmitType  transmitType;
-	int             quality;
-	int             audioPerPacket;
-	int             noiseSuppression;
-	float           amplification;
-	int             jitterBufferSize;
-	float           volume;
-	int             outputDelay;
-	BOOL            enablePreprocessor;
-	BOOL            enableBenchmark;
+    int             quality;
+    int             audioPerPacket;
+    int             noiseSuppression;
+    float           amplification;
+    int             jitterBufferSize;
+    float           volume;
+    int             outputDelay;
+    BOOL            enablePreprocessor;
+    BOOL            enableBenchmark;
 } MKAudioSettings;
 
 typedef struct _MKAudioBenchmark {
-	signed long  avgPreprocessorRuntime;
+    signed long  avgPreprocessorRuntime;
 } MKAudioBenchmark;
 
 

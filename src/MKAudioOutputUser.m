@@ -35,54 +35,54 @@
 @implementation MKAudioOutputUser
 
 - (id) init {
-	self = [super init];
-	if (self == nil)
-		return nil;
+    self = [super init];
+    if (self == nil)
+        return nil;
 
-	bufferSize = 0;
-	buffer = NULL;
-	volume = NULL;
+    bufferSize = 0;
+    buffer = NULL;
+    volume = NULL;
 
-	pos[0] = pos[1] = pos[2] = 0.0f;
+    pos[0] = pos[1] = pos[2] = 0.0f;
 
-	return self;
+    return self;
 }
 
 - (void) dealloc {
-	if (buffer)
-		free(buffer);
-	if (volume)
-		free(volume);
+    if (buffer)
+        free(buffer);
+    if (volume)
+        free(volume);
 
-	[super dealloc];
+    [super dealloc];
 }
 
 - (MKUser *) user {
-	return nil;
+    return nil;
 }
 
 - (float *) buffer {
-	return buffer;
+    return buffer;
 }
 
 - (NSUInteger) bufferLength {
-	return bufferSize;
+    return bufferSize;
 }
 
 - (void) resizeBuffer:(NSUInteger)newSize {
-	if (newSize > bufferSize) {
-		float *n = malloc(sizeof(float)*newSize);
-		if (buffer) {
-			memcpy(n, buffer, sizeof(float)*bufferSize);
-			free(buffer);
-		}
-		buffer = n;
-		bufferSize = newSize;
-	}
+    if (newSize > bufferSize) {
+        float *n = malloc(sizeof(float)*newSize);
+        if (buffer) {
+            memcpy(n, buffer, sizeof(float)*bufferSize);
+            free(buffer);
+        }
+        buffer = n;
+        bufferSize = newSize;
+    }
 }
 
 - (BOOL) needSamples:(NSUInteger)nsamples {
-	return NO;
+    return NO;
 }
 
 @end

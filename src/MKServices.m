@@ -33,10 +33,10 @@
 @implementation MKServices
 
 + (NSString *) regionalServicesHost {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSArray *languages = [defaults objectForKey:@"AppleLanguages"];
-	NSString *locale = [languages objectAtIndex:0];
-	return [NSString stringWithFormat:@"http://%@.mumble.info", locale];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *languages = [defaults objectForKey:@"AppleLanguages"];
+    NSString *locale = [languages objectAtIndex:0];
+    return [NSString stringWithFormat:@"http://%@.mumble.info", locale];
 }
 
 /*
@@ -44,11 +44,11 @@
  */
 
 + (NSString *) regionalServerList {
-	return [NSString stringWithFormat:@"%@/list2.cgi", [MKServices regionalServicesHost]];
+    return [NSString stringWithFormat:@"%@/list2.cgi", [MKServices regionalServicesHost]];
 }
 
 + (NSURL *) regionalServerListURL {
-	return [NSURL URLWithString:[MKServices regionalServerList]];
+    return [NSURL URLWithString:[MKServices regionalServerList]];
 }
 
 @end

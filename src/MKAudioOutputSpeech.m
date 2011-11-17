@@ -44,12 +44,12 @@
 #include <celt.h>
 
 struct MKAudioOutputSpeechPrivate {
-	JitterBuffer *jitter;
-	CELTMode *celtMode;
-	CELTDecoder *celtDecoder;
-	SpeexBits speexBits;
-	void *speexDecoder;
-	SpeexResamplerState *resampler;
+    JitterBuffer *jitter;
+    CELTMode *celtMode;
+    CELTDecoder *celtDecoder;
+    SpeexBits speexBits;
+    void *speexDecoder;
+    SpeexResamplerState *resampler;
 };
 
 @interface MKAudioOutputSpeech () {
@@ -86,384 +86,384 @@ struct MKAudioOutputSpeechPrivate {
 @implementation MKAudioOutputSpeech
 
 - (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKUDPMessageType)type {
-	self = [super init];
-	if (self == nil)
-		return nil;
+    self = [super init];
+    if (self == nil)
+        return nil;
 
-	_private = malloc(sizeof(struct MKAudioOutputSpeechPrivate));
-	_private->jitter = NULL;
-	_private->celtMode = NULL;
-	_private->celtDecoder = NULL;
-	_private->speexDecoder = NULL;
-	_private->resampler = NULL;
+    _private = malloc(sizeof(struct MKAudioOutputSpeechPrivate));
+    _private->jitter = NULL;
+    _private->celtMode = NULL;
+    _private->celtDecoder = NULL;
+    _private->speexDecoder = NULL;
+    _private->resampler = NULL;
 
-	_userSession = session;
-	_talkState = MKTalkStatePassive;
-	_msgType = type;
+    _userSession = session;
+    _talkState = MKTalkStatePassive;
+    _msgType = type;
 
-	NSUInteger sampleRate;
+    NSUInteger sampleRate;
 
-	if (type != UDPVoiceSpeexMessage) {
-		sampleRate = SAMPLE_RATE;
-		frameSize = sampleRate / 100;
-		_private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
-		_private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
-	} else {
-		sampleRate = 32000;
-		speex_bits_init(&_private->speexBits);
-		_private->speexDecoder = speex_decoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
-		int iArg = 1;
-		speex_decoder_ctl(_private->speexDecoder, SPEEX_SET_ENH, &iArg);
-		speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_FRAME_SIZE, &frameSize);
-		speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_SAMPLING_RATE, &sampleRate);
-	}
+    if (type != UDPVoiceSpeexMessage) {
+        sampleRate = SAMPLE_RATE;
+        frameSize = sampleRate / 100;
+        _private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
+        _private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
+    } else {
+        sampleRate = 32000;
+        speex_bits_init(&_private->speexBits);
+        _private->speexDecoder = speex_decoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
+        int iArg = 1;
+        speex_decoder_ctl(_private->speexDecoder, SPEEX_SET_ENH, &iArg);
+        speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_FRAME_SIZE, &frameSize);
+        speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_SAMPLING_RATE, &sampleRate);
+    }
 
-	if (freq != sampleRate) {
-		int err;
-		_private->resampler = speex_resampler_init(1, sampleRate, freq, 3, &err);
-		NSLog(@"AudioOutputSpeech: Resampling from %i Hz to %d Hz", sampleRate, freq);
-	}
+    if (freq != sampleRate) {
+        int err;
+        _private->resampler = speex_resampler_init(1, sampleRate, freq, 3, &err);
+        NSLog(@"AudioOutputSpeech: Resampling from %i Hz to %d Hz", sampleRate, freq);
+    }
 
-	outputSize = (int)(ceilf((float)frameSize * freq) / (float)sampleRate);
+    outputSize = (int)(ceilf((float)frameSize * freq) / (float)sampleRate);
 
-	bufferOffset = bufferFilled = lastConsume = 0;
+    bufferOffset = bufferFilled = lastConsume = 0;
 
-	lastAlive = TRUE;
+    lastAlive = TRUE;
 
-	missCount = 0;
-	missedFrames = 0;
+    missCount = 0;
+    missedFrames = 0;
 
-	flags = 0xff;
+    flags = 0xff;
 
-	_private->jitter = jitter_buffer_init(frameSize);
-	int margin = /* g.s.iJitterBufferSize */ 10 * frameSize;
-	jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_SET_MARGIN, &margin);
+    _private->jitter = jitter_buffer_init(frameSize);
+    int margin = /* g.s.iJitterBufferSize */ 10 * frameSize;
+    jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_SET_MARGIN, &margin);
 
-	fadeIn = malloc(sizeof(float)*frameSize);
-	fadeOut = malloc(sizeof(float)*frameSize);
+    fadeIn = malloc(sizeof(float)*frameSize);
+    fadeOut = malloc(sizeof(float)*frameSize);
 
-	float mul = (float)(M_PI / (2.0 * (float)frameSize));
-	NSUInteger i;
-	for (i = 0; i < frameSize; ++i) {
-		fadeIn[i] = fadeOut[frameSize-i-1] = sinf((float)i * mul);
-	}
+    float mul = (float)(M_PI / (2.0 * (float)frameSize));
+    NSUInteger i;
+    for (i = 0; i < frameSize; ++i) {
+        fadeIn[i] = fadeOut[frameSize-i-1] = sinf((float)i * mul);
+    }
 
-	frames = [[NSMutableArray alloc] init];
+    frames = [[NSMutableArray alloc] init];
 
-	int err = pthread_mutex_init(&jitterMutex, NULL);
-	if (err != 0) {
-		NSLog(@"AudioOutputSpeech: pthread_mutex_init() failed.");
-		return nil;
-	}
+    int err = pthread_mutex_init(&jitterMutex, NULL);
+    if (err != 0) {
+        NSLog(@"AudioOutputSpeech: pthread_mutex_init() failed.");
+        return nil;
+    }
 
-	return self;
+    return self;
 }
 
 - (void) dealloc {
-	if (_private->celtDecoder)
-		celt_decoder_destroy(_private->celtDecoder);
-	if (_private->celtMode)
-		celt_mode_destroy(_private->celtMode);
-	if (_private->speexDecoder) {
-		speex_bits_destroy(&_private->speexBits);
-		speex_decoder_destroy(_private->speexDecoder);
-	}
-	if (_private->resampler)
-		speex_resampler_destroy(_private->resampler);
-	if (_private->jitter)
-		jitter_buffer_destroy(_private->jitter);
-	if (_private)
-		free(_private);
+    if (_private->celtDecoder)
+        celt_decoder_destroy(_private->celtDecoder);
+    if (_private->celtMode)
+        celt_mode_destroy(_private->celtMode);
+    if (_private->speexDecoder) {
+        speex_bits_destroy(&_private->speexBits);
+        speex_decoder_destroy(_private->speexDecoder);
+    }
+    if (_private->resampler)
+        speex_resampler_destroy(_private->resampler);
+    if (_private->jitter)
+        jitter_buffer_destroy(_private->jitter);
+    if (_private)
+        free(_private);
 
-	if (fadeIn)
-		free(fadeIn);
-	if (fadeOut)
-		free(fadeOut);
+    if (fadeIn)
+        free(fadeIn);
+    if (fadeOut)
+        free(fadeOut);
 
-	[frames release];
+    [frames release];
 
-	[super dealloc];
+    [super dealloc];
 }
 
 - (NSUInteger) userSession {
-	return _userSession;
+    return _userSession;
 }
 
 - (MKUDPMessageType) messageType {
-	return _msgType;
+    return _msgType;
 }
 
 - (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq {
-	int err = pthread_mutex_lock(&jitterMutex);
-	if (err != 0) {
-		NSLog(@"AudioOutputSpeech: pthread_mutex_lock() failed.");
-		return;
-	}
+    int err = pthread_mutex_lock(&jitterMutex);
+    if (err != 0) {
+        NSLog(@"AudioOutputSpeech: pthread_mutex_lock() failed.");
+        return;
+    }
 
-	if ([data length] < 2) {
-		pthread_mutex_unlock(&jitterMutex);
-		return;
-	}
+    if ([data length] < 2) {
+        pthread_mutex_unlock(&jitterMutex);
+        return;
+    }
 
-	MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithData:data];
-	[pds next];
+    MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithData:data];
+    [pds next];
 
-	int nframes = 0;
-	unsigned int header = 0;
-	do {
-		header = (unsigned int)[pds next];
-		++nframes;
-		[pds skip:(header & 0x7f)];
-	} while ((header & 0x80) && [pds valid]);
+    int nframes = 0;
+    unsigned int header = 0;
+    do {
+        header = (unsigned int)[pds next];
+        ++nframes;
+        [pds skip:(header & 0x7f)];
+    } while ((header & 0x80) && [pds valid]);
 
-	if (! [pds valid]) {
-		[pds release];
-		NSLog(@"addFrame:: Invalid pds.");
-		pthread_mutex_unlock(&jitterMutex);
-		return;
-	}
+    if (! [pds valid]) {
+        [pds release];
+        NSLog(@"addFrame:: Invalid pds.");
+        pthread_mutex_unlock(&jitterMutex);
+        return;
+    }
 
-	JitterBufferPacket jbp;
-	jbp.data = (char *)[data bytes];
-	jbp.len = [data length];
-	jbp.span = frameSize * nframes;
-	jbp.timestamp = frameSize * seq;
+    JitterBufferPacket jbp;
+    jbp.data = (char *)[data bytes];
+    jbp.len = [data length];
+    jbp.span = frameSize * nframes;
+    jbp.timestamp = frameSize * seq;
 
-	jitter_buffer_put(_private->jitter, &jbp);
-	[pds release];
+    jitter_buffer_put(_private->jitter, &jbp);
+    [pds release];
 
-	err = pthread_mutex_unlock(&jitterMutex);
-	if (err != 0) {
-		NSLog(@"AudioOutputSpeech: Unable to unlock() jitter mutex.");
-		return;
-	}
+    err = pthread_mutex_unlock(&jitterMutex);
+    if (err != 0) {
+        NSLog(@"AudioOutputSpeech: Unable to unlock() jitter mutex.");
+        return;
+    }
 }
 
 - (BOOL) needSamples:(NSUInteger)nsamples {
-	NSUInteger i;
+    NSUInteger i;
 
-	for (i = lastConsume; i < bufferFilled; ++i) {
-		buffer[i-lastConsume] = buffer[i];
-	}
-	bufferFilled -= lastConsume;
+    for (i = lastConsume; i < bufferFilled; ++i) {
+        buffer[i-lastConsume] = buffer[i];
+    }
+    bufferFilled -= lastConsume;
 
-	lastConsume = nsamples;
+    lastConsume = nsamples;
 
-	if (bufferFilled >= nsamples) {
-		return lastAlive;
-	}
+    if (bufferFilled >= nsamples) {
+        return lastAlive;
+    }
 
-	float fOut[frameSize + 4096];
-	float *output = NULL;
-	BOOL nextAlive = lastAlive;
+    float fOut[frameSize + 4096];
+    float *output = NULL;
+    BOOL nextAlive = lastAlive;
 
-	while (bufferFilled < nsamples) {
-		[self resizeBuffer:(bufferFilled + outputSize)];
+    while (bufferFilled < nsamples) {
+        [self resizeBuffer:(bufferFilled + outputSize)];
 
-		if (_private->resampler)
-			output = &fOut[0];
-		else
-			output = buffer + bufferFilled;
+        if (_private->resampler)
+            output = &fOut[0];
+        else
+            output = buffer + bufferFilled;
 
-		if (! lastAlive) {
-			memset(output, 0, frameSize * sizeof(float));
-		} else {
-			int avail = 0;
-			int ts = jitter_buffer_get_pointer_timestamp(_private->jitter);
-			jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
+        if (! lastAlive) {
+            memset(output, 0, frameSize * sizeof(float));
+        } else {
+            int avail = 0;
+            int ts = jitter_buffer_get_pointer_timestamp(_private->jitter);
+            jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
 
-			if (ts == 0) {
-				int want = (int)averageAvailable; // fixme(mkrautz): Was iroundf.
-				if (avail < want) {
-					++missCount;
-					if (missCount < 20) {
-						memset(output, 0, frameSize * sizeof(float));
-						goto nextframe;
-					}
-				}
-			}
+            if (ts == 0) {
+                int want = (int)averageAvailable; // fixme(mkrautz): Was iroundf.
+                if (avail < want) {
+                    ++missCount;
+                    if (missCount < 20) {
+                        memset(output, 0, frameSize * sizeof(float));
+                        goto nextframe;
+                    }
+                }
+            }
 
-			if ([frames count] == 0) {
-				int err = pthread_mutex_lock(&jitterMutex);
-				if (err != 0) {
-					NSLog(@"AudioOutputSpeech: unable to lock() mutex.");
-				}
+            if ([frames count] == 0) {
+                int err = pthread_mutex_lock(&jitterMutex);
+                if (err != 0) {
+                    NSLog(@"AudioOutputSpeech: unable to lock() mutex.");
+                }
 
-				// lock jitter mutex
-				char data[4096];
+                // lock jitter mutex
+                char data[4096];
 
-				JitterBufferPacket jbp;
-				jbp.data = data;
-				jbp.len = 4096;
+                JitterBufferPacket jbp;
+                jbp.data = data;
+                jbp.len = 4096;
 
-				spx_int32_t startofs = 0;
+                spx_int32_t startofs = 0;
 
-				if (jitter_buffer_get(_private->jitter, &jbp, frameSize, &startofs) == JITTER_BUFFER_OK) {
-					MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(unsigned char *)jbp.data length:jbp.len];
+                if (jitter_buffer_get(_private->jitter, &jbp, frameSize, &startofs) == JITTER_BUFFER_OK) {
+                    MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(unsigned char *)jbp.data length:jbp.len];
 
-					missCount = 0;
-					flags = (unsigned char)[pds next];
-					hasTerminator = NO;
+                    missCount = 0;
+                    flags = (unsigned char)[pds next];
+                    hasTerminator = NO;
 
-					unsigned int header = 0;
-					do {
-						header = (unsigned int)[pds next];
-						if (header) {
-							NSData *block = [pds copyDataBlock:(header & 0x7f)];
-							[frames addObject:block];
-							[block release];
-						} else {
-							hasTerminator = YES;
-						}
-					} while ((header & 0x80) && [pds valid]);
+                    unsigned int header = 0;
+                    do {
+                        header = (unsigned int)[pds next];
+                        if (header) {
+                            NSData *block = [pds copyDataBlock:(header & 0x7f)];
+                            [frames addObject:block];
+                            [block release];
+                        } else {
+                            hasTerminator = YES;
+                        }
+                    } while ((header & 0x80) && [pds valid]);
 
-					if ([pds left]) {
-						pos[0] = [pds getFloat];
-						pos[1] = [pds getFloat];
-						pos[2] = [pds getFloat];
-					} else {
-						pos[0] = pos[1] = pos[2] = 0.0f;
-					}
+                    if ([pds left]) {
+                        pos[0] = [pds getFloat];
+                        pos[1] = [pds getFloat];
+                        pos[2] = [pds getFloat];
+                    } else {
+                        pos[0] = pos[1] = pos[2] = 0.0f;
+                    }
 
-					[pds release];
+                    [pds release];
 
-					float a = (float) avail;
-					if (a >= averageAvailable) {
-						averageAvailable = a;
-					} else {
-						averageAvailable *= 0.99f;
-					}
-				} else {
-					jitter_buffer_update_delay(_private->jitter, &jbp, NULL);
+                    float a = (float) avail;
+                    if (a >= averageAvailable) {
+                        averageAvailable = a;
+                    } else {
+                        averageAvailable *= 0.99f;
+                    }
+                } else {
+                    jitter_buffer_update_delay(_private->jitter, &jbp, NULL);
 
-					++missCount;
-					if (missCount > 10) {
-						nextAlive = NO;
-					}
-				}
+                    ++missCount;
+                    if (missCount > 10) {
+                        nextAlive = NO;
+                    }
+                }
 
-				err = pthread_mutex_unlock(&jitterMutex);
-				if (err != 0) {
-					NSLog(@"AudioOutputSpeech: Unable to unlock mutex.");
-				}
-			}
+                err = pthread_mutex_unlock(&jitterMutex);
+                if (err != 0) {
+                    NSLog(@"AudioOutputSpeech: Unable to unlock mutex.");
+                }
+            }
 
-			if ([frames count] > 0) {
-				NSData *frameData = [frames objectAtIndex:0];
+            if ([frames count] > 0) {
+                NSData *frameData = [frames objectAtIndex:0];
 
-				if (_msgType != UDPVoiceSpeexMessage) {
-					if ([frameData length] != 0) {
-						celt_decode_float(_private->celtDecoder, [frameData bytes], [frameData length], output);
-					} else {
-						celt_decode_float(_private->celtDecoder, NULL, 0, output);
-					}
-				} else {
-					if ([frameData length] == 0) {
-						speex_decode(_private->speexDecoder, NULL, output);
-					} else {
-						speex_bits_read_from(&_private->speexBits, [frameData bytes], [frameData length]);
-						speex_decode(_private->speexDecoder, &_private->speexBits, output);
-					}
-					for (unsigned int i=0; i < frameSize; i++)
-						output[i] *= (1.0f / 32767.0f);
-				}
+                if (_msgType != UDPVoiceSpeexMessage) {
+                    if ([frameData length] != 0) {
+                        celt_decode_float(_private->celtDecoder, [frameData bytes], [frameData length], output);
+                    } else {
+                        celt_decode_float(_private->celtDecoder, NULL, 0, output);
+                    }
+                } else {
+                    if ([frameData length] == 0) {
+                        speex_decode(_private->speexDecoder, NULL, output);
+                    } else {
+                        speex_bits_read_from(&_private->speexBits, [frameData bytes], [frameData length]);
+                        speex_decode(_private->speexDecoder, &_private->speexBits, output);
+                    }
+                    for (unsigned int i=0; i < frameSize; i++)
+                        output[i] *= (1.0f / 32767.0f);
+                }
 
-				[frames removeObjectAtIndex:0];
+                [frames removeObjectAtIndex:0];
 
-				BOOL update = YES;
+                BOOL update = YES;
 
-				float pow = 0.0f;
-				for (i = 0; i < frameSize; ++i) {
-					pow += output[i] * output[i];
-				}
-				pow = sqrtf(pow / frameSize);
-				if (pow > powerMax) {
-					powerMax = pow;
-				} else {
-					if (pow <= powerMin) {
-						powerMin = pow;
-					} else {
-						powerMax = 0.99f * powerMax;
-						powerMin += 0.0001f * pow;
-					}
-				}
+                float pow = 0.0f;
+                for (i = 0; i < frameSize; ++i) {
+                    pow += output[i] * output[i];
+                }
+                pow = sqrtf(pow / frameSize);
+                if (pow > powerMax) {
+                    powerMax = pow;
+                } else {
+                    if (pow <= powerMin) {
+                        powerMin = pow;
+                    } else {
+                        powerMax = 0.99f * powerMax;
+                        powerMin += 0.0001f * pow;
+                    }
+                }
 
-				update = (pow < (powerMin + 0.01f * (powerMax - powerMin)));
+                update = (pow < (powerMin + 0.01f * (powerMax - powerMin)));
 
-				if ([frames count] == 0 && update) {
-					jitter_buffer_update_delay(_private->jitter, NULL, NULL);
-				}
+                if ([frames count] == 0 && update) {
+                    jitter_buffer_update_delay(_private->jitter, NULL, NULL);
+                }
 
-				if ([frames count] == 0 && hasTerminator) {
-					nextAlive = NO;
-				}
-			} else {
-				if (_msgType != UDPVoiceSpeexMessage) {
-					celt_decode_float(_private->celtDecoder, NULL, 0, output);
-				} else {
-					speex_decode(_private->speexDecoder, NULL, output);
-					for (unsigned int i = 0; i < frameSize; i++)
-						output[i] *= (1.0f / 32767.0f);
-				}
-			}
+                if ([frames count] == 0 && hasTerminator) {
+                    nextAlive = NO;
+                }
+            } else {
+                if (_msgType != UDPVoiceSpeexMessage) {
+                    celt_decode_float(_private->celtDecoder, NULL, 0, output);
+                } else {
+                    speex_decode(_private->speexDecoder, NULL, output);
+                    for (unsigned int i = 0; i < frameSize; i++)
+                        output[i] *= (1.0f / 32767.0f);
+                }
+            }
 
-			if (! nextAlive) {
-				for (i = 0; i < frameSize; i++) {
-					output[i] *= fadeOut[i];
-				}
-			} else if (ts == 0) {
-				for (i = 0; i < frameSize; i++) {
-					output[i] *= fadeIn[i];
-				}
-			}
+            if (! nextAlive) {
+                for (i = 0; i < frameSize; i++) {
+                    output[i] *= fadeOut[i];
+                }
+            } else if (ts == 0) {
+                for (i = 0; i < frameSize; i++) {
+                    output[i] *= fadeIn[i];
+                }
+            }
 
-			jitter_buffer_tick(_private->jitter);
-		}
+            jitter_buffer_tick(_private->jitter);
+        }
 
 
-		if (! nextAlive)
-			flags = 0xff;
+        if (! nextAlive)
+            flags = 0xff;
 
-		MKTalkState prevTalkState = _talkState;
-		switch (flags) {
-			case 0:
-				_talkState = MKTalkStateTalking;
-				break;
-			case 1:
-				_talkState = MKTalkStateShouting;
-				break;
-			case 0xff:
-				_talkState = MKTalkStatePassive;
-				break;
-			default:
-				_talkState = MKTalkStateWhispering;
-				break;
-		}
+        MKTalkState prevTalkState = _talkState;
+        switch (flags) {
+            case 0:
+                _talkState = MKTalkStateTalking;
+                break;
+            case 1:
+                _talkState = MKTalkStateShouting;
+                break;
+            case 0xff:
+                _talkState = MKTalkStatePassive;
+                break;
+            default:
+                _talkState = MKTalkStateWhispering;
+                break;
+        }
 
-		if (prevTalkState != _talkState) {
-			NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-			NSDictionary *talkStateDict = [NSDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithUnsignedInteger:_talkState], @"talkState",
-												[NSNumber numberWithUnsignedInteger:_userSession], @"userSession",
-										   nil];
-			NSNotification *talkNotification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
-			[center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
-		}
+        if (prevTalkState != _talkState) {
+            NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+            NSDictionary *talkStateDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                [NSNumber numberWithUnsignedInteger:_talkState], @"talkState",
+                                                [NSNumber numberWithUnsignedInteger:_userSession], @"userSession",
+                                           nil];
+            NSNotification *talkNotification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
+            [center performSelectorOnMainThread:@selector(postNotification:) withObject:talkNotification waitUntilDone:NO];
+        }
 
 nextframe:
-		{
-			spx_uint32_t inlen = frameSize;
-			spx_uint32_t outlen = outputSize;
-			if (_private->resampler && lastAlive) {
-				speex_resampler_process_float(_private->resampler, 0, fOut, &inlen, buffer + bufferFilled, &outlen);
-			}
-			bufferFilled += outlen;
-		}
-	}
+        {
+            spx_uint32_t inlen = frameSize;
+            spx_uint32_t outlen = outputSize;
+            if (_private->resampler && lastAlive) {
+                speex_resampler_process_float(_private->resampler, 0, fOut, &inlen, buffer + bufferFilled, &outlen);
+            }
+            bufferFilled += outlen;
+        }
+    }
 
-	BOOL tmp = lastAlive;
-	lastAlive = nextAlive;
-	return tmp;
+    BOOL tmp = lastAlive;
+    lastAlive = nextAlive;
+    return tmp;
 }
 
 @end

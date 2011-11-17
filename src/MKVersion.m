@@ -36,7 +36,7 @@
 // Get the current version of the Mumble protocol that MumbleKit supports
 //
 + (unsigned int) hexVersion {
-	return 0x10201;
+    return 0x10201;
 }
 
 //
@@ -48,7 +48,7 @@
 //                 usage stats.
 //
 + (NSString *) releaseString {
-	return @"MumbleKit (1.2.0 compatible)";
+    return @"MumbleKit (1.2.0 compatible)";
 }
 
 @end

@@ -29,10 +29,10 @@
 */
 
 typedef enum {
-	MKTalkStatePassive = 0,
-	MKTalkStateTalking,
-	MKTalkStateWhispering,
-	MKTalkStateShouting,
+    MKTalkStatePassive = 0,
+    MKTalkStateTalking,
+    MKTalkStateWhispering,
+    MKTalkStateShouting,
 } MKTalkState;
 
 @class MKChannel;

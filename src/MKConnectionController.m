@@ -43,15 +43,15 @@
 @implementation MKConnectionController
 
 - (id) init {
-	if ((self = [super init])) {
+    if ((self = [super init])) {
         _openConnections = [[NSMutableArray alloc] init];
     }
-	return self;
+    return self;
 }
 
 - (void) dealloc {
-	[_openConnections release];
-	[super dealloc];
+    [_openConnections release];
+    [super dealloc];
 }
 
 + (MKConnectionController *) sharedController {
@@ -64,17 +64,17 @@
 
     return controller;
 }
-								
+                                
 - (void) addConnection:(MKConnection *)conn {
-	[_openConnections addObject:[NSValue valueWithNonretainedObject:conn]];
+    [_openConnections addObject:[NSValue valueWithNonretainedObject:conn]];
 }
 
 - (void) removeConnection:(MKConnection *)conn {
-	[_openConnections removeObject:[NSValue valueWithNonretainedObject:conn]];
+    [_openConnections removeObject:[NSValue valueWithNonretainedObject:conn]];
 }
 
 - (NSArray *) allConnections {
-	return _openConnections;
+    return _openConnections;
 }
 
 @end

@@ -42,91 +42,91 @@
 @implementation MKReadWriteLock
 
 - (id) init {
-	int err;
+    int err;
 
-	self = [super init];
-	if (self == nil)
-		return nil;
+    self = [super init];
+    if (self == nil)
+        return nil;
 
-	err = pthread_rwlock_init(&rwlock, NULL);
-	if (err != 0) {
-		NSLog(@"RWLock: Unable to initialize rwlock. Error=%i", err);
-		return nil;
-	}
+    err = pthread_rwlock_init(&rwlock, NULL);
+    if (err != 0) {
+        NSLog(@"RWLock: Unable to initialize rwlock. Error=%i", err);
+        return nil;
+    }
 
-	return self;
+    return self;
 }
 
 - (void) dealloc {
-	int err = pthread_rwlock_destroy(&rwlock);
-	if (err != 0) {
-		NSLog(@"RWLock: Unable to destroy rwlock.");
-	}
+    int err = pthread_rwlock_destroy(&rwlock);
+    if (err != 0) {
+        NSLog(@"RWLock: Unable to destroy rwlock.");
+    }
 
-	[super dealloc];
+    [super dealloc];
 }
 
 /*
  * Try to acquire a write lock. Returns immediately.
  */
 - (BOOL) tryWriteLock {
-	int err;
+    int err;
 
-	err = pthread_rwlock_trywrlock(&rwlock);
-	if (err != 0) {
-		NSLog(@"RWLock: tryWriteLock failed: %i (%s).", err, strerror(err));
-		return NO;
-	}
+    err = pthread_rwlock_trywrlock(&rwlock);
+    if (err != 0) {
+        NSLog(@"RWLock: tryWriteLock failed: %i (%s).", err, strerror(err));
+        return NO;
+    }
 
-	return YES;
+    return YES;
 }
 
 /*
  * Acquire a write lock. Block until we can get it.
  */
 - (void) writeLock {
-	int err;
+    int err;
 
-	err = pthread_rwlock_wrlock(&rwlock);
-	if (err != 0) {
-		NSLog(@"writeLock failed: %i (%s)", err, strerror(err));
-	}
+    err = pthread_rwlock_wrlock(&rwlock);
+    if (err != 0) {
+        NSLog(@"writeLock failed: %i (%s)", err, strerror(err));
+    }
 
-	assert(err == 0);
+    assert(err == 0);
 }
 
 /*
  * Try to acquire a read lock. Returns immediately.
  */
 - (BOOL) tryReadLock {
-	int err;
+    int err;
 
-	err = pthread_rwlock_tryrdlock(&rwlock);
-	if (err != 0) {
-		return NO;
-	}
+    err = pthread_rwlock_tryrdlock(&rwlock);
+    if (err != 0) {
+        return NO;
+    }
 
-	return YES;
+    return YES;
 }
 
 /*
  * Acquire a read lock. Block until it succeeds.
  */
 - (void) readLock {
-	int err;
+    int err;
 
-	err = pthread_rwlock_rdlock(&rwlock);
-	assert(err == 0);
+    err = pthread_rwlock_rdlock(&rwlock);
+    assert(err == 0);
 }
 
 /*
  * Unlock.
  */
 - (void) unlock {
-	int err;
+    int err;
 
-	err = pthread_rwlock_unlock(&rwlock);
-	assert(err == 0);
+    err = pthread_rwlock_unlock(&rwlock);
+    assert(err == 0);
 }
 
 @end

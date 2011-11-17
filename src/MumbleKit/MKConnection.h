@@ -41,38 +41,38 @@
 @class MKCertificate;
 
 typedef enum {
-	UDPVoiceCELTAlphaMessage = 0,
-	UDPPingMessage,
-	UDPVoiceSpeexMessage,
-	UDPVoiceCELTBetaMessage
+    UDPVoiceCELTAlphaMessage = 0,
+    UDPPingMessage,
+    UDPVoiceSpeexMessage,
+    UDPVoiceCELTBetaMessage
 } MKUDPMessageType;
 
 typedef enum {
-	VersionMessage = 0,
-	UDPTunnelMessage,
-	AuthenticateMessage,
-	PingMessage,
-	RejectMessage,
-	ServerSyncMessage,
-	ChannelRemoveMessage,
-	ChannelStateMessage,
-	UserRemoveMessage,
-	UserStateMessage,
-	BanListMessage,
-	TextMessageMessage,
-	PermissionDeniedMessage,
-	ACLMessage,
-	QueryUsersMessage,
-	CryptSetupMessage,
-	ContextActionModifyMessage,
-	ContextActionMessage,
-	UserListMessage,
-	VoiceTargetMessage,
-	PermissionQueryMessage,
-	CodecVersionMessage,
-	UserStatsMessage,
-	RequestBlobMessage,
-	ServerConfigMessage,
+    VersionMessage = 0,
+    UDPTunnelMessage,
+    AuthenticateMessage,
+    PingMessage,
+    RejectMessage,
+    ServerSyncMessage,
+    ChannelRemoveMessage,
+    ChannelStateMessage,
+    UserRemoveMessage,
+    UserStateMessage,
+    BanListMessage,
+    TextMessageMessage,
+    PermissionDeniedMessage,
+    ACLMessage,
+    QueryUsersMessage,
+    CryptSetupMessage,
+    ContextActionModifyMessage,
+    ContextActionMessage,
+    UserListMessage,
+    VoiceTargetMessage,
+    PermissionQueryMessage,
+    CodecVersionMessage,
+    UserStatsMessage,
+    RequestBlobMessage,
+    ServerConfigMessage,
 } MKMessageType;
 
 /**
@@ -83,44 +83,44 @@ typedef enum {
     /**
      * There was no reason.
      */
-	MKRejectReasonNone = 0,
+    MKRejectReasonNone = 0,
     
     /**
      * The client attempted to connect with an unsupported version.
      */
-	MKRejectReasonWrongVersion,
+    MKRejectReasonWrongVersion,
     
     /**
      * The specified username is not deemed valid by the remote server.
      */
-	MKRejectReasonInvalidUsername,
+    MKRejectReasonInvalidUsername,
 
     /**
      * The given password is an incorrect password for the given username.
      */
-	MKRejectReasonWrongUserPassword,
+    MKRejectReasonWrongUserPassword,
 
     /**
      * The given password is not the correct server password.
      */
-	MKRejectReasonWrongServerPassword,
+    MKRejectReasonWrongServerPassword,
 
     /**
      * The username the connection attempted to connect with is already in use
      * on the server.
      */
-	MKRejectReasonUsernameInUse,
+    MKRejectReasonUsernameInUse,
 
     /**
      * The server is full and cannot accept any new clients.
      */
-	MKRejectReasonServerIsFull,
+    MKRejectReasonServerIsFull,
 
     /**
      * The client did not present a certificate, but the server is set up to require
      * the presence of a client certificate.
      */
-	MKRejectReasonNoCertificate
+    MKRejectReasonNoCertificate
 } MKRejectReason;
 
 /**
