@@ -118,7 +118,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 	err = AudioUnitRender(i->audioUnit, flags, ts, busnum, nframes, &i->buflist);
 	if (err != noErr) {
-		NSLog(@"AudioInput: AudioUnitRender failed. err = %i", err);
+		NSLog(@"AudioInput: AudioUnitRender failed. err = %ld", err);
 		return err;
 	}
 
