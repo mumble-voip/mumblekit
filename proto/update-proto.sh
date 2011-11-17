@@ -11,14 +11,14 @@
 #
 # Grab the latest Mumble.proto file from desktop Mumble.
 #
-curl "http://mumble.git.sourceforge.net/git/gitweb.cgi?p=mumble/mumble;a=blob_plain;f=src/Mumble.proto;hb=HEAD" > Mumble.proto.clean
+curl "https://raw.github.com/mumble-voip/mumble/master/src/Mumble.proto" > Mumble.proto.clean
 cat Mumble.proto.objc Mumble.proto.clean > Mumble.proto
+sed -i '' -e  's, hash =, cert_hash =,g' Mumble.proto
 /usr/local/bin/protoc --objc_out=. \
 	-I. \
 	-I../3rdparty/protobuf/src/compiler/ \
 	-I/usr/local/include \
 	Mumble.proto \
-	/usr/local/include/google/protobuf/descriptor.proto \
 	../3rdparty/protobuf/src/compiler/google/protobuf/objectivec-descriptor.proto
 rm Mumble.proto.clean
 # Mangle headers so they work with our slightly wonky setup.

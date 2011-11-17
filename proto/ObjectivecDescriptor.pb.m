@@ -135,6 +135,44 @@ static ObjectiveCFileOptions* defaultObjectiveCFileOptionsInstance = nil;
 - (ObjectiveCFileOptions_Builder*) builder {
   return [ObjectiveCFileOptions builder];
 }
+- (ObjectiveCFileOptions_Builder*) toBuilder {
+  return [ObjectiveCFileOptions builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasPackage) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"package", self.package];
+  }
+  if (self.hasClassPrefix) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"classPrefix", self.classPrefix];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[ObjectiveCFileOptions class]]) {
+    return NO;
+  }
+  ObjectiveCFileOptions *otherMessage = other;
+  return
+      self.hasPackage == otherMessage.hasPackage &&
+      (!self.hasPackage || [self.package isEqual:otherMessage.package]) &&
+      self.hasClassPrefix == otherMessage.hasClassPrefix &&
+      (!self.hasClassPrefix || [self.classPrefix isEqual:otherMessage.classPrefix]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasPackage) {
+    hashCode = hashCode * 31 + [self.package hash];
+  }
+  if (self.hasClassPrefix) {
+    hashCode = hashCode * 31 + [self.classPrefix hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface ObjectiveCFileOptions_Builder()

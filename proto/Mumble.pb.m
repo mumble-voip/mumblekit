@@ -21,7 +21,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @end
 
 @interface MPVersion ()
-@property int32_t version;
+@property uint32_t version;
 @property (retain) NSString* release;
 @property (retain) NSString* os;
 @property (retain) NSString* osVersion;
@@ -152,6 +152,60 @@ static MPVersion* defaultMPVersionInstance = nil;
 - (MPVersion_Builder*) builder {
   return [MPVersion builder];
 }
+- (MPVersion_Builder*) toBuilder {
+  return [MPVersion builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasVersion) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"version", [NSNumber numberWithInt:self.version]];
+  }
+  if (self.hasRelease) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"release", self.release];
+  }
+  if (self.hasOs) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"os", self.os];
+  }
+  if (self.hasOsVersion) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"osVersion", self.osVersion];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPVersion class]]) {
+    return NO;
+  }
+  MPVersion *otherMessage = other;
+  return
+      self.hasVersion == otherMessage.hasVersion &&
+      (!self.hasVersion || self.version == otherMessage.version) &&
+      self.hasRelease == otherMessage.hasRelease &&
+      (!self.hasRelease || [self.release isEqual:otherMessage.release]) &&
+      self.hasOs == otherMessage.hasOs &&
+      (!self.hasOs || [self.os isEqual:otherMessage.os]) &&
+      self.hasOsVersion == otherMessage.hasOsVersion &&
+      (!self.hasOsVersion || [self.osVersion isEqual:otherMessage.osVersion]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasVersion) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.version] hash];
+  }
+  if (self.hasRelease) {
+    hashCode = hashCode * 31 + [self.release hash];
+  }
+  if (self.hasOs) {
+    hashCode = hashCode * 31 + [self.os hash];
+  }
+  if (self.hasOsVersion) {
+    hashCode = hashCode * 31 + [self.osVersion hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPVersion_Builder()
@@ -251,10 +305,10 @@ static MPVersion* defaultMPVersionInstance = nil;
 - (BOOL) hasVersion {
   return result.hasVersion;
 }
-- (int32_t) version {
+- (uint32_t) version {
   return result.version;
 }
-- (MPVersion_Builder*) setVersion:(int32_t) value {
+- (MPVersion_Builder*) setVersion:(uint32_t) value {
   result.hasVersion = YES;
   result.version = value;
   return self;
@@ -402,6 +456,36 @@ static MPUDPTunnel* defaultMPUDPTunnelInstance = nil;
 - (MPUDPTunnel_Builder*) builder {
   return [MPUDPTunnel builder];
 }
+- (MPUDPTunnel_Builder*) toBuilder {
+  return [MPUDPTunnel builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasPacket) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"packet", self.packet];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUDPTunnel class]]) {
+    return NO;
+  }
+  MPUDPTunnel *otherMessage = other;
+  return
+      self.hasPacket == otherMessage.hasPacket &&
+      (!self.hasPacket || [self.packet isEqual:otherMessage.packet]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasPacket) {
+    hashCode = hashCode * 31 + [self.packet hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPUDPTunnel_Builder()
@@ -500,6 +584,7 @@ static MPUDPTunnel* defaultMPUDPTunnelInstance = nil;
 @property (retain) NSString* password;
 @property (retain) PBAppendableArray * tokensArray;
 @property (retain) PBAppendableArray * celtVersionsArray;
+@property BOOL opus;
 @end
 
 @implementation MPAuthenticate
@@ -522,6 +607,18 @@ static MPUDPTunnel* defaultMPUDPTunnelInstance = nil;
 @dynamic tokens;
 @synthesize celtVersionsArray;
 @dynamic celtVersions;
+- (BOOL) hasOpus {
+  return !!hasOpus_;
+}
+- (void) setHasOpus:(BOOL) value {
+  hasOpus_ = !!value;
+}
+- (BOOL) opus {
+  return !!opus_;
+}
+- (void) setOpus:(BOOL) value {
+  opus_ = !!value;
+}
 - (void) dealloc {
   self.username = nil;
   self.password = nil;
@@ -533,6 +630,7 @@ static MPUDPTunnel* defaultMPUDPTunnelInstance = nil;
   if ((self = [super init])) {
     self.username = @"";
     self.password = @"";
+    self.opus = NO;
   }
   return self;
 }
@@ -584,6 +682,9 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
       [output writeInt32:4 value:values[i]];
     }
   }
+  if (self.hasOpus) {
+    [output writeBool:5 value:self.opus];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -619,6 +720,9 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
     size += dataSize;
     size += 1 * count;
   }
+  if (self.hasOpus) {
+    size += computeBoolSize(5, self.opus);
+  }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
   return size;
@@ -649,6 +753,66 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
 }
 - (MPAuthenticate_Builder*) builder {
   return [MPAuthenticate builder];
+}
+- (MPAuthenticate_Builder*) toBuilder {
+  return [MPAuthenticate builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasUsername) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"username", self.username];
+  }
+  if (self.hasPassword) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"password", self.password];
+  }
+  for (NSString* element in self.tokensArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tokens", element];
+  }
+  for (NSNumber* value in self.celtVersionsArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"celtVersions", value];
+  }
+  if (self.hasOpus) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"opus", [NSNumber numberWithBool:self.opus]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPAuthenticate class]]) {
+    return NO;
+  }
+  MPAuthenticate *otherMessage = other;
+  return
+      self.hasUsername == otherMessage.hasUsername &&
+      (!self.hasUsername || [self.username isEqual:otherMessage.username]) &&
+      self.hasPassword == otherMessage.hasPassword &&
+      (!self.hasPassword || [self.password isEqual:otherMessage.password]) &&
+      [self.tokensArray isEqualToArray:otherMessage.tokensArray] &&
+      [self.celtVersionsArray isEqualToArray:otherMessage.celtVersionsArray] &&
+      self.hasOpus == otherMessage.hasOpus &&
+      (!self.hasOpus || self.opus == otherMessage.opus) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasUsername) {
+    hashCode = hashCode * 31 + [self.username hash];
+  }
+  if (self.hasPassword) {
+    hashCode = hashCode * 31 + [self.password hash];
+  }
+  for (NSString* element in self.tokensArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  for (NSNumber* value in self.celtVersionsArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  if (self.hasOpus) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.opus] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -702,17 +866,20 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
   }
   if (other.tokensArray.count > 0) {
     if (result.tokensArray == nil) {
-      result.tokensArray = [other.tokensArray copyWithZone:[other.tokensArray zone]];
+      result.tokensArray = [[other.tokensArray copyWithZone:[other.tokensArray zone]] autorelease];
     } else {
       [result.tokensArray appendArray:other.tokensArray];
     }
   }
   if (other.celtVersionsArray.count > 0) {
     if (result.celtVersionsArray == nil) {
-      result.celtVersionsArray = [other.celtVersionsArray copyWithZone:[other.celtVersionsArray zone]];
+      result.celtVersionsArray = [[other.celtVersionsArray copyWithZone:[other.celtVersionsArray zone]] autorelease];
     } else {
       [result.celtVersionsArray appendArray:other.celtVersionsArray];
     }
+  }
+  if (other.hasOpus) {
+    [self setOpus:other.opus];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -749,6 +916,10 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
       }
       case 32: {
         [self addCeltVersions:[input readInt32]];
+        break;
+      }
+      case 40: {
+        [self setOpus:[input readBool]];
         break;
       }
     }
@@ -836,16 +1007,32 @@ static MPAuthenticate* defaultMPAuthenticateInstance = nil;
   result.celtVersionsArray = nil;
   return self;
 }
+- (BOOL) hasOpus {
+  return result.hasOpus;
+}
+- (BOOL) opus {
+  return result.opus;
+}
+- (MPAuthenticate_Builder*) setOpus:(BOOL) value {
+  result.hasOpus = YES;
+  result.opus = value;
+  return self;
+}
+- (MPAuthenticate_Builder*) clearOpus {
+  result.hasOpus = NO;
+  result.opus = NO;
+  return self;
+}
 @end
 
 @interface MPPing ()
-@property int64_t timestamp;
-@property int32_t good;
-@property int32_t late;
-@property int32_t lost;
-@property int32_t resync;
-@property int32_t udpPackets;
-@property int32_t tcpPackets;
+@property uint64_t timestamp;
+@property uint32_t good;
+@property uint32_t late;
+@property uint32_t lost;
+@property uint32_t resync;
+@property uint32_t udpPackets;
+@property uint32_t tcpPackets;
 @property Float32 udpPingAvg;
 @property Float32 udpPingVar;
 @property Float32 tcpPingAvg;
@@ -1072,6 +1259,116 @@ static MPPing* defaultMPPingInstance = nil;
 - (MPPing_Builder*) builder {
   return [MPPing builder];
 }
+- (MPPing_Builder*) toBuilder {
+  return [MPPing builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasTimestamp) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"timestamp", [NSNumber numberWithLongLong:self.timestamp]];
+  }
+  if (self.hasGood) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"good", [NSNumber numberWithInt:self.good]];
+  }
+  if (self.hasLate) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"late", [NSNumber numberWithInt:self.late]];
+  }
+  if (self.hasLost) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"lost", [NSNumber numberWithInt:self.lost]];
+  }
+  if (self.hasResync) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"resync", [NSNumber numberWithInt:self.resync]];
+  }
+  if (self.hasUdpPackets) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"udpPackets", [NSNumber numberWithInt:self.udpPackets]];
+  }
+  if (self.hasTcpPackets) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tcpPackets", [NSNumber numberWithInt:self.tcpPackets]];
+  }
+  if (self.hasUdpPingAvg) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"udpPingAvg", [NSNumber numberWithFloat:self.udpPingAvg]];
+  }
+  if (self.hasUdpPingVar) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"udpPingVar", [NSNumber numberWithFloat:self.udpPingVar]];
+  }
+  if (self.hasTcpPingAvg) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tcpPingAvg", [NSNumber numberWithFloat:self.tcpPingAvg]];
+  }
+  if (self.hasTcpPingVar) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tcpPingVar", [NSNumber numberWithFloat:self.tcpPingVar]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPPing class]]) {
+    return NO;
+  }
+  MPPing *otherMessage = other;
+  return
+      self.hasTimestamp == otherMessage.hasTimestamp &&
+      (!self.hasTimestamp || self.timestamp == otherMessage.timestamp) &&
+      self.hasGood == otherMessage.hasGood &&
+      (!self.hasGood || self.good == otherMessage.good) &&
+      self.hasLate == otherMessage.hasLate &&
+      (!self.hasLate || self.late == otherMessage.late) &&
+      self.hasLost == otherMessage.hasLost &&
+      (!self.hasLost || self.lost == otherMessage.lost) &&
+      self.hasResync == otherMessage.hasResync &&
+      (!self.hasResync || self.resync == otherMessage.resync) &&
+      self.hasUdpPackets == otherMessage.hasUdpPackets &&
+      (!self.hasUdpPackets || self.udpPackets == otherMessage.udpPackets) &&
+      self.hasTcpPackets == otherMessage.hasTcpPackets &&
+      (!self.hasTcpPackets || self.tcpPackets == otherMessage.tcpPackets) &&
+      self.hasUdpPingAvg == otherMessage.hasUdpPingAvg &&
+      (!self.hasUdpPingAvg || self.udpPingAvg == otherMessage.udpPingAvg) &&
+      self.hasUdpPingVar == otherMessage.hasUdpPingVar &&
+      (!self.hasUdpPingVar || self.udpPingVar == otherMessage.udpPingVar) &&
+      self.hasTcpPingAvg == otherMessage.hasTcpPingAvg &&
+      (!self.hasTcpPingAvg || self.tcpPingAvg == otherMessage.tcpPingAvg) &&
+      self.hasTcpPingVar == otherMessage.hasTcpPingVar &&
+      (!self.hasTcpPingVar || self.tcpPingVar == otherMessage.tcpPingVar) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasTimestamp) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.timestamp] hash];
+  }
+  if (self.hasGood) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.good] hash];
+  }
+  if (self.hasLate) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.late] hash];
+  }
+  if (self.hasLost) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.lost] hash];
+  }
+  if (self.hasResync) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.resync] hash];
+  }
+  if (self.hasUdpPackets) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.udpPackets] hash];
+  }
+  if (self.hasTcpPackets) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.tcpPackets] hash];
+  }
+  if (self.hasUdpPingAvg) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.udpPingAvg] hash];
+  }
+  if (self.hasUdpPingVar) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.udpPingVar] hash];
+  }
+  if (self.hasTcpPingAvg) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.tcpPingAvg] hash];
+  }
+  if (self.hasTcpPingVar) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.tcpPingVar] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPPing_Builder()
@@ -1220,10 +1517,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasTimestamp {
   return result.hasTimestamp;
 }
-- (int64_t) timestamp {
+- (uint64_t) timestamp {
   return result.timestamp;
 }
-- (MPPing_Builder*) setTimestamp:(int64_t) value {
+- (MPPing_Builder*) setTimestamp:(uint64_t) value {
   result.hasTimestamp = YES;
   result.timestamp = value;
   return self;
@@ -1236,10 +1533,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasGood {
   return result.hasGood;
 }
-- (int32_t) good {
+- (uint32_t) good {
   return result.good;
 }
-- (MPPing_Builder*) setGood:(int32_t) value {
+- (MPPing_Builder*) setGood:(uint32_t) value {
   result.hasGood = YES;
   result.good = value;
   return self;
@@ -1252,10 +1549,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasLate {
   return result.hasLate;
 }
-- (int32_t) late {
+- (uint32_t) late {
   return result.late;
 }
-- (MPPing_Builder*) setLate:(int32_t) value {
+- (MPPing_Builder*) setLate:(uint32_t) value {
   result.hasLate = YES;
   result.late = value;
   return self;
@@ -1268,10 +1565,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasLost {
   return result.hasLost;
 }
-- (int32_t) lost {
+- (uint32_t) lost {
   return result.lost;
 }
-- (MPPing_Builder*) setLost:(int32_t) value {
+- (MPPing_Builder*) setLost:(uint32_t) value {
   result.hasLost = YES;
   result.lost = value;
   return self;
@@ -1284,10 +1581,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasResync {
   return result.hasResync;
 }
-- (int32_t) resync {
+- (uint32_t) resync {
   return result.resync;
 }
-- (MPPing_Builder*) setResync:(int32_t) value {
+- (MPPing_Builder*) setResync:(uint32_t) value {
   result.hasResync = YES;
   result.resync = value;
   return self;
@@ -1300,10 +1597,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasUdpPackets {
   return result.hasUdpPackets;
 }
-- (int32_t) udpPackets {
+- (uint32_t) udpPackets {
   return result.udpPackets;
 }
-- (MPPing_Builder*) setUdpPackets:(int32_t) value {
+- (MPPing_Builder*) setUdpPackets:(uint32_t) value {
   result.hasUdpPackets = YES;
   result.udpPackets = value;
   return self;
@@ -1316,10 +1613,10 @@ static MPPing* defaultMPPingInstance = nil;
 - (BOOL) hasTcpPackets {
   return result.hasTcpPackets;
 }
-- (int32_t) tcpPackets {
+- (uint32_t) tcpPackets {
   return result.tcpPackets;
 }
-- (MPPing_Builder*) setTcpPackets:(int32_t) value {
+- (MPPing_Builder*) setTcpPackets:(uint32_t) value {
   result.hasTcpPackets = YES;
   result.tcpPackets = value;
   return self;
@@ -1495,6 +1792,44 @@ static MPReject* defaultMPRejectInstance = nil;
 - (MPReject_Builder*) builder {
   return [MPReject builder];
 }
+- (MPReject_Builder*) toBuilder {
+  return [MPReject builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasType) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+  }
+  if (self.hasReason) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"reason", self.reason];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPReject class]]) {
+    return NO;
+  }
+  MPReject *otherMessage = other;
+  return
+      self.hasType == otherMessage.hasType &&
+      (!self.hasType || self.type != otherMessage.type) &&
+      self.hasReason == otherMessage.hasReason &&
+      (!self.hasReason || [self.reason isEqual:otherMessage.reason]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasType) {
+    hashCode = hashCode * 31 + self.type;
+  }
+  if (self.hasReason) {
+    hashCode = hashCode * 31 + [self.reason hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 BOOL MPReject_RejectTypeIsValidValue(MPReject_RejectType value) {
@@ -1632,11 +1967,11 @@ BOOL MPReject_RejectTypeIsValidValue(MPReject_RejectType value) {
 @end
 
 @interface MPServerConfig ()
-@property int32_t maxBandwidth;
+@property uint32_t maxBandwidth;
 @property (retain) NSString* welcomeText;
 @property BOOL allowHtml;
-@property int32_t messageLength;
-@property int32_t imageMessageLength;
+@property uint32_t messageLength;
+@property uint32_t imageMessageLength;
 @end
 
 @implementation MPServerConfig
@@ -1781,6 +2116,68 @@ static MPServerConfig* defaultMPServerConfigInstance = nil;
 - (MPServerConfig_Builder*) builder {
   return [MPServerConfig builder];
 }
+- (MPServerConfig_Builder*) toBuilder {
+  return [MPServerConfig builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasMaxBandwidth) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"maxBandwidth", [NSNumber numberWithInt:self.maxBandwidth]];
+  }
+  if (self.hasWelcomeText) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"welcomeText", self.welcomeText];
+  }
+  if (self.hasAllowHtml) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"allowHtml", [NSNumber numberWithBool:self.allowHtml]];
+  }
+  if (self.hasMessageLength) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"messageLength", [NSNumber numberWithInt:self.messageLength]];
+  }
+  if (self.hasImageMessageLength) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"imageMessageLength", [NSNumber numberWithInt:self.imageMessageLength]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPServerConfig class]]) {
+    return NO;
+  }
+  MPServerConfig *otherMessage = other;
+  return
+      self.hasMaxBandwidth == otherMessage.hasMaxBandwidth &&
+      (!self.hasMaxBandwidth || self.maxBandwidth == otherMessage.maxBandwidth) &&
+      self.hasWelcomeText == otherMessage.hasWelcomeText &&
+      (!self.hasWelcomeText || [self.welcomeText isEqual:otherMessage.welcomeText]) &&
+      self.hasAllowHtml == otherMessage.hasAllowHtml &&
+      (!self.hasAllowHtml || self.allowHtml == otherMessage.allowHtml) &&
+      self.hasMessageLength == otherMessage.hasMessageLength &&
+      (!self.hasMessageLength || self.messageLength == otherMessage.messageLength) &&
+      self.hasImageMessageLength == otherMessage.hasImageMessageLength &&
+      (!self.hasImageMessageLength || self.imageMessageLength == otherMessage.imageMessageLength) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasMaxBandwidth) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.maxBandwidth] hash];
+  }
+  if (self.hasWelcomeText) {
+    hashCode = hashCode * 31 + [self.welcomeText hash];
+  }
+  if (self.hasAllowHtml) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.allowHtml] hash];
+  }
+  if (self.hasMessageLength) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.messageLength] hash];
+  }
+  if (self.hasImageMessageLength) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.imageMessageLength] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPServerConfig_Builder()
@@ -1887,10 +2284,10 @@ static MPServerConfig* defaultMPServerConfigInstance = nil;
 - (BOOL) hasMaxBandwidth {
   return result.hasMaxBandwidth;
 }
-- (int32_t) maxBandwidth {
+- (uint32_t) maxBandwidth {
   return result.maxBandwidth;
 }
-- (MPServerConfig_Builder*) setMaxBandwidth:(int32_t) value {
+- (MPServerConfig_Builder*) setMaxBandwidth:(uint32_t) value {
   result.hasMaxBandwidth = YES;
   result.maxBandwidth = value;
   return self;
@@ -1935,10 +2332,10 @@ static MPServerConfig* defaultMPServerConfigInstance = nil;
 - (BOOL) hasMessageLength {
   return result.hasMessageLength;
 }
-- (int32_t) messageLength {
+- (uint32_t) messageLength {
   return result.messageLength;
 }
-- (MPServerConfig_Builder*) setMessageLength:(int32_t) value {
+- (MPServerConfig_Builder*) setMessageLength:(uint32_t) value {
   result.hasMessageLength = YES;
   result.messageLength = value;
   return self;
@@ -1951,10 +2348,10 @@ static MPServerConfig* defaultMPServerConfigInstance = nil;
 - (BOOL) hasImageMessageLength {
   return result.hasImageMessageLength;
 }
-- (int32_t) imageMessageLength {
+- (uint32_t) imageMessageLength {
   return result.imageMessageLength;
 }
-- (MPServerConfig_Builder*) setImageMessageLength:(int32_t) value {
+- (MPServerConfig_Builder*) setImageMessageLength:(uint32_t) value {
   result.hasImageMessageLength = YES;
   result.imageMessageLength = value;
   return self;
@@ -1967,10 +2364,10 @@ static MPServerConfig* defaultMPServerConfigInstance = nil;
 @end
 
 @interface MPServerSync ()
-@property int32_t session;
-@property int32_t maxBandwidth;
+@property uint32_t session;
+@property uint32_t maxBandwidth;
 @property (retain) NSString* welcomeText;
-@property int64_t permissions;
+@property uint64_t permissions;
 @end
 
 @implementation MPServerSync
@@ -2096,6 +2493,60 @@ static MPServerSync* defaultMPServerSyncInstance = nil;
 - (MPServerSync_Builder*) builder {
   return [MPServerSync builder];
 }
+- (MPServerSync_Builder*) toBuilder {
+  return [MPServerSync builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSession) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", [NSNumber numberWithInt:self.session]];
+  }
+  if (self.hasMaxBandwidth) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"maxBandwidth", [NSNumber numberWithInt:self.maxBandwidth]];
+  }
+  if (self.hasWelcomeText) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"welcomeText", self.welcomeText];
+  }
+  if (self.hasPermissions) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"permissions", [NSNumber numberWithLongLong:self.permissions]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPServerSync class]]) {
+    return NO;
+  }
+  MPServerSync *otherMessage = other;
+  return
+      self.hasSession == otherMessage.hasSession &&
+      (!self.hasSession || self.session == otherMessage.session) &&
+      self.hasMaxBandwidth == otherMessage.hasMaxBandwidth &&
+      (!self.hasMaxBandwidth || self.maxBandwidth == otherMessage.maxBandwidth) &&
+      self.hasWelcomeText == otherMessage.hasWelcomeText &&
+      (!self.hasWelcomeText || [self.welcomeText isEqual:otherMessage.welcomeText]) &&
+      self.hasPermissions == otherMessage.hasPermissions &&
+      (!self.hasPermissions || self.permissions == otherMessage.permissions) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasSession) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.session] hash];
+  }
+  if (self.hasMaxBandwidth) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.maxBandwidth] hash];
+  }
+  if (self.hasWelcomeText) {
+    hashCode = hashCode * 31 + [self.welcomeText hash];
+  }
+  if (self.hasPermissions) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.permissions] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPServerSync_Builder()
@@ -2195,10 +2646,10 @@ static MPServerSync* defaultMPServerSyncInstance = nil;
 - (BOOL) hasSession {
   return result.hasSession;
 }
-- (int32_t) session {
+- (uint32_t) session {
   return result.session;
 }
-- (MPServerSync_Builder*) setSession:(int32_t) value {
+- (MPServerSync_Builder*) setSession:(uint32_t) value {
   result.hasSession = YES;
   result.session = value;
   return self;
@@ -2211,10 +2662,10 @@ static MPServerSync* defaultMPServerSyncInstance = nil;
 - (BOOL) hasMaxBandwidth {
   return result.hasMaxBandwidth;
 }
-- (int32_t) maxBandwidth {
+- (uint32_t) maxBandwidth {
   return result.maxBandwidth;
 }
-- (MPServerSync_Builder*) setMaxBandwidth:(int32_t) value {
+- (MPServerSync_Builder*) setMaxBandwidth:(uint32_t) value {
   result.hasMaxBandwidth = YES;
   result.maxBandwidth = value;
   return self;
@@ -2243,10 +2694,10 @@ static MPServerSync* defaultMPServerSyncInstance = nil;
 - (BOOL) hasPermissions {
   return result.hasPermissions;
 }
-- (int64_t) permissions {
+- (uint64_t) permissions {
   return result.permissions;
 }
-- (MPServerSync_Builder*) setPermissions:(int64_t) value {
+- (MPServerSync_Builder*) setPermissions:(uint64_t) value {
   result.hasPermissions = YES;
   result.permissions = value;
   return self;
@@ -2259,7 +2710,7 @@ static MPServerSync* defaultMPServerSyncInstance = nil;
 @end
 
 @interface MPChannelRemove ()
-@property int32_t channelId;
+@property uint32_t channelId;
 @end
 
 @implementation MPChannelRemove
@@ -2345,6 +2796,36 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
 - (MPChannelRemove_Builder*) builder {
   return [MPChannelRemove builder];
 }
+- (MPChannelRemove_Builder*) toBuilder {
+  return [MPChannelRemove builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPChannelRemove class]]) {
+    return NO;
+  }
+  MPChannelRemove *otherMessage = other;
+  return
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPChannelRemove_Builder()
@@ -2423,10 +2904,10 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPChannelRemove_Builder*) setChannelId:(int32_t) value {
+- (MPChannelRemove_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -2439,8 +2920,8 @@ static MPChannelRemove* defaultMPChannelRemoveInstance = nil;
 @end
 
 @interface MPChannelState ()
-@property int32_t channelId;
-@property int32_t parent;
+@property uint32_t channelId;
+@property uint32_t parent;
 @property (retain) NSString* name;
 @property (retain) PBAppendableArray * linksArray;
 @property (retain) NSString* description;
@@ -2549,19 +3030,19 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (PBArray *)links {
   return linksArray;
 }
-- (int32_t)linksAtIndex:(NSUInteger)index {
+- (uint32_t)linksAtIndex:(NSUInteger)index {
   return [linksArray uint32AtIndex:index];
 }
 - (PBArray *)linksAdd {
   return linksAddArray;
 }
-- (int32_t)linksAddAtIndex:(NSUInteger)index {
+- (uint32_t)linksAddAtIndex:(NSUInteger)index {
   return [linksAddArray uint32AtIndex:index];
 }
 - (PBArray *)linksRemove {
   return linksRemoveArray;
 }
-- (int32_t)linksRemoveAtIndex:(NSUInteger)index {
+- (uint32_t)linksRemoveAtIndex:(NSUInteger)index {
   return [linksRemoveArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
@@ -2579,7 +3060,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   }
   const NSUInteger linksArrayCount = self.linksArray.count;
   if (linksArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.linksArray.data;
+    const uint32_t *values = (const uint32_t *)self.linksArray.data;
     for (NSUInteger i = 0; i < linksArrayCount; ++i) {
       [output writeUInt32:4 value:values[i]];
     }
@@ -2589,14 +3070,14 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   }
   const NSUInteger linksAddArrayCount = self.linksAddArray.count;
   if (linksAddArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.linksAddArray.data;
+    const uint32_t *values = (const uint32_t *)self.linksAddArray.data;
     for (NSUInteger i = 0; i < linksAddArrayCount; ++i) {
       [output writeUInt32:6 value:values[i]];
     }
   }
   const NSUInteger linksRemoveArrayCount = self.linksRemoveArray.count;
   if (linksRemoveArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.linksRemoveArray.data;
+    const uint32_t *values = (const uint32_t *)self.linksRemoveArray.data;
     for (NSUInteger i = 0; i < linksRemoveArrayCount; ++i) {
       [output writeUInt32:7 value:values[i]];
     }
@@ -2631,7 +3112,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.linksArray.count;
-    const int32_t *values = (const int32_t *)self.linksArray.data;
+    const uint32_t *values = (const uint32_t *)self.linksArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -2644,7 +3125,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.linksAddArray.count;
-    const int32_t *values = (const int32_t *)self.linksAddArray.data;
+    const uint32_t *values = (const uint32_t *)self.linksAddArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -2654,7 +3135,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.linksRemoveArray.count;
-    const int32_t *values = (const int32_t *)self.linksRemoveArray.data;
+    const uint32_t *values = (const uint32_t *)self.linksRemoveArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -2700,6 +3181,105 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 }
 - (MPChannelState_Builder*) builder {
   return [MPChannelState builder];
+}
+- (MPChannelState_Builder*) toBuilder {
+  return [MPChannelState builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasParent) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"parent", [NSNumber numberWithInt:self.parent]];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  for (NSNumber* value in self.linksArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"links", value];
+  }
+  if (self.hasDescription) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"description", self.description];
+  }
+  for (NSNumber* value in self.linksAddArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"linksAdd", value];
+  }
+  for (NSNumber* value in self.linksRemoveArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"linksRemove", value];
+  }
+  if (self.hasTemporary) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"temporary", [NSNumber numberWithBool:self.temporary]];
+  }
+  if (self.hasPosition) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"position", [NSNumber numberWithInt:self.position]];
+  }
+  if (self.hasDescriptionHash) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"descriptionHash", self.descriptionHash];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPChannelState class]]) {
+    return NO;
+  }
+  MPChannelState *otherMessage = other;
+  return
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasParent == otherMessage.hasParent &&
+      (!self.hasParent || self.parent == otherMessage.parent) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      [self.linksArray isEqualToArray:otherMessage.linksArray] &&
+      self.hasDescription == otherMessage.hasDescription &&
+      (!self.hasDescription || [self.description isEqual:otherMessage.description]) &&
+      [self.linksAddArray isEqualToArray:otherMessage.linksAddArray] &&
+      [self.linksRemoveArray isEqualToArray:otherMessage.linksRemoveArray] &&
+      self.hasTemporary == otherMessage.hasTemporary &&
+      (!self.hasTemporary || self.temporary == otherMessage.temporary) &&
+      self.hasPosition == otherMessage.hasPosition &&
+      (!self.hasPosition || self.position == otherMessage.position) &&
+      self.hasDescriptionHash == otherMessage.hasDescriptionHash &&
+      (!self.hasDescriptionHash || [self.descriptionHash isEqual:otherMessage.descriptionHash]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasParent) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.parent] hash];
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  for (NSNumber* value in self.linksArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  if (self.hasDescription) {
+    hashCode = hashCode * 31 + [self.description hash];
+  }
+  for (NSNumber* value in self.linksAddArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.linksRemoveArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  if (self.hasTemporary) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.temporary] hash];
+  }
+  if (self.hasPosition) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.position] hash];
+  }
+  if (self.hasDescriptionHash) {
+    hashCode = hashCode * 31 + [self.descriptionHash hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -2756,7 +3336,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   }
   if (other.linksArray.count > 0) {
     if (result.linksArray == nil) {
-      result.linksArray = [other.linksArray copyWithZone:[other.linksArray zone]];
+      result.linksArray = [[other.linksArray copyWithZone:[other.linksArray zone]] autorelease];
     } else {
       [result.linksArray appendArray:other.linksArray];
     }
@@ -2766,14 +3346,14 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   }
   if (other.linksAddArray.count > 0) {
     if (result.linksAddArray == nil) {
-      result.linksAddArray = [other.linksAddArray copyWithZone:[other.linksAddArray zone]];
+      result.linksAddArray = [[other.linksAddArray copyWithZone:[other.linksAddArray zone]] autorelease];
     } else {
       [result.linksAddArray appendArray:other.linksAddArray];
     }
   }
   if (other.linksRemoveArray.count > 0) {
     if (result.linksRemoveArray == nil) {
-      result.linksRemoveArray = [other.linksRemoveArray copyWithZone:[other.linksRemoveArray zone]];
+      result.linksRemoveArray = [[other.linksRemoveArray copyWithZone:[other.linksRemoveArray zone]] autorelease];
     } else {
       [result.linksRemoveArray appendArray:other.linksRemoveArray];
     }
@@ -2854,10 +3434,10 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPChannelState_Builder*) setChannelId:(int32_t) value {
+- (MPChannelState_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -2870,10 +3450,10 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (BOOL) hasParent {
   return result.hasParent;
 }
-- (int32_t) parent {
+- (uint32_t) parent {
   return result.parent;
 }
-- (MPChannelState_Builder*) setParent:(int32_t) value {
+- (MPChannelState_Builder*) setParent:(uint32_t) value {
   result.hasParent = YES;
   result.parent = value;
   return self;
@@ -2902,10 +3482,10 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (PBAppendableArray *)links {
   return result.linksArray;
 }
-- (int32_t)linksAtIndex:(NSUInteger)index {
+- (uint32_t)linksAtIndex:(NSUInteger)index {
   return [result linksAtIndex:index];
 }
-- (MPChannelState_Builder *)addLinks:(int32_t)value {
+- (MPChannelState_Builder *)addLinks:(uint32_t)value {
   if (result.linksArray == nil) {
     result.linksArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -2916,7 +3496,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   result.linksArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPChannelState_Builder *)setLinksValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPChannelState_Builder *)setLinksValues:(const uint32_t *)values count:(NSUInteger)count {
   result.linksArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -2943,10 +3523,10 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (PBAppendableArray *)linksAdd {
   return result.linksAddArray;
 }
-- (int32_t)linksAddAtIndex:(NSUInteger)index {
+- (uint32_t)linksAddAtIndex:(NSUInteger)index {
   return [result linksAddAtIndex:index];
 }
-- (MPChannelState_Builder *)addLinksAdd:(int32_t)value {
+- (MPChannelState_Builder *)addLinksAdd:(uint32_t)value {
   if (result.linksAddArray == nil) {
     result.linksAddArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -2957,7 +3537,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   result.linksAddArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPChannelState_Builder *)setLinksAddValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPChannelState_Builder *)setLinksAddValues:(const uint32_t *)values count:(NSUInteger)count {
   result.linksAddArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -2968,10 +3548,10 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 - (PBAppendableArray *)linksRemove {
   return result.linksRemoveArray;
 }
-- (int32_t)linksRemoveAtIndex:(NSUInteger)index {
+- (uint32_t)linksRemoveAtIndex:(NSUInteger)index {
   return [result linksRemoveAtIndex:index];
 }
-- (MPChannelState_Builder *)addLinksRemove:(int32_t)value {
+- (MPChannelState_Builder *)addLinksRemove:(uint32_t)value {
   if (result.linksRemoveArray == nil) {
     result.linksRemoveArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -2982,7 +3562,7 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
   result.linksRemoveArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPChannelState_Builder *)setLinksRemoveValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPChannelState_Builder *)setLinksRemoveValues:(const uint32_t *)values count:(NSUInteger)count {
   result.linksRemoveArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -3041,8 +3621,8 @@ static MPChannelState* defaultMPChannelStateInstance = nil;
 @end
 
 @interface MPUserRemove ()
-@property int32_t session;
-@property int32_t actor;
+@property uint32_t session;
+@property uint32_t actor;
 @property (retain) NSString* reason;
 @property BOOL ban;
 @end
@@ -3178,6 +3758,60 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 - (MPUserRemove_Builder*) builder {
   return [MPUserRemove builder];
 }
+- (MPUserRemove_Builder*) toBuilder {
+  return [MPUserRemove builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSession) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", [NSNumber numberWithInt:self.session]];
+  }
+  if (self.hasActor) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"actor", [NSNumber numberWithInt:self.actor]];
+  }
+  if (self.hasReason) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"reason", self.reason];
+  }
+  if (self.hasBan) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ban", [NSNumber numberWithBool:self.ban]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUserRemove class]]) {
+    return NO;
+  }
+  MPUserRemove *otherMessage = other;
+  return
+      self.hasSession == otherMessage.hasSession &&
+      (!self.hasSession || self.session == otherMessage.session) &&
+      self.hasActor == otherMessage.hasActor &&
+      (!self.hasActor || self.actor == otherMessage.actor) &&
+      self.hasReason == otherMessage.hasReason &&
+      (!self.hasReason || [self.reason isEqual:otherMessage.reason]) &&
+      self.hasBan == otherMessage.hasBan &&
+      (!self.hasBan || self.ban == otherMessage.ban) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasSession) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.session] hash];
+  }
+  if (self.hasActor) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.actor] hash];
+  }
+  if (self.hasReason) {
+    hashCode = hashCode * 31 + [self.reason hash];
+  }
+  if (self.hasBan) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.ban] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPUserRemove_Builder()
@@ -3277,10 +3911,10 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 - (BOOL) hasSession {
   return result.hasSession;
 }
-- (int32_t) session {
+- (uint32_t) session {
   return result.session;
 }
-- (MPUserRemove_Builder*) setSession:(int32_t) value {
+- (MPUserRemove_Builder*) setSession:(uint32_t) value {
   result.hasSession = YES;
   result.session = value;
   return self;
@@ -3293,10 +3927,10 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 - (BOOL) hasActor {
   return result.hasActor;
 }
-- (int32_t) actor {
+- (uint32_t) actor {
   return result.actor;
 }
-- (MPUserRemove_Builder*) setActor:(int32_t) value {
+- (MPUserRemove_Builder*) setActor:(uint32_t) value {
   result.hasActor = YES;
   result.actor = value;
   return self;
@@ -3341,11 +3975,11 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 @end
 
 @interface MPUserState ()
-@property int32_t session;
-@property int32_t actor;
+@property uint32_t session;
+@property uint32_t actor;
 @property (retain) NSString* name;
-@property int32_t userId;
-@property int32_t channelId;
+@property uint32_t userId;
+@property uint32_t channelId;
 @property BOOL mute;
 @property BOOL deaf;
 @property BOOL suppress;
@@ -3355,7 +3989,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
 @property (retain) NSData* pluginContext;
 @property (retain) NSString* pluginIdentity;
 @property (retain) NSString* comment;
-@property (retain) NSString* hash;
+@property (retain) NSString* certHash;
 @property (retain) NSData* commentHash;
 @property (retain) NSData* textureHash;
 @property BOOL prioritySpeaker;
@@ -3487,13 +4121,13 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
   hasComment_ = !!value;
 }
 @synthesize comment;
-- (BOOL) hasHash {
-  return !!hasHash_;
+- (BOOL) hasCertHash {
+  return !!hasCertHash_;
 }
-- (void) setHasHash:(BOOL) value {
-  hasHash_ = !!value;
+- (void) setHasCertHash:(BOOL) value {
+  hasCertHash_ = !!value;
 }
-@synthesize hash;
+@synthesize certHash;
 - (BOOL) hasCommentHash {
   return !!hasCommentHash_;
 }
@@ -3538,7 +4172,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
   self.pluginContext = nil;
   self.pluginIdentity = nil;
   self.comment = nil;
-  self.hash = nil;
+  self.certHash = nil;
   self.commentHash = nil;
   self.textureHash = nil;
   [super dealloc];
@@ -3559,7 +4193,7 @@ static MPUserRemove* defaultMPUserRemoveInstance = nil;
     self.pluginContext = [NSData data];
     self.pluginIdentity = @"";
     self.comment = @"";
-    self.hash = @"";
+    self.certHash = @"";
     self.commentHash = [NSData data];
     self.textureHash = [NSData data];
     self.prioritySpeaker = NO;
@@ -3625,8 +4259,8 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (self.hasComment) {
     [output writeString:14 value:self.comment];
   }
-  if (self.hasHash) {
-    [output writeString:15 value:self.hash];
+  if (self.hasCertHash) {
+    [output writeString:15 value:self.certHash];
   }
   if (self.hasCommentHash) {
     [output writeData:16 value:self.commentHash];
@@ -3691,8 +4325,8 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (self.hasComment) {
     size += computeStringSize(14, self.comment);
   }
-  if (self.hasHash) {
-    size += computeStringSize(15, self.hash);
+  if (self.hasCertHash) {
+    size += computeStringSize(15, self.certHash);
   }
   if (self.hasCommentHash) {
     size += computeDataSize(16, self.commentHash);
@@ -3736,6 +4370,180 @@ static MPUserState* defaultMPUserStateInstance = nil;
 }
 - (MPUserState_Builder*) builder {
   return [MPUserState builder];
+}
+- (MPUserState_Builder*) toBuilder {
+  return [MPUserState builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSession) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", [NSNumber numberWithInt:self.session]];
+  }
+  if (self.hasActor) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"actor", [NSNumber numberWithInt:self.actor]];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  if (self.hasUserId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userId", [NSNumber numberWithInt:self.userId]];
+  }
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasMute) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"mute", [NSNumber numberWithBool:self.mute]];
+  }
+  if (self.hasDeaf) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"deaf", [NSNumber numberWithBool:self.deaf]];
+  }
+  if (self.hasSuppress) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"suppress", [NSNumber numberWithBool:self.suppress]];
+  }
+  if (self.hasSelfMute) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"selfMute", [NSNumber numberWithBool:self.selfMute]];
+  }
+  if (self.hasSelfDeaf) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"selfDeaf", [NSNumber numberWithBool:self.selfDeaf]];
+  }
+  if (self.hasTexture) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"texture", self.texture];
+  }
+  if (self.hasPluginContext) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"pluginContext", self.pluginContext];
+  }
+  if (self.hasPluginIdentity) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"pluginIdentity", self.pluginIdentity];
+  }
+  if (self.hasComment) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"comment", self.comment];
+  }
+  if (self.hasCertHash) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"certHash", self.certHash];
+  }
+  if (self.hasCommentHash) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"commentHash", self.commentHash];
+  }
+  if (self.hasTextureHash) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"textureHash", self.textureHash];
+  }
+  if (self.hasPrioritySpeaker) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"prioritySpeaker", [NSNumber numberWithBool:self.prioritySpeaker]];
+  }
+  if (self.hasRecording) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"recording", [NSNumber numberWithBool:self.recording]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUserState class]]) {
+    return NO;
+  }
+  MPUserState *otherMessage = other;
+  return
+      self.hasSession == otherMessage.hasSession &&
+      (!self.hasSession || self.session == otherMessage.session) &&
+      self.hasActor == otherMessage.hasActor &&
+      (!self.hasActor || self.actor == otherMessage.actor) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      self.hasUserId == otherMessage.hasUserId &&
+      (!self.hasUserId || self.userId == otherMessage.userId) &&
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasMute == otherMessage.hasMute &&
+      (!self.hasMute || self.mute == otherMessage.mute) &&
+      self.hasDeaf == otherMessage.hasDeaf &&
+      (!self.hasDeaf || self.deaf == otherMessage.deaf) &&
+      self.hasSuppress == otherMessage.hasSuppress &&
+      (!self.hasSuppress || self.suppress == otherMessage.suppress) &&
+      self.hasSelfMute == otherMessage.hasSelfMute &&
+      (!self.hasSelfMute || self.selfMute == otherMessage.selfMute) &&
+      self.hasSelfDeaf == otherMessage.hasSelfDeaf &&
+      (!self.hasSelfDeaf || self.selfDeaf == otherMessage.selfDeaf) &&
+      self.hasTexture == otherMessage.hasTexture &&
+      (!self.hasTexture || [self.texture isEqual:otherMessage.texture]) &&
+      self.hasPluginContext == otherMessage.hasPluginContext &&
+      (!self.hasPluginContext || [self.pluginContext isEqual:otherMessage.pluginContext]) &&
+      self.hasPluginIdentity == otherMessage.hasPluginIdentity &&
+      (!self.hasPluginIdentity || [self.pluginIdentity isEqual:otherMessage.pluginIdentity]) &&
+      self.hasComment == otherMessage.hasComment &&
+      (!self.hasComment || [self.comment isEqual:otherMessage.comment]) &&
+      self.hasCertHash == otherMessage.hasCertHash &&
+      (!self.hasCertHash || [self.certHash isEqual:otherMessage.certHash]) &&
+      self.hasCommentHash == otherMessage.hasCommentHash &&
+      (!self.hasCommentHash || [self.commentHash isEqual:otherMessage.commentHash]) &&
+      self.hasTextureHash == otherMessage.hasTextureHash &&
+      (!self.hasTextureHash || [self.textureHash isEqual:otherMessage.textureHash]) &&
+      self.hasPrioritySpeaker == otherMessage.hasPrioritySpeaker &&
+      (!self.hasPrioritySpeaker || self.prioritySpeaker == otherMessage.prioritySpeaker) &&
+      self.hasRecording == otherMessage.hasRecording &&
+      (!self.hasRecording || self.recording == otherMessage.recording) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasSession) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.session] hash];
+  }
+  if (self.hasActor) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.actor] hash];
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  if (self.hasUserId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.userId] hash];
+  }
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasMute) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.mute] hash];
+  }
+  if (self.hasDeaf) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.deaf] hash];
+  }
+  if (self.hasSuppress) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.suppress] hash];
+  }
+  if (self.hasSelfMute) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.selfMute] hash];
+  }
+  if (self.hasSelfDeaf) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.selfDeaf] hash];
+  }
+  if (self.hasTexture) {
+    hashCode = hashCode * 31 + [self.texture hash];
+  }
+  if (self.hasPluginContext) {
+    hashCode = hashCode * 31 + [self.pluginContext hash];
+  }
+  if (self.hasPluginIdentity) {
+    hashCode = hashCode * 31 + [self.pluginIdentity hash];
+  }
+  if (self.hasComment) {
+    hashCode = hashCode * 31 + [self.comment hash];
+  }
+  if (self.hasCertHash) {
+    hashCode = hashCode * 31 + [self.certHash hash];
+  }
+  if (self.hasCommentHash) {
+    hashCode = hashCode * 31 + [self.commentHash hash];
+  }
+  if (self.hasTextureHash) {
+    hashCode = hashCode * 31 + [self.textureHash hash];
+  }
+  if (self.hasPrioritySpeaker) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.prioritySpeaker] hash];
+  }
+  if (self.hasRecording) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.recording] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -3823,8 +4631,8 @@ static MPUserState* defaultMPUserStateInstance = nil;
   if (other.hasComment) {
     [self setComment:other.comment];
   }
-  if (other.hasHash) {
-    [self setHash:other.hash];
+  if (other.hasCertHash) {
+    [self setCertHash:other.certHash];
   }
   if (other.hasCommentHash) {
     [self setCommentHash:other.commentHash];
@@ -3916,7 +4724,7 @@ static MPUserState* defaultMPUserStateInstance = nil;
         break;
       }
       case 122: {
-        [self setHash:[input readString]];
+        [self setCertHash:[input readString]];
         break;
       }
       case 130: {
@@ -3941,10 +4749,10 @@ static MPUserState* defaultMPUserStateInstance = nil;
 - (BOOL) hasSession {
   return result.hasSession;
 }
-- (int32_t) session {
+- (uint32_t) session {
   return result.session;
 }
-- (MPUserState_Builder*) setSession:(int32_t) value {
+- (MPUserState_Builder*) setSession:(uint32_t) value {
   result.hasSession = YES;
   result.session = value;
   return self;
@@ -3957,10 +4765,10 @@ static MPUserState* defaultMPUserStateInstance = nil;
 - (BOOL) hasActor {
   return result.hasActor;
 }
-- (int32_t) actor {
+- (uint32_t) actor {
   return result.actor;
 }
-- (MPUserState_Builder*) setActor:(int32_t) value {
+- (MPUserState_Builder*) setActor:(uint32_t) value {
   result.hasActor = YES;
   result.actor = value;
   return self;
@@ -3989,10 +4797,10 @@ static MPUserState* defaultMPUserStateInstance = nil;
 - (BOOL) hasUserId {
   return result.hasUserId;
 }
-- (int32_t) userId {
+- (uint32_t) userId {
   return result.userId;
 }
-- (MPUserState_Builder*) setUserId:(int32_t) value {
+- (MPUserState_Builder*) setUserId:(uint32_t) value {
   result.hasUserId = YES;
   result.userId = value;
   return self;
@@ -4005,10 +4813,10 @@ static MPUserState* defaultMPUserStateInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPUserState_Builder*) setChannelId:(int32_t) value {
+- (MPUserState_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -4162,20 +4970,20 @@ static MPUserState* defaultMPUserStateInstance = nil;
   result.comment = @"";
   return self;
 }
-- (BOOL) hasHash {
-  return result.hasHash;
+- (BOOL) hasCertHash {
+  return result.hasCertHash;
 }
-- (NSString*) hash {
-  return result.hash;
+- (NSString*) certHash {
+  return result.certHash;
 }
-- (MPUserState_Builder*) setHash:(NSString*) value {
-  result.hasHash = YES;
-  result.hash = value;
+- (MPUserState_Builder*) setCertHash:(NSString*) value {
+  result.hasCertHash = YES;
+  result.certHash = value;
   return self;
 }
-- (MPUserState_Builder*) clearHash {
-  result.hasHash = NO;
-  result.hash = @"";
+- (MPUserState_Builder*) clearCertHash {
+  result.hasCertHash = NO;
+  result.certHash = @"";
   return self;
 }
 - (BOOL) hasCommentHash {
@@ -4354,16 +5162,56 @@ static MPBanList* defaultMPBanListInstance = nil;
 - (MPBanList_Builder*) builder {
   return [MPBanList builder];
 }
+- (MPBanList_Builder*) toBuilder {
+  return [MPBanList builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  for (MPBanList_BanEntry* element in self.bansArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"bans"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasQuery) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"query", [NSNumber numberWithBool:self.query]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPBanList class]]) {
+    return NO;
+  }
+  MPBanList *otherMessage = other;
+  return
+      [self.bansArray isEqualToArray:otherMessage.bansArray] &&
+      self.hasQuery == otherMessage.hasQuery &&
+      (!self.hasQuery || self.query == otherMessage.query) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  for (MPBanList_BanEntry* element in self.bansArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  if (self.hasQuery) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.query] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPBanList_BanEntry ()
 @property (retain) NSData* address;
-@property int32_t mask;
+@property uint32_t mask;
 @property (retain) NSString* name;
-@property (retain) NSString* hash;
+@property (retain) NSString* certHash;
 @property (retain) NSString* reason;
 @property (retain) NSString* start;
-@property int32_t duration;
+@property uint32_t duration;
 @end
 
 @implementation MPBanList_BanEntry
@@ -4389,13 +5237,13 @@ static MPBanList* defaultMPBanListInstance = nil;
   hasName_ = !!value;
 }
 @synthesize name;
-- (BOOL) hasHash {
-  return !!hasHash_;
+- (BOOL) hasCertHash {
+  return !!hasCertHash_;
 }
-- (void) setHasHash:(BOOL) value {
-  hasHash_ = !!value;
+- (void) setHasCertHash:(BOOL) value {
+  hasCertHash_ = !!value;
 }
-@synthesize hash;
+@synthesize certHash;
 - (BOOL) hasReason {
   return !!hasReason_;
 }
@@ -4420,7 +5268,7 @@ static MPBanList* defaultMPBanListInstance = nil;
 - (void) dealloc {
   self.address = nil;
   self.name = nil;
-  self.hash = nil;
+  self.certHash = nil;
   self.reason = nil;
   self.start = nil;
   [super dealloc];
@@ -4430,7 +5278,7 @@ static MPBanList* defaultMPBanListInstance = nil;
     self.address = [NSData data];
     self.mask = 0;
     self.name = @"";
-    self.hash = @"";
+    self.certHash = @"";
     self.reason = @"";
     self.start = @"";
     self.duration = 0;
@@ -4468,8 +5316,8 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   if (self.hasName) {
     [output writeString:3 value:self.name];
   }
-  if (self.hasHash) {
-    [output writeString:4 value:self.hash];
+  if (self.hasCertHash) {
+    [output writeString:4 value:self.certHash];
   }
   if (self.hasReason) {
     [output writeString:5 value:self.reason];
@@ -4498,8 +5346,8 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   if (self.hasName) {
     size += computeStringSize(3, self.name);
   }
-  if (self.hasHash) {
-    size += computeStringSize(4, self.hash);
+  if (self.hasCertHash) {
+    size += computeStringSize(4, self.certHash);
   }
   if (self.hasReason) {
     size += computeStringSize(5, self.reason);
@@ -4540,6 +5388,84 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
 }
 - (MPBanList_BanEntry_Builder*) builder {
   return [MPBanList_BanEntry builder];
+}
+- (MPBanList_BanEntry_Builder*) toBuilder {
+  return [MPBanList_BanEntry builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasAddress) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"address", self.address];
+  }
+  if (self.hasMask) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"mask", [NSNumber numberWithInt:self.mask]];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  if (self.hasCertHash) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"certHash", self.certHash];
+  }
+  if (self.hasReason) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"reason", self.reason];
+  }
+  if (self.hasStart) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"start", self.start];
+  }
+  if (self.hasDuration) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"duration", [NSNumber numberWithInt:self.duration]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPBanList_BanEntry class]]) {
+    return NO;
+  }
+  MPBanList_BanEntry *otherMessage = other;
+  return
+      self.hasAddress == otherMessage.hasAddress &&
+      (!self.hasAddress || [self.address isEqual:otherMessage.address]) &&
+      self.hasMask == otherMessage.hasMask &&
+      (!self.hasMask || self.mask == otherMessage.mask) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      self.hasCertHash == otherMessage.hasCertHash &&
+      (!self.hasCertHash || [self.certHash isEqual:otherMessage.certHash]) &&
+      self.hasReason == otherMessage.hasReason &&
+      (!self.hasReason || [self.reason isEqual:otherMessage.reason]) &&
+      self.hasStart == otherMessage.hasStart &&
+      (!self.hasStart || [self.start isEqual:otherMessage.start]) &&
+      self.hasDuration == otherMessage.hasDuration &&
+      (!self.hasDuration || self.duration == otherMessage.duration) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasAddress) {
+    hashCode = hashCode * 31 + [self.address hash];
+  }
+  if (self.hasMask) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.mask] hash];
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  if (self.hasCertHash) {
+    hashCode = hashCode * 31 + [self.certHash hash];
+  }
+  if (self.hasReason) {
+    hashCode = hashCode * 31 + [self.reason hash];
+  }
+  if (self.hasStart) {
+    hashCode = hashCode * 31 + [self.start hash];
+  }
+  if (self.hasDuration) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.duration] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -4594,8 +5520,8 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   if (other.hasName) {
     [self setName:other.name];
   }
-  if (other.hasHash) {
-    [self setHash:other.hash];
+  if (other.hasCertHash) {
+    [self setCertHash:other.certHash];
   }
   if (other.hasReason) {
     [self setReason:other.reason];
@@ -4640,7 +5566,7 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
         break;
       }
       case 34: {
-        [self setHash:[input readString]];
+        [self setCertHash:[input readString]];
         break;
       }
       case 42: {
@@ -4677,10 +5603,10 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
 - (BOOL) hasMask {
   return result.hasMask;
 }
-- (int32_t) mask {
+- (uint32_t) mask {
   return result.mask;
 }
-- (MPBanList_BanEntry_Builder*) setMask:(int32_t) value {
+- (MPBanList_BanEntry_Builder*) setMask:(uint32_t) value {
   result.hasMask = YES;
   result.mask = value;
   return self;
@@ -4706,20 +5632,20 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   result.name = @"";
   return self;
 }
-- (BOOL) hasHash {
-  return result.hasHash;
+- (BOOL) hasCertHash {
+  return result.hasCertHash;
 }
-- (NSString*) hash {
-  return result.hash;
+- (NSString*) certHash {
+  return result.certHash;
 }
-- (MPBanList_BanEntry_Builder*) setHash:(NSString*) value {
-  result.hasHash = YES;
-  result.hash = value;
+- (MPBanList_BanEntry_Builder*) setCertHash:(NSString*) value {
+  result.hasCertHash = YES;
+  result.certHash = value;
   return self;
 }
-- (MPBanList_BanEntry_Builder*) clearHash {
-  result.hasHash = NO;
-  result.hash = @"";
+- (MPBanList_BanEntry_Builder*) clearCertHash {
+  result.hasCertHash = NO;
+  result.certHash = @"";
   return self;
 }
 - (BOOL) hasReason {
@@ -4757,10 +5683,10 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
 - (BOOL) hasDuration {
   return result.hasDuration;
 }
-- (int32_t) duration {
+- (uint32_t) duration {
   return result.duration;
 }
-- (MPBanList_BanEntry_Builder*) setDuration:(int32_t) value {
+- (MPBanList_BanEntry_Builder*) setDuration:(uint32_t) value {
   result.hasDuration = YES;
   result.duration = value;
   return self;
@@ -4816,7 +5742,7 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
   }
   if (other.bansArray.count > 0) {
     if (result.bansArray == nil) {
-      result.bansArray = [other.bansArray copyWithZone:[other.bansArray zone]];
+      result.bansArray = [[other.bansArray copyWithZone:[other.bansArray zone]] autorelease];
     } else {
       [result.bansArray appendArray:other.bansArray];
     }
@@ -4902,7 +5828,7 @@ static MPBanList_BanEntry* defaultMPBanList_BanEntryInstance = nil;
 @end
 
 @interface MPTextMessage ()
-@property int32_t actor;
+@property uint32_t actor;
 @property (retain) PBAppendableArray * sessionArray;
 @property (retain) PBAppendableArray * channelIdArray;
 @property (retain) PBAppendableArray * treeIdArray;
@@ -4960,19 +5886,19 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 - (PBArray *)session {
   return sessionArray;
 }
-- (int32_t)sessionAtIndex:(NSUInteger)index {
+- (uint32_t)sessionAtIndex:(NSUInteger)index {
   return [sessionArray uint32AtIndex:index];
 }
 - (PBArray *)channelId {
   return channelIdArray;
 }
-- (int32_t)channelIdAtIndex:(NSUInteger)index {
+- (uint32_t)channelIdAtIndex:(NSUInteger)index {
   return [channelIdArray uint32AtIndex:index];
 }
 - (PBArray *)treeId {
   return treeIdArray;
 }
-- (int32_t)treeIdAtIndex:(NSUInteger)index {
+- (uint32_t)treeIdAtIndex:(NSUInteger)index {
   return [treeIdArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
@@ -4987,21 +5913,21 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   }
   const NSUInteger sessionArrayCount = self.sessionArray.count;
   if (sessionArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionArray.data;
     for (NSUInteger i = 0; i < sessionArrayCount; ++i) {
       [output writeUInt32:2 value:values[i]];
     }
   }
   const NSUInteger channelIdArrayCount = self.channelIdArray.count;
   if (channelIdArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.channelIdArray.data;
+    const uint32_t *values = (const uint32_t *)self.channelIdArray.data;
     for (NSUInteger i = 0; i < channelIdArrayCount; ++i) {
       [output writeUInt32:3 value:values[i]];
     }
   }
   const NSUInteger treeIdArrayCount = self.treeIdArray.count;
   if (treeIdArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.treeIdArray.data;
+    const uint32_t *values = (const uint32_t *)self.treeIdArray.data;
     for (NSUInteger i = 0; i < treeIdArrayCount; ++i) {
       [output writeUInt32:4 value:values[i]];
     }
@@ -5024,7 +5950,7 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.sessionArray.count;
-    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -5034,7 +5960,7 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.channelIdArray.count;
-    const int32_t *values = (const int32_t *)self.channelIdArray.data;
+    const uint32_t *values = (const uint32_t *)self.channelIdArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -5044,7 +5970,7 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.treeIdArray.count;
-    const int32_t *values = (const int32_t *)self.treeIdArray.data;
+    const uint32_t *values = (const uint32_t *)self.treeIdArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -5084,6 +6010,65 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 }
 - (MPTextMessage_Builder*) builder {
   return [MPTextMessage builder];
+}
+- (MPTextMessage_Builder*) toBuilder {
+  return [MPTextMessage builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasActor) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"actor", [NSNumber numberWithInt:self.actor]];
+  }
+  for (NSNumber* value in self.sessionArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", value];
+  }
+  for (NSNumber* value in self.channelIdArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", value];
+  }
+  for (NSNumber* value in self.treeIdArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"treeId", value];
+  }
+  if (self.hasMessage) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"message", self.message];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPTextMessage class]]) {
+    return NO;
+  }
+  MPTextMessage *otherMessage = other;
+  return
+      self.hasActor == otherMessage.hasActor &&
+      (!self.hasActor || self.actor == otherMessage.actor) &&
+      [self.sessionArray isEqualToArray:otherMessage.sessionArray] &&
+      [self.channelIdArray isEqualToArray:otherMessage.channelIdArray] &&
+      [self.treeIdArray isEqualToArray:otherMessage.treeIdArray] &&
+      self.hasMessage == otherMessage.hasMessage &&
+      (!self.hasMessage || [self.message isEqual:otherMessage.message]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasActor) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.actor] hash];
+  }
+  for (NSNumber* value in self.sessionArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.channelIdArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.treeIdArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  if (self.hasMessage) {
+    hashCode = hashCode * 31 + [self.message hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -5134,21 +6119,21 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   }
   if (other.sessionArray.count > 0) {
     if (result.sessionArray == nil) {
-      result.sessionArray = [other.sessionArray copyWithZone:[other.sessionArray zone]];
+      result.sessionArray = [[other.sessionArray copyWithZone:[other.sessionArray zone]] autorelease];
     } else {
       [result.sessionArray appendArray:other.sessionArray];
     }
   }
   if (other.channelIdArray.count > 0) {
     if (result.channelIdArray == nil) {
-      result.channelIdArray = [other.channelIdArray copyWithZone:[other.channelIdArray zone]];
+      result.channelIdArray = [[other.channelIdArray copyWithZone:[other.channelIdArray zone]] autorelease];
     } else {
       [result.channelIdArray appendArray:other.channelIdArray];
     }
   }
   if (other.treeIdArray.count > 0) {
     if (result.treeIdArray == nil) {
-      result.treeIdArray = [other.treeIdArray copyWithZone:[other.treeIdArray zone]];
+      result.treeIdArray = [[other.treeIdArray copyWithZone:[other.treeIdArray zone]] autorelease];
     } else {
       [result.treeIdArray appendArray:other.treeIdArray];
     }
@@ -5203,10 +6188,10 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 - (BOOL) hasActor {
   return result.hasActor;
 }
-- (int32_t) actor {
+- (uint32_t) actor {
   return result.actor;
 }
-- (MPTextMessage_Builder*) setActor:(int32_t) value {
+- (MPTextMessage_Builder*) setActor:(uint32_t) value {
   result.hasActor = YES;
   result.actor = value;
   return self;
@@ -5219,10 +6204,10 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 - (PBAppendableArray *)session {
   return result.sessionArray;
 }
-- (int32_t)sessionAtIndex:(NSUInteger)index {
+- (uint32_t)sessionAtIndex:(NSUInteger)index {
   return [result sessionAtIndex:index];
 }
-- (MPTextMessage_Builder *)addSession:(int32_t)value {
+- (MPTextMessage_Builder *)addSession:(uint32_t)value {
   if (result.sessionArray == nil) {
     result.sessionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -5233,7 +6218,7 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   result.sessionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPTextMessage_Builder *)setSessionValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPTextMessage_Builder *)setSessionValues:(const uint32_t *)values count:(NSUInteger)count {
   result.sessionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -5244,10 +6229,10 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 - (PBAppendableArray *)channelId {
   return result.channelIdArray;
 }
-- (int32_t)channelIdAtIndex:(NSUInteger)index {
+- (uint32_t)channelIdAtIndex:(NSUInteger)index {
   return [result channelIdAtIndex:index];
 }
-- (MPTextMessage_Builder *)addChannelId:(int32_t)value {
+- (MPTextMessage_Builder *)addChannelId:(uint32_t)value {
   if (result.channelIdArray == nil) {
     result.channelIdArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -5258,7 +6243,7 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   result.channelIdArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPTextMessage_Builder *)setChannelIdValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPTextMessage_Builder *)setChannelIdValues:(const uint32_t *)values count:(NSUInteger)count {
   result.channelIdArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -5269,10 +6254,10 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 - (PBAppendableArray *)treeId {
   return result.treeIdArray;
 }
-- (int32_t)treeIdAtIndex:(NSUInteger)index {
+- (uint32_t)treeIdAtIndex:(NSUInteger)index {
   return [result treeIdAtIndex:index];
 }
-- (MPTextMessage_Builder *)addTreeId:(int32_t)value {
+- (MPTextMessage_Builder *)addTreeId:(uint32_t)value {
   if (result.treeIdArray == nil) {
     result.treeIdArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -5283,7 +6268,7 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
   result.treeIdArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPTextMessage_Builder *)setTreeIdValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPTextMessage_Builder *)setTreeIdValues:(const uint32_t *)values count:(NSUInteger)count {
   result.treeIdArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -5310,9 +6295,9 @@ static MPTextMessage* defaultMPTextMessageInstance = nil;
 @end
 
 @interface MPPermissionDenied ()
-@property int32_t permission;
-@property int32_t channelId;
-@property int32_t session;
+@property uint32_t permission;
+@property uint32_t channelId;
+@property uint32_t session;
 @property (retain) NSString* reason;
 @property MPPermissionDenied_DenyType type;
 @property (retain) NSString* name;
@@ -5470,6 +6455,76 @@ static MPPermissionDenied* defaultMPPermissionDeniedInstance = nil;
 - (MPPermissionDenied_Builder*) builder {
   return [MPPermissionDenied builder];
 }
+- (MPPermissionDenied_Builder*) toBuilder {
+  return [MPPermissionDenied builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasPermission) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"permission", [NSNumber numberWithInt:self.permission]];
+  }
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasSession) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", [NSNumber numberWithInt:self.session]];
+  }
+  if (self.hasReason) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"reason", self.reason];
+  }
+  if (self.hasType) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPPermissionDenied class]]) {
+    return NO;
+  }
+  MPPermissionDenied *otherMessage = other;
+  return
+      self.hasPermission == otherMessage.hasPermission &&
+      (!self.hasPermission || self.permission == otherMessage.permission) &&
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasSession == otherMessage.hasSession &&
+      (!self.hasSession || self.session == otherMessage.session) &&
+      self.hasReason == otherMessage.hasReason &&
+      (!self.hasReason || [self.reason isEqual:otherMessage.reason]) &&
+      self.hasType == otherMessage.hasType &&
+      (!self.hasType || self.type != otherMessage.type) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasPermission) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.permission] hash];
+  }
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasSession) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.session] hash];
+  }
+  if (self.hasReason) {
+    hashCode = hashCode * 31 + [self.reason hash];
+  }
+  if (self.hasType) {
+    hashCode = hashCode * 31 + self.type;
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) {
@@ -5605,10 +6660,10 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
 - (BOOL) hasPermission {
   return result.hasPermission;
 }
-- (int32_t) permission {
+- (uint32_t) permission {
   return result.permission;
 }
-- (MPPermissionDenied_Builder*) setPermission:(int32_t) value {
+- (MPPermissionDenied_Builder*) setPermission:(uint32_t) value {
   result.hasPermission = YES;
   result.permission = value;
   return self;
@@ -5621,10 +6676,10 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPPermissionDenied_Builder*) setChannelId:(int32_t) value {
+- (MPPermissionDenied_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -5637,10 +6692,10 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
 - (BOOL) hasSession {
   return result.hasSession;
 }
-- (int32_t) session {
+- (uint32_t) session {
   return result.session;
 }
-- (MPPermissionDenied_Builder*) setSession:(int32_t) value {
+- (MPPermissionDenied_Builder*) setSession:(uint32_t) value {
   result.hasSession = YES;
   result.session = value;
   return self;
@@ -5701,7 +6756,7 @@ BOOL MPPermissionDenied_DenyTypeIsValidValue(MPPermissionDenied_DenyType value) 
 @end
 
 @interface MPACL ()
-@property int32_t channelId;
+@property uint32_t channelId;
 @property BOOL inheritAcls;
 @property (retain) PBAppendableArray * groupsArray;
 @property (retain) PBAppendableArray * aclsArray;
@@ -5864,6 +6919,72 @@ static MPACL* defaultMPACLInstance = nil;
 - (MPACL_Builder*) builder {
   return [MPACL builder];
 }
+- (MPACL_Builder*) toBuilder {
+  return [MPACL builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasInheritAcls) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inheritAcls", [NSNumber numberWithBool:self.inheritAcls]];
+  }
+  for (MPACL_ChanGroup* element in self.groupsArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"groups"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  for (MPACL_ChanACL* element in self.aclsArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"acls"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasQuery) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"query", [NSNumber numberWithBool:self.query]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPACL class]]) {
+    return NO;
+  }
+  MPACL *otherMessage = other;
+  return
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasInheritAcls == otherMessage.hasInheritAcls &&
+      (!self.hasInheritAcls || self.inheritAcls == otherMessage.inheritAcls) &&
+      [self.groupsArray isEqualToArray:otherMessage.groupsArray] &&
+      [self.aclsArray isEqualToArray:otherMessage.aclsArray] &&
+      self.hasQuery == otherMessage.hasQuery &&
+      (!self.hasQuery || self.query == otherMessage.query) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasInheritAcls) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.inheritAcls] hash];
+  }
+  for (MPACL_ChanGroup* element in self.groupsArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  for (MPACL_ChanACL* element in self.aclsArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  if (self.hasQuery) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.query] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPACL_ChanGroup ()
@@ -5958,19 +7079,19 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 - (PBArray *)add {
   return addArray;
 }
-- (int32_t)addAtIndex:(NSUInteger)index {
+- (uint32_t)addAtIndex:(NSUInteger)index {
   return [addArray uint32AtIndex:index];
 }
 - (PBArray *)remove {
   return removeArray;
 }
-- (int32_t)removeAtIndex:(NSUInteger)index {
+- (uint32_t)removeAtIndex:(NSUInteger)index {
   return [removeArray uint32AtIndex:index];
 }
 - (PBArray *)inheritedMembers {
   return inheritedMembersArray;
 }
-- (int32_t)inheritedMembersAtIndex:(NSUInteger)index {
+- (uint32_t)inheritedMembersAtIndex:(NSUInteger)index {
   return [inheritedMembersArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
@@ -5994,21 +7115,21 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   }
   const NSUInteger addArrayCount = self.addArray.count;
   if (addArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.addArray.data;
+    const uint32_t *values = (const uint32_t *)self.addArray.data;
     for (NSUInteger i = 0; i < addArrayCount; ++i) {
       [output writeUInt32:5 value:values[i]];
     }
   }
   const NSUInteger removeArrayCount = self.removeArray.count;
   if (removeArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.removeArray.data;
+    const uint32_t *values = (const uint32_t *)self.removeArray.data;
     for (NSUInteger i = 0; i < removeArrayCount; ++i) {
       [output writeUInt32:6 value:values[i]];
     }
   }
   const NSUInteger inheritedMembersArrayCount = self.inheritedMembersArray.count;
   if (inheritedMembersArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.inheritedMembersArray.data;
+    const uint32_t *values = (const uint32_t *)self.inheritedMembersArray.data;
     for (NSUInteger i = 0; i < inheritedMembersArrayCount; ++i) {
       [output writeUInt32:7 value:values[i]];
     }
@@ -6037,7 +7158,7 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.addArray.count;
-    const int32_t *values = (const int32_t *)self.addArray.data;
+    const uint32_t *values = (const uint32_t *)self.addArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -6047,7 +7168,7 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.removeArray.count;
-    const int32_t *values = (const int32_t *)self.removeArray.data;
+    const uint32_t *values = (const uint32_t *)self.removeArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -6057,7 +7178,7 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.inheritedMembersArray.count;
-    const int32_t *values = (const int32_t *)self.inheritedMembersArray.data;
+    const uint32_t *values = (const uint32_t *)self.inheritedMembersArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -6094,6 +7215,81 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 }
 - (MPACL_ChanGroup_Builder*) builder {
   return [MPACL_ChanGroup builder];
+}
+- (MPACL_ChanGroup_Builder*) toBuilder {
+  return [MPACL_ChanGroup builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  if (self.hasInherited) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inherited", [NSNumber numberWithBool:self.inherited]];
+  }
+  if (self.hasInherit) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inherit", [NSNumber numberWithBool:self.inherit]];
+  }
+  if (self.hasInheritable) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inheritable", [NSNumber numberWithBool:self.inheritable]];
+  }
+  for (NSNumber* value in self.addArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"add", value];
+  }
+  for (NSNumber* value in self.removeArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"remove", value];
+  }
+  for (NSNumber* value in self.inheritedMembersArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inheritedMembers", value];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPACL_ChanGroup class]]) {
+    return NO;
+  }
+  MPACL_ChanGroup *otherMessage = other;
+  return
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      self.hasInherited == otherMessage.hasInherited &&
+      (!self.hasInherited || self.inherited == otherMessage.inherited) &&
+      self.hasInherit == otherMessage.hasInherit &&
+      (!self.hasInherit || self.inherit == otherMessage.inherit) &&
+      self.hasInheritable == otherMessage.hasInheritable &&
+      (!self.hasInheritable || self.inheritable == otherMessage.inheritable) &&
+      [self.addArray isEqualToArray:otherMessage.addArray] &&
+      [self.removeArray isEqualToArray:otherMessage.removeArray] &&
+      [self.inheritedMembersArray isEqualToArray:otherMessage.inheritedMembersArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  if (self.hasInherited) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.inherited] hash];
+  }
+  if (self.hasInherit) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.inherit] hash];
+  }
+  if (self.hasInheritable) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.inheritable] hash];
+  }
+  for (NSNumber* value in self.addArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.removeArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.inheritedMembersArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -6153,21 +7349,21 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   }
   if (other.addArray.count > 0) {
     if (result.addArray == nil) {
-      result.addArray = [other.addArray copyWithZone:[other.addArray zone]];
+      result.addArray = [[other.addArray copyWithZone:[other.addArray zone]] autorelease];
     } else {
       [result.addArray appendArray:other.addArray];
     }
   }
   if (other.removeArray.count > 0) {
     if (result.removeArray == nil) {
-      result.removeArray = [other.removeArray copyWithZone:[other.removeArray zone]];
+      result.removeArray = [[other.removeArray copyWithZone:[other.removeArray zone]] autorelease];
     } else {
       [result.removeArray appendArray:other.removeArray];
     }
   }
   if (other.inheritedMembersArray.count > 0) {
     if (result.inheritedMembersArray == nil) {
-      result.inheritedMembersArray = [other.inheritedMembersArray copyWithZone:[other.inheritedMembersArray zone]];
+      result.inheritedMembersArray = [[other.inheritedMembersArray copyWithZone:[other.inheritedMembersArray zone]] autorelease];
     } else {
       [result.inheritedMembersArray appendArray:other.inheritedMembersArray];
     }
@@ -6291,10 +7487,10 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 - (PBAppendableArray *)add {
   return result.addArray;
 }
-- (int32_t)addAtIndex:(NSUInteger)index {
+- (uint32_t)addAtIndex:(NSUInteger)index {
   return [result addAtIndex:index];
 }
-- (MPACL_ChanGroup_Builder *)addAdd:(int32_t)value {
+- (MPACL_ChanGroup_Builder *)addAdd:(uint32_t)value {
   if (result.addArray == nil) {
     result.addArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -6305,7 +7501,7 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   result.addArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPACL_ChanGroup_Builder *)setAddValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPACL_ChanGroup_Builder *)setAddValues:(const uint32_t *)values count:(NSUInteger)count {
   result.addArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -6316,10 +7512,10 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 - (PBAppendableArray *)remove {
   return result.removeArray;
 }
-- (int32_t)removeAtIndex:(NSUInteger)index {
+- (uint32_t)removeAtIndex:(NSUInteger)index {
   return [result removeAtIndex:index];
 }
-- (MPACL_ChanGroup_Builder *)addRemove:(int32_t)value {
+- (MPACL_ChanGroup_Builder *)addRemove:(uint32_t)value {
   if (result.removeArray == nil) {
     result.removeArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -6330,7 +7526,7 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   result.removeArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPACL_ChanGroup_Builder *)setRemoveValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPACL_ChanGroup_Builder *)setRemoveValues:(const uint32_t *)values count:(NSUInteger)count {
   result.removeArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -6341,10 +7537,10 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 - (PBAppendableArray *)inheritedMembers {
   return result.inheritedMembersArray;
 }
-- (int32_t)inheritedMembersAtIndex:(NSUInteger)index {
+- (uint32_t)inheritedMembersAtIndex:(NSUInteger)index {
   return [result inheritedMembersAtIndex:index];
 }
-- (MPACL_ChanGroup_Builder *)addInheritedMembers:(int32_t)value {
+- (MPACL_ChanGroup_Builder *)addInheritedMembers:(uint32_t)value {
   if (result.inheritedMembersArray == nil) {
     result.inheritedMembersArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -6355,7 +7551,7 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
   result.inheritedMembersArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPACL_ChanGroup_Builder *)setInheritedMembersValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPACL_ChanGroup_Builder *)setInheritedMembersValues:(const uint32_t *)values count:(NSUInteger)count {
   result.inheritedMembersArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -6369,10 +7565,10 @@ static MPACL_ChanGroup* defaultMPACL_ChanGroupInstance = nil;
 @property BOOL applyHere;
 @property BOOL applySubs;
 @property BOOL inherited;
-@property int32_t userId;
+@property uint32_t userId;
 @property (retain) NSString* group;
-@property int32_t grant;
-@property int32_t deny;
+@property uint32_t grant;
+@property uint32_t deny;
 @end
 
 @implementation MPACL_ChanACL
@@ -6555,6 +7751,84 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
 - (MPACL_ChanACL_Builder*) builder {
   return [MPACL_ChanACL builder];
 }
+- (MPACL_ChanACL_Builder*) toBuilder {
+  return [MPACL_ChanACL builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasApplyHere) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"applyHere", [NSNumber numberWithBool:self.applyHere]];
+  }
+  if (self.hasApplySubs) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"applySubs", [NSNumber numberWithBool:self.applySubs]];
+  }
+  if (self.hasInherited) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inherited", [NSNumber numberWithBool:self.inherited]];
+  }
+  if (self.hasUserId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userId", [NSNumber numberWithInt:self.userId]];
+  }
+  if (self.hasGroup) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"group", self.group];
+  }
+  if (self.hasGrant) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"grant", [NSNumber numberWithInt:self.grant]];
+  }
+  if (self.hasDeny) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"deny", [NSNumber numberWithInt:self.deny]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPACL_ChanACL class]]) {
+    return NO;
+  }
+  MPACL_ChanACL *otherMessage = other;
+  return
+      self.hasApplyHere == otherMessage.hasApplyHere &&
+      (!self.hasApplyHere || self.applyHere == otherMessage.applyHere) &&
+      self.hasApplySubs == otherMessage.hasApplySubs &&
+      (!self.hasApplySubs || self.applySubs == otherMessage.applySubs) &&
+      self.hasInherited == otherMessage.hasInherited &&
+      (!self.hasInherited || self.inherited == otherMessage.inherited) &&
+      self.hasUserId == otherMessage.hasUserId &&
+      (!self.hasUserId || self.userId == otherMessage.userId) &&
+      self.hasGroup == otherMessage.hasGroup &&
+      (!self.hasGroup || [self.group isEqual:otherMessage.group]) &&
+      self.hasGrant == otherMessage.hasGrant &&
+      (!self.hasGrant || self.grant == otherMessage.grant) &&
+      self.hasDeny == otherMessage.hasDeny &&
+      (!self.hasDeny || self.deny == otherMessage.deny) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasApplyHere) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.applyHere] hash];
+  }
+  if (self.hasApplySubs) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.applySubs] hash];
+  }
+  if (self.hasInherited) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.inherited] hash];
+  }
+  if (self.hasUserId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.userId] hash];
+  }
+  if (self.hasGroup) {
+    hashCode = hashCode * 31 + [self.group hash];
+  }
+  if (self.hasGrant) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.grant] hash];
+  }
+  if (self.hasDeny) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.deny] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPACL_ChanACL_Builder()
@@ -6723,10 +7997,10 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
 - (BOOL) hasUserId {
   return result.hasUserId;
 }
-- (int32_t) userId {
+- (uint32_t) userId {
   return result.userId;
 }
-- (MPACL_ChanACL_Builder*) setUserId:(int32_t) value {
+- (MPACL_ChanACL_Builder*) setUserId:(uint32_t) value {
   result.hasUserId = YES;
   result.userId = value;
   return self;
@@ -6755,10 +8029,10 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
 - (BOOL) hasGrant {
   return result.hasGrant;
 }
-- (int32_t) grant {
+- (uint32_t) grant {
   return result.grant;
 }
-- (MPACL_ChanACL_Builder*) setGrant:(int32_t) value {
+- (MPACL_ChanACL_Builder*) setGrant:(uint32_t) value {
   result.hasGrant = YES;
   result.grant = value;
   return self;
@@ -6771,10 +8045,10 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
 - (BOOL) hasDeny {
   return result.hasDeny;
 }
-- (int32_t) deny {
+- (uint32_t) deny {
   return result.deny;
 }
-- (MPACL_ChanACL_Builder*) setDeny:(int32_t) value {
+- (MPACL_ChanACL_Builder*) setDeny:(uint32_t) value {
   result.hasDeny = YES;
   result.deny = value;
   return self;
@@ -6836,14 +8110,14 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
   }
   if (other.groupsArray.count > 0) {
     if (result.groupsArray == nil) {
-      result.groupsArray = [other.groupsArray copyWithZone:[other.groupsArray zone]];
+      result.groupsArray = [[other.groupsArray copyWithZone:[other.groupsArray zone]] autorelease];
     } else {
       [result.groupsArray appendArray:other.groupsArray];
     }
   }
   if (other.aclsArray.count > 0) {
     if (result.aclsArray == nil) {
-      result.aclsArray = [other.aclsArray copyWithZone:[other.aclsArray zone]];
+      result.aclsArray = [[other.aclsArray copyWithZone:[other.aclsArray zone]] autorelease];
     } else {
       [result.aclsArray appendArray:other.aclsArray];
     }
@@ -6902,10 +8176,10 @@ static MPACL_ChanACL* defaultMPACL_ChanACLInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPACL_Builder*) setChannelId:(int32_t) value {
+- (MPACL_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -7035,7 +8309,7 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
 - (PBArray *)ids {
   return idsArray;
 }
-- (int32_t)idsAtIndex:(NSUInteger)index {
+- (uint32_t)idsAtIndex:(NSUInteger)index {
   return [idsArray uint32AtIndex:index];
 }
 - (PBArray *)names {
@@ -7050,7 +8324,7 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   const NSUInteger idsArrayCount = self.idsArray.count;
   if (idsArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.idsArray.data;
+    const uint32_t *values = (const uint32_t *)self.idsArray.data;
     for (NSUInteger i = 0; i < idsArrayCount; ++i) {
       [output writeUInt32:1 value:values[i]];
     }
@@ -7074,7 +8348,7 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.idsArray.count;
-    const int32_t *values = (const int32_t *)self.idsArray.data;
+    const uint32_t *values = (const uint32_t *)self.idsArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -7122,6 +8396,42 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
 - (MPQueryUsers_Builder*) builder {
   return [MPQueryUsers builder];
 }
+- (MPQueryUsers_Builder*) toBuilder {
+  return [MPQueryUsers builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  for (NSNumber* value in self.idsArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ids", value];
+  }
+  for (NSString* element in self.namesArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"names", element];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPQueryUsers class]]) {
+    return NO;
+  }
+  MPQueryUsers *otherMessage = other;
+  return
+      [self.idsArray isEqualToArray:otherMessage.idsArray] &&
+      [self.namesArray isEqualToArray:otherMessage.namesArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  for (NSNumber* value in self.idsArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSString* element in self.namesArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPQueryUsers_Builder()
@@ -7168,14 +8478,14 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
   }
   if (other.idsArray.count > 0) {
     if (result.idsArray == nil) {
-      result.idsArray = [other.idsArray copyWithZone:[other.idsArray zone]];
+      result.idsArray = [[other.idsArray copyWithZone:[other.idsArray zone]] autorelease];
     } else {
       [result.idsArray appendArray:other.idsArray];
     }
   }
   if (other.namesArray.count > 0) {
     if (result.namesArray == nil) {
-      result.namesArray = [other.namesArray copyWithZone:[other.namesArray zone]];
+      result.namesArray = [[other.namesArray copyWithZone:[other.namesArray zone]] autorelease];
     } else {
       [result.namesArray appendArray:other.namesArray];
     }
@@ -7215,10 +8525,10 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
 - (PBAppendableArray *)ids {
   return result.idsArray;
 }
-- (int32_t)idsAtIndex:(NSUInteger)index {
+- (uint32_t)idsAtIndex:(NSUInteger)index {
   return [result idsAtIndex:index];
 }
-- (MPQueryUsers_Builder *)addIds:(int32_t)value {
+- (MPQueryUsers_Builder *)addIds:(uint32_t)value {
   if (result.idsArray == nil) {
     result.idsArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -7229,7 +8539,7 @@ static MPQueryUsers* defaultMPQueryUsersInstance = nil;
   result.idsArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPQueryUsers_Builder *)setIdsValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPQueryUsers_Builder *)setIdsValues:(const uint32_t *)values count:(NSUInteger)count {
   result.idsArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -7381,6 +8691,52 @@ static MPCryptSetup* defaultMPCryptSetupInstance = nil;
 - (MPCryptSetup_Builder*) builder {
   return [MPCryptSetup builder];
 }
+- (MPCryptSetup_Builder*) toBuilder {
+  return [MPCryptSetup builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasKey) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"key", self.key];
+  }
+  if (self.hasClientNonce) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"clientNonce", self.clientNonce];
+  }
+  if (self.hasServerNonce) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"serverNonce", self.serverNonce];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPCryptSetup class]]) {
+    return NO;
+  }
+  MPCryptSetup *otherMessage = other;
+  return
+      self.hasKey == otherMessage.hasKey &&
+      (!self.hasKey || [self.key isEqual:otherMessage.key]) &&
+      self.hasClientNonce == otherMessage.hasClientNonce &&
+      (!self.hasClientNonce || [self.clientNonce isEqual:otherMessage.clientNonce]) &&
+      self.hasServerNonce == otherMessage.hasServerNonce &&
+      (!self.hasServerNonce || [self.serverNonce isEqual:otherMessage.serverNonce]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasKey) {
+    hashCode = hashCode * 31 + [self.key hash];
+  }
+  if (self.hasClientNonce) {
+    hashCode = hashCode * 31 + [self.clientNonce hash];
+  }
+  if (self.hasServerNonce) {
+    hashCode = hashCode * 31 + [self.serverNonce hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPCryptSetup_Builder()
@@ -7520,13 +8876,14 @@ static MPCryptSetup* defaultMPCryptSetupInstance = nil;
 }
 @end
 
-@interface MPContextActionAdd ()
+@interface MPContextActionModify ()
 @property (retain) NSString* action;
 @property (retain) NSString* text;
-@property int32_t context;
+@property uint32_t context;
+@property MPContextActionModify_Operation operation;
 @end
 
-@implementation MPContextActionAdd
+@implementation MPContextActionModify
 
 - (BOOL) hasAction {
   return !!hasAction_;
@@ -7549,6 +8906,13 @@ static MPCryptSetup* defaultMPCryptSetupInstance = nil;
   hasContext_ = !!value;
 }
 @synthesize context;
+- (BOOL) hasOperation {
+  return !!hasOperation_;
+}
+- (void) setHasOperation:(BOOL) value {
+  hasOperation_ = !!value;
+}
+@synthesize operation;
 - (void) dealloc {
   self.action = nil;
   self.text = nil;
@@ -7559,26 +8923,24 @@ static MPCryptSetup* defaultMPCryptSetupInstance = nil;
     self.action = @"";
     self.text = @"";
     self.context = 0;
+    self.operation = MPContextActionModify_OperationAdd;
   }
   return self;
 }
-static MPContextActionAdd* defaultMPContextActionAddInstance = nil;
+static MPContextActionModify* defaultMPContextActionModifyInstance = nil;
 + (void) initialize {
-  if (self == [MPContextActionAdd class]) {
-    defaultMPContextActionAddInstance = [[MPContextActionAdd alloc] init];
+  if (self == [MPContextActionModify class]) {
+    defaultMPContextActionModifyInstance = [[MPContextActionModify alloc] init];
   }
 }
-+ (MPContextActionAdd*) defaultInstance {
-  return defaultMPContextActionAddInstance;
++ (MPContextActionModify*) defaultInstance {
+  return defaultMPContextActionModifyInstance;
 }
-- (MPContextActionAdd*) defaultInstance {
-  return defaultMPContextActionAddInstance;
+- (MPContextActionModify*) defaultInstance {
+  return defaultMPContextActionModifyInstance;
 }
 - (BOOL) isInitialized {
   if (!self.hasAction) {
-    return NO;
-  }
-  if (!self.hasText) {
     return NO;
   }
   return YES;
@@ -7592,6 +8954,9 @@ static MPContextActionAdd* defaultMPContextActionAddInstance = nil;
   }
   if (self.hasContext) {
     [output writeUInt32:3 value:self.context];
+  }
+  if (self.hasOperation) {
+    [output writeEnum:4 value:self.operation];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -7611,54 +8976,120 @@ static MPContextActionAdd* defaultMPContextActionAddInstance = nil;
   if (self.hasContext) {
     size += computeUInt32Size(3, self.context);
   }
+  if (self.hasOperation) {
+    size += computeEnumSize(4, self.operation);
+  }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
   return size;
 }
-+ (MPContextActionAdd*) parseFromData:(NSData*) data {
-  return (MPContextActionAdd*)[[[MPContextActionAdd builder] mergeFromData:data] build];
++ (MPContextActionModify*) parseFromData:(NSData*) data {
+  return (MPContextActionModify*)[[[MPContextActionModify builder] mergeFromData:data] build];
 }
-+ (MPContextActionAdd*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (MPContextActionAdd*)[[[MPContextActionAdd builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
++ (MPContextActionModify*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (MPContextActionModify*)[[[MPContextActionModify builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
 }
-+ (MPContextActionAdd*) parseFromInputStream:(NSInputStream*) input {
-  return (MPContextActionAdd*)[[[MPContextActionAdd builder] mergeFromInputStream:input] build];
++ (MPContextActionModify*) parseFromInputStream:(NSInputStream*) input {
+  return (MPContextActionModify*)[[[MPContextActionModify builder] mergeFromInputStream:input] build];
 }
-+ (MPContextActionAdd*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (MPContextActionAdd*)[[[MPContextActionAdd builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
++ (MPContextActionModify*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (MPContextActionModify*)[[[MPContextActionModify builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (MPContextActionAdd*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (MPContextActionAdd*)[[[MPContextActionAdd builder] mergeFromCodedInputStream:input] build];
++ (MPContextActionModify*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (MPContextActionModify*)[[[MPContextActionModify builder] mergeFromCodedInputStream:input] build];
 }
-+ (MPContextActionAdd*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (MPContextActionAdd*)[[[MPContextActionAdd builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
++ (MPContextActionModify*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (MPContextActionModify*)[[[MPContextActionModify builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (MPContextActionAdd_Builder*) builder {
-  return [[[MPContextActionAdd_Builder alloc] init] autorelease];
++ (MPContextActionModify_Builder*) builder {
+  return [[[MPContextActionModify_Builder alloc] init] autorelease];
 }
-+ (MPContextActionAdd_Builder*) builderWithPrototype:(MPContextActionAdd*) prototype {
-  return [[MPContextActionAdd builder] mergeFrom:prototype];
++ (MPContextActionModify_Builder*) builderWithPrototype:(MPContextActionModify*) prototype {
+  return [[MPContextActionModify builder] mergeFrom:prototype];
 }
-- (MPContextActionAdd_Builder*) builder {
-  return [MPContextActionAdd builder];
+- (MPContextActionModify_Builder*) builder {
+  return [MPContextActionModify builder];
+}
+- (MPContextActionModify_Builder*) toBuilder {
+  return [MPContextActionModify builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasAction) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"action", self.action];
+  }
+  if (self.hasText) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"text", self.text];
+  }
+  if (self.hasContext) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"context", [NSNumber numberWithInt:self.context]];
+  }
+  if (self.hasOperation) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"operation", self.operation];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPContextActionModify class]]) {
+    return NO;
+  }
+  MPContextActionModify *otherMessage = other;
+  return
+      self.hasAction == otherMessage.hasAction &&
+      (!self.hasAction || [self.action isEqual:otherMessage.action]) &&
+      self.hasText == otherMessage.hasText &&
+      (!self.hasText || [self.text isEqual:otherMessage.text]) &&
+      self.hasContext == otherMessage.hasContext &&
+      (!self.hasContext || self.context == otherMessage.context) &&
+      self.hasOperation == otherMessage.hasOperation &&
+      (!self.hasOperation || self.operation != otherMessage.operation) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasAction) {
+    hashCode = hashCode * 31 + [self.action hash];
+  }
+  if (self.hasText) {
+    hashCode = hashCode * 31 + [self.text hash];
+  }
+  if (self.hasContext) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.context] hash];
+  }
+  if (self.hasOperation) {
+    hashCode = hashCode * 31 + self.operation;
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
-BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
+BOOL MPContextActionModify_ContextIsValidValue(MPContextActionModify_Context value) {
   switch (value) {
-    case MPContextActionAdd_ContextServer:
-    case MPContextActionAdd_ContextChannel:
-    case MPContextActionAdd_ContextUser:
+    case MPContextActionModify_ContextServer:
+    case MPContextActionModify_ContextChannel:
+    case MPContextActionModify_ContextUser:
       return YES;
     default:
       return NO;
   }
 }
-@interface MPContextActionAdd_Builder()
-@property (retain) MPContextActionAdd* result;
+BOOL MPContextActionModify_OperationIsValidValue(MPContextActionModify_Operation value) {
+  switch (value) {
+    case MPContextActionModify_OperationAdd:
+    case MPContextActionModify_OperationRemove:
+      return YES;
+    default:
+      return NO;
+  }
+}
+@interface MPContextActionModify_Builder()
+@property (retain) MPContextActionModify* result;
 @end
 
-@implementation MPContextActionAdd_Builder
+@implementation MPContextActionModify_Builder
 @synthesize result;
 - (void) dealloc {
   self.result = nil;
@@ -7666,34 +9097,34 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
 }
 - (id) init {
   if ((self = [super init])) {
-    self.result = [[[MPContextActionAdd alloc] init] autorelease];
+    self.result = [[[MPContextActionModify alloc] init] autorelease];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
   return result;
 }
-- (MPContextActionAdd_Builder*) clear {
-  self.result = [[[MPContextActionAdd alloc] init] autorelease];
+- (MPContextActionModify_Builder*) clear {
+  self.result = [[[MPContextActionModify alloc] init] autorelease];
   return self;
 }
-- (MPContextActionAdd_Builder*) clone {
-  return [MPContextActionAdd builderWithPrototype:result];
+- (MPContextActionModify_Builder*) clone {
+  return [MPContextActionModify builderWithPrototype:result];
 }
-- (MPContextActionAdd*) defaultInstance {
-  return [MPContextActionAdd defaultInstance];
+- (MPContextActionModify*) defaultInstance {
+  return [MPContextActionModify defaultInstance];
 }
-- (MPContextActionAdd*) build {
+- (MPContextActionModify*) build {
   [self checkInitialized];
   return [self buildPartial];
 }
-- (MPContextActionAdd*) buildPartial {
-  MPContextActionAdd* returnMe = [[result retain] autorelease];
+- (MPContextActionModify*) buildPartial {
+  MPContextActionModify* returnMe = [[result retain] autorelease];
   self.result = nil;
   return returnMe;
 }
-- (MPContextActionAdd_Builder*) mergeFrom:(MPContextActionAdd*) other {
-  if (other == [MPContextActionAdd defaultInstance]) {
+- (MPContextActionModify_Builder*) mergeFrom:(MPContextActionModify*) other {
+  if (other == [MPContextActionModify defaultInstance]) {
     return self;
   }
   if (other.hasAction) {
@@ -7705,13 +9136,16 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
   if (other.hasContext) {
     [self setContext:other.context];
   }
+  if (other.hasOperation) {
+    [self setOperation:other.operation];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
-- (MPContextActionAdd_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+- (MPContextActionModify_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
   return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
 }
-- (MPContextActionAdd_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+- (MPContextActionModify_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
   PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
   while (YES) {
     int32_t tag = [input readTag];
@@ -7738,6 +9172,15 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
         [self setContext:[input readUInt32]];
         break;
       }
+      case 32: {
+        int32_t value = [input readEnum];
+        if (MPContextActionModify_OperationIsValidValue(value)) {
+          [self setOperation:value];
+        } else {
+          [unknownFields mergeVarintField:4 value:value];
+        }
+        break;
+      }
     }
   }
 }
@@ -7747,12 +9190,12 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
 - (NSString*) action {
   return result.action;
 }
-- (MPContextActionAdd_Builder*) setAction:(NSString*) value {
+- (MPContextActionModify_Builder*) setAction:(NSString*) value {
   result.hasAction = YES;
   result.action = value;
   return self;
 }
-- (MPContextActionAdd_Builder*) clearAction {
+- (MPContextActionModify_Builder*) clearAction {
   result.hasAction = NO;
   result.action = @"";
   return self;
@@ -7763,12 +9206,12 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
 - (NSString*) text {
   return result.text;
 }
-- (MPContextActionAdd_Builder*) setText:(NSString*) value {
+- (MPContextActionModify_Builder*) setText:(NSString*) value {
   result.hasText = YES;
   result.text = value;
   return self;
 }
-- (MPContextActionAdd_Builder*) clearText {
+- (MPContextActionModify_Builder*) clearText {
   result.hasText = NO;
   result.text = @"";
   return self;
@@ -7776,24 +9219,40 @@ BOOL MPContextActionAdd_ContextIsValidValue(MPContextActionAdd_Context value) {
 - (BOOL) hasContext {
   return result.hasContext;
 }
-- (int32_t) context {
+- (uint32_t) context {
   return result.context;
 }
-- (MPContextActionAdd_Builder*) setContext:(int32_t) value {
+- (MPContextActionModify_Builder*) setContext:(uint32_t) value {
   result.hasContext = YES;
   result.context = value;
   return self;
 }
-- (MPContextActionAdd_Builder*) clearContext {
+- (MPContextActionModify_Builder*) clearContext {
   result.hasContext = NO;
   result.context = 0;
+  return self;
+}
+- (BOOL) hasOperation {
+  return result.hasOperation;
+}
+- (MPContextActionModify_Operation) operation {
+  return result.operation;
+}
+- (MPContextActionModify_Builder*) setOperation:(MPContextActionModify_Operation) value {
+  result.hasOperation = YES;
+  result.operation = value;
+  return self;
+}
+- (MPContextActionModify_Builder*) clearOperation {
+  result.hasOperation = NO;
+  result.operation = MPContextActionModify_OperationAdd;
   return self;
 }
 @end
 
 @interface MPContextAction ()
-@property int32_t session;
-@property int32_t channelId;
+@property uint32_t session;
+@property uint32_t channelId;
 @property (retain) NSString* action;
 @end
 
@@ -7909,6 +9368,52 @@ static MPContextAction* defaultMPContextActionInstance = nil;
 - (MPContextAction_Builder*) builder {
   return [MPContextAction builder];
 }
+- (MPContextAction_Builder*) toBuilder {
+  return [MPContextAction builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSession) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", [NSNumber numberWithInt:self.session]];
+  }
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasAction) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"action", self.action];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPContextAction class]]) {
+    return NO;
+  }
+  MPContextAction *otherMessage = other;
+  return
+      self.hasSession == otherMessage.hasSession &&
+      (!self.hasSession || self.session == otherMessage.session) &&
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasAction == otherMessage.hasAction &&
+      (!self.hasAction || [self.action isEqual:otherMessage.action]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasSession) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.session] hash];
+  }
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasAction) {
+    hashCode = hashCode * 31 + [self.action hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPContextAction_Builder()
@@ -8001,10 +9506,10 @@ static MPContextAction* defaultMPContextActionInstance = nil;
 - (BOOL) hasSession {
   return result.hasSession;
 }
-- (int32_t) session {
+- (uint32_t) session {
   return result.session;
 }
-- (MPContextAction_Builder*) setSession:(int32_t) value {
+- (MPContextAction_Builder*) setSession:(uint32_t) value {
   result.hasSession = YES;
   result.session = value;
   return self;
@@ -8017,10 +9522,10 @@ static MPContextAction* defaultMPContextActionInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPContextAction_Builder*) setChannelId:(int32_t) value {
+- (MPContextAction_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -8138,10 +9643,42 @@ static MPUserList* defaultMPUserListInstance = nil;
 - (MPUserList_Builder*) builder {
   return [MPUserList builder];
 }
+- (MPUserList_Builder*) toBuilder {
+  return [MPUserList builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  for (MPUserList_User* element in self.usersArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"users"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUserList class]]) {
+    return NO;
+  }
+  MPUserList *otherMessage = other;
+  return
+      [self.usersArray isEqualToArray:otherMessage.usersArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  for (MPUserList_User* element in self.usersArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPUserList_User ()
-@property int32_t userId;
+@property uint32_t userId;
 @property (retain) NSString* name;
 @end
 
@@ -8243,6 +9780,44 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
 - (MPUserList_User_Builder*) builder {
   return [MPUserList_User builder];
 }
+- (MPUserList_User_Builder*) toBuilder {
+  return [MPUserList_User builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasUserId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userId", [NSNumber numberWithInt:self.userId]];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUserList_User class]]) {
+    return NO;
+  }
+  MPUserList_User *otherMessage = other;
+  return
+      self.hasUserId == otherMessage.hasUserId &&
+      (!self.hasUserId || self.userId == otherMessage.userId) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasUserId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.userId] hash];
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPUserList_User_Builder()
@@ -8328,10 +9903,10 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
 - (BOOL) hasUserId {
   return result.hasUserId;
 }
-- (int32_t) userId {
+- (uint32_t) userId {
   return result.userId;
 }
-- (MPUserList_User_Builder*) setUserId:(int32_t) value {
+- (MPUserList_User_Builder*) setUserId:(uint32_t) value {
   result.hasUserId = YES;
   result.userId = value;
   return self;
@@ -8403,7 +9978,7 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
   }
   if (other.usersArray.count > 0) {
     if (result.usersArray == nil) {
-      result.usersArray = [other.usersArray copyWithZone:[other.usersArray zone]];
+      result.usersArray = [[other.usersArray copyWithZone:[other.usersArray zone]] autorelease];
     } else {
       [result.usersArray appendArray:other.usersArray];
     }
@@ -8466,7 +10041,7 @@ static MPUserList_User* defaultMPUserList_UserInstance = nil;
 @end
 
 @interface MPVoiceTarget ()
-@property int32_t id;
+@property uint32_t id;
 @property (retain) PBAppendableArray * targetsArray;
 @end
 
@@ -8565,11 +10140,51 @@ static MPVoiceTarget* defaultMPVoiceTargetInstance = nil;
 - (MPVoiceTarget_Builder*) builder {
   return [MPVoiceTarget builder];
 }
+- (MPVoiceTarget_Builder*) toBuilder {
+  return [MPVoiceTarget builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"id", [NSNumber numberWithInt:self.id]];
+  }
+  for (MPVoiceTarget_Target* element in self.targetsArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"targets"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPVoiceTarget class]]) {
+    return NO;
+  }
+  MPVoiceTarget *otherMessage = other;
+  return
+      self.hasId == otherMessage.hasId &&
+      (!self.hasId || self.id == otherMessage.id) &&
+      [self.targetsArray isEqualToArray:otherMessage.targetsArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.id] hash];
+  }
+  for (MPVoiceTarget_Target* element in self.targetsArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPVoiceTarget_Target ()
 @property (retain) PBAppendableArray * sessionArray;
-@property int32_t channelId;
+@property uint32_t channelId;
 @property (retain) NSString* group;
 @property BOOL links;
 @property BOOL children;
@@ -8646,7 +10261,7 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (PBArray *)session {
   return sessionArray;
 }
-- (int32_t)sessionAtIndex:(NSUInteger)index {
+- (uint32_t)sessionAtIndex:(NSUInteger)index {
   return [sessionArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
@@ -8655,7 +10270,7 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   const NSUInteger sessionArrayCount = self.sessionArray.count;
   if (sessionArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionArray.data;
     for (NSUInteger i = 0; i < sessionArrayCount; ++i) {
       [output writeUInt32:1 value:values[i]];
     }
@@ -8684,7 +10299,7 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.sessionArray.count;
-    const int32_t *values = (const int32_t *)self.sessionArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -8734,6 +10349,67 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (MPVoiceTarget_Target_Builder*) builder {
   return [MPVoiceTarget_Target builder];
 }
+- (MPVoiceTarget_Target_Builder*) toBuilder {
+  return [MPVoiceTarget_Target builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  for (NSNumber* value in self.sessionArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", value];
+  }
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasGroup) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"group", self.group];
+  }
+  if (self.hasLinks) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"links", [NSNumber numberWithBool:self.links]];
+  }
+  if (self.hasChildren) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"children", [NSNumber numberWithBool:self.children]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPVoiceTarget_Target class]]) {
+    return NO;
+  }
+  MPVoiceTarget_Target *otherMessage = other;
+  return
+      [self.sessionArray isEqualToArray:otherMessage.sessionArray] &&
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasGroup == otherMessage.hasGroup &&
+      (!self.hasGroup || [self.group isEqual:otherMessage.group]) &&
+      self.hasLinks == otherMessage.hasLinks &&
+      (!self.hasLinks || self.links == otherMessage.links) &&
+      self.hasChildren == otherMessage.hasChildren &&
+      (!self.hasChildren || self.children == otherMessage.children) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  for (NSNumber* value in self.sessionArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasGroup) {
+    hashCode = hashCode * 31 + [self.group hash];
+  }
+  if (self.hasLinks) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.links] hash];
+  }
+  if (self.hasChildren) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.children] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPVoiceTarget_Target_Builder()
@@ -8780,7 +10456,7 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   }
   if (other.sessionArray.count > 0) {
     if (result.sessionArray == nil) {
-      result.sessionArray = [other.sessionArray copyWithZone:[other.sessionArray zone]];
+      result.sessionArray = [[other.sessionArray copyWithZone:[other.sessionArray zone]] autorelease];
     } else {
       [result.sessionArray appendArray:other.sessionArray];
     }
@@ -8844,10 +10520,10 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (PBAppendableArray *)session {
   return result.sessionArray;
 }
-- (int32_t)sessionAtIndex:(NSUInteger)index {
+- (uint32_t)sessionAtIndex:(NSUInteger)index {
   return [result sessionAtIndex:index];
 }
-- (MPVoiceTarget_Target_Builder *)addSession:(int32_t)value {
+- (MPVoiceTarget_Target_Builder *)addSession:(uint32_t)value {
   if (result.sessionArray == nil) {
     result.sessionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -8858,7 +10534,7 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   result.sessionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPVoiceTarget_Target_Builder *)setSessionValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPVoiceTarget_Target_Builder *)setSessionValues:(const uint32_t *)values count:(NSUInteger)count {
   result.sessionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -8869,10 +10545,10 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPVoiceTarget_Target_Builder*) setChannelId:(int32_t) value {
+- (MPVoiceTarget_Target_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -8979,7 +10655,7 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
   }
   if (other.targetsArray.count > 0) {
     if (result.targetsArray == nil) {
-      result.targetsArray = [other.targetsArray copyWithZone:[other.targetsArray zone]];
+      result.targetsArray = [[other.targetsArray copyWithZone:[other.targetsArray zone]] autorelease];
     } else {
       [result.targetsArray appendArray:other.targetsArray];
     }
@@ -9021,10 +10697,10 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 - (BOOL) hasId {
   return result.hasId;
 }
-- (int32_t) id {
+- (uint32_t) id {
   return result.id;
 }
-- (MPVoiceTarget_Builder*) setId:(int32_t) value {
+- (MPVoiceTarget_Builder*) setId:(uint32_t) value {
   result.hasId = YES;
   result.id = value;
   return self;
@@ -9062,8 +10738,8 @@ static MPVoiceTarget_Target* defaultMPVoiceTarget_TargetInstance = nil;
 @end
 
 @interface MPPermissionQuery ()
-@property int32_t channelId;
-@property int32_t permissions;
+@property uint32_t channelId;
+@property uint32_t permissions;
 @property BOOL flush;
 @end
 
@@ -9180,6 +10856,52 @@ static MPPermissionQuery* defaultMPPermissionQueryInstance = nil;
 - (MPPermissionQuery_Builder*) builder {
   return [MPPermissionQuery builder];
 }
+- (MPPermissionQuery_Builder*) toBuilder {
+  return [MPPermissionQuery builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasChannelId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelId", [NSNumber numberWithInt:self.channelId]];
+  }
+  if (self.hasPermissions) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"permissions", [NSNumber numberWithInt:self.permissions]];
+  }
+  if (self.hasFlush) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"flush", [NSNumber numberWithBool:self.flush]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPPermissionQuery class]]) {
+    return NO;
+  }
+  MPPermissionQuery *otherMessage = other;
+  return
+      self.hasChannelId == otherMessage.hasChannelId &&
+      (!self.hasChannelId || self.channelId == otherMessage.channelId) &&
+      self.hasPermissions == otherMessage.hasPermissions &&
+      (!self.hasPermissions || self.permissions == otherMessage.permissions) &&
+      self.hasFlush == otherMessage.hasFlush &&
+      (!self.hasFlush || self.flush == otherMessage.flush) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasChannelId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.channelId] hash];
+  }
+  if (self.hasPermissions) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.permissions] hash];
+  }
+  if (self.hasFlush) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.flush] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPPermissionQuery_Builder()
@@ -9272,10 +10994,10 @@ static MPPermissionQuery* defaultMPPermissionQueryInstance = nil;
 - (BOOL) hasChannelId {
   return result.hasChannelId;
 }
-- (int32_t) channelId {
+- (uint32_t) channelId {
   return result.channelId;
 }
-- (MPPermissionQuery_Builder*) setChannelId:(int32_t) value {
+- (MPPermissionQuery_Builder*) setChannelId:(uint32_t) value {
   result.hasChannelId = YES;
   result.channelId = value;
   return self;
@@ -9288,10 +11010,10 @@ static MPPermissionQuery* defaultMPPermissionQueryInstance = nil;
 - (BOOL) hasPermissions {
   return result.hasPermissions;
 }
-- (int32_t) permissions {
+- (uint32_t) permissions {
   return result.permissions;
 }
-- (MPPermissionQuery_Builder*) setPermissions:(int32_t) value {
+- (MPPermissionQuery_Builder*) setPermissions:(uint32_t) value {
   result.hasPermissions = YES;
   result.permissions = value;
   return self;
@@ -9323,6 +11045,7 @@ static MPPermissionQuery* defaultMPPermissionQueryInstance = nil;
 @property int32_t alpha;
 @property int32_t beta;
 @property BOOL preferAlpha;
+@property BOOL opus;
 @end
 
 @implementation MPCodecVersion
@@ -9353,6 +11076,18 @@ static MPPermissionQuery* defaultMPPermissionQueryInstance = nil;
 - (void) setPreferAlpha:(BOOL) value {
   preferAlpha_ = !!value;
 }
+- (BOOL) hasOpus {
+  return !!hasOpus_;
+}
+- (void) setHasOpus:(BOOL) value {
+  hasOpus_ = !!value;
+}
+- (BOOL) opus {
+  return !!opus_;
+}
+- (void) setOpus:(BOOL) value {
+  opus_ = !!value;
+}
 - (void) dealloc {
   [super dealloc];
 }
@@ -9361,6 +11096,7 @@ static MPPermissionQuery* defaultMPPermissionQueryInstance = nil;
     self.alpha = 0;
     self.beta = 0;
     self.preferAlpha = YES;
+    self.opus = NO;
   }
   return self;
 }
@@ -9398,6 +11134,9 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
   if (self.hasPreferAlpha) {
     [output writeBool:3 value:self.preferAlpha];
   }
+  if (self.hasOpus) {
+    [output writeBool:4 value:self.opus];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -9415,6 +11154,9 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
   }
   if (self.hasPreferAlpha) {
     size += computeBoolSize(3, self.preferAlpha);
+  }
+  if (self.hasOpus) {
+    size += computeBoolSize(4, self.opus);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -9446,6 +11188,60 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
 }
 - (MPCodecVersion_Builder*) builder {
   return [MPCodecVersion builder];
+}
+- (MPCodecVersion_Builder*) toBuilder {
+  return [MPCodecVersion builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasAlpha) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"alpha", [NSNumber numberWithInt:self.alpha]];
+  }
+  if (self.hasBeta) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"beta", [NSNumber numberWithInt:self.beta]];
+  }
+  if (self.hasPreferAlpha) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"preferAlpha", [NSNumber numberWithBool:self.preferAlpha]];
+  }
+  if (self.hasOpus) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"opus", [NSNumber numberWithBool:self.opus]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPCodecVersion class]]) {
+    return NO;
+  }
+  MPCodecVersion *otherMessage = other;
+  return
+      self.hasAlpha == otherMessage.hasAlpha &&
+      (!self.hasAlpha || self.alpha == otherMessage.alpha) &&
+      self.hasBeta == otherMessage.hasBeta &&
+      (!self.hasBeta || self.beta == otherMessage.beta) &&
+      self.hasPreferAlpha == otherMessage.hasPreferAlpha &&
+      (!self.hasPreferAlpha || self.preferAlpha == otherMessage.preferAlpha) &&
+      self.hasOpus == otherMessage.hasOpus &&
+      (!self.hasOpus || self.opus == otherMessage.opus) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasAlpha) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.alpha] hash];
+  }
+  if (self.hasBeta) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.beta] hash];
+  }
+  if (self.hasPreferAlpha) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.preferAlpha] hash];
+  }
+  if (self.hasOpus) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.opus] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -9500,6 +11296,9 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
   if (other.hasPreferAlpha) {
     [self setPreferAlpha:other.preferAlpha];
   }
+  if (other.hasOpus) {
+    [self setOpus:other.opus];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -9531,6 +11330,10 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
       }
       case 24: {
         [self setPreferAlpha:[input readBool]];
+        break;
+      }
+      case 32: {
+        [self setOpus:[input readBool]];
         break;
       }
     }
@@ -9584,16 +11387,32 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
   result.preferAlpha = YES;
   return self;
 }
+- (BOOL) hasOpus {
+  return result.hasOpus;
+}
+- (BOOL) opus {
+  return result.opus;
+}
+- (MPCodecVersion_Builder*) setOpus:(BOOL) value {
+  result.hasOpus = YES;
+  result.opus = value;
+  return self;
+}
+- (MPCodecVersion_Builder*) clearOpus {
+  result.hasOpus = NO;
+  result.opus = NO;
+  return self;
+}
 @end
 
 @interface MPUserStats ()
-@property int32_t session;
+@property uint32_t session;
 @property BOOL statsOnly;
 @property (retain) PBAppendableArray * certificatesArray;
 @property (retain) MPUserStats_Stats* fromClient;
 @property (retain) MPUserStats_Stats* fromServer;
-@property int32_t udpPackets;
-@property int32_t tcpPackets;
+@property uint32_t udpPackets;
+@property uint32_t tcpPackets;
 @property Float32 udpPingAvg;
 @property Float32 udpPingVar;
 @property Float32 tcpPingAvg;
@@ -9601,10 +11420,11 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
 @property (retain) MPVersion* version;
 @property (retain) PBAppendableArray * celtVersionsArray;
 @property (retain) NSData* address;
-@property int32_t bandwidth;
-@property int32_t onlinesecs;
-@property int32_t idlesecs;
+@property uint32_t bandwidth;
+@property uint32_t onlinesecs;
+@property uint32_t idlesecs;
 @property BOOL strongCertificate;
+@property BOOL opus;
 @end
 
 @implementation MPUserStats
@@ -9735,6 +11555,18 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
 - (void) setStrongCertificate:(BOOL) value {
   strongCertificate_ = !!value;
 }
+- (BOOL) hasOpus {
+  return !!hasOpus_;
+}
+- (void) setHasOpus:(BOOL) value {
+  hasOpus_ = !!value;
+}
+- (BOOL) opus {
+  return !!opus_;
+}
+- (void) setOpus:(BOOL) value {
+  opus_ = !!value;
+}
 - (void) dealloc {
   self.certificatesArray = nil;
   self.fromClient = nil;
@@ -9762,6 +11594,7 @@ static MPCodecVersion* defaultMPCodecVersionInstance = nil;
     self.onlinesecs = 0;
     self.idlesecs = 0;
     self.strongCertificate = NO;
+    self.opus = NO;
   }
   return self;
 }
@@ -9855,6 +11688,9 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
   if (self.hasStrongCertificate) {
     [output writeBool:18 value:self.strongCertificate];
   }
+  if (self.hasOpus) {
+    [output writeBool:19 value:self.opus];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -9932,6 +11768,9 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
   if (self.hasStrongCertificate) {
     size += computeBoolSize(18, self.strongCertificate);
   }
+  if (self.hasOpus) {
+    size += computeBoolSize(19, self.opus);
+  }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
   return size;
@@ -9963,13 +11802,194 @@ static MPUserStats* defaultMPUserStatsInstance = nil;
 - (MPUserStats_Builder*) builder {
   return [MPUserStats builder];
 }
+- (MPUserStats_Builder*) toBuilder {
+  return [MPUserStats builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSession) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"session", [NSNumber numberWithInt:self.session]];
+  }
+  if (self.hasStatsOnly) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"statsOnly", [NSNumber numberWithBool:self.statsOnly]];
+  }
+  for (NSData* element in self.certificatesArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"certificates", element];
+  }
+  if (self.hasFromClient) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fromClient"];
+    [self.fromClient writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasFromServer) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fromServer"];
+    [self.fromServer writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasUdpPackets) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"udpPackets", [NSNumber numberWithInt:self.udpPackets]];
+  }
+  if (self.hasTcpPackets) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tcpPackets", [NSNumber numberWithInt:self.tcpPackets]];
+  }
+  if (self.hasUdpPingAvg) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"udpPingAvg", [NSNumber numberWithFloat:self.udpPingAvg]];
+  }
+  if (self.hasUdpPingVar) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"udpPingVar", [NSNumber numberWithFloat:self.udpPingVar]];
+  }
+  if (self.hasTcpPingAvg) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tcpPingAvg", [NSNumber numberWithFloat:self.tcpPingAvg]];
+  }
+  if (self.hasTcpPingVar) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"tcpPingVar", [NSNumber numberWithFloat:self.tcpPingVar]];
+  }
+  if (self.hasVersion) {
+    [output appendFormat:@"%@%@ {\n", indent, @"version"];
+    [self.version writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  for (NSNumber* value in self.celtVersionsArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"celtVersions", value];
+  }
+  if (self.hasAddress) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"address", self.address];
+  }
+  if (self.hasBandwidth) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"bandwidth", [NSNumber numberWithInt:self.bandwidth]];
+  }
+  if (self.hasOnlinesecs) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"onlinesecs", [NSNumber numberWithInt:self.onlinesecs]];
+  }
+  if (self.hasIdlesecs) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"idlesecs", [NSNumber numberWithInt:self.idlesecs]];
+  }
+  if (self.hasStrongCertificate) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"strongCertificate", [NSNumber numberWithBool:self.strongCertificate]];
+  }
+  if (self.hasOpus) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"opus", [NSNumber numberWithBool:self.opus]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUserStats class]]) {
+    return NO;
+  }
+  MPUserStats *otherMessage = other;
+  return
+      self.hasSession == otherMessage.hasSession &&
+      (!self.hasSession || self.session == otherMessage.session) &&
+      self.hasStatsOnly == otherMessage.hasStatsOnly &&
+      (!self.hasStatsOnly || self.statsOnly == otherMessage.statsOnly) &&
+      [self.certificatesArray isEqualToArray:otherMessage.certificatesArray] &&
+      self.hasFromClient == otherMessage.hasFromClient &&
+      (!self.hasFromClient || [self.fromClient isEqual:otherMessage.fromClient]) &&
+      self.hasFromServer == otherMessage.hasFromServer &&
+      (!self.hasFromServer || [self.fromServer isEqual:otherMessage.fromServer]) &&
+      self.hasUdpPackets == otherMessage.hasUdpPackets &&
+      (!self.hasUdpPackets || self.udpPackets == otherMessage.udpPackets) &&
+      self.hasTcpPackets == otherMessage.hasTcpPackets &&
+      (!self.hasTcpPackets || self.tcpPackets == otherMessage.tcpPackets) &&
+      self.hasUdpPingAvg == otherMessage.hasUdpPingAvg &&
+      (!self.hasUdpPingAvg || self.udpPingAvg == otherMessage.udpPingAvg) &&
+      self.hasUdpPingVar == otherMessage.hasUdpPingVar &&
+      (!self.hasUdpPingVar || self.udpPingVar == otherMessage.udpPingVar) &&
+      self.hasTcpPingAvg == otherMessage.hasTcpPingAvg &&
+      (!self.hasTcpPingAvg || self.tcpPingAvg == otherMessage.tcpPingAvg) &&
+      self.hasTcpPingVar == otherMessage.hasTcpPingVar &&
+      (!self.hasTcpPingVar || self.tcpPingVar == otherMessage.tcpPingVar) &&
+      self.hasVersion == otherMessage.hasVersion &&
+      (!self.hasVersion || [self.version isEqual:otherMessage.version]) &&
+      [self.celtVersionsArray isEqualToArray:otherMessage.celtVersionsArray] &&
+      self.hasAddress == otherMessage.hasAddress &&
+      (!self.hasAddress || [self.address isEqual:otherMessage.address]) &&
+      self.hasBandwidth == otherMessage.hasBandwidth &&
+      (!self.hasBandwidth || self.bandwidth == otherMessage.bandwidth) &&
+      self.hasOnlinesecs == otherMessage.hasOnlinesecs &&
+      (!self.hasOnlinesecs || self.onlinesecs == otherMessage.onlinesecs) &&
+      self.hasIdlesecs == otherMessage.hasIdlesecs &&
+      (!self.hasIdlesecs || self.idlesecs == otherMessage.idlesecs) &&
+      self.hasStrongCertificate == otherMessage.hasStrongCertificate &&
+      (!self.hasStrongCertificate || self.strongCertificate == otherMessage.strongCertificate) &&
+      self.hasOpus == otherMessage.hasOpus &&
+      (!self.hasOpus || self.opus == otherMessage.opus) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasSession) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.session] hash];
+  }
+  if (self.hasStatsOnly) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.statsOnly] hash];
+  }
+  for (NSData* element in self.certificatesArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  if (self.hasFromClient) {
+    hashCode = hashCode * 31 + [self.fromClient hash];
+  }
+  if (self.hasFromServer) {
+    hashCode = hashCode * 31 + [self.fromServer hash];
+  }
+  if (self.hasUdpPackets) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.udpPackets] hash];
+  }
+  if (self.hasTcpPackets) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.tcpPackets] hash];
+  }
+  if (self.hasUdpPingAvg) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.udpPingAvg] hash];
+  }
+  if (self.hasUdpPingVar) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.udpPingVar] hash];
+  }
+  if (self.hasTcpPingAvg) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.tcpPingAvg] hash];
+  }
+  if (self.hasTcpPingVar) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.tcpPingVar] hash];
+  }
+  if (self.hasVersion) {
+    hashCode = hashCode * 31 + [self.version hash];
+  }
+  for (NSNumber* value in self.celtVersionsArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  if (self.hasAddress) {
+    hashCode = hashCode * 31 + [self.address hash];
+  }
+  if (self.hasBandwidth) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.bandwidth] hash];
+  }
+  if (self.hasOnlinesecs) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.onlinesecs] hash];
+  }
+  if (self.hasIdlesecs) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.idlesecs] hash];
+  }
+  if (self.hasStrongCertificate) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.strongCertificate] hash];
+  }
+  if (self.hasOpus) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.opus] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPUserStats_Stats ()
-@property int32_t good;
-@property int32_t late;
-@property int32_t lost;
-@property int32_t resync;
+@property uint32_t good;
+@property uint32_t late;
+@property uint32_t lost;
+@property uint32_t resync;
 @end
 
 @implementation MPUserStats_Stats
@@ -10094,6 +12114,60 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (MPUserStats_Stats_Builder*) builder {
   return [MPUserStats_Stats builder];
 }
+- (MPUserStats_Stats_Builder*) toBuilder {
+  return [MPUserStats_Stats builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasGood) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"good", [NSNumber numberWithInt:self.good]];
+  }
+  if (self.hasLate) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"late", [NSNumber numberWithInt:self.late]];
+  }
+  if (self.hasLost) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"lost", [NSNumber numberWithInt:self.lost]];
+  }
+  if (self.hasResync) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"resync", [NSNumber numberWithInt:self.resync]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPUserStats_Stats class]]) {
+    return NO;
+  }
+  MPUserStats_Stats *otherMessage = other;
+  return
+      self.hasGood == otherMessage.hasGood &&
+      (!self.hasGood || self.good == otherMessage.good) &&
+      self.hasLate == otherMessage.hasLate &&
+      (!self.hasLate || self.late == otherMessage.late) &&
+      self.hasLost == otherMessage.hasLost &&
+      (!self.hasLost || self.lost == otherMessage.lost) &&
+      self.hasResync == otherMessage.hasResync &&
+      (!self.hasResync || self.resync == otherMessage.resync) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasGood) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.good] hash];
+  }
+  if (self.hasLate) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.late] hash];
+  }
+  if (self.hasLost) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.lost] hash];
+  }
+  if (self.hasResync) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.resync] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface MPUserStats_Stats_Builder()
@@ -10193,10 +12267,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasGood {
   return result.hasGood;
 }
-- (int32_t) good {
+- (uint32_t) good {
   return result.good;
 }
-- (MPUserStats_Stats_Builder*) setGood:(int32_t) value {
+- (MPUserStats_Stats_Builder*) setGood:(uint32_t) value {
   result.hasGood = YES;
   result.good = value;
   return self;
@@ -10209,10 +12283,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasLate {
   return result.hasLate;
 }
-- (int32_t) late {
+- (uint32_t) late {
   return result.late;
 }
-- (MPUserStats_Stats_Builder*) setLate:(int32_t) value {
+- (MPUserStats_Stats_Builder*) setLate:(uint32_t) value {
   result.hasLate = YES;
   result.late = value;
   return self;
@@ -10225,10 +12299,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasLost {
   return result.hasLost;
 }
-- (int32_t) lost {
+- (uint32_t) lost {
   return result.lost;
 }
-- (MPUserStats_Stats_Builder*) setLost:(int32_t) value {
+- (MPUserStats_Stats_Builder*) setLost:(uint32_t) value {
   result.hasLost = YES;
   result.lost = value;
   return self;
@@ -10241,10 +12315,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasResync {
   return result.hasResync;
 }
-- (int32_t) resync {
+- (uint32_t) resync {
   return result.resync;
 }
-- (MPUserStats_Stats_Builder*) setResync:(int32_t) value {
+- (MPUserStats_Stats_Builder*) setResync:(uint32_t) value {
   result.hasResync = YES;
   result.resync = value;
   return self;
@@ -10306,7 +12380,7 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   }
   if (other.certificatesArray.count > 0) {
     if (result.certificatesArray == nil) {
-      result.certificatesArray = [other.certificatesArray copyWithZone:[other.certificatesArray zone]];
+      result.certificatesArray = [[other.certificatesArray copyWithZone:[other.certificatesArray zone]] autorelease];
     } else {
       [result.certificatesArray appendArray:other.certificatesArray];
     }
@@ -10340,7 +12414,7 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   }
   if (other.celtVersionsArray.count > 0) {
     if (result.celtVersionsArray == nil) {
-      result.celtVersionsArray = [other.celtVersionsArray copyWithZone:[other.celtVersionsArray zone]];
+      result.celtVersionsArray = [[other.celtVersionsArray copyWithZone:[other.celtVersionsArray zone]] autorelease];
     } else {
       [result.celtVersionsArray appendArray:other.celtVersionsArray];
     }
@@ -10359,6 +12433,9 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
   }
   if (other.hasStrongCertificate) {
     [self setStrongCertificate:other.strongCertificate];
+  }
+  if (other.hasOpus) {
+    [self setOpus:other.opus];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -10468,16 +12545,20 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
         [self setStrongCertificate:[input readBool]];
         break;
       }
+      case 152: {
+        [self setOpus:[input readBool]];
+        break;
+      }
     }
   }
 }
 - (BOOL) hasSession {
   return result.hasSession;
 }
-- (int32_t) session {
+- (uint32_t) session {
   return result.session;
 }
-- (MPUserStats_Builder*) setSession:(int32_t) value {
+- (MPUserStats_Builder*) setSession:(uint32_t) value {
   result.hasSession = YES;
   result.session = value;
   return self;
@@ -10591,10 +12672,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasUdpPackets {
   return result.hasUdpPackets;
 }
-- (int32_t) udpPackets {
+- (uint32_t) udpPackets {
   return result.udpPackets;
 }
-- (MPUserStats_Builder*) setUdpPackets:(int32_t) value {
+- (MPUserStats_Builder*) setUdpPackets:(uint32_t) value {
   result.hasUdpPackets = YES;
   result.udpPackets = value;
   return self;
@@ -10607,10 +12688,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasTcpPackets {
   return result.hasTcpPackets;
 }
-- (int32_t) tcpPackets {
+- (uint32_t) tcpPackets {
   return result.tcpPackets;
 }
-- (MPUserStats_Builder*) setTcpPackets:(int32_t) value {
+- (MPUserStats_Builder*) setTcpPackets:(uint32_t) value {
   result.hasTcpPackets = YES;
   result.tcpPackets = value;
   return self;
@@ -10758,10 +12839,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasBandwidth {
   return result.hasBandwidth;
 }
-- (int32_t) bandwidth {
+- (uint32_t) bandwidth {
   return result.bandwidth;
 }
-- (MPUserStats_Builder*) setBandwidth:(int32_t) value {
+- (MPUserStats_Builder*) setBandwidth:(uint32_t) value {
   result.hasBandwidth = YES;
   result.bandwidth = value;
   return self;
@@ -10774,10 +12855,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasOnlinesecs {
   return result.hasOnlinesecs;
 }
-- (int32_t) onlinesecs {
+- (uint32_t) onlinesecs {
   return result.onlinesecs;
 }
-- (MPUserStats_Builder*) setOnlinesecs:(int32_t) value {
+- (MPUserStats_Builder*) setOnlinesecs:(uint32_t) value {
   result.hasOnlinesecs = YES;
   result.onlinesecs = value;
   return self;
@@ -10790,10 +12871,10 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (BOOL) hasIdlesecs {
   return result.hasIdlesecs;
 }
-- (int32_t) idlesecs {
+- (uint32_t) idlesecs {
   return result.idlesecs;
 }
-- (MPUserStats_Builder*) setIdlesecs:(int32_t) value {
+- (MPUserStats_Builder*) setIdlesecs:(uint32_t) value {
   result.hasIdlesecs = YES;
   result.idlesecs = value;
   return self;
@@ -10817,6 +12898,331 @@ static MPUserStats_Stats* defaultMPUserStats_StatsInstance = nil;
 - (MPUserStats_Builder*) clearStrongCertificate {
   result.hasStrongCertificate = NO;
   result.strongCertificate = NO;
+  return self;
+}
+- (BOOL) hasOpus {
+  return result.hasOpus;
+}
+- (BOOL) opus {
+  return result.opus;
+}
+- (MPUserStats_Builder*) setOpus:(BOOL) value {
+  result.hasOpus = YES;
+  result.opus = value;
+  return self;
+}
+- (MPUserStats_Builder*) clearOpus {
+  result.hasOpus = NO;
+  result.opus = NO;
+  return self;
+}
+@end
+
+@interface MPSuggestConfig ()
+@property uint32_t version;
+@property BOOL positional;
+@property BOOL pushToTalk;
+@end
+
+@implementation MPSuggestConfig
+
+- (BOOL) hasVersion {
+  return !!hasVersion_;
+}
+- (void) setHasVersion:(BOOL) value {
+  hasVersion_ = !!value;
+}
+@synthesize version;
+- (BOOL) hasPositional {
+  return !!hasPositional_;
+}
+- (void) setHasPositional:(BOOL) value {
+  hasPositional_ = !!value;
+}
+- (BOOL) positional {
+  return !!positional_;
+}
+- (void) setPositional:(BOOL) value {
+  positional_ = !!value;
+}
+- (BOOL) hasPushToTalk {
+  return !!hasPushToTalk_;
+}
+- (void) setHasPushToTalk:(BOOL) value {
+  hasPushToTalk_ = !!value;
+}
+- (BOOL) pushToTalk {
+  return !!pushToTalk_;
+}
+- (void) setPushToTalk:(BOOL) value {
+  pushToTalk_ = !!value;
+}
+- (void) dealloc {
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.version = 0;
+    self.positional = NO;
+    self.pushToTalk = NO;
+  }
+  return self;
+}
+static MPSuggestConfig* defaultMPSuggestConfigInstance = nil;
++ (void) initialize {
+  if (self == [MPSuggestConfig class]) {
+    defaultMPSuggestConfigInstance = [[MPSuggestConfig alloc] init];
+  }
+}
++ (MPSuggestConfig*) defaultInstance {
+  return defaultMPSuggestConfigInstance;
+}
+- (MPSuggestConfig*) defaultInstance {
+  return defaultMPSuggestConfigInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasVersion) {
+    [output writeUInt32:1 value:self.version];
+  }
+  if (self.hasPositional) {
+    [output writeBool:2 value:self.positional];
+  }
+  if (self.hasPushToTalk) {
+    [output writeBool:3 value:self.pushToTalk];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasVersion) {
+    size += computeUInt32Size(1, self.version);
+  }
+  if (self.hasPositional) {
+    size += computeBoolSize(2, self.positional);
+  }
+  if (self.hasPushToTalk) {
+    size += computeBoolSize(3, self.pushToTalk);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (MPSuggestConfig*) parseFromData:(NSData*) data {
+  return (MPSuggestConfig*)[[[MPSuggestConfig builder] mergeFromData:data] build];
+}
++ (MPSuggestConfig*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (MPSuggestConfig*)[[[MPSuggestConfig builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (MPSuggestConfig*) parseFromInputStream:(NSInputStream*) input {
+  return (MPSuggestConfig*)[[[MPSuggestConfig builder] mergeFromInputStream:input] build];
+}
++ (MPSuggestConfig*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (MPSuggestConfig*)[[[MPSuggestConfig builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (MPSuggestConfig*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (MPSuggestConfig*)[[[MPSuggestConfig builder] mergeFromCodedInputStream:input] build];
+}
++ (MPSuggestConfig*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (MPSuggestConfig*)[[[MPSuggestConfig builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (MPSuggestConfig_Builder*) builder {
+  return [[[MPSuggestConfig_Builder alloc] init] autorelease];
+}
++ (MPSuggestConfig_Builder*) builderWithPrototype:(MPSuggestConfig*) prototype {
+  return [[MPSuggestConfig builder] mergeFrom:prototype];
+}
+- (MPSuggestConfig_Builder*) builder {
+  return [MPSuggestConfig builder];
+}
+- (MPSuggestConfig_Builder*) toBuilder {
+  return [MPSuggestConfig builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasVersion) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"version", [NSNumber numberWithInt:self.version]];
+  }
+  if (self.hasPositional) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"positional", [NSNumber numberWithBool:self.positional]];
+  }
+  if (self.hasPushToTalk) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"pushToTalk", [NSNumber numberWithBool:self.pushToTalk]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPSuggestConfig class]]) {
+    return NO;
+  }
+  MPSuggestConfig *otherMessage = other;
+  return
+      self.hasVersion == otherMessage.hasVersion &&
+      (!self.hasVersion || self.version == otherMessage.version) &&
+      self.hasPositional == otherMessage.hasPositional &&
+      (!self.hasPositional || self.positional == otherMessage.positional) &&
+      self.hasPushToTalk == otherMessage.hasPushToTalk &&
+      (!self.hasPushToTalk || self.pushToTalk == otherMessage.pushToTalk) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasVersion) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.version] hash];
+  }
+  if (self.hasPositional) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.positional] hash];
+  }
+  if (self.hasPushToTalk) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.pushToTalk] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface MPSuggestConfig_Builder()
+@property (retain) MPSuggestConfig* result;
+@end
+
+@implementation MPSuggestConfig_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[MPSuggestConfig alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (MPSuggestConfig_Builder*) clear {
+  self.result = [[[MPSuggestConfig alloc] init] autorelease];
+  return self;
+}
+- (MPSuggestConfig_Builder*) clone {
+  return [MPSuggestConfig builderWithPrototype:result];
+}
+- (MPSuggestConfig*) defaultInstance {
+  return [MPSuggestConfig defaultInstance];
+}
+- (MPSuggestConfig*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (MPSuggestConfig*) buildPartial {
+  MPSuggestConfig* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (MPSuggestConfig_Builder*) mergeFrom:(MPSuggestConfig*) other {
+  if (other == [MPSuggestConfig defaultInstance]) {
+    return self;
+  }
+  if (other.hasVersion) {
+    [self setVersion:other.version];
+  }
+  if (other.hasPositional) {
+    [self setPositional:other.positional];
+  }
+  if (other.hasPushToTalk) {
+    [self setPushToTalk:other.pushToTalk];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (MPSuggestConfig_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (MPSuggestConfig_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setVersion:[input readUInt32]];
+        break;
+      }
+      case 16: {
+        [self setPositional:[input readBool]];
+        break;
+      }
+      case 24: {
+        [self setPushToTalk:[input readBool]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasVersion {
+  return result.hasVersion;
+}
+- (uint32_t) version {
+  return result.version;
+}
+- (MPSuggestConfig_Builder*) setVersion:(uint32_t) value {
+  result.hasVersion = YES;
+  result.version = value;
+  return self;
+}
+- (MPSuggestConfig_Builder*) clearVersion {
+  result.hasVersion = NO;
+  result.version = 0;
+  return self;
+}
+- (BOOL) hasPositional {
+  return result.hasPositional;
+}
+- (BOOL) positional {
+  return result.positional;
+}
+- (MPSuggestConfig_Builder*) setPositional:(BOOL) value {
+  result.hasPositional = YES;
+  result.positional = value;
+  return self;
+}
+- (MPSuggestConfig_Builder*) clearPositional {
+  result.hasPositional = NO;
+  result.positional = NO;
+  return self;
+}
+- (BOOL) hasPushToTalk {
+  return result.hasPushToTalk;
+}
+- (BOOL) pushToTalk {
+  return result.pushToTalk;
+}
+- (MPSuggestConfig_Builder*) setPushToTalk:(BOOL) value {
+  result.hasPushToTalk = YES;
+  result.pushToTalk = value;
+  return self;
+}
+- (MPSuggestConfig_Builder*) clearPushToTalk {
+  result.hasPushToTalk = NO;
+  result.pushToTalk = NO;
   return self;
 }
 @end
@@ -10861,19 +13267,19 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 - (PBArray *)sessionTexture {
   return sessionTextureArray;
 }
-- (int32_t)sessionTextureAtIndex:(NSUInteger)index {
+- (uint32_t)sessionTextureAtIndex:(NSUInteger)index {
   return [sessionTextureArray uint32AtIndex:index];
 }
 - (PBArray *)sessionComment {
   return sessionCommentArray;
 }
-- (int32_t)sessionCommentAtIndex:(NSUInteger)index {
+- (uint32_t)sessionCommentAtIndex:(NSUInteger)index {
   return [sessionCommentArray uint32AtIndex:index];
 }
 - (PBArray *)channelDescription {
   return channelDescriptionArray;
 }
-- (int32_t)channelDescriptionAtIndex:(NSUInteger)index {
+- (uint32_t)channelDescriptionAtIndex:(NSUInteger)index {
   return [channelDescriptionArray uint32AtIndex:index];
 }
 - (BOOL) isInitialized {
@@ -10882,21 +13288,21 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   const NSUInteger sessionTextureArrayCount = self.sessionTextureArray.count;
   if (sessionTextureArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.sessionTextureArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionTextureArray.data;
     for (NSUInteger i = 0; i < sessionTextureArrayCount; ++i) {
       [output writeUInt32:1 value:values[i]];
     }
   }
   const NSUInteger sessionCommentArrayCount = self.sessionCommentArray.count;
   if (sessionCommentArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.sessionCommentArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionCommentArray.data;
     for (NSUInteger i = 0; i < sessionCommentArrayCount; ++i) {
       [output writeUInt32:2 value:values[i]];
     }
   }
   const NSUInteger channelDescriptionArrayCount = self.channelDescriptionArray.count;
   if (channelDescriptionArrayCount > 0) {
-    const int32_t *values = (const int32_t *)self.channelDescriptionArray.data;
+    const uint32_t *values = (const uint32_t *)self.channelDescriptionArray.data;
     for (NSUInteger i = 0; i < channelDescriptionArrayCount; ++i) {
       [output writeUInt32:3 value:values[i]];
     }
@@ -10913,7 +13319,7 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.sessionTextureArray.count;
-    const int32_t *values = (const int32_t *)self.sessionTextureArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionTextureArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -10923,7 +13329,7 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.sessionCommentArray.count;
-    const int32_t *values = (const int32_t *)self.sessionCommentArray.data;
+    const uint32_t *values = (const uint32_t *)self.sessionCommentArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -10933,7 +13339,7 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   {
     int32_t dataSize = 0;
     const NSUInteger count = self.channelDescriptionArray.count;
-    const int32_t *values = (const int32_t *)self.channelDescriptionArray.data;
+    const uint32_t *values = (const uint32_t *)self.channelDescriptionArray.data;
     for (NSUInteger i = 0; i < count; ++i) {
       dataSize += computeUInt32SizeNoTag(values[i]);
     }
@@ -10970,6 +13376,49 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 }
 - (MPRequestBlob_Builder*) builder {
   return [MPRequestBlob builder];
+}
+- (MPRequestBlob_Builder*) toBuilder {
+  return [MPRequestBlob builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  for (NSNumber* value in self.sessionTextureArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"sessionTexture", value];
+  }
+  for (NSNumber* value in self.sessionCommentArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"sessionComment", value];
+  }
+  for (NSNumber* value in self.channelDescriptionArray) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"channelDescription", value];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[MPRequestBlob class]]) {
+    return NO;
+  }
+  MPRequestBlob *otherMessage = other;
+  return
+      [self.sessionTextureArray isEqualToArray:otherMessage.sessionTextureArray] &&
+      [self.sessionCommentArray isEqualToArray:otherMessage.sessionCommentArray] &&
+      [self.channelDescriptionArray isEqualToArray:otherMessage.channelDescriptionArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  for (NSNumber* value in self.sessionTextureArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.sessionCommentArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  for (NSNumber* value in self.channelDescriptionArray) {
+    hashCode = hashCode * 31 + [value intValue];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -11017,21 +13466,21 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   }
   if (other.sessionTextureArray.count > 0) {
     if (result.sessionTextureArray == nil) {
-      result.sessionTextureArray = [other.sessionTextureArray copyWithZone:[other.sessionTextureArray zone]];
+      result.sessionTextureArray = [[other.sessionTextureArray copyWithZone:[other.sessionTextureArray zone]] autorelease];
     } else {
       [result.sessionTextureArray appendArray:other.sessionTextureArray];
     }
   }
   if (other.sessionCommentArray.count > 0) {
     if (result.sessionCommentArray == nil) {
-      result.sessionCommentArray = [other.sessionCommentArray copyWithZone:[other.sessionCommentArray zone]];
+      result.sessionCommentArray = [[other.sessionCommentArray copyWithZone:[other.sessionCommentArray zone]] autorelease];
     } else {
       [result.sessionCommentArray appendArray:other.sessionCommentArray];
     }
   }
   if (other.channelDescriptionArray.count > 0) {
     if (result.channelDescriptionArray == nil) {
-      result.channelDescriptionArray = [other.channelDescriptionArray copyWithZone:[other.channelDescriptionArray zone]];
+      result.channelDescriptionArray = [[other.channelDescriptionArray copyWithZone:[other.channelDescriptionArray zone]] autorelease];
     } else {
       [result.channelDescriptionArray appendArray:other.channelDescriptionArray];
     }
@@ -11075,10 +13524,10 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 - (PBAppendableArray *)sessionTexture {
   return result.sessionTextureArray;
 }
-- (int32_t)sessionTextureAtIndex:(NSUInteger)index {
+- (uint32_t)sessionTextureAtIndex:(NSUInteger)index {
   return [result sessionTextureAtIndex:index];
 }
-- (MPRequestBlob_Builder *)addSessionTexture:(int32_t)value {
+- (MPRequestBlob_Builder *)addSessionTexture:(uint32_t)value {
   if (result.sessionTextureArray == nil) {
     result.sessionTextureArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -11089,7 +13538,7 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   result.sessionTextureArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPRequestBlob_Builder *)setSessionTextureValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPRequestBlob_Builder *)setSessionTextureValues:(const uint32_t *)values count:(NSUInteger)count {
   result.sessionTextureArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -11100,10 +13549,10 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 - (PBAppendableArray *)sessionComment {
   return result.sessionCommentArray;
 }
-- (int32_t)sessionCommentAtIndex:(NSUInteger)index {
+- (uint32_t)sessionCommentAtIndex:(NSUInteger)index {
   return [result sessionCommentAtIndex:index];
 }
-- (MPRequestBlob_Builder *)addSessionComment:(int32_t)value {
+- (MPRequestBlob_Builder *)addSessionComment:(uint32_t)value {
   if (result.sessionCommentArray == nil) {
     result.sessionCommentArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -11114,7 +13563,7 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   result.sessionCommentArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPRequestBlob_Builder *)setSessionCommentValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPRequestBlob_Builder *)setSessionCommentValues:(const uint32_t *)values count:(NSUInteger)count {
   result.sessionCommentArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }
@@ -11125,10 +13574,10 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
 - (PBAppendableArray *)channelDescription {
   return result.channelDescriptionArray;
 }
-- (int32_t)channelDescriptionAtIndex:(NSUInteger)index {
+- (uint32_t)channelDescriptionAtIndex:(NSUInteger)index {
   return [result channelDescriptionAtIndex:index];
 }
-- (MPRequestBlob_Builder *)addChannelDescription:(int32_t)value {
+- (MPRequestBlob_Builder *)addChannelDescription:(uint32_t)value {
   if (result.channelDescriptionArray == nil) {
     result.channelDescriptionArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeUInt32];
   }
@@ -11139,7 +13588,7 @@ static MPRequestBlob* defaultMPRequestBlobInstance = nil;
   result.channelDescriptionArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeUInt32];
   return self;
 }
-- (MPRequestBlob_Builder *)setChannelDescriptionValues:(const int32_t *)values count:(NSUInteger)count {
+- (MPRequestBlob_Builder *)setChannelDescriptionValues:(const uint32_t *)values count:(NSUInteger)count {
   result.channelDescriptionArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeUInt32];
   return self;
 }

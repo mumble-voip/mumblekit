@@ -663,7 +663,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 	NSInteger nwritten = [_outputStream write:[msg bytes] maxLength:[msg length]];
     if (nwritten != expectedLength) {
-		NSLog(@"MKConnection: write error, wrote %li, expected %lu", nwritten, expectedLength);
+		NSLog(@"MKConnection: write error, wrote %li, expected %u", nwritten, expectedLength);
     }
 	[msg release];
 }
@@ -1087,11 +1087,11 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			}
 			break;
 		}
-		case ContextActionAddMessage: {
-			MPContextActionAdd *contextActionAdd = [MPContextActionAdd parseFromData:data];
-			if ([_msgHandler respondsToSelector:@selector(connection:handleContextActionAddMessage:)]) {
+		case ContextActionModifyMessage: {
+			MPContextActionModify *contextActionModify = [MPContextActionModify parseFromData:data];
+			if ([_msgHandler respondsToSelector:@selector(connection:handleContextActionModifyMessage:)]) {
 				dispatch_async(main_queue, ^{
-					[_msgHandler connection:self handleContextActionAddMessage:contextActionAdd];
+					[_msgHandler connection:self handleContextActionModifyMessage:contextActionModify];
 				});
 			}
 			break;

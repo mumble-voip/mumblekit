@@ -38,10 +38,26 @@
 @class PBServiceDescriptorProto_Builder;
 @class PBServiceOptions;
 @class PBServiceOptions_Builder;
+@class PBSourceCodeInfo;
+@class PBSourceCodeInfo_Builder;
+@class PBSourceCodeInfo_Location;
+@class PBSourceCodeInfo_Location_Builder;
 @class PBUninterpretedOption;
 @class PBUninterpretedOption_Builder;
 @class PBUninterpretedOption_NamePart;
 @class PBUninterpretedOption_NamePart_Builder;
+#ifndef __has_feature
+  #define __has_feature(x) 0 // Compatibility with non-clang compilers.
+#endif // __has_feature
+
+#ifndef NS_RETURNS_NOT_RETAINED
+  #if __has_feature(attribute_ns_returns_not_retained)
+    #define NS_RETURNS_NOT_RETAINED __attribute__((ns_returns_not_retained))
+  #else
+    #define NS_RETURNS_NOT_RETAINED
+  #endif
+#endif
+
 
 @interface ObjectivecDescriptorRoot : NSObject {
 }
@@ -70,6 +86,7 @@
 - (ObjectiveCFileOptions_Builder*) builder;
 + (ObjectiveCFileOptions_Builder*) builder;
 + (ObjectiveCFileOptions_Builder*) builderWithPrototype:(ObjectiveCFileOptions*) prototype;
+- (ObjectiveCFileOptions_Builder*) toBuilder;
 
 + (ObjectiveCFileOptions*) parseFromData:(NSData*) data;
 + (ObjectiveCFileOptions*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;

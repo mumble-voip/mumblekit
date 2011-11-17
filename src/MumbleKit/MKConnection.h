@@ -64,7 +64,7 @@ typedef enum {
 	ACLMessage,
 	QueryUsersMessage,
 	CryptSetupMessage,
-	ContextActionAddMessage,
+	ContextActionModifyMessage,
 	ContextActionMessage,
 	UserListMessage,
 	VoiceTargetMessage,
@@ -284,12 +284,12 @@ typedef enum {
 
 /**
  * Called whenever a context action add message is received. (See MKMessageType's
- * ContextActionAdd value).
+ * ContextActionModify value).
  *
  * @param conn  The connection that received the message.
  * @param msg   An internal representation of a context action add message.
  */
-- (void) connection:(MKConnection *)conn handleContextActionAddMessage: /* MPContextActionAdd */ (id)msg;
+- (void) connection:(MKConnection *)conn handleContextActionModifyMessage: /* MPContextActionModify */ (id)msg;
 
 /**
  * Called whenever a user list message is received. (See MKMessageType's

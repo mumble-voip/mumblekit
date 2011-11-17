@@ -198,8 +198,8 @@
 	if ([msg hasUserId]) {
 		[user setUserId:[msg userId]];
 	}
-	if ([msg hasHash]) {
-		[user setUserHash:[msg hash]];
+	if ([msg hasCertHash]) {
+		[user setUserHash:[msg certHash]];
 	}
 
 	// The user just connected. Tell our delegate listeners.
@@ -363,7 +363,7 @@
 - (void) connection:(MKConnection *)conn handleContextActionMessage: (MPContextAction *)msg {
 }
 
-- (void) connection:(MKConnection *)conn handleContextActionAddMessage: (MPContextActionAdd *)add {
+- (void) connection:(MKConnection *)conn handleContextActionModifyMessage: (MPContextActionModify *)add {
 }
 
 - (void) connection:(MKConnection *)conn handleUserListMessage: (MPUserList *)msg {
