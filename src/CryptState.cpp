@@ -80,10 +80,6 @@ void CryptState::setDecryptIV(const unsigned char* iv) {
 	memcpy(decrypt_iv, iv, AES_BLOCK_SIZE);
 }
 
-const unsigned char* CryptState::getEncryptIV() const {
-	return encrypt_iv;
-}
-
 void CryptState::encrypt(const unsigned char* source, unsigned char* dst, unsigned int plain_length) {
 	unsigned char tag[AES_BLOCK_SIZE];
 

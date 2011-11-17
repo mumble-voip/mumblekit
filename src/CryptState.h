@@ -63,7 +63,6 @@ class CryptState {
 		void genKey();
 		void setKey(const unsigned char* rkey, const unsigned char* eiv, const unsigned char* div);
 		void setDecryptIV(const unsigned char* iv);
-		const unsigned char* getEncryptIV() const;
 
 		void ocb_encrypt(const unsigned char* plain, unsigned char* encrypted, unsigned int len, const unsigned char* nonce, unsigned char* tag);
 		void ocb_decrypt(const unsigned char* encrypted, unsigned char* plain, unsigned int len, const unsigned char* nonce, unsigned char* tag);

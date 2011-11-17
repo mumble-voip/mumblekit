@@ -91,10 +91,6 @@ struct MKCryptStatePrivate {
 	
 }
 
-- (NSData *) getEncryptIV {
-	return [[NSData alloc] initWithBytes:_priv->cs.getEncryptIV() length:AES_BLOCK_SIZE];
-}
-
 - (NSData *) encryptData:(NSData *)data {
 	NSMutableData *crypted = [[NSMutableData alloc] initWithLength:[data length]+4];
 	_priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], [data length]);
