@@ -56,6 +56,9 @@
 
 #import "Mumble.pb.h"
 
+// The bitstream we should send to the server.
+// It's currently hard-coded.
+#define MUMBLEKIT_CELT_BITSTREAM 0x8000000bUL
 
 // The SecureTransport.h header is not available on the iPhone, so
 // these constants are lifted from the Mac OS X version of the header.
@@ -63,45 +66,6 @@
 #define errSSLXCertChainInvalid    -9807
 #define errSSLUnknownRootCert      -9812
 #define errSSLLast                 -9849
-
-@interface MKConnection (Private)
-- (void) _stopThreadRunLoop:(id)noObject;
-- (uint64_t) _currentTimeStamp;
-
-- (void) _setupSsl;
-- (void) _pingTimerFired:(NSTimer *)timer;
-- (void) _pingResponseFromServer:(MPPing *)pingMessage;
-- (void) _versionMessageReceived:(MPVersion *)msg;
-- (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
-- (void) _connectionRejected:(MPReject *)rejectMessage;
-- (void) _codecChange:(MPCodecVersion *)codecVersion;
-
-// TCP
-- (void) _sendMessageHelper:(NSDictionary *)dict;
-- (void) _dataReady;
-- (void) _messageRecieved:(NSData *)data;
-
-// UDP
-- (void) _setupUdpSock;
-- (void) _teardownUdpSock;
-- (void) _udpDataReady:(NSData *)data;
-- (void) _udpMessageReceived:(NSData *)data;
-- (void) _sendUDPMessage:(NSData *)data;
-
-// Error handling
-- (void) _handleError:(NSError *)streamError;
-- (void) _handleSslError:(NSError *)streamError;
-@end
-
-// CFSocket UDP callback.  This is called by MKConnection's UDP CFSocket whenever
-// there is new data available (it only uses the kCFSocketDataCallback callback mode).
-static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
-									CFDataRef addr, const void *data, void *udata) {
-	if (type != kCFSocketDataCallBack || !udata || !data)
-		return;
-	MKConnection *conn = (MKConnection *)udata;
-	[conn _udpDataReady:(NSData *)data];
-}
 
 @interface MKConnection () {
     MKCryptState   *_crypt;
@@ -131,8 +95,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	SecIdentityRef _clientIdentity;
 
 	// Codec info
-	NSInteger      _alphaCodec;
-	NSInteger      _betaCodec;
+	NSUInteger     _alphaCodec;
+	NSUInteger     _betaCodec;
 	BOOL           _preferAlpha;
 
 	// Server info.
@@ -142,7 +106,42 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	NSString       *_serverOSVersion;
 	NSMutableArray *_peerCertificates;
 }
+
+- (void) _setupSsl;
+- (void) _pingTimerFired:(NSTimer *)timer;
+- (void) _pingResponseFromServer:(MPPing *)pingMessage;
+- (void) _versionMessageReceived:(MPVersion *)msg;
+- (void) _doCryptSetup:(MPCryptSetup *)cryptSetup;
+- (void) _connectionRejected:(MPReject *)rejectMessage;
+- (void) _codecChange:(MPCodecVersion *)codecVersion;
+- (uint64_t) _currentTimeStamp;
+
+// TCP
+- (void) _sendMessageHelper:(NSDictionary *)dict;
+- (void) _dataReady;
+- (void) _messageRecieved:(NSData *)data;
+
+// UDP
+- (void) _setupUdpSock;
+- (void) _teardownUdpSock;
+- (void) _udpDataReady:(NSData *)data;
+- (void) _udpMessageReceived:(NSData *)data;
+- (void) _sendUDPMessage:(NSData *)data;
+
+// Error handling
+- (void) _handleError:(NSError *)streamError;
+- (void) _handleSslError:(NSError *)streamError;
 @end
+
+// CFSocket UDP callback.  This is called by MKConnection's UDP CFSocket whenever
+// there is new data available (it only uses the kCFSocketDataCallback callback mode).
+static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
+									CFDataRef addr, const void *data, void *udata) {
+	if (type != kCFSocketDataCallBack || !udata || !data)
+		return;
+	MKConnection *conn = (MKConnection *)udata;
+	[conn _udpDataReady:(NSData *)data];
+}
 
 @implementation MKConnection
 
@@ -184,7 +183,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 		}
 
 		CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
-										   (CFStringRef)_hostname, _port,
+										   (CFStringRef)_hostname, (UInt32) _port,
 										   (CFReadStreamRef *) &_inputStream,
 										   (CFWriteStreamRef *) &_outputStream);
 
@@ -327,17 +326,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 #pragma mark -
 
 - (void) authenticateWithUsername:(NSString *)userName password:(NSString *)password {
-	//
-	// Figure out CELT bitstream version
-	// fixme(mkrautz): Refactor into a MKCELTManager or the like.
-	//
-	celt_int32 bitstream;
-	CELTMode *mode = celt_mode_create(48000, 100, NULL);
-	celt_mode_info(mode, CELT_GET_BITSTREAM_VERSION, &bitstream);
-	celt_mode_destroy(mode);
-
-	 NSLog(@"CELT bitstream = 0x%x", bitstream);
-
 	 NSData *data;
 	 MPVersion_Builder *version = [MPVersion builder];
 
@@ -357,7 +345,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	//
 	// Setup MumbleKit version info.
 	//
-	[version setVersion: [MKVersion hexVersion]];
+	[version setVersion: (uint32_t) [MKVersion hexVersion]];
 	[version setRelease: [MKVersion releaseString]];
 	data = [[version build] data];
 	[self sendMessageWithType:VersionMessage data:data];
@@ -367,7 +355,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	if (password) {
 		[authenticate setPassword:password];
 	}
-	[authenticate addCeltVersions:bitstream];
+	[authenticate addCeltVersions:MUMBLEKIT_CELT_BITSTREAM];
 	data = [[authenticate build] data];
 	[self sendMessageWithType:AuthenticateMessage data:data];
 }
@@ -450,7 +438,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 			break;
 
 		default:
-			NSLog(@"MKConnection: Unknown event (%u)", eventCode);
+			NSLog(@"MKConnection: Unknown event (%lu)", eventCode);
 			break;
 	}
 }
@@ -653,7 +641,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	MKMessageType messageType = (MKMessageType)[[dict objectForKey:@"messageType"] intValue];
     
 	UInt16 type = CFSwapInt16HostToBig((UInt16)messageType);
-	UInt32 length = CFSwapInt32HostToBig([data length]);
+	UInt32 length = CFSwapInt32HostToBig((UInt32)[data length]);
 
 	NSUInteger expectedLength = sizeof(UInt16) + sizeof(UInt32) + [data length];
 	NSMutableData *msg = [[NSMutableData alloc] initWithCapacity:expectedLength];
@@ -859,18 +847,16 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 // Handle codec changes
 - (void) _codecChange:(MPCodecVersion *)codec {
-	static const unsigned int ourCodec = 0x8000000b;
-
-	NSInteger alpha = [codec hasAlpha] ? [codec alpha] : -1;
-	NSInteger beta = [codec hasBeta] ? [codec beta] : -1;
+	NSUInteger alpha = ([codec hasAlpha] ? (NSUInteger) [codec alpha] : 0) & 0xffffffff;
+	NSUInteger beta = ([codec hasBeta] ? (NSUInteger) [codec beta] : 0) & 0xffffffff;
 	BOOL pref = [codec hasPreferAlpha] ? [codec preferAlpha] : NO;
 
 	if ((alpha != -1) && (alpha != _alphaCodec)) {
-		if (pref && alpha != ourCodec)
+		if (pref && alpha != MUMBLEKIT_CELT_BITSTREAM)
 			pref = ! pref;
 	}
 	if ((beta != -1) && (beta != _betaCodec)) {
-		if (! pref && beta != ourCodec)
+		if (! pref && beta != MUMBLEKIT_CELT_BITSTREAM)
 			pref = ! pref;
 	}
 
@@ -1170,11 +1156,11 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 	}
 }
 
-- (NSInteger) alphaCodec {
+- (NSUInteger) alphaCodec {
 	return _alphaCodec;
 }
 
-- (NSInteger) betaCodec {
+- (NSUInteger) betaCodec {
 	return _betaCodec;
 }
 

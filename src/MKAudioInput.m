@@ -619,17 +619,19 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 		// Make sure our messageType is set up correctly....
 		// This is just temporary. We should have a MKCodecController that should handle this.
-		static const NSInteger ourCodec = 0x8000000b;
 		NSArray *conns = [[MKConnectionController sharedController] allConnections];
 		if ([conns count] > 0) {
 			MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
 			if ([conn connected]) {
-				NSInteger alpha = [conn alphaCodec];
-				NSInteger beta = [conn betaCodec];
+                NSUInteger ourCodec = 0x8000000b;
+				NSUInteger alpha = [conn alphaCodec];
+				NSUInteger beta = [conn betaCodec];
 				BOOL preferAlpha = [conn preferAlphaCodec];
+                
 				NSInteger newCodec = preferAlpha ? alpha : beta;
 				NSInteger msgType = preferAlpha ? UDPVoiceCELTAlphaMessage : UDPVoiceCELTBetaMessage;
-				if (newCodec != ourCodec) {
+
+                if (newCodec != ourCodec) {
 					newCodec = preferAlpha ? beta : alpha;
 					msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
 				}

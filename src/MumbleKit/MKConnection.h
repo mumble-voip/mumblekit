@@ -534,12 +534,12 @@ typedef enum {
 /**
  * The current elected alpha codec, as determined by the server through a mojority vote.
  */
-- (NSInteger) alphaCodec;
+- (NSUInteger) alphaCodec;
 
 /**
  * The currently elected beta codec, as determined by the server through a majority vote.
  */
-- (NSInteger) betaCodec;
+- (NSUInteger) betaCodec;
 
 /**
  * Returns whether or not clients should prefer the alpha codec over the beta codec (if at
