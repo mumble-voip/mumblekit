@@ -1061,6 +1061,82 @@
 			};
 			name = BetaDist;
 		};
+		28A2AEC21478A92700F3B83F /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					src,
+					proto,
+					3rdparty/speex/include,
+					"3rdparty/celt-0.7.0/libcelt",
+					3rdparty/openssl/include,
+					3rdparty/protobuf/src/runtime/Classes,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_CFLAGS = (
+					"-Xarch_armv6",
+					"-DARCH_ARMV6",
+					"-Xarch_armv6",
+					"-DARCH_ARMV7",
+				);
+				SDKROOT = iphoneos;
+			};
+			name = AppStore;
+		};
+		28A2AEC31478A92700F3B83F /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/MumbleKit.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = MumbleKit;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = AppStore;
+		};
+		28A2AEC41478A92700F3B83F /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/MumbleKit.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
+				LD_DYLIB_INSTALL_NAME = "@loader_path/../Frameworks/$(EXECUTABLE_PATH)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = MumbleKit;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = AppStore;
+		};
 		28BCF2C9132AE3B40003AEC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1168,6 +1244,7 @@
 			buildConfigurations = (
 				2845A729132D9B2F0034D631 /* Debug */,
 				2845A72A132D9B2F0034D631 /* Release */,
+				28A2AEC41478A92700F3B83F /* AppStore */,
 				28498F1C138AB6A9000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1178,6 +1255,7 @@
 			buildConfigurations = (
 				28BCF2C9132AE3B40003AEC1 /* Debug */,
 				28BCF2CA132AE3B40003AEC1 /* Release */,
+				28A2AEC21478A92700F3B83F /* AppStore */,
 				28498F1A138AB6A9000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1188,6 +1266,7 @@
 			buildConfigurations = (
 				28BCF2CC132AE3B40003AEC1 /* Debug */,
 				28BCF2CD132AE3B40003AEC1 /* Release */,
+				28A2AEC31478A92700F3B83F /* AppStore */,
 				28498F1B138AB6A9000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
