@@ -431,8 +431,12 @@ typedef enum {
  * @param pass The password to authenticate with. If the specified username is that
  *             of a registered user, the password will be treated as a user password.
  *             Otherwise, it will be treated as a server password.
+ *
+ * @param tokens The initial set of access tokens for the user we are connecting as, in
+ *               the form of an NSArray of NSStrings.
+ *               This parameter may be nil if the user does not have any access tokens.
  */
-- (void) authenticateWithUsername:(NSString *)user password:(NSString *)pass;
+- (void) authenticateWithUsername:(NSString *)user password:(NSString *)pass accessTokens:(NSArray *)tokens;
 
 ///----------------------
 /// @name Message Handler

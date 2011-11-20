@@ -130,6 +130,14 @@
     [super dealloc];
 }
 
+- (NSString *) hostname {
+    return [_connection hostname];
+}
+
+- (NSInteger) port {
+    return [_connection port];
+}
+
 // Remove all users from their channels.
 // Must be called before removing channels.
 - (void) removeAllUsersFromChannel:(MKChannel *)channel {
@@ -745,6 +753,17 @@
 
     NSData *data = [[userState build] data];
     [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
+#pragma mark -
+#pragma mark Server operations
+
+- (void) setAccessTokens:(NSArray *)tokens {
+    MPAuthenticate_Builder *authenticate = [MPAuthenticate builder];
+    [authenticate setTokensArray:tokens];
+
+    NSData *data = [[authenticate build] data];
+    [_connection sendMessageWithType:AuthenticateMessage data:data];
 }
 
 @end

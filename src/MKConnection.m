@@ -325,7 +325,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
 #pragma mark -
 
-- (void) authenticateWithUsername:(NSString *)userName password:(NSString *)password {
+- (void) authenticateWithUsername:(NSString *)userName password:(NSString *)password accessTokens:(NSArray *)tokens {
      NSData *data;
      MPVersion_Builder *version = [MPVersion builder];
 
@@ -354,6 +354,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     [authenticate setUsername:userName];
     if (password) {
         [authenticate setPassword:password];
+    }
+    if (tokens) {
+        [authenticate setTokensArray:tokens];
     }
     [authenticate addCeltVersions:MUMBLEKIT_CELT_BITSTREAM];
     data = [[authenticate build] data];

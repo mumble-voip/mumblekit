@@ -480,6 +480,20 @@
  */
 - (void) removeDelegate:(id)delegate;
 
+///-------------------------
+/// @name Server Information
+///-------------------------
+
+/**
+ * Returns the hostname of the server that the MKServerModel is currently connected to.
+ */
+- (NSString *) hostname;
+
+/**
+ * Returns the port of the server that the MKServerModel is currently connected to.
+ */
+- (NSInteger) port;
+
 ///-----------------------
 /// @name Users operations
 ///-----------------------
@@ -536,5 +550,17 @@
  * @param channel  The channel to join.
  */
 - (void) joinChannel:(MKChannel *)channel;
+
+///------------------------
+/// @name Server operations
+///------------------------
+
+/**
+ * Set the list of access tokens for the currently connected user.
+ *
+ * @param tokens  An NSArray of strings containing the tokens to use as access tokens for the
+ *                connected user.
+ */
+- (void) setAccessTokens:(NSArray *)tokens;
 
 @end
