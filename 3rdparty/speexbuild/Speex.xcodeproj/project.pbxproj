@@ -463,6 +463,61 @@
 			};
 			name = BetaDist;
 		};
+		28A2AED21478AA3200F3B83F /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					"$(PROJECT_DIR)/../speex/include",
+					"$(PROJECT_DIR)/../libspeex",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = AppStore;
+		};
+		28A2AED31478AA3200F3B83F /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/Speex.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Speex.pch;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Speex;
+				SKIP_INSTALL = YES;
+			};
+			name = AppStore;
+		};
+		28A2AED41478AA3200F3B83F /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Speex.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = Speex;
+				SDKROOT = macosx;
+			};
+			name = AppStore;
+		};
 		28D1DAF0132AEB1500456ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -587,6 +642,7 @@
 			buildConfigurations = (
 				28D1DAF0132AEB1500456ED6 /* Debug */,
 				28D1DAF1132AEB1500456ED6 /* Release */,
+				28A2AED21478AA3200F3B83F /* AppStore */,
 				28498F29138AB6DB000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -597,6 +653,7 @@
 			buildConfigurations = (
 				28D1DAF3132AEB1500456ED6 /* Debug */,
 				28D1DAF4132AEB1500456ED6 /* Release */,
+				28A2AED31478AA3200F3B83F /* AppStore */,
 				28498F2A138AB6DB000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -607,6 +664,7 @@
 			buildConfigurations = (
 				28D1DB04132AEB2200456ED6 /* Debug */,
 				28D1DB05132AEB2200456ED6 /* Release */,
+				28A2AED41478AA3200F3B83F /* AppStore */,
 				28498F2B138AB6DB000509DD /* BetaDist */,
 			);
 			defaultConfigurationIsVisible = 0;
