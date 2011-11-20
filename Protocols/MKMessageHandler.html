@@ -52,9 +52,9 @@
 	
 	<option value="//api/name/connection:handleChannelStateMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleChannelStateMessage:</option>
 	
-	<option value="//api/name/connection:handleContextActionAddMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleContextActionAddMessage:</option>
-	
 	<option value="//api/name/connection:handleContextActionMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleContextActionMessage:</option>
+	
+	<option value="//api/name/connection:handleContextActionModifyMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handleContextActionModifyMessage:</option>
 	
 	<option value="//api/name/connection:handlePermissionDeniedMessage:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:handlePermissionDeniedMessage:</option>
 	
@@ -110,9 +110,9 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleChannelStateMessage:">connection:handleChannelStateMessage:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleContextActionAddMessage:">connection:handleContextActionAddMessage:</a></span></li>
-	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleContextActionMessage:">connection:handleContextActionMessage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handleContextActionModifyMessage:">connection:handleContextActionModifyMessage:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:handlePermissionDeniedMessage:">connection:handlePermissionDeniedMessage:</a></span></li>
 	
@@ -276,9 +276,9 @@ ContextActionMessage value).</p></span>
 	<span class="task-item-suffix">required method</span>
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/connection:handleContextActionAddMessage:">&ndash;&nbsp;connection:handleContextActionAddMessage:</a></code>
+		<code><a href="#//api/name/connection:handleContextActionModifyMessage:">&ndash;&nbsp;connection:handleContextActionModifyMessage:</a></code>
 		<span class="tooltip"><p>Called whenever a context action add message is received. (See MKMessageType&rsquo;s
-ContextActionAdd value).</p></span>
+ContextActionModify value).</p></span>
 	</span>
 	
 	<span class="task-item-suffix">required method</span>
@@ -522,56 +522,6 @@ ChannelStateMessage value).</p>
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/connection:handleContextActionAddMessage:" title="connection:handleContextActionAddMessage:"></a>
-	<h3 class="subsubtitle method-title">connection:handleContextActionAddMessage:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Called whenever a context action add message is received. (See MKMessageType&rsquo;s
-ContextActionAdd value).</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleContextActionAddMessage:(id)<em>msg</em></code></div>
-	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>conn</em></dt>
-			<dd><p>The connection that received the message.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>msg</em></dt>
-			<dd><p>An internal representation of a context action add message.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKConnection.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
 	<a name="//api/name/connection:handleContextActionMessage:" title="connection:handleContextActionMessage:"></a>
 	<h3 class="subsubtitle method-title">connection:handleContextActionMessage:</h3>
 	
@@ -597,6 +547,56 @@ ContextActionMessage value).</p>
 		<dl class="argument-def parameter-def">
 			<dt><em>msg</em></dt>
 			<dd><p>An internal representation of a context action message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:handleContextActionModifyMessage:" title="connection:handleContextActionModifyMessage:"></a>
+	<h3 class="subsubtitle method-title">connection:handleContextActionModifyMessage:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called whenever a context action add message is received. (See MKMessageType&rsquo;s
+ContextActionModify value).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleContextActionModifyMessage:(id)<em>msg</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that received the message.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>msg</em></dt>
+			<dd><p>An internal representation of a context action add message.</p></dd>
 		</dl>
 		
 	</div>
@@ -1083,7 +1083,7 @@ VoiceTargetMessage value).</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-15)</span><br />
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-20)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
 						

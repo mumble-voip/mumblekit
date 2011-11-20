@@ -50,13 +50,19 @@
 	
 	<option value="//api/name/connectedUser">&nbsp;&nbsp;&nbsp;&nbsp;- connectedUser</option>
 	
+	<option value="//api/name/hostname">&nbsp;&nbsp;&nbsp;&nbsp;- hostname</option>
+	
 	<option value="//api/name/initWithConnection:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithConnection:</option>
 	
 	<option value="//api/name/joinChannel:">&nbsp;&nbsp;&nbsp;&nbsp;- joinChannel:</option>
 	
+	<option value="//api/name/port">&nbsp;&nbsp;&nbsp;&nbsp;- port</option>
+	
 	<option value="//api/name/removeDelegate:">&nbsp;&nbsp;&nbsp;&nbsp;- removeDelegate:</option>
 	
 	<option value="//api/name/rootChannel">&nbsp;&nbsp;&nbsp;&nbsp;- rootChannel</option>
+	
+	<option value="//api/name/setAccessTokens:">&nbsp;&nbsp;&nbsp;&nbsp;- setAccessTokens:</option>
 	
 	<option value="//api/name/userWithHash:">&nbsp;&nbsp;&nbsp;&nbsp;- userWithHash:</option>
 	
@@ -82,9 +88,13 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Handling delegates">Handling delegates</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Server Information">Server Information</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Users operations">Users operations</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Channel operations">Channel operations</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Server operations">Server operations</a></span></li>
 	
 </ul></li>
 
@@ -104,13 +114,19 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectedUser">connectedUser</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hostname">hostname</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithConnection:">initWithConnection:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/joinChannel:">joinChannel:</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/port">port</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeDelegate:">removeDelegate:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rootChannel">rootChannel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAccessTokens:">setAccessTokens:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userWithHash:">userWithHash:</a></span></li>
 	
@@ -206,6 +222,28 @@ easy to use interface for interacting with a Mumble server.</p>
 						</ul>
 						
 						
+						<a title="Server Information" name="task_Server Information"></a>
+						<h3 class="subsubtitle task-title">Server Information</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hostname">&ndash;&nbsp;hostname</a></code>
+		<span class="tooltip"><p>Returns the <a href="#//api/name/hostname">hostname</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/port">&ndash;&nbsp;port</a></code>
+		<span class="tooltip"><p>Returns the <a href="#//api/name/port">port</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
 						<a title="Users operations" name="task_Users operations"></a>
 						<h3 class="subsubtitle task-title">Users operations</h3>
 
@@ -259,6 +297,21 @@ connected to.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/joinChannel:">&ndash;&nbsp;joinChannel:</a></code>
 		<span class="tooltip"><p>Ask the underlying connection to join the given channel.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Server operations" name="task_Server operations"></a>
+						<h3 class="subsubtitle task-title">Server operations</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setAccessTokens:">&ndash;&nbsp;setAccessTokens:</a></code>
+		<span class="tooltip"><p>Set the list of access tokens for the currently connected user.</p></span>
 	</span>
 	
 	
@@ -402,6 +455,40 @@ connected to.</p></span>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/hostname" title="hostname"></a>
+	<h3 class="subsubtitle method-title">hostname</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the <a href="#//api/name/hostname">hostname</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)hostname</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/initWithConnection:" title="initWithConnection:"></a>
 	<h3 class="subsubtitle method-title">initWithConnection:</h3>
 	
@@ -490,6 +577,40 @@ connected to.</p></span>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/port" title="port"></a>
+	<h3 class="subsubtitle method-title">port</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the <a href="#//api/name/port">port</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSInteger)port</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/removeDelegate:" title="removeDelegate:"></a>
 	<h3 class="subsubtitle method-title">removeDelegate:</h3>
 	
@@ -554,6 +675,51 @@ connected to.</p>
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
 		<p>Returns a <a href="../Classes/MKChannel.html">MKChannel</a> object pointing to the root channel.</p>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setAccessTokens:" title="setAccessTokens:"></a>
+	<h3 class="subsubtitle method-title">setAccessTokens:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the list of access tokens for the currently connected user.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)setAccessTokens:(NSArray *)<em>tokens</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>tokens</em></dt>
+			<dd><p>An NSArray of strings containing the tokens to use as access tokens for the
+connected user.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
 	
 	
 	
@@ -687,7 +853,7 @@ if the user does not exist on the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-15)</span><br />
+						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-20)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
 						
