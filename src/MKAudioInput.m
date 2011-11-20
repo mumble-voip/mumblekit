@@ -255,10 +255,14 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 }
 
 - (BOOL) setupDevice {
+#if TARGET_IPHONE_SIMULATOR
+    return [self setupMacDevice];
+#else
 #if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
     return [self setupMacDevice];
 #elif TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
     return [self setupiOSDevice];
+#endif
 #endif
 }
 
