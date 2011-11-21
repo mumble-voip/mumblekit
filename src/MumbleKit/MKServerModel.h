@@ -539,7 +539,7 @@ typedef enum {
  * @param  model   The MKServerModel in which this error occurred.
  * @param  reason  The reason for the error. May be nil if no reason was given.
  */
-- (void) serverModelPermissionDeniedForReason:(NSString *)reason;
+- (void) serverModel:(MKServerModel *)model permissionDeniedForReason:(NSString *)reason;
 @end
 
 /**

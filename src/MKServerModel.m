@@ -415,9 +415,9 @@
         }
         default: {
             if ([msg hasReason]) {
-                [_delegate serverModelPermissionDeniedForReason:[msg reason]];
+                [_delegate serverModel:self permissionDeniedForReason:[msg reason]];
             } else {
-                [_delegate serverModelPermissionDeniedForReason:nil];
+                [_delegate serverModel:self permissionDeniedForReason:nil];
             }
             break;
         }
