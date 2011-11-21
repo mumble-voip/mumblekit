@@ -1,5 +1,6 @@
 #!/bin/bash
 rev=$(git rev-parse HEAD)
+rm -rf ghpages
 git clone git@github.com:mkrautz/mumblekit.git --branch gh-pages ghpages
 appledoc --project-version $(git rev-parse HEAD) AppledocSettings.plist
 rsync -avz html/* ghpages/
