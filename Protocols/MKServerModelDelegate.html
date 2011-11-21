@@ -72,6 +72,8 @@
 	
 	<option value="//api/name/serverModel:permissionDenied:forUser:inChannel:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:permissionDenied:forUser:inChannel:</option>
 	
+	<option value="//api/name/serverModel:permissionDeniedForReason:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:permissionDeniedForReason:</option>
+	
 	<option value="//api/name/serverModel:userBanned:byUser:forReason:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userBanned:byUser:forReason:</option>
 	
 	<option value="//api/name/serverModel:userCommentChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userCommentChanged:</option>
@@ -133,8 +135,6 @@
 	<option value="//api/name/serverModelInvalidChannelNameError:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelInvalidChannelNameError:</option>
 	
 	<option value="//api/name/serverModelModifySuperUserError:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelModifySuperUserError:</option>
-	
-	<option value="//api/name/serverModelPermissionDeniedForReason:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelPermissionDeniedForReason:</option>
 	
 	<option value="//api/name/serverModelTemporaryChannelError:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelTemporaryChannelError:</option>
 	
@@ -212,6 +212,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:permissionDenied:forUser:inChannel:">serverModel:permissionDenied:forUser:inChannel:</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:permissionDeniedForReason:">serverModel:permissionDeniedForReason:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userBanned:byUser:forReason:">serverModel:userBanned:byUser:forReason:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userCommentChanged:">serverModel:userCommentChanged:</a></span></li>
@@ -273,8 +275,6 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelInvalidChannelNameError:">serverModelInvalidChannelNameError:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelModifySuperUserError:">serverModelModifySuperUserError:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelPermissionDeniedForReason:">serverModelPermissionDeniedForReason:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelTemporaryChannelError:">serverModelTemporaryChannelError:</a></span></li>
 	
@@ -731,7 +731,7 @@ channel was full. (Note: A joinChannel: also counts as a move operation.)</p></s
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/serverModelPermissionDeniedForReason:">&ndash;&nbsp;serverModelPermissionDeniedForReason:</a></code>
+		<code><a href="#//api/name/serverModel:permissionDeniedForReason:">&ndash;&nbsp;serverModel:permissionDeniedForReason:</a></code>
 		<span class="tooltip"><p>Called when a simple &lsquo;Permission denied.&rsquo; message is sufficient to show to the user.
 Can include a reason. This kind of permission error is also used as a fallback, if
 the server detects that a client is using a too old version of the Mumble protocol
@@ -1444,6 +1444,58 @@ mostly during initial connect).</p>
 		<dl class="argument-def parameter-def">
 			<dt><em>channel</em></dt>
 			<dd><p>The channel in which the permission was denied.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:permissionDeniedForReason:" title="serverModel:permissionDeniedForReason:"></a>
+	<h3 class="subsubtitle method-title">serverModel:permissionDeniedForReason:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a simple &lsquo;Permission denied.&rsquo; message is sufficient to show to the user.
+Can include a reason. This kind of permission error is also used as a fallback, if
+the server detects that a client is using a too old version of the Mumble protocol
+to understand all error types.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> permissionDeniedForReason:(NSString *)<em>reason</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> in which this error occurred.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>reason</em></dt>
+			<dd><p>The reason for the error. May be nil if no reason was given.</p></dd>
 		</dl>
 		
 	</div>
@@ -3061,58 +3113,6 @@ which was not allowed by the server.</p>
 		<dl class="argument-def parameter-def">
 			<dt><em>model</em></dt>
 			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> in which the error occurred.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKServerModel.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/serverModelPermissionDeniedForReason:" title="serverModelPermissionDeniedForReason:"></a>
-	<h3 class="subsubtitle method-title">serverModelPermissionDeniedForReason:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Called when a simple &lsquo;Permission denied.&rsquo; message is sufficient to show to the user.
-Can include a reason. This kind of permission error is also used as a fallback, if
-the server detects that a client is using a too old version of the Mumble protocol
-to understand all error types.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (void)serverModelPermissionDeniedForReason:(NSString *)<em>reason</em></code></div>
-	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>model</em></dt>
-			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> in which this error occurred.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>reason</em></dt>
-			<dd><p>The reason for the error. May be nil if no reason was given.</p></dd>
 		</dl>
 		
 	</div>
