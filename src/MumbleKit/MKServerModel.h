@@ -35,6 +35,25 @@
 @class MulticastDelegate;
 @class MKServerModel;
 
+typedef enum {
+    MKPermissionNone             = 0x00000,
+    MKPermissionWrite            = 0x00001,
+    MKPermissionTraverse         = 0x00002,
+    MKPermissionEnter            = 0x00004,
+    MKPermissionSpeak            = 0x00008,
+    MKPermissionMuteDeafen       = 0x00010,
+    MKPermissionMove             = 0x00020,
+    MKPermissionMakeChannel      = 0x00040,
+    MKPermissionLinkChannel      = 0x00080,
+    MKPermissionWhisper          = 0x00100,
+    MKPermissionTextMessage      = 0x00200,
+    MKPermissionMakeTempChannel  = 0x00400,
+    MKPermissionKick             = 0x10000,
+    MKPermissionBan              = 0x20000,
+    MKPermissionRegister         = 0x40000,
+    MKPermissionSelfRegister     = 0x80000,
+} MKPermission;
+
 /**
  * MKServerModelDelegate is the delegate of MKServerModel.
  * It is called to notify any registered delegates of events happening on the server, or
@@ -443,6 +462,84 @@
  * @param channel  The channel whose links changed.
  */
 - (void) serverModel:(MKServerModel *)model linksChangedForChannel:(MKChannel *)channel;
+
+///-------------------------------------
+/// @name Errors and missing permissions
+///-------------------------------------
+
+/**
+ * Called when a permission error occurred for a given channel for a given user.
+ *
+ * @param  model    The MKServerModel in which this permission error occurred.
+ * @param  perm     The permission that was denied
+ * @param  user     The user for whom the permission was denied.
+ * @param  channel  The channel in which the permission was denied.
+ */
+- (void) serverModel:(MKServerModel *)model permissionDenied:(MKPermission)perm forUser:(MKUser *)user inChannel:(MKChannel *)channel;
+
+/**
+ * Called when a channel was attempted to be named or renamed to something
+ * which was not allowed by the server.
+ *
+ * @param  model  The MKServerModel in which this error occured.
+ */
+- (void) serverModelInvalidChannelNameError:(MKServerModel *)model;
+
+/**
+ * Called when an attempt to modify the SuperUser failed.
+ *
+ * @param  model  The MKServerModel in which the error occurred.
+ */
+- (void) serverModelModifySuperUserError:(MKServerModel *)model;
+
+/**
+ * Called when the server received a text message that was too long.
+ *
+ * @param  model  The MKServerModel in which the error occurred.
+ */
+- (void) serverModelTextMessageTooLongError:(MKServerModel *)model;
+
+/**
+ * Called when an action could not be performed on a temporary channel.
+ *
+ * @param  model  The MKServerModel in which the error occurred.
+ */
+- (void) serverModelTemporaryChannelError:(MKServerModel *)model;
+
+/**
+ * Called when a certificate is needed, but not persent, for a given operation.
+ *
+ * @param  model  The MKServerModel in which the error occurred.
+ * @param  user   The user who did not have a certificate.
+ */
+- (void) serverModel:(MKServerModel *)model missingCertificateErrorForUser:(MKUser *)user;
+
+/**
+ * Called when an action involving an invalid username occurs.
+ *
+ * @param  model  The MKServerModel in which this error occurred.
+ * @param  name   The name that was deemed invalid by the server. May be nil.
+ */
+- (void) serverModel:(MKServerModel *)model invalidUsernameErrorForName:(NSString *)name;
+
+/**
+ * Called when a channel user move operation failed because the destination
+ * channel was full. (Note: A joinChannel: also counts as a move operation.)
+ *
+ * @param  model  The MKServerModel in which this error occurred.
+ */
+- (void) serverModelChannelFullError:(MKServerModel *)model;
+
+/**
+ * Called when a simple 'Permission denied.' message is sufficient to show to the user.
+ * Can include a reason. This kind of permission error is also used as a fallback, if
+ * the server detects that a client is using a too old version of the Mumble protocol
+ * to understand all error types.
+ *
+ * @param  model   The MKServerModel in which this error occurred.
+ * @param  reason  The reason for the error. May be nil if no reason was given.
+ */
+- (void) serverModelPermissionDeniedForReason:(NSString *)reason;
 @end
 
 /**

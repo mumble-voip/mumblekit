@@ -357,6 +357,71 @@
 }
 
 - (void) connection:(MKConnection *)conn handlePermissionDeniedMessage: (MPPermissionDenied *)msg {
+    if (![msg hasType])
+        return;
+
+    MPPermissionDenied_DenyType denyType = [msg type];
+    switch (denyType) {
+        case MPPermissionDenied_DenyTypePermission: {
+            MKChannel *channel = nil;
+            if ([msg hasChannelId]) {
+                channel = [self channelWithId:(NSUInteger)[msg channelId]];
+            }
+            MKPermission perm = MKPermissionNone;
+            if ([msg hasPermission]) {
+                perm = (MKPermission) [msg permission];
+            }
+            MKUser *user = [self connectedUser];
+            if ([msg hasSession]) {
+                user = [self userWithSession:(NSUInteger)[msg session]];
+            }
+            [_delegate serverModel:self permissionDenied:perm forUser:user inChannel:channel];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeSuperUser: {
+            [_delegate serverModelModifySuperUserError:self];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeChannelName: {
+            [_delegate serverModelChannelFullError:self];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeTextTooLong: {
+            [_delegate serverModelTextMessageTooLongError:self];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeTemporaryChannel: {
+            [_delegate serverModelTemporaryChannelError:self];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeMissingCertificate: {
+            MKUser *user = [self connectedUser];
+            if ([msg hasSession]) {
+                user = [self userWithSession:(NSUInteger)[msg session]];
+            }
+            [_delegate serverModel:self missingCertificateErrorForUser:user];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeUserName: {
+            NSString *name = nil;
+            if ([msg hasName])
+                name = [msg name];
+            [_delegate serverModel:self invalidUsernameErrorForName:name];
+            break;
+        }
+        case MPPermissionDenied_DenyTypeChannelFull: {
+            [_delegate serverModelChannelFullError:self];
+            break;
+        }
+        default: {
+            if ([msg hasReason]) {
+                [_delegate serverModelPermissionDeniedForReason:[msg reason]];
+            } else {
+                [_delegate serverModelPermissionDeniedForReason:nil];
+            }
+            break;
+        }
+    }
 }
 
 - (void) connection:(MKConnection *)conn handleTextMessageMessage: (MPTextMessage *)msg {
