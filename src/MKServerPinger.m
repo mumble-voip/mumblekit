@@ -41,6 +41,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
+#include <fcntl.h>
 
 @interface MKServerPinger () {
     NSData                      *_address;
@@ -100,6 +101,10 @@
 - (void) setupPingerState {
     _sock6 = socket(AF_INET6, SOCK_DGRAM, 0);
     if (_sock6 > 0) {
+        int flags = fcntl(_sock6, F_GETFL, 0);
+        if (flags != -1) {
+            fcntl(_sock6, F_SETFL, flags | O_NONBLOCK);
+        }
         struct sockaddr_in6 sa6;
         memset(&sa6, 0, sizeof(struct sockaddr_in6));
         sa6.sin6_len = sizeof(struct sockaddr_in6);
@@ -119,6 +124,10 @@
 
     _sock4 = socket(AF_INET, SOCK_DGRAM, 0);
     if (_sock4 > 0) {
+        int flags = fcntl(_sock4, F_GETFL, 0);
+        if (flags != -1) {
+            fcntl(_sock4, F_SETFL, flags | O_NONBLOCK);
+        }
         struct sockaddr_in sa;
         memset(&sa, 0, sizeof(struct sockaddr_in));
         sa.sin_len = sizeof(struct sockaddr_in);
@@ -260,14 +269,15 @@
 
     if (getaddrinfo([hostname UTF8String], [port UTF8String], &hints, &ai) == 0) {
         iter = ai;
+        NSData *addrData = nil;
         while (iter != NULL) {
-            if (iter->ai_family == AF_INET || iter->ai_family == AF_INET6)
+            if (iter->ai_family == AF_INET || iter->ai_family == AF_INET6) {
+                addrData = [NSData dataWithBytes:iter->ai_addr length:iter->ai_addrlen];
                 break;
+            }
         }
-        if (iter) {
-            NSData *addrData = [NSData dataWithBytes:iter->ai_addr length:iter->ai_addrlen];
-            return [self initWithAddress:addrData];
-        }
+        freeaddrinfo(ai);
+        return [self initWithAddress:addrData];
     }
     return [self initWithAddress:nil];
 }
