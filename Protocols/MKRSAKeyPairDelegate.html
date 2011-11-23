@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>MKServerPinger Class Reference</title>
+		<title>MKRSAKeyPairDelegate Protocol Reference</title>
 		<meta id="xcode-display" name="xcode-display" content="render"/>
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
@@ -17,7 +17,7 @@
 			</div>
 			
 			<div id="title" role="banner">
-				<h1 class="hideInXcode">MKServerPinger Class Reference</h1>
+				<h1 class="hideInXcode">MKRSAKeyPairDelegate Protocol Reference</h1>
 			</div>
 			<ul id="headerButtons" role="toolbar">
 				<li id="toc_button">
@@ -44,11 +44,7 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/delegate">&nbsp;&nbsp;&nbsp;&nbsp;- delegate</option>
-	
-	<option value="//api/name/initWithHostname:port:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithHostname:port:</option>
-	
-	<option value="//api/name/setDelegate:">&nbsp;&nbsp;&nbsp;&nbsp;- setDelegate:</option>
+	<option value="//api/name/rsaKeyPairDidFinishGenerating:">&nbsp;&nbsp;&nbsp;&nbsp;- rsaKeyPairDidFinishGenerating:</option>
 	
 	
 	
@@ -78,11 +74,7 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/delegate">delegate</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithHostname:port:">initWithHostname:port:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setDelegate:">setDelegate:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rsaKeyPairDidFinishGenerating:">rsaKeyPairDidFinishGenerating:</a></span></li>
 	
 </ul></li>
 
@@ -91,7 +83,7 @@
 		</nav>
 		<article>
 			<div id="contents" class="isShowingTOC" role="main">
-				<a title="MKServerPinger Class Reference" name="top"></a>
+				<a title="MKRSAKeyPairDelegate Protocol Reference" name="top"></a>
 				<div class="main-navigation navigation-top">
 					<ul>
 	<li><a href="../index.html">Index</a></li>
@@ -100,18 +92,15 @@
 				</div>
 				<div id="header">
 					<div class="section-header">
-						<h1 class="title title-header">MKServerPinger Class Reference</h1>
+						<h1 class="title title-header">MKRSAKeyPairDelegate Protocol Reference</h1>
 					</div>		
 				</div>
 				<div id="container">	
 					
 					<div class="section section-specification"><table cellspacing="0"><tbody>
 						<tr>
-	<td class="specification-title">Inherits from</td>
-	<td class="specification-value">NSObject</td>
-</tr><tr>
 	<td class="specification-title">Declared in</td>
-	<td class="specification-value">MKServerPinger.h</td>
+	<td class="specification-value">MKCertificate.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -121,12 +110,8 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKServerPinger.html">MKServerPinger</a> implements a pinger object that can ping and query Mumble
-servers for information typically shown in a server list.</p>
-
-<p>Once a <a href="MKServerPinger.html">MKServerPinger</a> object is created, it will continually ping the remote
-server until it is destroyed. Whenever the <a href="MKServerPinger.html">MKServerPinger</a> receives a reply from
-the remote server, it will inform its <a href="#//api/name/delegate">delegate</a>.</p>
+						<p><a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> is a protocol for getting notified when a <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> is done generating its
+public and private key.</p>
 					</div>
 					
 					
@@ -144,27 +129,11 @@ the remote server, it will inform its <a href="#//api/name/delegate">delegate</a
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/initWithHostname:port:">&ndash;&nbsp;initWithHostname:port:</a></code>
-		<span class="tooltip"><p>Initialize a new <a href="MKServerPinger.html">MKServerPinger</a> that pings the server running
-on the given hostname and port combination.</p></span>
+		<code><a href="#//api/name/rsaKeyPairDidFinishGenerating:">&ndash;&nbsp;rsaKeyPairDidFinishGenerating:</a></code>
+		<span class="tooltip"><p>Called when an <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> has finished generating its RSA key pair.</p></span>
 	</span>
 	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/delegate">&ndash;&nbsp;delegate</a></code>
-		<span class="tooltip"><p>Returns the currently-set <a href="#//api/name/delegate">delegate</a> for the <a href="MKServerPinger.html">MKServerPinger</a> object.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/setDelegate:">&ndash;&nbsp;setDelegate:</a></code>
-		<span class="tooltip"><p>Set the <a href="#//api/name/delegate">delegate</a> of the <a href="MKServerPinger.html">MKServerPinger</a> object. The <a href="#//api/name/delegate">delegate</a> will be called
-when the remote server responds to a ping request.</p></span>
-	</span>
-	
-	
+	<span class="task-item-suffix">required method</span>
 </li>
 						</ul>
 						
@@ -183,122 +152,25 @@ when the remote server responds to a ping request.</p></span>
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/delegate" title="delegate"></a>
-	<h3 class="subsubtitle method-title">delegate</h3>
+	<a name="//api/name/rsaKeyPairDidFinishGenerating:" title="rsaKeyPairDidFinishGenerating:"></a>
+	<h3 class="subsubtitle method-title">rsaKeyPairDidFinishGenerating:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the currently-set <a href="#//api/name/delegate">delegate</a> for the <a href="MKServerPinger.html">MKServerPinger</a> object.</p>
+		<p>Called when an <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> has finished generating its RSA key pair.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (id&lt;MKServerPingerDelegate&gt;)delegate</code></div>
-	
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Returns an object implementing the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPingerDelegate</a> protocol.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKServerPinger.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/initWithHostname:port:" title="initWithHostname:port:"></a>
-	<h3 class="subsubtitle method-title">initWithHostname:port:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Initialize a new <a href="MKServerPinger.html">MKServerPinger</a> that pings the server running
-on the given hostname and port combination.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (id)initWithHostname:(NSString *)<em>hostname</em> port:(NSString *)<em>port</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)rsaKeyPairDidFinishGenerating:(MKRSAKeyPair *)<em>keyPair</em></code></div>
 	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>hostname</em></dt>
-			<dd><p>The hostname of the server to ping.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>port</em></dt>
-			<dd><p>The port number of the server to ping.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Returns an <a href="MKServerPinger.html">MKServerPinger</a> object. To get ping results, one must
-register a <a href="#//api/name/delegate">delegate</a> implementing the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPingerDelegate</a> protocol.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKServerPinger.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/setDelegate:" title="setDelegate:"></a>
-	<h3 class="subsubtitle method-title">setDelegate:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Set the <a href="#//api/name/delegate">delegate</a> of the <a href="MKServerPinger.html">MKServerPinger</a> object. The <a href="#//api/name/delegate">delegate</a> will be called
-when the remote server responds to a ping request.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (void)setDelegate:(id&lt;MKServerPingerDelegate&gt;)<em>delegate</em></code></div>
-	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>delegate</em></dt>
-			<dd><p>The objec to register as the MKServerPinger&rsquo;s <a href="#//api/name/delegate">delegate</a>.
-Must implement the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPingerDelegate</a> protocol.</p></dd>
+			<dt><em>keyPair</em></dt>
+			<dd><p>The <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> that finished generating its keys.</p></dd>
 		</dl>
 		
 	</div>
@@ -317,7 +189,7 @@ Must implement the <a href="../Protocols/MKServerPingerDelegate.html">MKServerPi
 	
 	<div class="method-subsection declared-in-section">
 		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKServerPinger.h</code><br />
+		<code class="declared-in-ref">MKCertificate.h</code><br />
 	</div>				
 	
 	
