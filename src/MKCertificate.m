@@ -37,6 +37,8 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 #include <openssl/pkcs12.h>
+#include <time.h>
+#include <xlocale.h>
 
 #import <CommonCrypto/CommonDigest.h>
 
@@ -358,81 +360,55 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return (NSDictionary *)dict;
 }
 
-// Parse an ASN1 string representing time.
-// GeneralizedTime: http://www.obj-sys.com/asn1tutorial/node14.html
-// UTCTime: http://www.obj-sys.com/asn1tutorial/node15.html
-// Also, a gem from http://www.columbia.edu/~ariel/ssleay/asn1-time.html:
-// "UTCTIME is used to encode values with year 1950 through 2049."
-//
-// fixme(mkrautz): This needs some testing. And fuzzing.
-//                 Also, are "local time only" times supposed to be handled?
+// Parse an ASN1 string representing time from an X509 PKIX certificate.
 - (NSDate *) copyAndParseASN1Date:(ASN1_TIME *)time {
-    int Y = 0, M = 0, D = 0, h = 0, m = 0, s = 0, sfrac = 0, th = 0, tm = 0, sign = 0;
-    unsigned char *p = time->data;
+    struct tm tm;
+    char buf[20];
 
-    if (time->type == V_ASN1_UTCTIME && time->length-1 >= 10) {
-        Y = (p[0]-'0')*10 + (p[1]-'0');
-        if (Y > 49)
-            Y += 1900;
-        else
-            Y += 2000;
-        M = (p[2]-'0')*10 + (p[3]-'0');
-        D = (p[4]-'0')*10 + (p[5]-'0');
-        h = (p[6]-'0')*10 + (p[7]-'0');
-        m = (p[7]-'0')*10 + (p[8]-'0');
-        if (p[9] == 'Z' || p[9] == '+' || p[9] == '-') {
-            if (time->length-1 >= 13 && p[9] != 'Z') {
-                sign = p[9] == '+' ? 1 : -1;
-                th = ((p[10]-'0')*10 + (p[11]-'0'));
-                tm = ((p[12]-'0')*10 + (p[13]-'0'));
-            }
+    // RFC 5280, 4.1.2.5.1 UTCTime
+    // For the purposes of this profile, UTCTime values MUST be expressed in
+    // Greenwich Mean Time (Zulu) and MUST include seconds (i.e., times are
+    // YYMMDDHHMMSSZ), even where the number of seconds is zero.  Conforming
+    // systems MUST interpret the year field (YY) as follows:
+    //
+    // Where YY is greater than or equal to 50, the year SHALL be
+    // interpreted as 19YY; and
+    //
+    // Where YY is less than 50, the year SHALL be interpreted as 20YY.
+    if (time->type == V_ASN1_UTCTIME && time->length == 13 && time->data[12] == 'Z') {
+        memcpy(buf+2, time->data, time->length-1);        
+        if (time->data[0] >= '5') {
+            buf[0] = '1';
+            buf[1] = '9';
         } else {
-            s = (p[9]-'0')*10 + (p[10]-'0');
+            buf[0] = '2';
+            buf[1] = '0';
         }
-        if (time->length-1 >= 11 && (p[11] == 'Z' || p[11] == '+' || p[11] == '-')) {
-            if (time->length-1 >= 15 && p[11] != 'Z') {
-                sign = p[11] == '+' ? 1 : -1;
-                th = ((p[12]-'0')*10 + (p[13]-'0'));
-                tm = ((p[14]-'0')*10 + (p[15]-'0'));
-            }
-        } else if (time->length-1 >= 15 && p[11] == '.') {
-            sfrac = (p[12]-'0')*100 + (p[13]-'0')*10 + (p[14]-'0');
-            if (p[15] == 'Z' || p[15] == '+' || p[15] == '-') {
-                if (time->length-1 >= 17 && p[15] != 'Z') {
-                    sign = p[15] == '+' ? 1 : -1;
-                    th = ((p[16]-'0')*10 + (p[17]-'0'));
-                    tm = ((p[16]-'0')*10 + (p[17]-'0'));
-                }
-            }
-        }
-    } else if (time->type == V_ASN1_GENERALIZEDTIME && time->length-1 >= 14) {
-        Y = (p[0]-'0')*1000 + (p[1]-'0')*100 + (p[2]-'0')*10 + (p[3]-'0');
-        M = (p[4]-'0')*10 + (p[5]-'0');
-        D = (p[6]-'0')*10 + (p[7]-'0');
-        h = (p[8]-'0')*10 + (p[9]-'0');
-        m = (p[10]-'0')*10 + (p[11]-'0');
-        s = (p[12]-'0')*10 + (p[13]-'0');
-        if (time->length-1 >= 18 && p[14] == '.') {
-            sfrac = (p[15]-'0')*100 + (p[16]-'0')*10 + (p[17]-'0');
-            if (p[18] == 'Z' || p[18] == '+' || p[18] == '-') {
-                if (time->length-1 >= 22 && p[18] != 'Z') {
-                    sign = p[18] == '+' ? 1 : -1;
-                    th = ((p[19]-'0')*10 + (p[20]-'0'));
-                    tm = ((p[21]-'0')*10 + (p[22]-'0'));
-                }
-            }
-        } else if (p[14] == 'Z' || p[14] == '+' || p[14] == '-') {
-            if (time->length-1 >= 18 && p[14] != 'Z') {
-                sign = p[14] == '+' ? 1 : -1;
-                th = ((p[15]-'0')*10 + (p[16]-'0'));
-                tm = ((p[17]-'0')*10 + (p[18]-'0'));
-            }
-        }
+    // RFC 5280, 4.1.2.5.2. GeneralizedTime
+    //
+    // GeneralizedTime values MUST be expressed in Greenwich Mean Time (Zulu)
+    // and MUST include seconds (i.e., times are YYYYMMDDHHMMSSZ), even where
+    // the number of seconds is zero.  GeneralizedTime values MUST NOT include
+    // fractional seconds.
+    } else if (time->type == V_ASN1_GENERALIZEDTIME && time->length == 15 && time->data[14] == 'Z') {
+        memcpy(buf, time->data, time->length-1);
+    } else {
+        NSLog(@"MKCertificate: Invalid ASN.1 date for PKIX purposes encountered.");
+        return nil;
     }
 
-    return [[NSDate alloc] initWithString:
-            [NSString stringWithFormat:@"%.4i-%.2i-%.2i %.2i-%.2i-%.2i %c%.2i%.2i",
-                    Y, M, D, h, m, s, sign > 0 ? '+' : '-', th, tm]];
+    buf[14] = '+';
+    buf[15] = '0';
+    buf[16] = '0';
+    buf[17] = '0';
+    buf[18] = '0';
+    buf[19] = 0;
+    if (strptime_l(buf, "%Y%m%d%H%M%S%z", &tm, NULL) == NULL) {
+        NSLog(@"MKCertificate: Unable to parse ASN.1 date.");
+        return nil;
+    }
+        
+    return [[NSDate alloc] initWithTimeIntervalSince1970:mktime(&tm)];
 }
 
 - (void) extractCertInfo {
