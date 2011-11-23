@@ -29,6 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+@class MKRSAKeyPair;
+
 
 ///-----------------------------------
 /// @name MKCertificate accessor items
@@ -89,6 +91,26 @@ extern NSString *MKCertificateItemSerialNumber;
  *          public and private keypair.
  */
 + (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email;
+
+/**
+ * Generate a self-signed MKCertificate object using the given name and email address.
+ * This method optionally takes a MKRSAKeyPair which it will use for the certificate it
+ * generates.
+ *
+ * @param name     The name to be used when creating the certificate. This becomes the
+ *                 Subject Name of the X.509 certificate.
+ *
+ * @param email    The email address to embed in the certificate. This value may be nil if
+ *                 no email address should be included in the generated X.509 certificate.
+ *
+ * @param keyPair  An optional MKRSAKeyPair to use instead of generating a new key pair.
+ *                 If nil is passed for this parameter, the method will generate its own
+ *                 keypair (by default: 2048 bits).
+ *
+ * @returns A MKCertificate that backs a self-signed X.509 certificate backed by a random
+ *          public and private keypair.
+ */
++ (MKCertificate *) selfSignedCertificateWithName:(NSString *)name email:(NSString *)email rsaKeyPair:(MKRSAKeyPair *)keyPair;
 
 /**
  * Import a certificate from a PKCS12 file with the given password.
@@ -231,4 +253,41 @@ extern NSString *MKCertificateItemSerialNumber;
  */
 - (NSString *) subjectItem:(NSString *)item;
 
+@end
+
+/**
+ * MKRSAKeyPair is a protocol for getting notified when a MKRSAKeyPair is done generating its
+ * public and private key.
+ */
+@protocol MKRSAKeyPairDelegate
+
+/**
+ * Called when an MKRSAKeyPair has finished generating its RSA key pair.
+ *
+ * @param  keyPair  The MKRSAKeyPair that finished generating its keys.
+ */
+- (void) rsaKeyPairDidFinishGenerating:(MKRSAKeyPair *)keyPair;
+@end
+
+/**
+ * MKRSAKeyPair is a helper class for creating, reading and exporting RSA keypairs.
+ */
+@interface MKRSAKeyPair : NSObject
+
+/**
+ * Generate a new RSA keypair with bits key size. If a delegate is provided, the key generation will be
+ * performed asynchronously on a distinct dispatch queue. If no delegate is provided, the key generation
+ * is performed in the context in which the method is called.
+ *
+ * @param  bits       The size of the generated keys specified in bits.
+ * @param  delegate   The delegate the MKRSAKeyPair should call its rsaKeyPairDidFinishGenerating: method on.
+ *                    If no delegate is specified, this method will block the thread it is run in while generating.
+ *                    If a delegate is specified, it will perform its key generation in a separate dispatch queue,
+ *                    and call the delegate on the main thread.
+ *
+ * @returns A MKRSAKeyPair with a private and a public RSA key of bits length.
+ */
++ (MKRSAKeyPair *) generateKeyPairOfSize:(NSUInteger)bits withDelegate:(id<MKRSAKeyPairDelegate>)delegate;
+- (NSData *) publicKey;
+- (NSData *) privateKey;
 @end
