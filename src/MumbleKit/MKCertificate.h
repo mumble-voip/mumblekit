@@ -270,7 +270,7 @@ extern NSString *MKCertificateItemSerialNumber;
 @end
 
 /**
- * MKRSAKeyPair is a helper class for creating, reading and exporting RSA keypairs.
+ * MKRSAKeyPair implements generation of RSA key pairs.
  */
 @interface MKRSAKeyPair : NSObject
 
