@@ -604,6 +604,12 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return [kp autorelease];
 }
 
+- (void) dealloc {
+    [_privateKey release];
+    [_publicKey release];
+    [super dealloc];
+}
+
 - (void) genKeysWithSize:(NSUInteger)bits {
     EVP_PKEY *pkey = EVP_PKEY_new();
     RSA *rsa = RSA_generate_key((int)bits, RSA_F4, NULL, NULL);
