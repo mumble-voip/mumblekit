@@ -660,4 +660,9 @@ typedef enum {
  */
 - (void) setAccessTokens:(NSArray *)tokens;
 
+/**
+ * Get the server's certificate chain.
+ */
+- (NSArray *) serverCertificates;
+
 @end
