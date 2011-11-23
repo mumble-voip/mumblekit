@@ -831,4 +831,8 @@
     [_connection sendMessageWithType:AuthenticateMessage data:data];
 }
 
+- (NSArray *) serverCertificates {
+    return [_connection peerCertificates];
+}
+
 @end
