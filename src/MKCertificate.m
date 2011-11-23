@@ -178,7 +178,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
         anEmail = @"";
     certEmail = [NSString stringWithFormat:@"email:%@", anEmail];
 
-    X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, (unsigned char *)[certName UTF8String], -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_UTF8, (unsigned char *)[certName UTF8String], -1, -1, 0);
     X509_set_issuer_name(x509, name);
     add_ext(x509, NID_basic_constraints, "critical,CA:FALSE");
     add_ext(x509, NID_ext_key_usage, "clientAuth");
@@ -332,32 +332,24 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return _derPrivKey != nil;
 }
 
-// Parse a one-line ASCII representation of subject or issuer info
+// Parse a one-line UTF8 representation of subject or issuer info
 // from a certificate. Returns a dictionary with the keys and values
 // as-is.
-- (NSDictionary *) copyDictForOneLineASCIIRepr:(char *)asciiRepr {
-    char *cur = asciiRepr;
+- (NSDictionary *) copyDictForOneLineUTF8Repr:(NSData *)data {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    char *key = NULL, *val = NULL;
-    while (1) {
-        if (*cur == '/') {
-            *cur = '\0';
-            if (key) {
-                [dict setValue:[NSString stringWithCString:val encoding:NSASCIIStringEncoding]
-                        forKey:[NSString stringWithCString:key encoding:NSASCIIStringEncoding]];
-            }
-            key = cur+1;
-        } else if (*cur == '=') {
-            *cur = '\0';
-            val = cur+1;
-        } else if (*cur == '\0') {
-            [dict setValue:[NSString stringWithCString:val encoding:NSASCIIStringEncoding]
-                    forKey:[NSString stringWithCString:key encoding:NSASCIIStringEncoding]];
-            break;
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"str = %@", str);
+    NSArray *components = [str componentsSeparatedByString:@", "];
+    NSLog(@"components = %@", components);
+    for (NSString *component in components) {
+        NSArray *pairs = [component componentsSeparatedByString:@" = "];
+        if ([pairs count] != 2) {
+            [dict release];
+            return nil;
         }
-        ++cur;
+        [dict setObject:[pairs objectAtIndex:1] forKey:[pairs objectAtIndex:0]];
     }
-    return (NSDictionary *)dict;
+    return dict;
 }
 
 // Parse an ASN1 string representing time from an X509 PKIX certificate.
@@ -421,22 +413,30 @@ static int add_ext(X509 * crt, int nid, char *value) {
     if (x509) {
         // Extract subject information
         {
+            BIO *mem = BIO_new(BIO_s_mem());
             X509_NAME *subject = X509_get_subject_name(x509);
-            char *asciiRepr = X509_NAME_oneline(subject, NULL, 0);
-            if (asciiRepr) {
-                _subjectDict = [self copyDictForOneLineASCIIRepr:asciiRepr];
-                OPENSSL_free(asciiRepr);
+            if (X509_NAME_print_ex(mem, subject, 0, XN_FLAG_ONELINE & ~ASN1_STRFLGS_ESC_MSB) > 0) {
+                BUF_MEM *buf = NULL;
+                BIO_get_mem_ptr(mem, &buf);
+                NSData *data = [[NSData alloc] initWithBytes:buf->data length:buf->length];
+                _subjectDict = [self copyDictForOneLineUTF8Repr:data];
+                [data release];
             }
+            BIO_free(mem);
         }
 
         // Extract issuer information
         {
+            BIO *mem = BIO_new(BIO_s_mem());
             X509_NAME *issuer = X509_get_issuer_name(x509);
-            char *asciiRepr = X509_NAME_oneline(issuer, NULL, 0);
-            if (asciiRepr) {
-                _issuerDict = [self copyDictForOneLineASCIIRepr:asciiRepr];
-                OPENSSL_free(asciiRepr);
+            if (X509_NAME_print_ex(mem, issuer, 0, XN_FLAG_ONELINE & ~ASN1_STRFLGS_ESC_MSB) > 0) {
+                BUF_MEM *buf = NULL;
+                BIO_get_mem_ptr(mem, &buf);
+                NSData *data = [[NSData alloc] initWithBytesNoCopy:buf->data length:buf->length freeWhenDone:NO];
+                _issuerDict = [self copyDictForOneLineUTF8Repr:data];
+                [data release];
             }
+            BIO_free(mem);
         }
 
         // Extract notBefore and notAfter
