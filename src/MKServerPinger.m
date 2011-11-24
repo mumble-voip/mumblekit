@@ -223,35 +223,39 @@
 - (void) addPinger:(MKServerPinger *)pinger {
     NSData *addr = [pinger address];
 
-    NSNumber *randData = [_randvalues objectForKey:addr];
-    if (randData == nil) {
-        UInt64 randValue = (UInt64) arc4random() << 32 | (UInt64) arc4random();
-        randData = [NSNumber numberWithUnsignedLongLong:(unsigned long long)randValue];
-        [_randvalues setObject:randData forKey:addr];
-        [_pingers setObject:[NSMutableArray arrayWithObject:pinger] forKey:addr];
-    } else {
-        NSMutableArray *addrPingers = [_pingers objectForKey:addr];
-        [addrPingers addObject:pinger];
-    }
+    if (addr != nil) {
+        NSNumber *randData = [_randvalues objectForKey:addr];
+        if (randData == nil) {
+            UInt64 randValue = (UInt64) arc4random() << 32 | (UInt64) arc4random();
+            randData = [NSNumber numberWithUnsignedLongLong:(unsigned long long)randValue];
+            [_randvalues setObject:randData forKey:addr];
+            [_pingers setObject:[NSMutableArray arrayWithObject:pinger] forKey:addr];
+        } else {
+            NSMutableArray *addrPingers = [_pingers objectForKey:addr];
+            [addrPingers addObject:pinger];
+        }
 
-    [pinger release];
-    if ([_pingers count] == 1)
-        [self setupPingerState];
+        [pinger release];
+        if ([_pingers count] == 1)
+            [self setupPingerState];
+    }
 }
 
 - (void) removePinger:(MKServerPinger *)pinger {
     [pinger retain];
 
     NSData *addr = [pinger address];
-    NSMutableArray *addrPingers = [_pingers objectForKey:addr];
-    [addrPingers removeObject:pinger];
-    if ([addrPingers count] == 0) {
-        [_pingers removeObjectForKey:addr];
-        [_randvalues removeObjectForKey:addr];
-    }
+    if (addr != nil) {
+        NSMutableArray *addrPingers = [_pingers objectForKey:addr];
+        [addrPingers removeObject:pinger];
+        if ([addrPingers count] == 0) {
+            [_pingers removeObjectForKey:addr];
+            [_randvalues removeObjectForKey:addr];
+        }
 
-    if ([_pingers count] == 0) {
-        [self teardownPingerState];
+        if ([_pingers count] == 0) {
+            [self teardownPingerState];
+        }
     }
 }
 
