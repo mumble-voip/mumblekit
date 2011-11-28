@@ -299,5 +299,13 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 #endif
 }
 
+- (float) speechProbablity {
+    return [_audioInput speechProbability];
+}
+
+- (float) peakCleanMic {
+    return [_audioInput peakCleanMic];
+}
+
 
 @end

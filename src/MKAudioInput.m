@@ -89,6 +89,9 @@ struct MKAudioInputPrivate {
     
     signed long _preprocRunningAvg;
     signed long _preprocAvgItems;
+    
+    float _speechProbability;
+    float _peakCleanMic;
 }
 - (BOOL) setupMacDevice;
 - (BOOL) setupiOSDevice;
@@ -671,6 +674,27 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         udpMessageType = UDPVoiceSpeexMessage;
     }
 
+    float sum = 1.0f;
+    int i;
+    for (i = 0; i < frameSize; i++) {
+        sum += psMic[i] * psMic[i];
+    }
+    float micLevel = sqrtf(sum / frameSize);
+    float peakSignal = 20.0f*log10f(micLevel/32768.0f);
+    if (-96.0f > peakSignal)
+        peakSignal = -96.0f;
+    
+    spx_int32_t prob = 0;
+    speex_preprocess_ctl(_private->preprocessorState, SPEEX_PREPROCESS_GET_PROB, &prob);
+    _speechProbability = prob / 100.0f;
+    
+    int arg;
+    speex_preprocess_ctl(_private->preprocessorState, SPEEX_PREPROCESS_GET_AGC_GAIN, &arg);
+    _peakCleanMic = peakSignal - (float)arg;
+    if (-96.0f > _peakCleanMic) {
+        _peakCleanMic = -96.0f;
+    }
+    
     // Crude probability-based VAD 
     if (_settings.transmitType == MKTransmitTypeVAD) {
         spx_int32_t prob = 0;
@@ -767,6 +791,14 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 - (long) preprocessorAvgRuntime {
     return _preprocRunningAvg;
+}
+
+- (float) speechProbability {
+    return _speechProbability;
+}
+
+- (float) peakCleanMic {
+    return _peakCleanMic;
 }
 
 @end

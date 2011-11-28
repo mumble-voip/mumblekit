@@ -159,4 +159,7 @@ typedef struct _MKAudioBenchmark {
 
 - (NSString *) currentAudioRoute;
 
+- (float) speechProbablity;
+- (float) peakCleanMic;
+
 @end

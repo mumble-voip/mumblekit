@@ -53,5 +53,7 @@
 - (BOOL) forceTransmit;
 
 - (signed long) preprocessorAvgRuntime;
+- (float) peakCleanMic;
+- (float) speechProbability;
 
 @end
