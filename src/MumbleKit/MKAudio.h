@@ -47,9 +47,17 @@ typedef enum _MKTransmitType {
     MKTransmitTypeContinuous,
 } MKTransmitType;
 
+typedef enum _MKVADKind {
+    MKVADKindSignalToNoise,
+    MKVADKindAmplitude,
+} MKVADKind;
+
 typedef struct _MKAudioSettings {
     MKCodecFormat   codec;
     MKTransmitType  transmitType;
+    MKVADKind       vadKind;
+    float           vadMax;
+    float           vadMin;
     int             quality;
     int             audioPerPacket;
     int             noiseSuppression;

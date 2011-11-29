@@ -695,14 +695,18 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         _peakCleanMic = -96.0f;
     }
     
-    // Crude probability-based VAD 
     if (_settings.transmitType == MKTransmitTypeVAD) {
-        spx_int32_t prob = 0;
-        speex_preprocess_ctl(_private->preprocessorState, SPEEX_PREPROCESS_GET_PROB, &prob);
-        if (!_lastTransmit) {
-            _doTransmit = prob > 75;
-        } else {
-            _doTransmit = prob > 55;
+        float level = _speechProbability;
+        if (_settings.vadKind == MKVADKindAmplitude) {
+            level = ((_peakCleanMic)/96.0f) + 1.0;
+        }
+        _doTransmit = NO;
+        if (_settings.vadMax == 0 && _settings.vadMin == 0) {
+            _doTransmit = NO;
+        } else if (level > _settings.vadMax) {
+            _doTransmit = YES;
+        } else if (level > _settings.vadMin && _lastTransmit) {
+            _doTransmit = YES;
         }
     } else if (_settings.transmitType == MKTransmitTypeContinuous) {
         _doTransmit = YES;
