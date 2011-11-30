@@ -45,12 +45,12 @@
 #import "MulticastDelegate.h"
 
 @interface MKServerModel () {
-    MKConnection                              *_connection;
-    MKChannel                                 *_rootChannel;
-    MKUser                                    *_connectedUser;
-    NSMutableDictionary                       *_userMap;
-    NSMutableDictionary                       *_channelMap;
-    MulticastDelegate<MKServerModelDelegate>  *_delegate;    
+    MKConnection              *_connection;
+    MKChannel                 *_rootChannel;
+    MKUser                    *_connectedUser;
+    NSMutableDictionary       *_userMap;
+    NSMutableDictionary       *_channelMap;
+    id<MKServerModelDelegate> _delegate;    
 }
 
 // Notifications
@@ -58,7 +58,7 @@
 
 // Internal user operations
 - (MKUser *) internalAddUserWithSession:(NSUInteger)userSession name:(NSString *)userName;
-- (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan byUser:(MKUser *)actor;
+- (void) internalMoveUser:(MKUser *)user toChannel:(MKChannel *)chan fromChannel:(MKChannel *)prevChan byUser:(MKUser *)mover;
 - (void) internalSetSelfMuteDeafenStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
 - (void) internalSetMuteStateForUser:(MKUser *)user fromMessage:(MPUserState *)msg;
 - (void) internalSetPrioritySpeakerStateForUser:(MKUser *)user to:(BOOL)prioritySpeaker;
@@ -90,7 +90,7 @@
 
 - (id) initWithConnection:(MKConnection *)conn {
     if (self = [super init]) {
-        _delegate = [[MulticastDelegate alloc] init];
+        _delegate = (id<MKServerModelDelegate>) [[MulticastDelegate alloc] init];
 
         _userMap = [[NSMutableDictionary alloc] init];
         _channelMap = [[NSMutableDictionary alloc] init];
@@ -115,7 +115,7 @@
 
     [_connection setMessageHandler:nil];
 
-    [_delegate release];
+    [(MulticastDelegate *) _delegate release];
 
     [self removeAllUsersFromChannel:_rootChannel];
     [_userMap release];
@@ -631,6 +631,8 @@
     BOOL ban = [msg hasBan] ? [msg ban] : NO;
     NSString *reason = [msg hasReason] ? [msg reason] : nil;
 
+    [user removeFromChannel];
+
     if (_connectedUser) {
         if (actor) {
             if (ban) {
@@ -646,7 +648,6 @@
     }
 
     [_userMap removeObjectForKey:[NSNumber numberWithUnsignedInteger:[msg session]]];
-    [user removeFromChannel];
 }
 
 #pragma mark -
@@ -778,12 +779,11 @@
 
 // Handle a channel remove (from a ChannelState message)
 - (void) internalRemoveChannel:(MKChannel *)chan {
+    [chan removeFromParent];
     if (_connectedUser) {
         [_delegate serverModel:self channelRemoved:chan];
     }
-
     [_channelMap removeObjectForKey:[NSNumber numberWithUnsignedInt:[chan channelId]]];
-    [chan removeFromParent];
 }
 
 #pragma mark -
