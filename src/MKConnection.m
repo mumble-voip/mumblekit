@@ -93,6 +93,7 @@
     int            _socket;
     CFSocketRef    _udpSock;
     SecIdentityRef _clientIdentity;
+    NSError        *_connError;
 
     // Codec info
     NSUInteger     _alphaCodec;
@@ -130,7 +131,11 @@
 
 // Error handling
 - (void) _handleError:(NSError *)streamError;
-- (void) _handleSslError:(NSError *)streamError;
+- (BOOL) _tryHandleSslError:(NSError *)streamError;
+
+// Thread handling
+- (void) startConnectionThread;
+- (void) stopConnectionThread;
 @end
 
 // CFSocket UDP callback.  This is called by MKConnection's UDP CFSocket whenever
@@ -150,12 +155,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     if (self == nil)
         return nil;
 
-    packetLength = -1;
-    _connectionEstablished = NO;
-    _socket = -1;
     _ignoreSSLVerification = NO;
-
-    _crypt = [[MKCryptState alloc] init];
 
     return self;
 }
@@ -163,7 +163,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 - (void) dealloc {
     [self disconnect];
 
-    [_crypt release];
     [_peerCertificates release];
 
     if (_clientIdentity)
@@ -177,10 +176,12 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
     do {
         if (_reconnect) {
-            NSLog(@"MKConnection: Reconnecting...");
             _reconnect = NO;
             _readyVoice = NO;
         }
+
+        [_crypt release];
+        _crypt = [[MKCryptState alloc] init];
 
         CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
                                            (CFStringRef)_hostname, (UInt32) _port,
@@ -227,13 +228,31 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
         [_pingTimer invalidate];
         _pingTimer = nil;
+    
+        if (_connectionEstablished) {
+            if ([_delegate respondsToSelector:@selector(connection:closedWithError:)]) {
+                NSError *err = [_connError retain];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_delegate connection:self closedWithError:err];
+                    [err release];
+                });
+            }
 
-        // Tell our delegate that we've been disconnected from the server.
-        if ([_delegate respondsToSelector:@selector(connectionClosed:)]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_delegate connectionClosed:self];
-            });
+        // Only show call the unableToConnectWithError: method if there was an actual error.
+        // We don't want to show it for reconnects, for example.
+        } else if (_connError != nil) {
+            if ([_delegate respondsToSelector:@selector(connection:unableToConnectWithError:)]) {
+                NSError *err = [_connError retain];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_delegate connection:self unableToConnectWithError:err];
+                    [err release];
+                });
+            }
         }
+
+        _connectionEstablished = NO;
+        [[MKConnectionController sharedController] removeConnection:self];
+
     } while (_reconnect);
 
     [NSThread exit];
@@ -249,27 +268,41 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 }
 
 - (void) connectToHost:(NSString *)hostName port:(NSUInteger)portNumber {
+
+    [_hostname release];
+    _hostname = [hostName copy];
+    _port = portNumber;
+
+    [self startConnectionThread];
+}
+
+// Start the MKConnection's thread.
+- (void) startConnectionThread {
     NSAssert(![self isExecuting], @"Thread is currently executing. Can't start another one.");
 
+    _socket = -1;
     packetLength = -1;
     _connectionEstablished = NO;
-    _hostname = hostName;
-    _port = portNumber;
     _keepRunning = YES;
     _readyVoice = NO;
-
-    [[MKConnectionController sharedController] addConnection:self];
 
     [self start];
 }
 
-- (void) disconnect {
-    [[MKConnectionController sharedController] removeConnection:self];
-
+// Stop the MKConnection's thread.
+//
+// This method is safe to call both from the main thread,
+// and from within the MKConnction thread itself.
+- (void) stopConnectionThread {
     if (![self isExecuting])
         return;
     _keepRunning = NO;
     [self _wakeRunLoop];
+}
+
+- (void) disconnect {
+    [[MKConnectionController sharedController] removeConnection:self];
+    [self stopConnectionThread];
     while ([self isExecuting] && ![self isFinished]) {
         // Wait for the thread to be done...
     }
@@ -386,8 +419,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
             if (nativeHandle) {
                 _socket = *(int *)CFDataGetBytePtr(nativeHandle);
                 CFRelease(nativeHandle);
-            } else {
-                NSLog(@"MKConnection: Unable to get socket file descriptor from stream. Breakage may occur.");
             }
 
             // Set our connTime to the timestamp at connect-time.
@@ -397,7 +428,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
             if (_socket != -1) {
                 int val = 1;
                 setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY, &val, sizeof(val));
-                NSLog(@"MKConnection: TCP_NODELAY=1");
             }
 
             // Setup UDP connection
@@ -413,7 +443,10 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
             // opened a connection to the server.
             if (! _connectionEstablished) {
                 _connectionEstablished = YES;
-
+                
+                // Add the connection to the MKConnectionController...
+                [[MKConnectionController sharedController] addConnection:self];
+                
                 // Schedule our ping timer.
                 _pingTimer = [NSTimer timerWithTimeInterval:MKConnectionPingInterval target:self selector:@selector(_pingTimerFired:) userInfo:nil repeats:YES];
                 [[NSRunLoop currentRunLoop] addTimer:_pingTimer forMode:NSRunLoopCommonModes];
@@ -429,19 +462,17 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         }
 
         case NSStreamEventErrorOccurred: {
-            NSLog(@"MKConnection: ErrorOccurred");
             NSError *err = [_outputStream streamError];
             [self _handleError:err];
             break;
         }
 
         case NSStreamEventEndEncountered:
-            NSLog(@"MKConnection: EndEncountered");
-            
+            [self stopConnectionThread];
             break;
 
         default:
-            NSLog(@"MKConnection: Unknown event (%lu)", eventCode);
+            NSLog(@"MKConnection: Unknown event (%u)", eventCode);
             break;
     }
 }
@@ -640,6 +671,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 //
 // This message should only be called from MKConnection's own thread.
 - (void) _sendMessageHelper:(NSDictionary *)dict {
+    if (!_connectionEstablished)
+        return;
+
     NSData *data = [dict objectForKey:@"data"];
     MKMessageType messageType = (MKMessageType)[[dict objectForKey:@"messageType"] intValue];
     
@@ -654,7 +688,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
     NSInteger nwritten = [_outputStream write:[msg bytes] maxLength:[msg length]];
     if (nwritten != expectedLength) {
-        NSLog(@"MKConnection: write error, wrote %li, expected %u", nwritten, expectedLength);
+        NSLog(@"MKConnection: write error, wrote %d, expected %u", nwritten, expectedLength);
     }
     [msg release];
 }
@@ -663,7 +697,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // out whether it should be sent via UDP or TCP depending on the current
 // connection conditions.
 - (void) sendVoiceData:(NSData *)data {
-    if (!_readyVoice)
+    if (!_readyVoice || !_connectionEstablished)
         return;
     if (!_forceTCP && _udpAvailable) {
         [self _sendUDPMessage:data];
@@ -874,13 +908,19 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     /* Is the error an SSL-related error? (OSStatus errors are negative, so the
      * greater than and less than signs are sort-of reversed here. */
     if (errorCode <= errSSLProtocol && errorCode > errSSLLast) {
-        [self _handleSslError:streamError];
+        BOOL didHandle = [self _tryHandleSslError:streamError];
+        if (didHandle) {
+            // Nothing more to do.
+            return;
+        }
     }
 
-    NSLog(@"MKConnection: Error: %@", streamError);
+    [_connError release];
+    _connError = [streamError retain];
+    [self stopConnectionThread];
 }
 
-- (void) _handleSslError:(NSError *)streamError {
+- (BOOL) _tryHandleSslError:(NSError *)streamError {
     if ([streamError code] == errSSLXCertChainInvalid
         || [streamError code] == errSSLUnknownRootCert) {
         SecTrustRef trust = (SecTrustRef) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerTrust);
@@ -914,11 +954,14 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
                         [_delegate connection:self trustFailureInCertificateChain:[self peerCertificates]];
                     });
                 }
+                return YES;
             }
         }
 
         CFRelease(trust);
     }
+
+    return NO;
 }
 
 // This is the entry point for UDP packets after they've been decrypted,

@@ -140,12 +140,26 @@ typedef enum {
 - (void) connectionOpened:(MKConnection *)conn;
 
 /**
+ * This method is called if a connection cannot be stablished to the given server.
+ *
+ @ @param conn The connection that this occurred in. 
+ * @param err  Error describing why the connection could not be established.
+ */
+- (void) connection:(MKConnection *)conn unableToConnectWithError:(NSError *)err;
+
+/**
  * This method is called whenever the connection is closed, be it by an error, or by
- * disconnection.
+ * disconnection. If the disconnection was caused by an error, the err parameter will
+ * be a non-nil value.
+ *
+ * This method can only be called after the connection has been opened. If an error occurs
+ * during the connection phase, the method `connection:unableToConnectWithError:` will be
+ * called instead.
  *
  * @param conn  The connection that was closed.
+ * @param err   The error that caused the disconnection. (Nil if not caused by an error)
  */
-- (void) connectionClosed:(MKConnection *)conn;
+- (void) connection:(MKConnection *)conn closedWithError:(NSError *)err;
 
 /**
  * This method is called if the MKConnection could not verify the TLS certificate chain
