@@ -94,6 +94,7 @@
     CFSocketRef    _udpSock;
     SecIdentityRef _clientIdentity;
     NSError        *_connError;
+    BOOL           _rejected;
 
     // Codec info
     NSUInteger     _alphaCodec;
@@ -229,7 +230,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         [_pingTimer invalidate];
         _pingTimer = nil;
     
-        if (_connectionEstablished) {
+        if (_connectionEstablished && !_rejected) {
             if ([_delegate respondsToSelector:@selector(connection:closedWithError:)]) {
                 NSError *err = [_connError retain];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -251,6 +252,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         }
 
         _connectionEstablished = NO;
+        _rejected = NO;
         [[MKConnectionController sharedController] removeConnection:self];
 
     } while (_reconnect);
@@ -285,6 +287,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     _connectionEstablished = NO;
     _keepRunning = YES;
     _readyVoice = NO;
+    _rejected = NO;
 
     [self start];
 }
@@ -854,7 +857,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         });
     }
 
-    [self disconnect];
+    _rejected = YES;
+    [self stopConnectionThread];
 }
 
 // Handle server crypt setup
