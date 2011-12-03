@@ -65,6 +65,7 @@ typedef struct _MKAudioSettings {
     int             jitterBufferSize;
     float           volume;
     int             outputDelay;
+    float           micBoost;
     BOOL            enablePreprocessor;
     BOOL            enableBenchmark;
 } MKAudioSettings;

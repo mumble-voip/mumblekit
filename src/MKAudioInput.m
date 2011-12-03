@@ -611,6 +611,16 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         {
             isSpeech = speex_preprocess_run(_private->preprocessorState, psMic);
         }
+    } else {
+        BOOL resampled = micFrequency != sampleRate;
+        short *buf = resampled ? psOut : psMic;
+        int i;
+        for (i = 0; i < micLength; i++) {
+            float val = (buf[i] / 32767.0f) * (1.0f + _settings.micBoost);
+            if (val > 1.0f)
+                val = 1.0f;
+            buf[i] = val * 32767.0f;
+        }
     }
 
     unsigned char buffer[1024];
