@@ -707,7 +707,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     
     if (_settings.transmitType == MKTransmitTypeVAD) {
         float level = _speechProbability;
-        if (_settings.vadKind == MKVADKindAmplitude) {
+        if (!_settings.enablePreprocessor || _settings.vadKind == MKVADKindAmplitude) {
             level = ((_peakCleanMic)/96.0f) + 1.0;
         }
         _doTransmit = NO;
