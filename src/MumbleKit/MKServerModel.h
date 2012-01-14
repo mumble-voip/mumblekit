@@ -31,6 +31,7 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKChannel.h>
 #import <MumbleKit/MKConnection.h>
+#import <MumbleKit/MKTextMessage.h>
 
 @class MulticastDelegate;
 @class MKServerModel;
@@ -172,8 +173,9 @@ typedef enum {
  *
  * @param model  The MKServerModel in which this event originated.
  * @param msg    The MKTextMessage object representing the received text message.
+ * @param user   The MKUser that sent the text message.
  */
-//- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg;
+- (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg fromUser:(MKUser *)user;
 
 ///--------------------------------
 /// @name Self-mute and self-deafen
@@ -647,6 +649,58 @@ typedef enum {
  * @param channel  The channel to join.
  */
 - (void) joinChannel:(MKChannel *)channel;
+
+///------------------------------
+/// @name Text message operations
+///------------------------------
+
+/**
+ * Send a text message to the given destinations.
+ *
+ * One, or multiple of tree, channels and users must be passed to the method.
+ *
+ * Sending a message to a chnanel is the same as sending to all users in that channel;
+ * receivers cannot distinguish between receiving a 'channel' message, and a message
+ * specifically targetted at them.
+ *
+ * @param  txtMsg The text message to send.
+ *
+ * @param  trees  An NSArray of MKChannel objects (or nil). The message will be sent to
+ *                all channels in this array, and recursively to their descendants
+ *                (subchannels, children of subchannels, and so on).
+ *
+ * @param  channels  An NSArray of MKChannel objects (or nil). The message will be sent to all
+ *                   channels in this array.
+ *
+ * @param  users  An NSArray of MKUser objects (or nil).
+ @
+ */
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toTreeChannels:(NSArray *)trees andChannels:(NSArray *)channels andUsers:(NSArray *)users;
+
+/**
+ * Send a message to all users in the channel chan and all of its descendants
+ * (subchannels, children of subchannels, and so on).
+ *
+ * @param  txtMsg  The text message to send.
+ * @param  chan    The destination channel.
+ */
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toTree:(MKChannel *)chan;
+
+/**
+ * Send a message to all users in the the channel chan.
+ *
+ * @param  txtMsg  The text message to send.
+ * @param  chan    The destination channel.
+ */
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toChannel:(MKChannel *)chan;
+
+/**
+ * Send a message to the user user.
+ *
+ * @param  txtMsg  The text message to send.
+ * @param  user    The user to send the message to.
+ */
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toUser:(MKUser *)user;
 
 ///------------------------
 /// @name Server operations

@@ -42,6 +42,8 @@
 #import <MumbleKit/MKUser.h>
 #import "MKUserPrivate.h"
 
+#import <MumbleKit/MKTextMessage.h>
+
 #import "MulticastDelegate.h"
 
 @interface MKServerModel () {
@@ -425,6 +427,12 @@
 }
 
 - (void) connection:(MKConnection *)conn handleTextMessageMessage: (MPTextMessage *)msg {
+    if (![msg hasActor] || ![msg hasMessage]) {
+        return;
+    }
+    MKUser *sender = [self userWithSession:[msg actor]];
+    MKTextMessage *txtMsg = [MKTextMessage messageWithString:[msg message]];
+    [_delegate serverModel:self textMessageReceived:txtMsg fromUser:sender];
 }
 
 - (void) connection:(MKConnection *)conn handleACLMessage: (MPACL *)msg {
@@ -818,6 +826,47 @@
 
     NSData *data = [[userState build] data];
     [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
+#pragma mark -
+#pragma mark Text message operations
+
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toTreeChannels:(NSArray *)trees andChannels:(NSArray *)channels andUsers:(NSArray *)users {
+    NSMutableArray *treeIds = [[[NSMutableArray alloc] initWithCapacity:[trees count]] autorelease];
+    for (MKChannel *chan in trees) {
+        [treeIds addObject:[NSNumber numberWithUnsignedLong:[chan channelId]]];
+    }
+
+    NSMutableArray *channelIds = [[[NSMutableArray alloc] initWithCapacity:[channels count]] autorelease];
+    for (MKChannel *chan in channels) {
+        [channelIds addObject:[NSNumber numberWithUnsignedLong:[chan channelId]]];
+    }
+
+    NSMutableArray *userSessions = [[[NSMutableArray alloc] initWithCapacity:[users count]] autorelease];
+    for (MKUser *user in users) {
+        [userSessions addObject:[NSNumber numberWithUnsignedLong:[user session]]];
+    }
+
+    MPTextMessage_Builder *textMessage = [MPTextMessage builder];
+    [textMessage setTreeIdArray:treeIds];
+    [textMessage setChannelIdArray:channelIds];
+    [textMessage setSessionArray:userSessions];
+    [textMessage setMessage:[txtMsg HTMLString]];
+    NSData *data = [[textMessage build] data];
+
+    [_connection sendMessageWithType:TextMessageMessage data:data];
+}
+
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toTree:(MKChannel *)chan {  
+    [self sendTextMessage:txtMsg toTreeChannels:[NSArray arrayWithObject:chan] andChannels:nil andUsers:nil];
+}
+
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toChannel:(MKChannel *)chan {
+    [self sendTextMessage:txtMsg toTreeChannels:nil andChannels:[NSArray arrayWithObject:chan] andUsers:nil];
+}
+
+- (void) sendTextMessage:(MKTextMessage *)txtMsg toUser:(MKUser *)user {
+    [self sendTextMessage:txtMsg toTreeChannels:nil andChannels:nil andUsers:[NSArray arrayWithObject:user]];
 }
 
 #pragma mark -
