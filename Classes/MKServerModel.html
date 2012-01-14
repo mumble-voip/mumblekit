@@ -62,6 +62,16 @@
 	
 	<option value="//api/name/rootChannel">&nbsp;&nbsp;&nbsp;&nbsp;- rootChannel</option>
 	
+	<option value="//api/name/sendTextMessage:toChannel:">&nbsp;&nbsp;&nbsp;&nbsp;- sendTextMessage:toChannel:</option>
+	
+	<option value="//api/name/sendTextMessage:toTree:">&nbsp;&nbsp;&nbsp;&nbsp;- sendTextMessage:toTree:</option>
+	
+	<option value="//api/name/sendTextMessage:toTreeChannels:andChannels:andUsers:">&nbsp;&nbsp;&nbsp;&nbsp;- sendTextMessage:toTreeChannels:andChannels:andUsers:</option>
+	
+	<option value="//api/name/sendTextMessage:toUser:">&nbsp;&nbsp;&nbsp;&nbsp;- sendTextMessage:toUser:</option>
+	
+	<option value="//api/name/serverCertificates">&nbsp;&nbsp;&nbsp;&nbsp;- serverCertificates</option>
+	
 	<option value="//api/name/setAccessTokens:">&nbsp;&nbsp;&nbsp;&nbsp;- setAccessTokens:</option>
 	
 	<option value="//api/name/userWithHash:">&nbsp;&nbsp;&nbsp;&nbsp;- userWithHash:</option>
@@ -94,6 +104,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Channel operations">Channel operations</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Text message operations">Text message operations</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Server operations">Server operations</a></span></li>
 	
 </ul></li>
@@ -125,6 +137,16 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeDelegate:">removeDelegate:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rootChannel">rootChannel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendTextMessage:toChannel:">sendTextMessage:toChannel:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendTextMessage:toTree:">sendTextMessage:toTree:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendTextMessage:toTreeChannels:andChannels:andUsers:">sendTextMessage:toTreeChannels:andChannels:andUsers:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sendTextMessage:toUser:">sendTextMessage:toUser:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverCertificates">serverCertificates</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAccessTokens:">setAccessTokens:</a></span></li>
 	
@@ -304,6 +326,79 @@ connected to.</p></span>
 						</ul>
 						
 						
+						<a title="Text message operations" name="task_Text message operations"></a>
+						<h3 class="subsubtitle task-title">Text message operations</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sendTextMessage:toTreeChannels:andChannels:andUsers:">&ndash;&nbsp;sendTextMessage:toTreeChannels:andChannels:andUsers:</a></code>
+		<span class="tooltip"><p>* Send a text message to the given destinations.</p>
+
+<h1>!~**</h1>
+
+<p>* One, or multiple of tree, channels and users must be passed to the method.</p>
+
+<h1>!~**</h1>
+
+<p>* Sending a message to a chnanel is the same as sending to all users in that channel;</p>
+
+<h1>!~** receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</h1>
+
+<p>* specifically targetted at them.</p>
+
+<h1>!~**</h1>
+
+<p>* @param  txtMsg The text message to send.</p>
+
+<h1>!~**</h1>
+
+<p>* @param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</p>
+
+<h1>!~**                all channels in this array, and recursively to their descendants</h1>
+
+<p>*                (subchannels, children of subchannels, and so on).</p>
+
+<h1>!~**</h1>
+
+<p>* @param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</p>
+
+<h1>!~**                   channels in this array.</h1>
+
+<p>*</p>
+
+<h1>!~** @param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).</h1>
+
+<p>@</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sendTextMessage:toTree:">&ndash;&nbsp;sendTextMessage:toTree:</a></code>
+		<span class="tooltip"><p>Send a message to all users in the channel chan and all of its descendants
+(subchannels, children of subchannels, and so on).</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sendTextMessage:toChannel:">&ndash;&nbsp;sendTextMessage:toChannel:</a></code>
+		<span class="tooltip"><p>Send a message to all users in the the channel chan.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sendTextMessage:toUser:">&ndash;&nbsp;sendTextMessage:toUser:</a></code>
+		<span class="tooltip"><p>Send a message to the user user.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
 						<a title="Server operations" name="task_Server operations"></a>
 						<h3 class="subsubtitle task-title">Server operations</h3>
 
@@ -312,6 +407,13 @@ connected to.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/setAccessTokens:">&ndash;&nbsp;setAccessTokens:</a></code>
 		<span class="tooltip"><p>Set the list of access tokens for the currently connected user.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverCertificates">&ndash;&nbsp;serverCertificates</a></code>
+		<span class="tooltip"><p>Get the server&rsquo;s certificate chain.</p></span>
 	</span>
 	
 	
@@ -695,6 +797,258 @@ connected to.</p>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/sendTextMessage:toChannel:" title="sendTextMessage:toChannel:"></a>
+	<h3 class="subsubtitle method-title">sendTextMessage:toChannel:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Send a message to all users in the the channel chan.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toChannel:(MKChannel *)<em>chan</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>txtMsg</em></dt>
+			<dd><p>The text message to send.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>chan</em></dt>
+			<dd><p>The destination channel.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sendTextMessage:toTree:" title="sendTextMessage:toTree:"></a>
+	<h3 class="subsubtitle method-title">sendTextMessage:toTree:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Send a message to all users in the channel chan and all of its descendants
+(subchannels, children of subchannels, and so on).</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toTree:(MKChannel *)<em>chan</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>txtMsg</em></dt>
+			<dd><p>The text message to send.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>chan</em></dt>
+			<dd><p>The destination channel.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sendTextMessage:toTreeChannels:andChannels:andUsers:" title="sendTextMessage:toTreeChannels:andChannels:andUsers:"></a>
+	<h3 class="subsubtitle method-title">sendTextMessage:toTreeChannels:andChannels:andUsers:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>* Send a text message to the given destinations.</p>
+
+<h1>!~**</h1>
+
+<p>* One, or multiple of tree, channels and users must be passed to the method.</p>
+
+<h1>!~**</h1>
+
+<p>* Sending a message to a chnanel is the same as sending to all users in that channel;</p>
+
+<h1>!~** receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</h1>
+
+<p>* specifically targetted at them.</p>
+
+<h1>!~**</h1>
+
+<p>* @param  txtMsg The text message to send.</p>
+
+<h1>!~**</h1>
+
+<p>* @param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</p>
+
+<h1>!~**                all channels in this array, and recursively to their descendants</h1>
+
+<p>*                (subchannels, children of subchannels, and so on).</p>
+
+<h1>!~**</h1>
+
+<p>* @param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</p>
+
+<h1>!~**                   channels in this array.</h1>
+
+<p>*</p>
+
+<h1>!~** @param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).</h1>
+
+<p>@</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toTreeChannels:(NSArray *)<em>trees</em> andChannels:(NSArray *)<em>channels</em> andUsers:(NSArray *)<em>users</em></code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sendTextMessage:toUser:" title="sendTextMessage:toUser:"></a>
+	<h3 class="subsubtitle method-title">sendTextMessage:toUser:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Send a message to the user user.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toUser:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>txtMsg</em></dt>
+			<dd><p>The text message to send.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user to send the message to.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverCertificates" title="serverCertificates"></a>
+	<h3 class="subsubtitle method-title">serverCertificates</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Get the server&rsquo;s certificate chain.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)serverCertificates</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/setAccessTokens:" title="setAccessTokens:"></a>
 	<h3 class="subsubtitle method-title">setAccessTokens:</h3>
 	
@@ -853,7 +1207,7 @@ if the user does not exist on the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-23)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-14)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
 						

@@ -44,11 +44,13 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
+	<option value="//api/name/connection:closedWithError:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:closedWithError:</option>
+	
 	<option value="//api/name/connection:rejectedWithReason:explanation:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:rejectedWithReason:explanation:</option>
 	
 	<option value="//api/name/connection:trustFailureInCertificateChain:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:trustFailureInCertificateChain:</option>
 	
-	<option value="//api/name/connectionClosed:">&nbsp;&nbsp;&nbsp;&nbsp;- connectionClosed:</option>
+	<option value="//api/name/connection:unableToConnectWithError:">&nbsp;&nbsp;&nbsp;&nbsp;- connection:unableToConnectWithError:</option>
 	
 	<option value="//api/name/connectionOpened:">&nbsp;&nbsp;&nbsp;&nbsp;- connectionOpened:</option>
 	
@@ -80,11 +82,13 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:closedWithError:">connection:closedWithError:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:rejectedWithReason:explanation:">connection:rejectedWithReason:explanation:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:trustFailureInCertificateChain:">connection:trustFailureInCertificateChain:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectionClosed:">connectionClosed:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connection:unableToConnectWithError:">connection:unableToConnectWithError:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectionOpened:">connectionOpened:</a></span></li>
 	
@@ -151,9 +155,22 @@ with the server.</p></span>
 	<span class="task-item-suffix">required method</span>
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/connectionClosed:">&ndash;&nbsp;connectionClosed:</a></code>
+		<code><a href="#//api/name/connection:unableToConnectWithError:">&ndash;&nbsp;connection:unableToConnectWithError:</a></code>
+		<span class="tooltip"><p>* This method is called if a connection cannot be stablished to the given server.</p>
+
+<h1>!~**</h1>
+
+<p>@ @param conn The connection that this occurred in.
+* @param err  Error describing why the connection could not be established.</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connection:closedWithError:">&ndash;&nbsp;connection:closedWithError:</a></code>
 		<span class="tooltip"><p>This method is called whenever the connection is closed, be it by an error, or by
-disconnection.</p></span>
+disconnection. If the disconnection was caused by an error, the err parameter will
+be a non-nil value.</p></span>
 	</span>
 	
 	<span class="task-item-suffix">required method</span>
@@ -188,6 +205,64 @@ of the remote server as trusted.</p></span>
 					<div class="section section-methods">
 						<a title="Instance Methods" name="instance_methods"></a>
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/connection:closedWithError:" title="connection:closedWithError:"></a>
+	<h3 class="subsubtitle method-title">connection:closedWithError:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>This method is called whenever the connection is closed, be it by an error, or by
+disconnection. If the disconnection was caused by an error, the err parameter will
+be a non-nil value.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> closedWithError:(NSError *)<em>err</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that was closed.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>err</em></dt>
+			<dd><p>The error that caused the disconnection. (Nil if not caused by an error)</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This method can only be called after the connection has been opened. If an error occurs
+during the connection phase, the method <a href="#//api/name/connection:unableToConnectWithError:"><code>connection:unableToConnectWithError:</code></a> will be
+called instead.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
 						
 						<div class="section-method">
 	<a name="//api/name/connection:rejectedWithReason:explanation:" title="connection:rejectedWithReason:explanation:"></a>
@@ -305,29 +380,23 @@ reconnect to the <a href="../Classes/MKConnection.html">MKConnection</a> object.
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/connectionClosed:" title="connectionClosed:"></a>
-	<h3 class="subsubtitle method-title">connectionClosed:</h3>
+	<a name="//api/name/connection:unableToConnectWithError:" title="connection:unableToConnectWithError:"></a>
+	<h3 class="subsubtitle method-title">connection:unableToConnectWithError:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>This method is called whenever the connection is closed, be it by an error, or by
-disconnection.</p>
+		<p>* This method is called if a connection cannot be stablished to the given server.</p>
+
+<h1>!~**</h1>
+
+<p>@ @param conn The connection that this occurred in.
+* @param err  Error describing why the connection could not be established.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (void)connectionClosed:(MKConnection *)<em>conn</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> unableToConnectWithError:(NSError *)<em>err</em></code></div>
 	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>conn</em></dt>
-			<dd><p>The connection that was closed.</p></dd>
-		</dl>
-		
-	</div>
 	
 	
 	
@@ -409,7 +478,7 @@ with the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2011 Mumble Developers. All rights reserved. (Last updated: 2011-11-23)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-14)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
 						
