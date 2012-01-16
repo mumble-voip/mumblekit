@@ -30,8 +30,11 @@
 
 #import <MumbleKit/MKTextMessage.h>
 
-@interface MKTextMessage () {
-    NSString *_str;
+@interface MKTextMessage () <NSXMLParserDelegate> {
+    NSString         *_rawStr;
+    NSMutableString  *_plainStr;
+    NSMutableArray   *_imagesArray;
+    NSMutableArray   *_linksArray;
 }
 - (id) initWithString:(NSString *)str;
 @end
@@ -40,13 +43,27 @@
 
 - (id) initWithString:(NSString *)str {
     if ((self = [super init])) {
-        _str = [str retain];
+        _rawStr = [str retain];
+        _imagesArray = [[NSMutableArray alloc] init];
+        _linksArray = [[NSMutableArray alloc] init];
+        NSRange r = [_rawStr rangeOfString:@"<"];
+        BOOL possiblyHtml = r.location != NSNotFound;
+        if (possiblyHtml) {
+            _plainStr = [[NSMutableString alloc] init];
+            NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:[[NSString stringWithFormat:@"<doc>%@</doc>", _rawStr] dataUsingEncoding:NSUTF8StringEncoding]];
+            [xmlParser setDelegate:self];
+            [xmlParser parse];
+        }
     }
+    
     return self;
 }
 
 - (void) dealloc {
-    [_str release];
+    [_rawStr release];
+    [_plainStr release];
+    [_imagesArray release];
+    [_linksArray release];
     [super dealloc];
 }
 
@@ -63,11 +80,45 @@
 }
 
 - (NSString *) plainTextString {
-    return _str;
+    if (_plainStr != nil) {
+        return _plainStr;
+    }
+    return _rawStr;
 }
 
 - (NSString *) HTMLString {
-    return _str;
+    return _rawStr;
+}
+
+- (NSArray *) embeddedLinks {
+    return _linksArray;
+}
+
+- (NSArray *) embeddedImages {
+    return _imagesArray;
+}
+
+#pragma mark - NSXMLParserDelegate
+
+- (void) parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+    if ([elementName isEqualToString:@"img"]) {
+        NSString *src = [attributeDict objectForKey:@"src"];
+        if ([src hasPrefix:@"data:"]) {
+            [_imagesArray addObject:src];
+        }
+    } else if ([elementName isEqualToString:@"a"]) {
+        NSString *href = [attributeDict objectForKey:@"href"];
+        [_linksArray addObject:href];
+    }
+}
+
+- (void) parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+    if ([elementName isEqualToString:@"br"] || [elementName isEqualToString:@"p"])
+        [_plainStr appendString:@"\n"];
+}
+
+- (void) parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    [_plainStr appendString:string];
 }
 
 @end

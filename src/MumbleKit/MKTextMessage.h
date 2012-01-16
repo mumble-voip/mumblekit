@@ -83,4 +83,21 @@
  */
 - (NSString *) HTMLString;
 
+/**
+ * Returns all links found in the text message.
+ *
+ * @returns Returns an NSArray of NSStrings corresponding to the href attributes of any a tags
+ *          found in the text message.
+ */
+- (NSArray *) embeddedLinks;
+
+/**
+ * Returns all embedded images found in the text message. (Only images with data URIs are
+ * considered valid).
+ *
+ * @returns Returns an NSArray of all images found in the text message. The images are
+ *          represented as data URIs.
+ */
+- (NSArray *) embeddedImages;
+
 @end
