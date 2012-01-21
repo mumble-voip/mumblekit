@@ -73,7 +73,7 @@
 
             [_plainStr release];
             _plainStr = nil;
-            _filteredStr = [[NSString stringWithCharacters:[filtered bytes] length:[filtered length]] retain];
+            _filteredStr = [[NSString stringWithCharacters:[filtered bytes] length:[filtered length]/2] retain];
             [filtered release];
         }
     }
