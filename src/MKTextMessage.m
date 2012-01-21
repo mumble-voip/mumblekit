@@ -33,6 +33,7 @@
 @interface MKTextMessage () <NSXMLParserDelegate> {
     NSString         *_rawStr;
     NSMutableString  *_plainStr;
+    NSString         *_filteredStr;
     NSMutableArray   *_imagesArray;
     NSMutableArray   *_linksArray;
 }
@@ -53,9 +54,30 @@
             NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:[[NSString stringWithFormat:@"<doc>%@</doc>", _rawStr] dataUsingEncoding:NSUTF8StringEncoding]];
             [xmlParser setDelegate:self];
             [xmlParser parse];
+
+            // Strip extra whitespace
+            NSMutableData *filtered = [[NSMutableData alloc] init];
+            NSCharacterSet *whitespaceNewlineSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+            int i, len = [_plainStr length];
+            unichar lastc = 0;
+            for (i = 0; i < len; i++) {
+                unichar c = [_plainStr characterAtIndex:i];
+                if ([whitespaceNewlineSet characterIsMember:c]) {
+                    if (lastc != c)
+                        [filtered appendBytes:&c length:2];
+                } else {
+                    [filtered appendBytes:&c length:2];
+                }
+                lastc = c;
+            }
+
+            [_plainStr release];
+            _plainStr = nil;
+            _filteredStr = [[NSString stringWithCharacters:[filtered bytes] length:[filtered length]] retain];
+            [filtered release];
         }
     }
-    
+
     return self;
 }
 
@@ -80,8 +102,8 @@
 }
 
 - (NSString *) plainTextString {
-    if (_plainStr != nil) {
-        return _plainStr;
+    if (_filteredStr != nil) {
+        return _filteredStr;
     }
     return _rawStr;
 }
