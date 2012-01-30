@@ -353,6 +353,9 @@
     _connectedUser = user;
 
     [_delegate serverModel:self joinedServerAsUser:user];
+
+    MKTextMessage *txtMsg = [MKTextMessage messageWithString:[msg welcomeText]];
+    [_delegate serverModel:self joinedServerAsUser:user withWelcomeMessage:txtMsg];
 }
 
 - (void) connection:(MKConnection *)conn handleBanListMessage: (MPBanList *)msg {

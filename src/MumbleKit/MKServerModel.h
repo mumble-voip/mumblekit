@@ -71,11 +71,21 @@ typedef enum {
 
 /**
  * Called upon successfully authenticating with a server.
+ * This method is deprecated, see serverModel:joinedServerAsUser:withWelcomeMessage:.
  *
  * @param model  The MKServerModel object in which this event originated.
  * @param user   The MKUser object representing the local user.
  */
 - (void) serverModel:(MKServerModel *)model joinedServerAsUser:(MKUser *)user;
+
+/**
+ * Called upon successfully authenticating with a server.
+ *
+ * @param model  The MKServerModel object in which this event originated.
+ * @param user   The MKUser object representing the local user.
+ * @param msg    The welcome message presented by the server.
+ */
+- (void) serverModel:(MKServerModel *)model joinedServerAsUser:(MKUser *)user withWelcomeMessage:(MKTextMessage *)msg;
 
 /**
  * Called when disconnected from the server (forcefully or not).
