@@ -96,8 +96,8 @@ static int add_ext(X509 * crt, int nid, char *value) {
     OpenSSL_add_all_algorithms();
 
     // On Unix systems OpenSSL makes sure its PRNG is seeded with
-    // random data from /dev/random or /dev/urandom. It would probably
-    // be a good idea to seed it more than this. Fixme?
+    // random data from /dev/random or /dev/urandom before its random
+    // functions are called. We shouldn't need to seed it more.
 }
 
 - (void) dealloc {
