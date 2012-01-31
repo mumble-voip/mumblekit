@@ -661,6 +661,9 @@
 
 - (void) internalRemoveUserWithMessage:(MPUserRemove *)msg {
     MKUser *user = [self userWithSession:[msg session]];
+    if (user == nil)
+        return;
+
     MKUser *actor = [msg hasActor] ? [self userWithSession:[msg actor]] : nil;
     BOOL ban = [msg hasBan] ? [msg ban] : NO;
     NSString *reason = [msg hasReason] ? [msg reason] : nil;
