@@ -729,4 +729,10 @@ typedef enum {
  */
 - (NSArray *) serverCertificates;
 
+///-----------------------------
+/// @name Mute/deafen operations
+///-----------------------------
+
+- (void) setSelfMuted:(BOOL)selfMuted andSelfDeafened:(BOOL)selfDeafened;
+
 @end

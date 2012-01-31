@@ -307,5 +307,16 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     return [_audioInput peakCleanMic];
 }
 
+- (void) setSelfMuted:(BOOL)selfMuted {
+    [_audioInput setSelfMuted:selfMuted];
+}
+
+- (void) setSuppressed:(BOOL)suppressed {
+    [_audioInput setSuppressed:suppressed];
+}
+
+- (void) setMuted:(BOOL)muted {
+    [_audioInput setMuted:muted];
+}
 
 @end

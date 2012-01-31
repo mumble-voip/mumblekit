@@ -56,4 +56,8 @@
 - (float) peakCleanMic;
 - (float) speechProbability;
 
+- (void) setSelfMuted:(BOOL)selfMuted;
+- (void) setSuppressed:(BOOL)suppressed;
+- (void) setMuted:(BOOL)muted;
+
 @end

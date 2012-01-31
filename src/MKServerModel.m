@@ -46,6 +46,13 @@
 
 #import "MulticastDelegate.h"
 
+// fixme(mkrautz): Refactor once 1.0's out the door.
+@interface MKAudio ()
+- (void) setSelfMuted:(BOOL)selfMuted;
+- (void) setSuppressed:(BOOL)suppressed;
+- (void) setMuted:(BOOL)muted;
+@end
+
 @interface MKServerModel () {
     MKConnection              *_connection;
     MKChannel                 *_rootChannel;
@@ -105,6 +112,11 @@
 
         _connection = [conn retain];
         [_connection setMessageHandler:self];
+        
+        // fixme(mkrautz): Refactor this once 1.0's out the door.
+        [[MKAudio sharedAudio] setSelfMuted:NO];
+        [[MKAudio sharedAudio] setMuted:NO];
+        [[MKAudio sharedAudio] setSuppressed:NO];
 
         // Listens to notifications form MKAudioOutput and MKAudioInput
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUserTalkStateChanged:) name:@"MKAudioUserTalkStateChanged" object:nil];
@@ -530,6 +542,10 @@
             [_delegate serverModel:self userRemovedSelfMute:user];
         }
 
+        if (user == _connectedUser) {
+            [[MKAudio sharedAudio] setSelfMuted:[user isSelfMuted]];
+        }
+
         [_delegate serverModel:self userSelfMuteDeafenStateChanged:user];
     }
 }
@@ -583,6 +599,13 @@
                     [_delegate serverModel:self userUnsuppressed:user byUser:actor];
                 }
             }
+        }
+        
+        if (user == _connectedUser) {
+            [[MKAudio sharedAudio] setMuted:[user isMuted]];
+        }
+        if (user == _connectedUser) {
+            [[MKAudio sharedAudio] setSuppressed:[user isSuppressed]];
         }
 
         [_delegate serverModel:self userMuteStateChanged:user];
@@ -885,6 +908,18 @@
 
 - (NSArray *) serverCertificates {
     return [_connection peerCertificates];
+}
+
+#pragma mark -
+#pragma mark Mute/deafen operations
+
+- (void) setSelfMuted:(BOOL)selfMuted andSelfDeafened:(BOOL)selfDeafened {
+    MPUserState_Builder *mpus = [MPUserState builder];
+    [mpus setSelfMute:selfMuted];
+    [mpus setSelfDeaf:selfDeafened];
+    
+    NSData *data = [[mpus build] data];
+    [_connection sendMessageWithType:UserStateMessage data:data];
 }
 
 @end

@@ -92,6 +92,8 @@ struct MKAudioInputPrivate {
     
     float _speechProbability;
     float _peakCleanMic;
+    
+    BOOL _selfMuted, _muted, _suppressed;
 }
 - (BOOL) setupMacDevice;
 - (BOOL) setupiOSDevice;
@@ -724,6 +726,13 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         _doTransmit = _forceTransmit;
     }
 
+    if (_selfMuted)
+        _doTransmit = NO;
+    if (_suppressed)
+        _doTransmit = NO;
+    if (_muted)
+        _doTransmit = NO;
+    
     if (_lastTransmit != _doTransmit) {
         // fixme(mkrautz): Handle more talkstates
         MKTalkState talkState = _doTransmit ? MKTalkStateTalking : MKTalkStatePassive;
@@ -813,6 +822,18 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 - (float) peakCleanMic {
     return _peakCleanMic;
+}
+
+- (void) setSelfMuted:(BOOL)selfMuted {
+    _selfMuted = selfMuted;
+}
+
+- (void) setSuppressed:(BOOL)suppressed {
+    _suppressed = suppressed;
+}
+
+- (void) setMuted:(BOOL)muted {
+    _muted = muted;
 }
 
 @end
