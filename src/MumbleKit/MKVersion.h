@@ -1,4 +1,4 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2012 Mikkel Krautz <mikkel@krautz.dk>
 
  All rights reserved.
 
@@ -28,24 +28,9 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * MKVersion is a helper class that contains version information regarding
- * the MumbleKit framework. It also exports the version information that
- * the current build of the MumbleKit framework transmits to any remote
- * server that it connects to.
- */
 @interface MKVersion : NSObject
-
-/**
- * Returns the hex-encoded version string that the current build
- * of the MumbleKit framework presents to the remote Mumble server.
- */
-+ (NSUInteger) hexVersion;
-
-/**
- * Returns the release string that the current build of MumbleKit
- * presents to remote servers that it connects to.
- */
-+ (NSString *) releaseString;
-
++ (MKVersion *) sharedVersion;
+- (NSUInteger) hexVersion;
+- (NSString *) releaseString;
+- (void) setOverrideReleaseString:(NSString *)releaseString;
 @end

@@ -1,4 +1,4 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2012 Mikkel Krautz <mikkel@krautz.dk>
 
  All rights reserved.
 
@@ -30,25 +30,50 @@
 
 #import <MumbleKit/MKVersion.h>
 
+@interface MKVersion () {
+    NSString *_overrideReleaseString;
+}
+@end
+
 @implementation MKVersion
 
-//
-// Get the current version of the Mumble protocol that MumbleKit supports
-//
-+ (unsigned int) hexVersion {
++ (MKVersion *) sharedVersion {
+    static dispatch_once_t pred;
+    static MKVersion *vers;
+    
+    dispatch_once(&pred, ^{
+        vers = [[MKVersion alloc] init];
+    });
+    
+    return vers;
+}
+
+- (id) init {
+    if ((self = [super init])) {
+        // ...
+    }
+    return self;
+}
+
+- (void) dealloc {
+    [_overrideReleaseString release];
+    [super dealloc];
+}
+
+- (NSUInteger) hexVersion {
     return 0x10201;
 }
 
-//
-// MumbleKit's "release" string.  This is the release string that is sent to
-// the server.
-//
-// fixme(mkrautz): Does the server expect anything here, or are we free to use whatever?
-//                 We should probably not use this version string when sending to the Mumble
-//                 usage stats.
-//
-+ (NSString *) releaseString {
-    return @"MumbleKit (1.2.0 compatible)";
+- (void) setOverrideReleaseString:(NSString *)releaseString {
+    [_overrideReleaseString release];
+    _overrideReleaseString = [releaseString retain];
+}
+
+- (NSString *) releaseString {
+    if (_overrideReleaseString) {
+        return _overrideReleaseString;
+    }
+    return @"MumbleKit";
 }
 
 @end

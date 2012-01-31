@@ -381,8 +381,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     //
     // Setup MumbleKit version info.
     //
-    [version setVersion: (uint32_t) [MKVersion hexVersion]];
-    [version setRelease: [MKVersion releaseString]];
+    MKVersion *vers = [MKVersion sharedVersion];
+    [version setVersion:(uint32_t)[vers hexVersion]];
+    [version setRelease:[vers releaseString]];
     data = [[version build] data];
     [self sendMessageWithType:VersionMessage data:data];
 
