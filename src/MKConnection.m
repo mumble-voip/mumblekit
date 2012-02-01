@@ -107,9 +107,11 @@
     NSString       *_serverOSName;
     NSString       *_serverOSVersion;
     NSMutableArray *_peerCertificates;
+    BOOL           _trustedChain;
 }
 
 - (void) _setupSsl;
+- (void) _updateTLSTrustedStatus;
 - (void) _pingTimerFired:(NSTimer *)timer;
 - (void) _pingResponseFromServer:(MPPing *)pingMessage;
 - (void) _versionMessageReceived:(MPVersion *)msg;
@@ -448,6 +450,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
             if (! _connectionEstablished) {
                 _connectionEstablished = YES;
                 
+                // Make TLS trust status available to clients.
+                [self _updateTLSTrustedStatus];
+                
                 // Add the connection to the MKConnectionController...
                 [[MKConnectionController sharedController] addConnection:self];
                 
@@ -619,6 +624,38 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     [secCerts release];
 
     return _peerCertificates;
+}
+
+- (void) _updateTLSTrustedStatus {
+    BOOL trusted = NO;
+
+    SecPolicyRef sslPolicy = SecPolicyCreateSSL(YES, (CFStringRef) _hostname);
+    CFArrayRef secCerts = CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerCertificates);
+    
+    SecTrustRef trust = NULL;
+    OSStatus err = SecTrustCreateWithCertificates(secCerts, sslPolicy, &trust);
+    if (err != noErr)
+        goto out;
+
+    SecTrustResultType trustRes;
+    err = SecTrustEvaluate(trust, &trustRes);
+    if (err != noErr)
+        goto out;
+    
+    switch (trustRes) {
+        case kSecTrustResultProceed:
+        case kSecTrustResultUnspecified: // System trusts it.
+            trusted = YES;
+    }
+out:
+    _trustedChain = trusted;
+    CFRelease(sslPolicy);
+    CFRelease(secCerts);
+}
+
+// Returns the trust status of the server's certificate chain.
+- (BOOL) peerCertificateChainTrusted {
+    return _trustedChain;
 }
 
 // Force the MKConnection into TCP mode, forcing all voice data to

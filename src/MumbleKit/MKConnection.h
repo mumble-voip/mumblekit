@@ -494,6 +494,13 @@ typedef enum {
  */
 - (NSArray *) peerCertificates;
 
+/**
+ * Once a connection is established, this method returns the system's
+ * trust status of the server's certificate chain. This trust is based
+ * on the system's list of root certificate authorities.
+ */
+- (BOOL) peerCertificateChainTrusted;
+
 ///----------------------
 /// @name Forced TCP mode
 ///----------------------

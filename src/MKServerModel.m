@@ -913,6 +913,11 @@
     return [_connection peerCertificates];
 }
 
+- (BOOL) serverCertificatesTrusted {
+    return [_connection peerCertificateChainTrusted];
+
+}
+
 #pragma mark -
 #pragma mark Mute/deafen operations
 

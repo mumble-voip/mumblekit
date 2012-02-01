@@ -729,6 +729,11 @@ typedef enum {
  */
 - (NSArray *) serverCertificates;
 
+/**
+ * Get whether or not the certificate chain is verified by the system's root CAs.
+ */
+- (BOOL) serverCertificatesTrusted;
+
 ///-----------------------------
 /// @name Mute/deafen operations
 ///-----------------------------
