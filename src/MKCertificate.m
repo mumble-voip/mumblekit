@@ -337,7 +337,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 // as-is.
 - (NSDictionary *) copyDictForOneLineUTF8Repr:(NSData *)data {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     NSArray *components = [str componentsSeparatedByString:@", "];
     for (NSString *component in components) {
         NSArray *pairs = [component componentsSeparatedByString:@" = "];
