@@ -54,6 +54,7 @@
             NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:[[NSString stringWithFormat:@"<doc>%@</doc>", _rawStr] dataUsingEncoding:NSUTF8StringEncoding]];
             [xmlParser setDelegate:self];
             [xmlParser parse];
+            [xmlParser release];
 
             // Strip extra whitespace
             NSMutableData *filtered = [[NSMutableData alloc] init];
