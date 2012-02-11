@@ -13,3 +13,6 @@
 [submodule "3rdparty/openssl"]
 	path = 3rdparty/openssl
 	url = git://github.com/mkrautz/openssl-mirror.git
+[submodule "3rdparty/opus"]
+	path = 3rdparty/opus
+	url = git://git.xiph.org/opus.git

@@ -1,0 +1,32 @@
+#define OPUS_BUILD /**/
+#define OPUS_EXTRA_VERSION ""
+#define OPUS_MAJOR_VERSION 0
+#define OPUS_MICRO_VERSION 8
+#define OPUS_MINOR_VERSION 9
+#define OPUS_VERSION "0.9.8"
+
+#define VAR_ARRAYS /**/
+
+#define STDC_HEADERS 1
+
+#define SIZEOF_SHORT 2
+#define SIZEOF_LONG_LONG 8
+#define SIZEOF_LONG 8
+#define SIZEOF_INT 4
+
+#define FLOATING_POINT /**/
+#define HAVE_ALLOCA_H 1
+#define HAVE_DLFCN_H 1
+#define HAVE_GETOPT_H 1
+#define HAVE_INTTYPES_H 1
+#define HAVE_LIBM 1
+#define HAVE_LRINT 1
+#define HAVE_LRINTF 1
+#define HAVE_MEMORY_H 1
+#define HAVE_STDINT_H 1
+#define HAVE_STDLIB_H 1
+#define HAVE_STRINGS_H 1
+#define HAVE_STRING_H 1
+#define HAVE_SYS_STAT_H 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_UNISTD_H 1

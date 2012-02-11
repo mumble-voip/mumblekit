@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
+		2810DE6414E6E6A6004482F4 /* celt_stub.c in Sources */ = {isa = PBXBuildFile; fileRef = 2810DE6314E6E6A6004482F4 /* celt_stub.c */; };
 		282F6B0813624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; };
 		282F6B0913624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
@@ -94,6 +95,7 @@
 		28492365132ED67E00B4EAAC /* ProtocolBuffers.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492360132ED67E00B4EAAC /* ProtocolBuffers.dylib */; };
 		28492366132ED67E00B4EAAC /* Speex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492361132ED67E00B4EAAC /* Speex.dylib */; };
 		28492367132ED67E00B4EAAC /* SpeexDSP.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492362132ED67E00B4EAAC /* SpeexDSP.dylib */; };
+		285B426414E6E1420045E282 /* libOpus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 285B426114E6E1200045E282 /* libOpus.a */; };
 		2879526414C1BAB900567430 /* MKTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2879526114C1BAB900567430 /* MKTextMessage.m */; };
 		2879526514C1BAB900567430 /* MKTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2879526114C1BAB900567430 /* MKTextMessage.m */; };
 		2879526814C1BDD800567430 /* MKTextMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 2879526714C1BDD800567430 /* MKTextMessage.h */; };
@@ -114,7 +116,6 @@
 		28CC3706132EDA5200241269 /* ProtocolBuffers.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492360132ED67E00B4EAAC /* ProtocolBuffers.dylib */; };
 		28CC3707132EDA5200241269 /* Speex.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492361132ED67E00B4EAAC /* Speex.dylib */; };
 		28CC3708132EDA5200241269 /* SpeexDSP.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492362132ED67E00B4EAAC /* SpeexDSP.dylib */; };
-		28CC3713132EDC7300241269 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC370E132EDC7300241269 /* libCELT-0.7.0.a */; };
 		28CC3714132EDC7300241269 /* libOpenSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC370F132EDC7300241269 /* libOpenSSL.a */; };
 		28CC3715132EDC7300241269 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3710132EDC7300241269 /* libProtocolBuffers.a */; };
 		28CC3716132EDC7300241269 /* libSpeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3711132EDC7300241269 /* libSpeex.a */; };
@@ -264,6 +265,20 @@
 			remoteGlobalIDString = 28877ECE132D975D00793CC5;
 			remoteInfo = "SpeexDSP (Mac)";
 		};
+		285B426014E6E1200045E282 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 285B425814E6E1200045E282 /* Opus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 287D85A614E6D474002B5D79;
+			remoteInfo = "Opus (iOS)";
+		};
+		285B426214E6E1200045E282 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 285B425814E6E1200045E282 /* Opus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2815CCC414E6DF9700AAE69C;
+			remoteInfo = "Opus (Mac)";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -284,6 +299,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2810DE6314E6E6A6004482F4 /* celt_stub.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt_stub.c; path = src/celt_stub.c; sourceTree = SOURCE_ROOT; };
 		282F6B0613624187008F555B /* MKServerPinger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerPinger.h; path = src/MumbleKit/MKServerPinger.h; sourceTree = SOURCE_ROOT; };
 		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
 		283363DC13EF535B00A04F04 /* MKChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelPrivate.h; path = src/MKChannelPrivate.h; sourceTree = SOURCE_ROOT; };
@@ -337,6 +353,7 @@
 		28492360132ED67E00B4EAAC /* ProtocolBuffers.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = ProtocolBuffers.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		28492361132ED67E00B4EAAC /* Speex.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = Speex.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		28492362132ED67E00B4EAAC /* SpeexDSP.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = SpeexDSP.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		285B425814E6E1200045E282 /* Opus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Opus.xcodeproj; path = 3rdparty/opusbuild/Opus.xcodeproj; sourceTree = "<group>"; };
 		2879526114C1BAB900567430 /* MKTextMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKTextMessage.m; path = src/MKTextMessage.m; sourceTree = SOURCE_ROOT; };
 		2879526714C1BDD800567430 /* MKTextMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKTextMessage.h; path = src/MumbleKit/MKTextMessage.h; sourceTree = SOURCE_ROOT; };
 		28BCF2C1132AE3B40003AEC1 /* libMumbleKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMumbleKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -381,7 +398,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28CC3713132EDC7300241269 /* libCELT-0.7.0.a in Frameworks */,
+				285B426414E6E1420045E282 /* libOpus.a in Frameworks */,
 				28CC3714132EDC7300241269 /* libOpenSSL.a in Frameworks */,
 				28CC3715132EDC7300241269 /* libProtocolBuffers.a in Frameworks */,
 				28CC3716132EDC7300241269 /* libSpeex.a in Frameworks */,
@@ -398,6 +415,7 @@
 				2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */,
 				28492321132ED61800B4EAAC /* ProtocolBuffers.xcodeproj */,
 				28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */,
+				285B425814E6E1200045E282 /* Opus.xcodeproj */,
 				2849233C132ED64C00B4EAAC /* Speex.xcodeproj */,
 				28492348132ED65700B4EAAC /* SpeexDSP.xcodeproj */,
 			);
@@ -426,6 +444,7 @@
 		2845A77F132D9BF10034D631 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				2810DE6314E6E6A6004482F4 /* celt_stub.c */,
 				28CC36F8132ED92500241269 /* Mumble.pb.m */,
 				28CC36F9132ED92500241269 /* ObjectivecDescriptor.pb.m */,
 				2845A781132D9C220034D631 /* CryptState.cpp */,
@@ -532,6 +551,15 @@
 			children = (
 				28492351132ED65800B4EAAC /* libSpeexDSP.a */,
 				28492353132ED65800B4EAAC /* SpeexDSP.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		285B425914E6E1200045E282 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				285B426114E6E1200045E282 /* libOpus.a */,
+				285B426314E6E1200045E282 /* Opus.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -728,6 +756,10 @@
 					ProjectRef = 2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */;
 				},
 				{
+					ProductGroup = 285B425914E6E1200045E282 /* Products */;
+					ProjectRef = 285B425814E6E1200045E282 /* Opus.xcodeproj */;
+				},
+				{
 					ProductGroup = 28492322132ED61800B4EAAC /* Products */;
 					ProjectRef = 28492321132ED61800B4EAAC /* ProtocolBuffers.xcodeproj */;
 				},
@@ -819,6 +851,21 @@
 			remoteRef = 28492352132ED65800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		285B426114E6E1200045E282 /* libOpus.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOpus.a;
+			remoteRef = 285B426014E6E1200045E282 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		285B426314E6E1200045E282 /* Opus.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			name = Opus.dylib;
+			path = "Opus (Mac).dylib";
+			remoteRef = 285B426214E6E1200045E282 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -887,6 +934,7 @@
 				28CC36FC132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */,
 				282F6B0A13624187008F555B /* MKServerPinger.m in Sources */,
 				2879526414C1BAB900567430 /* MKTextMessage.m in Sources */,
+				2810DE6414E6E6A6004482F4 /* celt_stub.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +1054,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = OPUS_BUILD;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1014,6 +1063,7 @@
 					proto,
 					3rdparty/speex/include,
 					"3rdparty/celt-0.7.0/libcelt",
+					3rdparty/opus/include,
 					3rdparty/openssl/include,
 					3rdparty/protobuf/src/runtime/Classes,
 				);
@@ -1074,6 +1124,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = OPUS_BUILD;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1082,6 +1133,7 @@
 					proto,
 					3rdparty/speex/include,
 					"3rdparty/celt-0.7.0/libcelt",
+					3rdparty/opus/include,
 					3rdparty/openssl/include,
 					3rdparty/protobuf/src/runtime/Classes,
 				);
@@ -1149,7 +1201,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OPUS_BUILD,
+					DEBUG,
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1159,6 +1214,7 @@
 					proto,
 					3rdparty/speex/include,
 					"3rdparty/celt-0.7.0/libcelt",
+					3rdparty/opus/include,
 					3rdparty/openssl/include,
 					3rdparty/protobuf/src/runtime/Classes,
 				);
@@ -1179,6 +1235,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = OPUS_BUILD;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1187,6 +1244,7 @@
 					proto,
 					3rdparty/speex/include,
 					"3rdparty/celt-0.7.0/libcelt",
+					3rdparty/opus/include,
 					3rdparty/openssl/include,
 					3rdparty/protobuf/src/runtime/Classes,
 				);

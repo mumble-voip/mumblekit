@@ -17,6 +17,8 @@ MumbleKit.xcodeproj/project.xcworkspace/xcuserdata/
 3rdparty/speexbuild/Speex.xcodeproj/project.xcworkspace/xcuserdata/
 3rdparty/speexdspbuild/SpeexDSP.xcodeproj/xcuserdata/
 3rdparty/speexdspbuild/SpeexDSP.xcodeproj/project.xcworkspace/xcuserdata/
+3rdparty/opusbuild/Opus.xcodeproj/xcuserdata/
+3rdparty/opusbuild/Opus.xcodeproj/project.xcworkspace/xcuserdata/
 
 .DS_Store
 *.pbxuser
