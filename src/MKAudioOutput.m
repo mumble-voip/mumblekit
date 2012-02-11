@@ -131,26 +131,26 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 
     comp = AudioComponentFindNext(NULL, &desc);
     if (! comp) {
-        NSLog(@"AudioOutput: Unable to find AudioUnit.");
+        NSLog(@"MKAudioOutput: Unable to find AudioUnit.");
         return NO;
     }
 
     err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &audioUnit);
     if (err != noErr) {
-        NSLog(@"AudioOutput: Unable to instantiate new AudioUnit.");
+        NSLog(@"MKAudioOutput: Unable to instantiate new AudioUnit.");
         return NO;
     }
 
     err = AudioUnitInitialize(audioUnit);
     if (err != noErr) {
-        NSLog(@"AudioOutput: Unable to initialize AudioUnit.");
+        NSLog(@"MKAudioOutput: Unable to initialize AudioUnit.");
         return NO;
     }
 
     len = sizeof(AudioStreamBasicDescription);
     err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &fmt, &len);
     if (err != noErr) {
-        NSLog(@"AudioOuptut: Unable to get output stream format from AudioUnit.");
+        NSLog(@"MKAudioOuptut: Unable to get output stream format from AudioUnit.");
         return NO;
     }
 
@@ -171,7 +171,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     fmt.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
     fmt.mBitsPerChannel = sizeof(short) * 8;
 
-    NSLog(@"AudioOutput: Output device currently configured as %iHz sample rate, %i channels, %i sample size", mixerFrequency, numChannels, sampleSize);
+    NSLog(@"MKAudioOutput: Output device currently configured as %iHz sample rate, %i channels, %i sample size", mixerFrequency, numChannels, sampleSize);
 
     fmt.mFormatID = kAudioFormatLinearPCM;
     fmt.mSampleRate = mixerFrequency;
@@ -182,7 +182,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     len = sizeof(AudioStreamBasicDescription);
     err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &fmt, len);
     if (err != noErr) {
-        NSLog(@"AudioOutput: Unable to set stream format for output device.");
+        NSLog(@"MKAudioOutput: Unable to set stream format for output device.");
         return NO;
     }
 
@@ -192,7 +192,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     len = sizeof(AURenderCallbackStruct);
     err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &cb, len);
     if (err != noErr) {
-        NSLog(@"AudioOutput: Could not set render callback.");
+        NSLog(@"MKAudioOutput: Could not set render callback.");
         return NO;
     }
 
@@ -200,7 +200,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 
     err = AudioOutputUnitStart(audioUnit);
     if (err != noErr) {
-        NSLog(@"AudioOutput: Unable to start AudioUnit");
+        NSLog(@"MKAudioOutput: Unable to start AudioUnit");
         return NO;
     }
 
@@ -210,11 +210,11 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 - (BOOL) teardownDevice {
     OSStatus err = AudioOutputUnitStop(audioUnit);
     if (err != noErr) {
-        NSLog(@"AudioOutput: Unable to stop AudioUnit.");
+        NSLog(@"MKAudioOutput: Unable to stop AudioUnit.");
         return NO;
     }
 
-    NSLog(@"AudioOuptut: Teardown finished.");
+    NSLog(@"MKAudioOuptut: Teardown finished.");
     return YES;
 }
 
