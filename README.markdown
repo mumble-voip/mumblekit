@@ -16,11 +16,8 @@ systems. Visit its website at:
 Fetching dependencies
 ---------------------
 
-To build this you need the iOS 4 SDK from Apple. The iOS 4 SDK
-requires Snow Leopard.  Also note that these instructions are
-written for use with Xcode 4.  If you use Xcode 3.x, please see
-the README-CMAKE.markdown file for instructions on how to generate
-Xcode 3 compatible project files using CMake.
+To build this you need the latest version of Xcode from Apple.
+These days, Xcode is distributed through the Mac App Store.
 
 Before starting your build, you will need to check out the re-
 quired submodules.
