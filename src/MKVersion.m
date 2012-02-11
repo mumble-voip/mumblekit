@@ -61,7 +61,7 @@
 }
 
 - (NSUInteger) hexVersion {
-    return 0x10201;
+    return 0x10204;
 }
 
 - (void) setOverrideReleaseString:(NSString *)releaseString {
