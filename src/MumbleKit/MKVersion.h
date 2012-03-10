@@ -32,5 +32,9 @@
 + (MKVersion *) sharedVersion;
 - (NSUInteger) hexVersion;
 - (NSString *) releaseString;
+
 - (void) setOverrideReleaseString:(NSString *)releaseString;
+
+- (void) setOpusEnabled:(BOOL)isEnabled;
+- (BOOL) isOpusEnabled;
 @end

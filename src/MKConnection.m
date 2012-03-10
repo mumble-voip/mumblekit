@@ -398,6 +398,10 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         [authenticate setTokensArray:tokens];
     }
     [authenticate addCeltVersions:MUMBLEKIT_CELT_BITSTREAM];
+
+    if ([[MKVersion sharedVersion] isOpusEnabled])
+        [authenticate setOpus:YES];
+
     data = [[authenticate build] data];
     [self sendMessageWithType:AuthenticateMessage data:data];
 }
@@ -1017,7 +1021,12 @@ out:
     switch (messageType) {
         case UDPVoiceCELTAlphaMessage:
         case UDPVoiceCELTBetaMessage:
-        case UDPVoiceSpeexMessage: {
+        case UDPVoiceSpeexMessage:
+        case UDPVoiceOpusMessage: {
+            if (messageType == UDPVoiceOpusMessage && ![[MKVersion sharedVersion] isOpusEnabled]) {
+                NSLog(@"MKConnection: Received Opus voice packet in no-Opus mode. Discarding.");
+                break;
+            }
             NSUInteger session = [pds getUnsignedInt];
             NSUInteger seq = [pds getUnsignedInt];
             NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];

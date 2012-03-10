@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
-		2810DE6414E6E6A6004482F4 /* celt_stub.c in Sources */ = {isa = PBXBuildFile; fileRef = 2810DE6314E6E6A6004482F4 /* celt_stub.c */; };
+		2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492310132ED60700B4EAAC /* libCELT-0.7.0.a */; };
 		282F6B0813624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; };
 		282F6B0913624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
@@ -299,7 +299,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2810DE6314E6E6A6004482F4 /* celt_stub.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt_stub.c; path = src/celt_stub.c; sourceTree = SOURCE_ROOT; };
 		282F6B0613624187008F555B /* MKServerPinger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerPinger.h; path = src/MumbleKit/MKServerPinger.h; sourceTree = SOURCE_ROOT; };
 		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
 		283363DC13EF535B00A04F04 /* MKChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelPrivate.h; path = src/MKChannelPrivate.h; sourceTree = SOURCE_ROOT; };
@@ -398,6 +397,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */,
 				285B426414E6E1420045E282 /* libOpus.a in Frameworks */,
 				28CC3714132EDC7300241269 /* libOpenSSL.a in Frameworks */,
 				28CC3715132EDC7300241269 /* libProtocolBuffers.a in Frameworks */,
@@ -444,7 +444,6 @@
 		2845A77F132D9BF10034D631 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				2810DE6314E6E6A6004482F4 /* celt_stub.c */,
 				28CC36F8132ED92500241269 /* Mumble.pb.m */,
 				28CC36F9132ED92500241269 /* ObjectivecDescriptor.pb.m */,
 				2845A781132D9C220034D631 /* CryptState.cpp */,
@@ -934,7 +933,6 @@
 				28CC36FC132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */,
 				282F6B0A13624187008F555B /* MKServerPinger.m in Sources */,
 				2879526414C1BAB900567430 /* MKTextMessage.m in Sources */,
-				2810DE6414E6E6A6004482F4 /* celt_stub.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1054,7 +1052,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = OPUS_BUILD;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1124,7 +1122,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = OPUS_BUILD;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1201,10 +1199,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					OPUS_BUILD,
-					DEBUG,
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1235,7 +1230,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = OPUS_BUILD;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

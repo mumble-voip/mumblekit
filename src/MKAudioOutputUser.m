@@ -1,5 +1,6 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2012 Mikkel Krautz <mikkel@krautz.dk>
    Copyright (C) 2005-2010 Thorvald Natvig <thorvald@natvig.com>
+   Copyright (C) 2011, Benjamin Jemlich <pcgod@users.sourceforge.net>
 
    All rights reserved.
 
@@ -35,16 +36,13 @@
 @implementation MKAudioOutputUser
 
 - (id) init {
-    self = [super init];
-    if (self == nil)
-        return nil;
+    if ((self = [super init])) {
+        bufferSize = 0;
+        buffer = NULL;
+        volume = NULL;
 
-    bufferSize = 0;
-    buffer = NULL;
-    volume = NULL;
-
-    pos[0] = pos[1] = pos[2] = 0.0f;
-
+        pos[0] = pos[1] = pos[2] = 0.0f;
+    }
     return self;
 }
 
@@ -72,7 +70,7 @@
 - (void) resizeBuffer:(NSUInteger)newSize {
     if (newSize > bufferSize) {
         float *n = malloc(sizeof(float)*newSize);
-        if (buffer) {
+        if (buffer != NULL) {
             memcpy(n, buffer, sizeof(float)*bufferSize);
             free(buffer);
         }

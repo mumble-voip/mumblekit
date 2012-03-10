@@ -31,7 +31,8 @@
 #import <MumbleKit/MKVersion.h>
 
 @interface MKVersion () {
-    NSString *_overrideReleaseString;
+    NSString  *_overrideReleaseString;
+    BOOL      _opusEnabled;
 }
 @end
 
@@ -67,6 +68,14 @@
 - (void) setOverrideReleaseString:(NSString *)releaseString {
     [_overrideReleaseString release];
     _overrideReleaseString = [releaseString retain];
+}
+
+- (void) setOpusEnabled:(BOOL)isEnabled {
+    _opusEnabled = isEnabled;
+}
+
+- (BOOL) isOpusEnabled {
+    return _opusEnabled;
 }
 
 - (NSString *) releaseString {

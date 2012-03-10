@@ -39,6 +39,7 @@
 typedef enum _MKCodecFormat {
     MKCodecFormatSpeex,
     MKCodecFormatCELT,
+    MKCodecFormatOpus,
 } MKCodecFormat;
 
 typedef enum _MKTransmitType {

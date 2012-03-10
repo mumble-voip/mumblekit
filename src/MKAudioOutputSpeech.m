@@ -1,5 +1,6 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2012 Mikkel Krautz <mikkel@krautz.dk>
    Copyright (C) 2005-2010 Thorvald Natvig <thorvald@natvig.com>
+   Copyright (C) 2011, Benjamin Jemlich <pcgod@users.sourceforge.net>
 
    All rights reserved.
 
@@ -29,6 +30,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#import <MumbleKit/MKVersion.h>
 #import "MKPacketDataStream.h"
 #import "MKAudioOutputSpeech.h"
 #import "MKAudioOutputUserPrivate.h"
@@ -42,6 +44,7 @@
 #include <speex/speex_jitter.h>
 #include <speex/speex_types.h>
 #include <celt.h>
+#include <opus.h>
 
 struct MKAudioOutputSpeechPrivate {
     JitterBuffer *jitter;
@@ -54,6 +57,8 @@ struct MKAudioOutputSpeechPrivate {
 
 @interface MKAudioOutputSpeech () {
     struct MKAudioOutputSpeechPrivate *_private;
+
+    OpusDecoder *_opusDecoder;
     
     MKUDPMessageType _msgType;
     NSUInteger bufferOffset;
@@ -63,6 +68,12 @@ struct MKAudioOutputSpeechPrivate {
     NSUInteger frameSize;
     BOOL lastAlive;
     BOOL hasTerminator;
+
+    BOOL       _useStereo;
+    NSInteger  _audioBufferSize;
+    float      *_resamplerBuffer;
+    NSUInteger _sampleRate;
+    NSUInteger _freq;
     
     float *fadeIn;
     float *fadeOut;
@@ -97,34 +108,47 @@ struct MKAudioOutputSpeechPrivate {
     _private->speexDecoder = NULL;
     _private->resampler = NULL;
 
+    _useStereo = NO;
+    
     _userSession = session;
     _talkState = MKTalkStatePassive;
     _msgType = type;
+    _freq = freq;
 
-    NSUInteger sampleRate;
-
-    if (type != UDPVoiceSpeexMessage) {
-        sampleRate = SAMPLE_RATE;
-        frameSize = sampleRate / 100;
-        _private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
-        _private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
-    } else {
-        sampleRate = 32000;
+    if (type == UDPVoiceOpusMessage) {
+        _sampleRate = SAMPLE_RATE;
+        frameSize = _sampleRate / 100;
+        _audioBufferSize = 12 * frameSize;
+        _opusDecoder = opus_decoder_create(_sampleRate, _useStereo ? 2 : 1, NULL);
+    } else if (type == UDPVoiceSpeexMessage) {
+        _sampleRate = 32000;
         speex_bits_init(&_private->speexBits);
         _private->speexDecoder = speex_decoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
         int iArg = 1;
         speex_decoder_ctl(_private->speexDecoder, SPEEX_SET_ENH, &iArg);
         speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_FRAME_SIZE, &frameSize);
-        speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_SAMPLING_RATE, &sampleRate);
+        speex_decoder_ctl(_private->speexDecoder, SPEEX_GET_SAMPLING_RATE, &_sampleRate);
+        _audioBufferSize = frameSize;
+    } else {
+        _sampleRate = SAMPLE_RATE;
+        frameSize = _sampleRate / 100;
+        _private->celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
+        _private->celtDecoder = celt_decoder_create(_private->celtMode, 1, NULL);
+        _audioBufferSize = frameSize;
     }
 
-    if (freq != sampleRate) {
+    outputSize = (int)(ceilf((float)_audioBufferSize * _freq) / (float)_sampleRate);
+    if (_useStereo) {
+        _audioBufferSize *= 2;
+        outputSize *= 2;
+    }
+
+    if (_freq != _sampleRate) {
         int err;
-        _private->resampler = speex_resampler_init(1, sampleRate, freq, 3, &err);
-        NSLog(@"AudioOutputSpeech: Resampling from %i Hz to %d Hz", sampleRate, freq);
-    }
-
-    outputSize = (int)(ceilf((float)frameSize * freq) / (float)sampleRate);
+        _private->resampler = speex_resampler_init(_useStereo ? 2 : 1, _sampleRate, _freq, 3, &err);
+        _resamplerBuffer = malloc(sizeof(float)*_audioBufferSize);
+        NSLog(@"AudioOutputSpeech: Resampling from %i Hz to %d Hz", _sampleRate, _freq);
+    }    
 
     bufferOffset = bufferFilled = lastConsume = 0;
 
@@ -174,11 +198,16 @@ struct MKAudioOutputSpeechPrivate {
         jitter_buffer_destroy(_private->jitter);
     if (_private)
         free(_private);
+    if (_opusDecoder)
+        opus_decoder_destroy(_opusDecoder);
 
     if (fadeIn)
         free(fadeIn);
     if (fadeOut)
         free(fadeOut);
+    
+    if (_resamplerBuffer)
+        free(_resamplerBuffer);
 
     [frames release];
 
@@ -193,7 +222,7 @@ struct MKAudioOutputSpeechPrivate {
     return _msgType;
 }
 
-- (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq {
+- (void) addFrame:(NSData *)data forSequence:(NSUInteger)seq {    
     int err = pthread_mutex_lock(&jitterMutex);
     if (err != 0) {
         NSLog(@"AudioOutputSpeech: pthread_mutex_lock() failed.");
@@ -208,13 +237,26 @@ struct MKAudioOutputSpeechPrivate {
     MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithData:data];
     [pds next];
 
-    int nframes = 0;
-    unsigned int header = 0;
-    do {
-        header = (unsigned int)[pds next];
-        ++nframes;
-        [pds skip:(header & 0x7f)];
-    } while ((header & 0x80) && [pds valid]);
+    int samples = 0;
+    if (_msgType == UDPVoiceOpusMessage) {
+        int size = [pds getInt];
+        if (size > 0) {
+            NSData *opusFrames = [pds copyDataBlock:size];
+            int nframes = opus_packet_get_nb_frames([opusFrames bytes], size);
+            samples = nframes * opus_packet_get_samples_per_frame([opusFrames bytes], SAMPLE_RATE);
+            [opusFrames release];
+        } else {
+            // Prevents a jitter buffer warning for terminator packets.
+            samples = 1 * frameSize;
+        }
+    } else {
+        unsigned int header = 0;
+        do {
+            header = (unsigned int)[pds next];
+            samples += frameSize;
+            [pds skip:(header & 0x7f)];
+        } while ((header & 0x80) && [pds valid]);
+    }
 
     if (! [pds valid]) {
         [pds release];
@@ -226,12 +268,12 @@ struct MKAudioOutputSpeechPrivate {
     JitterBufferPacket jbp;
     jbp.data = (char *)[data bytes];
     jbp.len = [data length];
-    jbp.span = frameSize * nframes;
+    jbp.span = samples;
     jbp.timestamp = frameSize * seq;
 
     jitter_buffer_put(_private->jitter, &jbp);
     [pds release];
-
+    
     err = pthread_mutex_unlock(&jitterMutex);
     if (err != 0) {
         NSLog(@"AudioOutputSpeech: Unable to unlock() jitter mutex.");
@@ -241,7 +283,7 @@ struct MKAudioOutputSpeechPrivate {
 
 - (BOOL) needSamples:(NSUInteger)nsamples {
     NSUInteger i;
-
+    
     for (i = lastConsume; i < bufferFilled; ++i) {
         buffer[i-lastConsume] = buffer[i];
     }
@@ -253,17 +295,18 @@ struct MKAudioOutputSpeechPrivate {
         return lastAlive;
     }
 
-    float fOut[frameSize + 4096];
     float *output = NULL;
     BOOL nextAlive = lastAlive;
-
+    
     while (bufferFilled < nsamples) {
+        int decodedSamples = frameSize;
         [self resizeBuffer:(bufferFilled + outputSize)];
 
-        if (_private->resampler)
-            output = &fOut[0];
-        else
+        if (_private->resampler) {
+            output = _resamplerBuffer;
+        } else {
             output = buffer + bufferFilled;
+        }   
 
         if (! lastAlive) {
             memset(output, 0, frameSize * sizeof(float));
@@ -271,7 +314,7 @@ struct MKAudioOutputSpeechPrivate {
             int avail = 0;
             int ts = jitter_buffer_get_pointer_timestamp(_private->jitter);
             jitter_buffer_ctl(_private->jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
-
+            
             if (ts == 0) {
                 int want = (int)averageAvailable; // fixme(mkrautz): Was iroundf.
                 if (avail < want) {
@@ -289,7 +332,6 @@ struct MKAudioOutputSpeechPrivate {
                     NSLog(@"AudioOutputSpeech: unable to lock() mutex.");
                 }
 
-                // lock jitter mutex
                 char data[4096];
 
                 JitterBufferPacket jbp;
@@ -298,24 +340,36 @@ struct MKAudioOutputSpeechPrivate {
 
                 spx_int32_t startofs = 0;
 
-                if (jitter_buffer_get(_private->jitter, &jbp, frameSize, &startofs) == JITTER_BUFFER_OK) {
+                int jerr = jitter_buffer_get(_private->jitter, &jbp, frameSize, &startofs);
+                if (jerr == JITTER_BUFFER_OK) {
                     MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(unsigned char *)jbp.data length:jbp.len];
 
                     missCount = 0;
                     flags = (unsigned char)[pds next];
                     hasTerminator = NO;
-
-                    unsigned int header = 0;
-                    do {
-                        header = (unsigned int)[pds next];
-                        if (header) {
-                            NSData *block = [pds copyDataBlock:(header & 0x7f)];
+                    
+                    if (_msgType == UDPVoiceOpusMessage) {
+                        int size = [pds getInt];
+                        if (size > 0) {
+                            NSData *block = [pds copyDataBlock:size];
                             [frames addObject:block];
                             [block release];
                         } else {
                             hasTerminator = YES;
                         }
-                    } while ((header & 0x80) && [pds valid]);
+                    } else {
+                        unsigned int header = 0;
+                        do {
+                            header = (unsigned int)[pds next];
+                            if (header) {
+                                NSData *block = [pds copyDataBlock:(header & 0x7f)];
+                                [frames addObject:block];
+                                [block release];
+                            } else {
+                                hasTerminator = YES;
+                            }
+                        } while ((header & 0x80) && [pds valid]);
+                    }
 
                     if ([pds left]) {
                         pos[0] = [pds getFloat];
@@ -333,7 +387,7 @@ struct MKAudioOutputSpeechPrivate {
                     } else {
                         averageAvailable *= 0.99f;
                     }
-                } else {
+                } else {                    
                     jitter_buffer_update_delay(_private->jitter, &jbp, NULL);
 
                     ++missCount;
@@ -351,13 +405,11 @@ struct MKAudioOutputSpeechPrivate {
             if ([frames count] > 0) {
                 NSData *frameData = [frames objectAtIndex:0];
 
-                if (_msgType != UDPVoiceSpeexMessage) {
-                    if ([frameData length] != 0) {
-                        celt_decode_float(_private->celtDecoder, [frameData bytes], [frameData length], output);
-                    } else {
-                        celt_decode_float(_private->celtDecoder, NULL, 0, output);
-                    }
-                } else {
+                if (_msgType == UDPVoiceOpusMessage) {
+                    decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], [frameData length], output, _audioBufferSize, 0);
+                    outputSize = (int)(ceilf((float)decodedSamples * _freq) / (float)_sampleRate);
+                    [self resizeBuffer:bufferFilled + outputSize];
+                } else if (_msgType == UDPVoiceSpeexMessage) {
                     if ([frameData length] == 0) {
                         speex_decode(_private->speexDecoder, NULL, output);
                     } else {
@@ -366,6 +418,12 @@ struct MKAudioOutputSpeechPrivate {
                     }
                     for (unsigned int i=0; i < frameSize; i++)
                         output[i] *= (1.0f / 32767.0f);
+                } else {
+                    if ([frameData length] != 0) {
+                        celt_decode_float(_private->celtDecoder, [frameData bytes], [frameData length], output);
+                    } else {
+                        celt_decode_float(_private->celtDecoder, NULL, 0, output);
+                    }
                 }
 
                 [frames removeObjectAtIndex:0];
@@ -373,10 +431,10 @@ struct MKAudioOutputSpeechPrivate {
                 BOOL update = YES;
 
                 float pow = 0.0f;
-                for (i = 0; i < frameSize; ++i) {
+                for (i = 0; i < decodedSamples; ++i) {
                     pow += output[i] * output[i];
                 }
-                pow = sqrtf(pow / frameSize);
+                pow = sqrtf(pow / decodedSamples);
                 if (pow > powerMax) {
                     powerMax = pow;
                 } else {
@@ -398,12 +456,14 @@ struct MKAudioOutputSpeechPrivate {
                     nextAlive = NO;
                 }
             } else {
-                if (_msgType != UDPVoiceSpeexMessage) {
-                    celt_decode_float(_private->celtDecoder, NULL, 0, output);
-                } else {
+                if (_msgType == UDPVoiceOpusMessage) {
+                    opus_decode_float(_opusDecoder, NULL, 0, output, frameSize, 0);
+                } else if (_msgType == UDPVoiceSpeexMessage) {
                     speex_decode(_private->speexDecoder, NULL, output);
                     for (unsigned int i = 0; i < frameSize; i++)
                         output[i] *= (1.0f / 32767.0f);
+                } else {
+                    celt_decode_float(_private->celtDecoder, NULL, 0, output);
                 }
             }
 
@@ -417,10 +477,11 @@ struct MKAudioOutputSpeechPrivate {
                 }
             }
 
-            jitter_buffer_tick(_private->jitter);
+            int j;
+            for (j = decodedSamples / frameSize; j > 0; j--)
+                jitter_buffer_tick(_private->jitter);
         }
-
-
+        
         if (! nextAlive)
             flags = 0xff;
 
@@ -452,15 +513,15 @@ struct MKAudioOutputSpeechPrivate {
 
 nextframe:
         {
-            spx_uint32_t inlen = frameSize;
+            spx_uint32_t inlen = decodedSamples;
             spx_uint32_t outlen = outputSize;
             if (_private->resampler && lastAlive) {
-                speex_resampler_process_float(_private->resampler, 0, fOut, &inlen, buffer + bufferFilled, &outlen);
+                speex_resampler_process_float(_private->resampler, 0, _resamplerBuffer, &inlen, buffer + bufferFilled, &outlen);
             }
             bufferFilled += outlen;
         }
     }
-
+    
     BOOL tmp = lastAlive;
     lastAlive = nextAlive;
     return tmp;

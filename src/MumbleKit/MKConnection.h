@@ -44,7 +44,8 @@ typedef enum {
     UDPVoiceCELTAlphaMessage = 0,
     UDPPingMessage,
     UDPVoiceSpeexMessage,
-    UDPVoiceCELTBetaMessage
+    UDPVoiceCELTBetaMessage,
+    UDPVoiceOpusMessage,
 } MKUDPMessageType;
 
 typedef enum {

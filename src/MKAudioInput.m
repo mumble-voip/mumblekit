@@ -1,5 +1,6 @@
-/* Copyright (C) 2009-2010 Mikkel Krautz <mikkel@krautz.dk>
+/* Copyright (C) 2009-2012 Mikkel Krautz <mikkel@krautz.dk>
    Copyright (C) 2005-2010 Thorvald Natvig <thorvald@natvig.com>
+   Copyright (C) 2011, Benjamin Jemlich <pcgod@users.sourceforge.net>
 
    All rights reserved.
 
@@ -31,6 +32,7 @@
 
 #import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKServerModel.h>
+#import <MumbleKit/MKVersion.h>
 #import "MKPacketDataStream.h"
 #import "MKAudioInput.h"
 
@@ -41,6 +43,7 @@
 #include <speex/speex_jitter.h>
 #include <speex/speex_types.h>
 #include <celt.h>
+#include <opus.h>
 
 #include "timedelta.h"
 
@@ -59,6 +62,7 @@
     SpeexResamplerState    *_micResampler;
     SpeexBits              _speexBits;
     void                   *_speexEncoder;
+    OpusEncoder            *_opusEncoder;
 
     int                    frameSize;
     int                    micFrequency;
@@ -91,6 +95,8 @@
     BOOL                   _selfMuted;
     BOOL                   _muted;
     BOOL                   _suppressed;
+    
+    NSMutableData          *_opusBuffer;
 }
 - (BOOL) setupMacDevice;
 - (BOOL) setupiOSDevice;
@@ -147,8 +153,20 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     _micResampler = NULL;
     _speexEncoder = NULL;
     frameCounter = 0;
+    
+    // Fall back to CELT if Opus is not enabled.
+    if (![[MKVersion sharedVersion] isOpusEnabled] && _settings.codec == MKCodecFormatOpus) {
+        _settings.codec = MKCodecFormatCELT;
+        NSLog(@"Falling back to CELT");
+    }
 
-    if (_settings.codec == MKCodecFormatCELT) {
+    if (_settings.codec == MKCodecFormatOpus) {
+        sampleRate = SAMPLE_RATE;
+        frameSize = SAMPLE_RATE / 100;
+        _opusEncoder = opus_encoder_create(SAMPLE_RATE, 1, OPUS_APPLICATION_VOIP, NULL);
+        opus_encoder_ctl(_opusEncoder, OPUS_SET_VBR(1));
+        NSLog(@"MKAudioInput: %i bits/s, %d Hz, %d sample Opus", _settings.quality, sampleRate, frameSize);
+    } else if (_settings.codec == MKCodecFormatCELT) {
         sampleRate = SAMPLE_RATE;
         frameSize = SAMPLE_RATE / 100;
         NSLog(@"MKAudioInput: %i bits/s, %d Hz, %d sample CELT", _settings.quality, sampleRate, frameSize);
@@ -190,8 +208,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         setMaxBandwidth(g.iMaxBandwidth);
      */
 
-    /* Allocate buffer list. */
-    frameList = [[NSMutableArray alloc] initWithCapacity: 20]; /* should be iAudioFrames. */
+    frameList = [[NSMutableArray alloc] initWithCapacity:_settings.audioPerPacket];
 
     udpMessageType = ~0;
 
@@ -203,6 +220,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     [self teardownDevice];
 
     [frameList release];
+    [_opusBuffer release];
 
     if (psMic)
         free(psMic);
@@ -217,6 +235,8 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         celt_encoder_destroy(_celtEncoder);
     if (_preprocessorState)
         speex_preprocess_state_destroy(_preprocessorState);
+    if (_opusEncoder)
+		opus_encoder_destroy(_opusEncoder);
 
     [super dealloc];
 }
@@ -251,7 +271,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
 - (BOOL) setupDevice {
 #if TARGET_IPHONE_SIMULATOR
-    return [self setupMacDevice];
+    return [self setupiOSDevice];
 #else
 #if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
     return [self setupMacDevice];
@@ -615,10 +635,30 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         }
     }
 
-    unsigned char buffer[1024];
+    unsigned char buffer[512];
     int len = 0;
+    int encoded = 1;
 
-    if (_settings.codec == MKCodecFormatCELT) {
+    BOOL resampled = micFrequency != sampleRate;
+    
+    if (_settings.codec == MKCodecFormatOpus) {
+        encoded = 0;
+        udpMessageType = UDPVoiceOpusMessage;
+        if (_opusBuffer == nil)
+            _opusBuffer = [[NSMutableData alloc] init];
+        [_opusBuffer appendBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
+        if (!isSpeech || [_opusBuffer length] >= frameSize*sizeof(short)*_settings.audioPerPacket) {
+            opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
+            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], [_opusBuffer length]/sizeof(short), buffer, 512);
+            bitrate = len * 100 * 8;
+            [_opusBuffer setLength:0];
+            if (len <= 0) {
+                NSLog(@"bad pkt!");
+                return;
+            }
+            encoded = 1;
+        }
+    } else if (_settings.codec == MKCodecFormatCELT) {
         CELTEncoder *encoder = _celtEncoder;
         if (encoder == NULL) {
             CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
@@ -646,7 +686,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
                 }
                 if (msgType != udpMessageType) {
                     udpMessageType = msgType;
-                    NSLog(@"MKAudioInput: udpMessageType changed to %i", msgType);
                 }
             }
         }
@@ -656,7 +695,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         
         celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
         celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(_settings.quality));
-        BOOL resampled = micFrequency != sampleRate;
         len = celt_encode(encoder, resampled ? psOut : psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
         
         bitrate = len * 100 * 8;
@@ -733,7 +771,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         NSNotification *notification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
         [center performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
     }
-    if (_doTransmit) {
+    if (_doTransmit && encoded > 0) {
         NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
         [self flushCheck:outputBuffer terminator:NO];
         [outputBuffer release];
@@ -746,8 +784,8 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 // queued up.
 - (void) flushCheck:(NSData *)codedSpeech terminator:(BOOL)terminator {
     [frameList addObject:codedSpeech];
-
-    if (! terminator && [frameList count] < _settings.audioPerPacket) {
+    
+    if (! terminator && udpMessageType != UDPVoiceOpusMessage && [frameList count] < _settings.audioPerPacket) {
         return;
     }
 
@@ -763,35 +801,62 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
     unsigned char data[1024];
     data[0] = (unsigned char )(flags & 0xff);
+    
+    int frames = MIN([frameList count], _settings.audioPerPacket);
+    if (udpMessageType == UDPVoiceOpusMessage) {
+        // fixme(pcgod): This will be wrong for Opus packets which are sent early because the user stopped talking.
+        frames = _settings.audioPerPacket;
+    }
 
     MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(data+1) length:1023];
-    [pds addVarint:(frameCounter - [frameList count])];
+    [pds addVarint:(frameCounter - frames)];
 
-    /* fix terminator stuff here. */
-
-    int i, nframes = [frameList count];
-    for (i = 0; i < nframes; i++) {
-        NSData *frame = [frameList objectAtIndex:i];
-        unsigned char head = (unsigned char)[frame length];
-        if (i < nframes-1)
-            head |= 0x80;
-        [pds appendValue:head];
+    if (udpMessageType == UDPVoiceOpusMessage) {
+       NSData *frame = [frameList objectAtIndex:0]; 
+        [pds addVarint:[frame length]];
         [pds appendBytes:(unsigned char *)[frame bytes] length:[frame length]];
+    } else {
+        /* fix terminator stuff here. */
+        int i, nframes = [frameList count];
+        for (i = 0; i < nframes; i++) {
+            NSData *frame = [frameList objectAtIndex:i];
+            unsigned char head = (unsigned char)[frame length];
+            if (i < nframes-1)
+                head |= 0x80;
+            [pds appendValue:head];
+            [pds appendBytes:(unsigned char *)[frame bytes] length:[frame length]];
+        }
     }
+    
     [frameList removeAllObjects];
 
     NSUInteger len = [pds size] + 1;
+    NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
+    [pds release];
+
+    NSData *termData = nil;
+    if (terminator) {
+        pds = [[MKPacketDataStream alloc] initWithBuffer:(data+1) length:1023];
+        [pds addVarint:frameCounter];
+        [pds addVarint:0];        
+        len = [pds size] + 1;
+        termData = [[NSData alloc] initWithBytes:data length:len];
+        [pds release];
+    }
     
     // fixme(mkrautz): Fix locking...
     MKConnectionController *conns = [MKConnectionController sharedController];
     NSArray *connections = [conns allConnections];
-    NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
     for (NSValue *val in connections) {
         MKConnection *conn = [val pointerValue];
         [conn sendVoiceData:msgData];
+        if (termData) {
+            [conn sendVoiceData:termData];
+        }
     }
+
     [msgData release];
-    [pds release];
+    [termData release];
 }
 
 - (void) setForceTransmit:(BOOL)flag {
