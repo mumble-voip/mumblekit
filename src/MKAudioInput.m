@@ -45,8 +45,6 @@
 #include <celt.h>
 #include <opus.h>
 
-#include "timedelta.h"
-
 @interface MKAudioInput () {
     @public
     AudioUnit              audioUnit;
@@ -606,23 +604,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
     int isSpeech = 0;
     if (_settings.enablePreprocessor) {
-#if 1
-        if (_settings.enableBenchmark) {
-            TimeDelta td;
-            TimeDelta_start(&td);
-            isSpeech = speex_preprocess_run(_preprocessorState, psMic);
-            TimeDelta_stop(&td);
-            unsigned long udt = TimeDelta_usec_delta(&td);
-            if (_preprocAvgItems == 0)
-                _preprocRunningAvg = (long)udt;
-            else
-                _preprocRunningAvg += (((long)udt - _preprocRunningAvg) / _preprocAvgItems);
-            ++_preprocAvgItems;
-        } else
-#endif
-        {
-            isSpeech = speex_preprocess_run(_preprocessorState, psMic);
-        }
+        isSpeech = speex_preprocess_run(_preprocessorState, psMic);
     } else {
         BOOL resampled = micFrequency != sampleRate;
         short *buf = resampled ? psOut : psMic;

@@ -68,13 +68,7 @@ typedef struct _MKAudioSettings {
     int             outputDelay;
     float           micBoost;
     BOOL            enablePreprocessor;
-    BOOL            enableBenchmark;
 } MKAudioSettings;
-
-typedef struct _MKAudioBenchmark {
-    signed long  avgPreprocessorRuntime;
-} MKAudioBenchmark;
-
 
 /**
  * MKAudio represents the MumbleKit audio subsystem.
@@ -156,19 +150,7 @@ typedef struct _MKAudioBenchmark {
  */
 - (void) setForceTransmit:(BOOL)enableForceTransmit;
 
-///----------------
-/// @name Benchmark
-///----------------
-
-/**
- * Fills a MKAudioBenchmark struct with the current benchmark data.
- *
- * @param bench The struct to fill out with benchmark data. Should point to a MKAudioBenchmark struct.
- */
-- (void) getBenchmarkData:(MKAudioBenchmark *)bench;
-
 - (NSString *) currentAudioRoute;
-
 - (float) speechProbablity;
 - (float) peakCleanMic;
 

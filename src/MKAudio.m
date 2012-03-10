@@ -277,12 +277,6 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     [_audioInput setForceTransmit:flag];
 }
 
-- (void) getBenchmarkData:(MKAudioBenchmark *)bench {
-    if (bench != NULL) {
-        bench->avgPreprocessorRuntime = [_audioInput preprocessorAvgRuntime];
-    }
-}
-
 - (NSString *) currentAudioRoute {
 #if TARGET_OS_IPHONE == 1
     // Query for the actual sample rate we're to cope with.
