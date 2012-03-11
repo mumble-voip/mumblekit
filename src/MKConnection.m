@@ -14,6 +14,8 @@
 
 #include <dispatch/dispatch.h>
 
+#include  <Security/SecureTransport.h>
+
 #if TARGET_OS_IPHONE == 1
 # import <UIKIt/UIKit.h>
 # import <CFNetwork/CFNetwork.h>
@@ -33,13 +35,6 @@
 // The bitstream we should send to the server.
 // It's currently hard-coded.
 #define MUMBLEKIT_CELT_BITSTREAM 0x8000000bUL
-
-// The SecureTransport.h header is not available on the iPhone, so
-// these constants are lifted from the Mac OS X version of the header.
-#define errSSLProtocol             -9800
-#define errSSLXCertChainInvalid    -9807
-#define errSSLUnknownRootCert      -9812
-#define errSSLLast                 -9849
 
 @interface MKConnection () {
     MKCryptState   *_crypt;
@@ -494,6 +489,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     if (sslDictionary) {
         CFDictionaryAddValue(sslDictionary, kCFStreamSSLLevel, kCFStreamSocketSecurityLevelTLSv1);
         CFDictionaryAddValue(sslDictionary, kCFStreamSSLValidatesCertificateChain, _ignoreSSLVerification ? kCFBooleanFalse : kCFBooleanTrue);
+        
         if (_clientIdentity) {
             CFArrayRef array = CFArrayCreate(kCFAllocatorDefault, (const void **)&_clientIdentity, 1, NULL);
             CFDictionaryAddValue(sslDictionary, kCFStreamSSLCertificates, array);
