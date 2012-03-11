@@ -277,6 +277,13 @@
 			remoteGlobalIDString = 2815CCC414E6DF9700AAE69C;
 			remoteInfo = "Opus (Mac)";
 		};
+		28FB39E7150C4D6F00E6E522 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 285B425814E6E1200045E282 /* Opus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 287D85A514E6D474002B5D79;
+			remoteInfo = "Opus (iOS)";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -710,6 +717,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				28FB39E8150C4D6F00E6E522 /* PBXTargetDependency */,
 				283363CA13EE070400A04F04 /* PBXTargetDependency */,
 				283363CC13EE070400A04F04 /* PBXTargetDependency */,
 				283363CE13EE070400A04F04 /* PBXTargetDependency */,
@@ -983,6 +991,11 @@
 			name = "SpeexDSP (Mac)";
 			targetProxy = 2849235C132ED66F00B4EAAC /* PBXContainerItemProxy */;
 		};
+		28FB39E8150C4D6F00E6E522 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Opus (iOS)";
+			targetProxy = 28FB39E7150C4D6F00E6E522 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1077,7 +1090,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = MumbleKit;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1153,7 +1166,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = MumbleKit;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1261,7 +1274,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = MumbleKit;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1280,7 +1293,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = MumbleKit;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

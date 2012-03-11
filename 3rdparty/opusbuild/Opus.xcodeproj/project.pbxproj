@@ -1044,7 +1044,7 @@
 				DSTROOT = /tmp/Opus.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Opus.pch;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Opus;
 				SKIP_INSTALL = YES;
 			};
@@ -1115,7 +1115,7 @@
 				DSTROOT = /tmp/Opus.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Opus.pch;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Opus;
 				SKIP_INSTALL = YES;
 			};
@@ -1225,7 +1225,7 @@
 				DSTROOT = /tmp/Opus.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Opus.pch;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Opus;
 				SKIP_INSTALL = YES;
 			};
@@ -1237,7 +1237,7 @@
 				DSTROOT = /tmp/Opus.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Opus.pch;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Opus;
 				SKIP_INSTALL = YES;
 			};
