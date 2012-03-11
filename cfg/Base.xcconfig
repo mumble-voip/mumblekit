@@ -1,0 +1,34 @@
+// Copyright 2012 The MumbleKit Developers. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+ARCHS = $(ARCHS_STANDARD_32_BIT)
+SDKROOT = iphoneos
+
+MACOSX_DEPLOYMENT_TARGET = 10.7
+IPHONEOS_DEPLOYMENT_TARGET = 4.3
+
+HEADER_SEARCH_PATHS = src proto 3rdparty/speex/include 3rdparty/celt-0.7.0/libcelt 3rdparty/opus/include 3rdparty/openssl/include 3rdparty/protobuf/src/runtime/Classes
+LIBRARY_SEARCH_PATHS = $(inherited) "$(SRCROOT)"
+
+GCC_PRECOMPILE_PREFIX_HEADER = YES
+GCC_PREFIX_HEADER = src/MumbleKit.pch
+
+OTHER_CFLAGS =
+GCC_PREPROCESSOR_DEFINITIONS =
+
+GCC_WARN_UNUSED_VARIABLE = YES
+GCC_WARN_ABOUT_RETURN_TYPE = YES
+GCC_SYMBOLS_PRIVATE_EXTERN = NO
+GCC_UNROLL_LOOPS = YES
+
+PRODUCT_NAME = MumbleKit
+ALWAYS_SEARCH_USER_PATHS = NO
+
+DYLIB_COMPATIBILITY_VERSION = 1
+DYLIB_CURRENT_VERSION = 1
+LD_DYLIB_INSTALL_NAME = @loader_path/../Frameworks/$(EXECUTABLE_PATH)
+FRAMEWORK_VERSION = A
+INFOPLIST_FILE = src/MumbleKit-MacOSX.plist
+WRAPPER_EXTENSION = framework
+

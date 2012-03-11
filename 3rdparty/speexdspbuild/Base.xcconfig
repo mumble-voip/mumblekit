@@ -1,0 +1,24 @@
+// Copyright 2012 The MumbleKit Developers. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+ARCHS = armv7
+SDKROOT = iphoneos
+
+HEADER_SEARCH_PATHS = $(PROJECT_DIR) $(PROJECT_DIR)/../speex/libspeex $(PROJECT_DIR)/../speex/include
+ALWAYS_SEARCH_USER_PATHS = NO
+
+GCC_ENABLE_OBJC_EXCEPTIONS = YES
+
+GCC_PRECOMPILE_PREFIX_HEADER = YES
+GCC_PREFIX_HEADER = SpeexDSP.pch
+
+GCC_FAST_MATH = YES
+GCC_UNROLL_LOOPS = YES
+GCC_OPTIMIZATION_LEVEL = 3
+
+GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H
+
+PRODUCT_NAME = SpeexDSP
+
+

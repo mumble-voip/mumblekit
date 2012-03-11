@@ -1,0 +1,17 @@
+// Copyright 2012 The MumbleKit Developers. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+ARCHS = armv7
+SDKROOT = iphoneos
+
+HEADER_SEARCH_PATHS = $(PROJECT_DIR)/../openssl $(PROJECT_DIR)/../openssl/include $(PROJECT_DIR)/../openssl/crypto $(PROJECT_DIR)/../openssl/crypto/asn1 $(PROJECT_DIR)/../openssl/crypto/evp
+ALWAYS_SEARCH_USER_PATHS = NO
+
+GCC_PRECOMPILE_PREFIX_HEADER = NO
+GCC_PREFIX_HEADER = OpenSSL.pch
+
+GCC_PREPROCESSOR_DEFINITIONS = NO_WINDOWS_BRAINDEATH=1 OPENSSL_NO_INLINE_ASM=1 OPENSSL_NO_ASM=1
+
+PRODUCT_NAME = OpenSSL
+

@@ -54,9 +54,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28190CF2150D5D7300E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		2845A6A7132D99550034D631 /* libProtocolBuffers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocolBuffers.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A6AA132D99550034D631 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2845A6B8132D99600034D631 /* ProtocolBuffers.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = ProtocolBuffers.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		2845A6B8132D99600034D631 /* ProtocolBuffers */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = ProtocolBuffers; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A6BE132D99600034D631 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2845A6C7132D9A240034D631 /* AbstractMessage_Builder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractMessage_Builder.m; path = ../protobuf/src/runtime/Classes/AbstractMessage_Builder.m; sourceTree = SOURCE_ROOT; };
 		2845A6C8132D9A240034D631 /* AbstractMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractMessage.m; path = ../protobuf/src/runtime/Classes/AbstractMessage.m; sourceTree = SOURCE_ROOT; };
@@ -101,12 +102,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28190CF0150D5D4900E07613 /* Build Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				28190CF2150D5D7300E07613 /* Base.xcconfig */,
+			);
+			name = "Build Configurations";
+			sourceTree = "<group>";
+		};
 		2845A69C132D99550034D631 = {
 			isa = PBXGroup;
 			children = (
 				2845A6AC132D99550034D631 /* ProtocolBuffers */,
 				2845A6A9132D99550034D631 /* Frameworks */,
 				2845A6A8132D99550034D631 /* Products */,
+				28190CF0150D5D4900E07613 /* Build Configurations */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,7 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				2845A6A7132D99550034D631 /* libProtocolBuffers.a */,
-				2845A6B8132D99600034D631 /* ProtocolBuffers.dylib */,
+				2845A6B8132D99600034D631 /* ProtocolBuffers */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -231,7 +241,7 @@
 			);
 			name = "ProtocolBuffers (Mac)";
 			productName = "ProtocolBuffers (Mac)";
-			productReference = 2845A6B8132D99600034D631 /* ProtocolBuffers.dylib */;
+			productReference = 2845A6B8132D99600034D631 /* ProtocolBuffers */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -322,197 +332,77 @@
 /* Begin XCBuildConfiguration section */
 		2845A6AF132D99550034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				"GCC_THUMB_SUPPORT[arch=*]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../protobuf/src/runtime/Classes";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		2845A6B0132D99550034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				"GCC_THUMB_SUPPORT[arch=*]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../protobuf/src/runtime/Classes";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		2845A6B2132D99550034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/ProtocolBuffers.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				"GCC_THUMB_SUPPORT[arch=*]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = ProtocolBuffers;
-				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		2845A6B3132D99550034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/ProtocolBuffers.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				"GCC_THUMB_SUPPORT[arch=*]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = ProtocolBuffers;
-				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
 		2845A6C3132D99600034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = ProtocolBuffers;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		2845A6C4132D99600034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = ProtocolBuffers;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		28498F21138AB6C9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../protobuf/src/runtime/Classes";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = BetaDist;
 		};
 		28498F22138AB6C9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/ProtocolBuffers.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = ProtocolBuffers;
-				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
 		28498F23138AB6C9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = ProtocolBuffers;
-				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
 		28A2AECA1478AA1B00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				"GCC_THUMB_SUPPORT[arch=*]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../protobuf/src/runtime/Classes";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = AppStore;
 		};
 		28A2AECB1478AA1B00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/ProtocolBuffers.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				"GCC_THUMB_SUPPORT[arch=*]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = ProtocolBuffers;
-				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};
 		28A2AECC1478AA1B00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/../protobuf/src/runtime/ProtocolBuffers_Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = ProtocolBuffers;
-				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};

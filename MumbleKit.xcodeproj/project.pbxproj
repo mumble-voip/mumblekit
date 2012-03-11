@@ -14,7 +14,6 @@
 		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
 		282F6B0B13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
 		283363DD13EF535B00A04F04 /* MKChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 283363DC13EF535B00A04F04 /* MKChannelPrivate.h */; };
-		283363DF13EF536C00A04F04 /* MKUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 283363DE13EF536C00A04F04 /* MKUserPrivate.h */; };
 		2845A794132D9C220034D631 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2845A781132D9C220034D631 /* CryptState.cpp */; };
 		2845A795132D9C220034D631 /* CryptState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2845A781132D9C220034D631 /* CryptState.cpp */; };
 		2845A796132D9C220034D631 /* MKAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A782132D9C220034D631 /* MKAudio.m */; };
@@ -304,11 +303,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2815C4DE150D559800136082 /* AppStore.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = AppStore.xcconfig; path = cfg/AppStore.xcconfig; sourceTree = "<group>"; };
+		2815C4DF150D559800136082 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = cfg/Base.xcconfig; sourceTree = "<group>"; };
+		2815C4E0150D559800136082 /* BetaDist.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BetaDist.xcconfig; path = cfg/BetaDist.xcconfig; sourceTree = "<group>"; };
+		2815C4E1150D559800136082 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = cfg/Release.xcconfig; sourceTree = "<group>"; };
+		2815C4E6150D55BC00136082 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = cfg/Debug.xcconfig; sourceTree = "<group>"; };
 		282F6B0613624187008F555B /* MKServerPinger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerPinger.h; path = src/MumbleKit/MKServerPinger.h; sourceTree = SOURCE_ROOT; };
 		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
 		283363DC13EF535B00A04F04 /* MKChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelPrivate.h; path = src/MKChannelPrivate.h; sourceTree = SOURCE_ROOT; };
 		283363DE13EF536C00A04F04 /* MKUserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUserPrivate.h; path = src/MKUserPrivate.h; sourceTree = SOURCE_ROOT; };
-		2845A71A132D9B2F0034D631 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2845A71A132D9B2F0034D631 /* MumbleKit */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MumbleKit; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A781132D9C220034D631 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = SOURCE_ROOT; };
 		2845A782132D9C220034D631 /* MKAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudio.m; path = src/MKAudio.m; sourceTree = SOURCE_ROOT; };
 		2845A783132D9C220034D631 /* MKAudioInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudioInput.m; path = src/MKAudioInput.m; sourceTree = SOURCE_ROOT; };
@@ -413,6 +417,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2815C4DD150D558B00136082 /* Build Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				2815C4DE150D559800136082 /* AppStore.xcconfig */,
+				2815C4DF150D559800136082 /* Base.xcconfig */,
+				2815C4E0150D559800136082 /* BetaDist.xcconfig */,
+				2815C4E1150D559800136082 /* Release.xcconfig */,
+				2815C4E6150D55BC00136082 /* Debug.xcconfig */,
+			);
+			name = "Build Configurations";
+			sourceTree = "<group>";
+		};
 		2835C27E132AE4150095FB41 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
@@ -516,7 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				28492310132ED60700B4EAAC /* libCELT-0.7.0.a */,
-				28492312132ED60700B4EAAC /* CELT-0.7.0.dylib */,
+				28492312132ED60700B4EAAC /* CELT-0.7.0 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -525,7 +541,7 @@
 			isa = PBXGroup;
 			children = (
 				2849232A132ED61800B4EAAC /* libProtocolBuffers.a */,
-				2849232C132ED61800B4EAAC /* ProtocolBuffers.dylib */,
+				2849232C132ED61800B4EAAC /* ProtocolBuffers */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -534,7 +550,7 @@
 			isa = PBXGroup;
 			children = (
 				28492336132ED63800B4EAAC /* libOpenSSL.a */,
-				28492338132ED63800B4EAAC /* OpenSSL.dylib */,
+				28492338132ED63800B4EAAC /* OpenSSL */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -543,7 +559,7 @@
 			isa = PBXGroup;
 			children = (
 				28492345132ED64D00B4EAAC /* libSpeex.a */,
-				28492347132ED64D00B4EAAC /* Speex.dylib */,
+				28492347132ED64D00B4EAAC /* Speex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -552,7 +568,7 @@
 			isa = PBXGroup;
 			children = (
 				28492351132ED65800B4EAAC /* libSpeexDSP.a */,
-				28492353132ED65800B4EAAC /* SpeexDSP.dylib */,
+				28492353132ED65800B4EAAC /* SpeexDSP */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -561,7 +577,7 @@
 			isa = PBXGroup;
 			children = (
 				285B426114E6E1200045E282 /* libOpus.a */,
-				285B426314E6E1200045E282 /* Opus.dylib */,
+				285B426314E6E1200045E282 /* Opus */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -573,6 +589,7 @@
 				28BCF2C6132AE3B40003AEC1 /* MumbleKit */,
 				28BCF2C3132AE3B40003AEC1 /* Frameworks */,
 				28BCF2C2132AE3B40003AEC1 /* Products */,
+				2815C4DD150D558B00136082 /* Build Configurations */,
 			);
 			sourceTree = "<group>";
 		};
@@ -580,7 +597,7 @@
 			isa = PBXGroup;
 			children = (
 				28BCF2C1132AE3B40003AEC1 /* libMumbleKit.a */,
-				2845A71A132D9B2F0034D631 /* MumbleKit.framework */,
+				2845A71A132D9B2F0034D631 /* MumbleKit */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -674,7 +691,6 @@
 				282F6B0813624187008F555B /* MKServerPinger.h in Headers */,
 				28F2FAD513E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
 				283363DD13EF535B00A04F04 /* MKChannelPrivate.h in Headers */,
-				283363DF13EF536C00A04F04 /* MKUserPrivate.h in Headers */,
 				2879526814C1BDD800567430 /* MKTextMessage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -703,7 +719,7 @@
 			);
 			name = "MumbleKit (Mac)";
 			productName = MumbleKit;
-			productReference = 2845A71A132D9B2F0034D631 /* MumbleKit.framework */;
+			productReference = 2845A71A132D9B2F0034D631 /* MumbleKit */;
 			productType = "com.apple.product-type.framework";
 		};
 		28BCF2C0132AE3B40003AEC1 /* MumbleKit (iOS) */ = {
@@ -735,7 +751,7 @@
 		28BCF2B8132AE3B40003AEC1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = 28BCF2BB132AE3B40003AEC1 /* Build configuration list for PBXProject "MumbleKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -789,10 +805,10 @@
 			remoteRef = 2849230F132ED60700B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492312132ED60700B4EAAC /* CELT-0.7.0.dylib */ = {
+		28492312132ED60700B4EAAC /* CELT-0.7.0 */ = {
 			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "CELT-0.7.0.dylib";
+			fileType = file;
+			path = "CELT-0.7.0";
 			remoteRef = 28492311132ED60700B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -803,10 +819,10 @@
 			remoteRef = 28492329132ED61800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		2849232C132ED61800B4EAAC /* ProtocolBuffers.dylib */ = {
+		2849232C132ED61800B4EAAC /* ProtocolBuffers */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = ProtocolBuffers.dylib;
+			path = ProtocolBuffers;
 			remoteRef = 2849232B132ED61800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -817,10 +833,10 @@
 			remoteRef = 28492335132ED63800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492338132ED63800B4EAAC /* OpenSSL.dylib */ = {
+		28492338132ED63800B4EAAC /* OpenSSL */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = OpenSSL.dylib;
+			path = OpenSSL;
 			remoteRef = 28492337132ED63800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -831,10 +847,10 @@
 			remoteRef = 28492344132ED64D00B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492347132ED64D00B4EAAC /* Speex.dylib */ = {
+		28492347132ED64D00B4EAAC /* Speex */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = Speex.dylib;
+			path = Speex;
 			remoteRef = 28492346132ED64D00B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -845,10 +861,10 @@
 			remoteRef = 28492350132ED65800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492353132ED65800B4EAAC /* SpeexDSP.dylib */ = {
+		28492353132ED65800B4EAAC /* SpeexDSP */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = SpeexDSP.dylib;
+			path = SpeexDSP;
 			remoteRef = 28492352132ED65800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -859,11 +875,10 @@
 			remoteRef = 285B426014E6E1200045E282 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		285B426314E6E1200045E282 /* Opus.dylib */ = {
+		285B426314E6E1200045E282 /* Opus */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			name = Opus.dylib;
-			path = "Opus (Mac).dylib";
+			path = Opus;
 			remoteRef = 285B426214E6E1200045E282 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1002,301 +1017,76 @@
 		2845A729132D9B2F0034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
-				LD_DYLIB_INSTALL_NAME = "@loader_path/../Frameworks/$(EXECUTABLE_PATH)";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = MumbleKit;
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
 		};
 		2845A72A132D9B2F0034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
-				LD_DYLIB_INSTALL_NAME = "@loader_path/../Frameworks/$(EXECUTABLE_PATH)";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = MumbleKit;
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
 		};
 		28498F1A138AB6A9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2815C4E0150D559800136082 /* BetaDist.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					src,
-					proto,
-					3rdparty/speex/include,
-					"3rdparty/celt-0.7.0/libcelt",
-					3rdparty/opus/include,
-					3rdparty/openssl/include,
-					3rdparty/protobuf/src/runtime/Classes,
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = iphoneos;
 			};
 			name = BetaDist;
 		};
 		28498F1B138AB6A9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/MumbleKit.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = MumbleKit;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = BetaDist;
 		};
 		28498F1C138AB6A9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
-				LD_DYLIB_INSTALL_NAME = "@loader_path/../Frameworks/$(EXECUTABLE_PATH)";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = MumbleKit;
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = framework;
 			};
 			name = BetaDist;
 		};
 		28A2AEC21478A92700F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2815C4DE150D559800136082 /* AppStore.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					src,
-					proto,
-					3rdparty/speex/include,
-					"3rdparty/celt-0.7.0/libcelt",
-					3rdparty/opus/include,
-					3rdparty/openssl/include,
-					3rdparty/protobuf/src/runtime/Classes,
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				OTHER_CFLAGS = (
-					"-Xarch_armv6",
-					"-DARCH_ARMV6",
-					"-Xarch_armv6",
-					"-DARCH_ARMV7",
-				);
-				SDKROOT = iphoneos;
 			};
 			name = AppStore;
 		};
 		28A2AEC31478A92700F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/MumbleKit.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = MumbleKit;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = AppStore;
 		};
 		28A2AEC41478A92700F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "src/MumbleKit-MacOSX.plist";
-				LD_DYLIB_INSTALL_NAME = "@loader_path/../Frameworks/$(EXECUTABLE_PATH)";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = MumbleKit;
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = framework;
 			};
 			name = AppStore;
 		};
 		28BCF2C9132AE3B40003AEC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2815C4E6150D55BC00136082 /* Debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					src,
-					proto,
-					3rdparty/speex/include,
-					"3rdparty/celt-0.7.0/libcelt",
-					3rdparty/opus/include,
-					3rdparty/openssl/include,
-					3rdparty/protobuf/src/runtime/Classes,
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				OTHER_CFLAGS = (
-					"-Xarch_armv6",
-					"-DARCH_ARMV6",
-					"-Xarch_armv6",
-					"-DARCH_ARMV7",
-				);
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		28BCF2CA132AE3B40003AEC1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2815C4E1150D559800136082 /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					src,
-					proto,
-					3rdparty/speex/include,
-					"3rdparty/celt-0.7.0/libcelt",
-					3rdparty/opus/include,
-					3rdparty/openssl/include,
-					3rdparty/protobuf/src/runtime/Classes,
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				OTHER_CFLAGS = (
-					"-Xarch_armv6",
-					"-DARCH_ARMV6",
-					"-Xarch_armv6",
-					"-DARCH_ARMV7",
-				);
-				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		28BCF2CC132AE3B40003AEC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/MumbleKit.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = MumbleKit;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		28BCF2CD132AE3B40003AEC1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/MumbleKit.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/MumbleKit.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = MumbleKit;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -1444,6 +1444,7 @@
 		2812F41D132D87F0006511AC /* ocsp_prn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ocsp_prn.c; path = ../openssl/crypto/ocsp/ocsp_prn.c; sourceTree = "<group>"; };
 		2812F41E132D87F0006511AC /* ocsp_srv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ocsp_srv.c; path = ../openssl/crypto/ocsp/ocsp_srv.c; sourceTree = "<group>"; };
 		2812F41F132D87F0006511AC /* ocsp_vfy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ocsp_vfy.c; path = ../openssl/crypto/ocsp/ocsp_vfy.c; sourceTree = "<group>"; };
+		28190CEB150D5B6C00E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		2832A187132D889300939B95 /* pem_all.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pem_all.c; path = ../openssl/crypto/pem/pem_all.c; sourceTree = "<group>"; };
 		2832A188132D889300939B95 /* pem_err.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pem_err.c; path = ../openssl/crypto/pem/pem_err.c; sourceTree = "<group>"; };
 		2832A189132D889300939B95 /* pem_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pem_info.c; path = ../openssl/crypto/pem/pem_info.c; sourceTree = "<group>"; };
@@ -1896,7 +1897,7 @@
 		2852D73B132AF4E70078051B /* xcbc_enc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = xcbc_enc.c; path = ../openssl/crypto/des/xcbc_enc.c; sourceTree = "<group>"; };
 		28F58C46132AF1070053C348 /* libOpenSSL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpenSSL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F58C49132AF1070053C348 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		28F58C57132AF1170053C348 /* OpenSSL.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = OpenSSL.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		28F58C57132AF1170053C348 /* OpenSSL */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = OpenSSL; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F58C5D132AF1170053C348 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28F58C66132AF1690053C348 /* OpenSSL.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenSSL.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2247,6 +2248,14 @@
 				2832A192132D889300939B95 /* pvkfmt.c */,
 			);
 			name = pem;
+			sourceTree = "<group>";
+		};
+		28190CE9150D5AB900E07613 /* Build Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				28190CEB150D5B6C00E07613 /* Base.xcconfig */,
+			);
+			name = "Build Configurations";
 			sourceTree = "<group>";
 		};
 		2832A1AB132D88A100939B95 /* pkcs12 */ = {
@@ -2983,6 +2992,7 @@
 				28F58C69132AF1720053C348 /* Sources */,
 				28F58C48132AF1070053C348 /* Frameworks */,
 				28F58C47132AF1070053C348 /* Products */,
+				28190CE9150D5AB900E07613 /* Build Configurations */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2990,7 +3000,7 @@
 			isa = PBXGroup;
 			children = (
 				28F58C46132AF1070053C348 /* libOpenSSL.a */,
-				28F58C57132AF1170053C348 /* OpenSSL.dylib */,
+				28F58C57132AF1170053C348 /* OpenSSL */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3093,7 +3103,7 @@
 			);
 			name = "OpenSSL (Mac)";
 			productName = "OpenSSL (Mac)";
-			productReference = 28F58C57132AF1170053C348 /* OpenSSL.dylib */;
+			productReference = 28F58C57132AF1170053C348 /* OpenSSL */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -4394,238 +4404,77 @@
 /* Begin XCBuildConfiguration section */
 		28498F1D138AB6C0000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREFIX_HEADER = OpenSSL.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"NO_WINDOWS_BRAINDEATH=1",
-					"OPENSSL_NO_INLINE_ASM=1",
-					"OPENSSL_NO_ASM=1",
-				);
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../openssl",
-					"$(PROJECT_DIR)/../openssl/include",
-					"$(PROJECT_DIR)/../openssl/crypto",
-					"$(PROJECT_DIR)/../openssl/crypto/asn1",
-					"$(PROJECT_DIR)/../openssl/crypto/evp",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = BetaDist;
 		};
 		28498F1E138AB6C0000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/OpenSSL.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = OpenSSL;
-				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
 		28498F1F138AB6C0000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = OpenSSL;
-				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
 		28A2AEC61478AA0F00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREFIX_HEADER = OpenSSL.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"NO_WINDOWS_BRAINDEATH=1",
-					"OPENSSL_NO_INLINE_ASM=1",
-					"OPENSSL_NO_ASM=1",
-				);
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../openssl",
-					"$(PROJECT_DIR)/../openssl/include",
-					"$(PROJECT_DIR)/../openssl/crypto",
-					"$(PROJECT_DIR)/../openssl/crypto/asn1",
-					"$(PROJECT_DIR)/../openssl/crypto/evp",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = AppStore;
 		};
 		28A2AEC71478AA0F00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/OpenSSL.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = OpenSSL;
-				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};
 		28A2AEC81478AA0F00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = OpenSSL;
-				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};
 		28F58C4E132AF1070053C348 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = OpenSSL.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"NO_WINDOWS_BRAINDEATH=1",
-					"OPENSSL_NO_INLINE_ASM=1",
-					"OPENSSL_NO_ASM=1",
-					DEBUG,
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_THUMB_SUPPORT = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../openssl",
-					"$(PROJECT_DIR)/../openssl/include",
-					"$(PROJECT_DIR)/../openssl/crypto",
-					"$(PROJECT_DIR)/../openssl/crypto/asn1",
-					"$(PROJECT_DIR)/../openssl/crypto/evp",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		28F58C4F132AF1070053C348 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREFIX_HEADER = OpenSSL.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"NO_WINDOWS_BRAINDEATH=1",
-					"OPENSSL_NO_INLINE_ASM=1",
-					"OPENSSL_NO_ASM=1",
-				);
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../openssl",
-					"$(PROJECT_DIR)/../openssl/include",
-					"$(PROJECT_DIR)/../openssl/crypto",
-					"$(PROJECT_DIR)/../openssl/crypto/asn1",
-					"$(PROJECT_DIR)/../openssl/crypto/evp",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		28F58C51132AF1070053C348 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/OpenSSL.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = OpenSSL;
-				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		28F58C52132AF1070053C348 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/OpenSSL.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = OpenSSL;
-				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
 		28F58C62132AF1170053C348 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = OpenSSL;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		28F58C63132AF1170053C348 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = OpenSSL;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};

@@ -55,7 +55,8 @@
 /* Begin PBXFileReference section */
 		280D5F85132AE73C00540C3D /* libCELT-0.7.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCELT-0.7.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		280D5F88132AE73C00540C3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		28656110132AE7A80011637C /* CELT-0.7.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "CELT-0.7.0.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		28190CFB150D600400E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		28656110132AE7A80011637C /* CELT-0.7.0 */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = file; path = "CELT-0.7.0"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28656116132AE7A80011637C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28656121132AE8240011637C /* CELT-0.7.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CELT-0.7.pch"; sourceTree = "<group>"; };
 		28656124132AE83B0011637C /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -106,6 +107,7 @@
 				2865611D132AE7D10011637C /* Sources */,
 				280D5F87132AE73C00540C3D /* Frameworks */,
 				280D5F86132AE73C00540C3D /* Products */,
+				28190CFA150D5FE900E07613 /* Build Configurations */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,7 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				280D5F85132AE73C00540C3D /* libCELT-0.7.0.a */,
-				28656110132AE7A80011637C /* CELT-0.7.0.dylib */,
+				28656110132AE7A80011637C /* CELT-0.7.0 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,6 +127,14 @@
 				28656160132AEA730011637C /* iOS Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		28190CFA150D5FE900E07613 /* Build Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				28190CFB150D600400E07613 /* Base.xcconfig */,
+			);
+			name = "Build Configurations";
 			sourceTree = "<group>";
 		};
 		2865611D132AE7D10011637C /* Sources */ = {
@@ -233,7 +243,7 @@
 			);
 			name = "CELT-0.7 (Mac)";
 			productName = "CELT-0.7.0";
-			productReference = 28656110132AE7A80011637C /* CELT-0.7.0.dylib */;
+			productReference = 28656110132AE7A80011637C /* CELT-0.7.0 */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -320,218 +330,77 @@
 /* Begin XCBuildConfiguration section */
 		280D5F8D132AE73C00540C3D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CFB150D600400E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_FAST_MATH = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					DEBUG,
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_UNROLL_LOOPS = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = .;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		280D5F8E132AE73C00540C3D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CFB150D600400E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_UNROLL_LOOPS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = .;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		280D5F90132AE73C00540C3D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/CELT_0_7.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "CELT-0.7.0";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		280D5F91132AE73C00540C3D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/CELT_0_7.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "CELT-0.7.0";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 		28498F25138AB6D5000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CFB150D600400E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_UNROLL_LOOPS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = .;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = BetaDist;
 		};
 		28498F26138AB6D5000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/CELT_0_7.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "CELT-0.7.0";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = BetaDist;
 		};
 		28498F27138AB6D5000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "CELT-0.7.0";
-				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
 		2865611B132AE7A80011637C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "CELT-0.7.0";
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		2865611C132AE7A80011637C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "CELT-0.7.0";
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		28A2AECE1478AA2400F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CFB150D600400E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_UNROLL_LOOPS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = .;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = AppStore;
 		};
 		28A2AECF1478AA2400F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/CELT_0_7.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "CELT-0.7.0";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = AppStore;
 		};
 		28A2AED01478AA2400F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CELT-0.7.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "CELT-0.7.0";
-				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};

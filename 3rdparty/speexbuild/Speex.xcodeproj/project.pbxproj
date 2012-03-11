@@ -83,6 +83,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28190D05150D61EB00E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		287F0257132AEEE8003C03FE /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = SOURCE_ROOT; };
 		287F025A132AEF9E003C03FE /* modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = modes.c; path = ../speex/libspeex/modes.c; sourceTree = "<group>"; };
 		287F025D132AEFD5003C03FE /* hexc_10_32_table.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = hexc_10_32_table.c; path = ../speex/libspeex/hexc_10_32_table.c; sourceTree = "<group>"; };
@@ -90,7 +91,7 @@
 		287F0263132AEFEF003C03FE /* high_lsp_tables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = high_lsp_tables.c; path = ../speex/libspeex/high_lsp_tables.c; sourceTree = "<group>"; };
 		28D1DAE8132AEB1400456ED6 /* libSpeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSpeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D1DAEB132AEB1500456ED6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		28D1DAF9132AEB2200456ED6 /* Speex.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Speex.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D1DAF9132AEB2200456ED6 /* Speex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = Speex; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D1DAFF132AEB2200456ED6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28D1DB08132AEBB500456ED6 /* Speex.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Speex.pch; sourceTree = SOURCE_ROOT; };
 		28D1DB0C132AEBD300456ED6 /* bits.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bits.c; path = ../speex/libspeex/bits.c; sourceTree = SOURCE_ROOT; };
@@ -144,6 +145,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28190D03150D613C00E07613 /* Build Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				28190D05150D61EB00E07613 /* Base.xcconfig */,
+			);
+			name = "Build Configurations";
+			sourceTree = "<group>";
+		};
 		28D1DADD132AEB1400456ED6 = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +160,7 @@
 				28D1DB0B132AEBC900456ED6 /* Sources */,
 				28D1DAEA132AEB1500456ED6 /* Frameworks */,
 				28D1DAE9132AEB1400456ED6 /* Products */,
+				28190D03150D613C00E07613 /* Build Configurations */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,7 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				28D1DAE8132AEB1400456ED6 /* libSpeex.a */,
-				28D1DAF9132AEB2200456ED6 /* Speex.dylib */,
+				28D1DAF9132AEB2200456ED6 /* Speex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -293,7 +303,7 @@
 			);
 			name = "Speex (Mac)";
 			productName = "Speex (Mac)";
-			productReference = 28D1DAF9132AEB2200456ED6 /* Speex.dylib */;
+			productReference = 28D1DAF9132AEB2200456ED6 /* Speex */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -410,219 +420,77 @@
 /* Begin XCBuildConfiguration section */
 		28498F29138AB6DB000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190D05150D61EB00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					.,
-					"$(PROJECT_DIR)/../speex/include",
-					"$(PROJECT_DIR)/../libspeex",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = BetaDist;
 		};
 		28498F2A138AB6DB000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/Speex.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Speex;
-				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
 		28498F2B138AB6DB000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = Speex;
-				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
 		28A2AED21478AA3200F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190D05150D61EB00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					.,
-					"$(PROJECT_DIR)/../speex/include",
-					"$(PROJECT_DIR)/../libspeex",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = AppStore;
 		};
 		28A2AED31478AA3200F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/Speex.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Speex;
-				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};
 		28A2AED41478AA3200F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = Speex;
-				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};
 		28D1DAF0132AEB1500456ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190D05150D61EB00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					DEBUG,
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					.,
-					"$(PROJECT_DIR)/../speex/include",
-					"$(PROJECT_DIR)/../libspeex",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		28D1DAF1132AEB1500456ED6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190D05150D61EB00E07613 /* Base.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					.,
-					"$(PROJECT_DIR)/../speex/include",
-					"$(PROJECT_DIR)/../libspeex",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		28D1DAF3132AEB1500456ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/Speex.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Speex;
-				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		28D1DAF4132AEB1500456ED6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DSTROOT = /tmp/Speex.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				"GCC_THUMB_SUPPORT[arch=armv6]" = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Speex;
-				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
 		28D1DB04132AEB2200456ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Speex;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		28D1DB05132AEB2200456ED6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Speex.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				LD_DYLIB_INSTALL_NAME = "@loader_path/Frameworks/$(EXECUTABLE_PATH)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = Speex;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
