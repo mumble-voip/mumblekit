@@ -714,4 +714,13 @@ typedef enum {
 
 - (void) setSelfMuted:(BOOL)selfMuted andSelfDeafened:(BOOL)selfDeafened;
 
+///------------------------
+/// @name Self Registration
+///------------------------
+
+/**
+ * Registers the currently connected user with the server.
+ */
+- (void) registerConnectedUser;
+
 @end

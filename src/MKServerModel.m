@@ -919,4 +919,16 @@
     [_connection sendMessageWithType:UserStateMessage data:data];
 }
 
+#pragma mark -
+#pragma mark Self Registration
+
+- (void) registerConnectedUser {
+    MPUserState_Builder *mpus = [MPUserState builder];
+    [mpus setSession:[_connectedUser session]];
+    [mpus setUserId:0];
+    
+    NSData *data = [[mpus build] data];
+    [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
 @end
