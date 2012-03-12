@@ -9,20 +9,21 @@
 
 - (id) init {
     if ((self = [super init])) {
-        bufferSize = 0;
-        buffer = NULL;
-        volume = NULL;
-
-        pos[0] = pos[1] = pos[2] = 0.0f;
+        _bufferSize = 0;
+        _buffer = NULL;
+        _volume = NULL;
+        _pos[0] = 0.0f;
+        _pos[1] = 0.0f;
+        _pos[2] = 0.0f;
     }
     return self;
 }
 
 - (void) dealloc {
-    if (buffer)
-        free(buffer);
-    if (volume)
-        free(volume);
+    if (_buffer)
+        free(_buffer);
+    if (_volume)
+        free(_volume);
 
     [super dealloc];
 }
@@ -32,22 +33,22 @@
 }
 
 - (float *) buffer {
-    return buffer;
+    return _buffer;
 }
 
 - (NSUInteger) bufferLength {
-    return bufferSize;
+    return _bufferSize;
 }
 
 - (void) resizeBuffer:(NSUInteger)newSize {
-    if (newSize > bufferSize) {
-        float *n = malloc(sizeof(float)*newSize);
-        if (buffer != NULL) {
-            memcpy(n, buffer, sizeof(float)*bufferSize);
-            free(buffer);
+    if (newSize > _bufferSize) {
+        float *n = malloc(sizeof(float) * newSize);
+        if (_buffer != NULL) {
+            memcpy(n, _buffer, sizeof(float) * _bufferSize);
+            free(_buffer);
         }
-        buffer = n;
-        bufferSize = newSize;
+        _buffer = n;
+        _bufferSize = newSize;
     }
 }
 

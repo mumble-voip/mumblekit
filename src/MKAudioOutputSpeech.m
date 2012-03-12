@@ -239,7 +239,7 @@
     NSUInteger i;
     
     for (i = _lastConsume; i < _bufferFilled; ++i) {
-        buffer[i-_lastConsume] = buffer[i];
+        _buffer[i-_lastConsume] = _buffer[i];
     }
     _bufferFilled -= _lastConsume;
 
@@ -259,7 +259,7 @@
         if (_resampler) {
             output = _resamplerBuffer;
         } else {
-            output = buffer + _bufferFilled;
+            output = _buffer + _bufferFilled;
         }   
 
         if (!_lastAlive) {
@@ -322,11 +322,13 @@
                     }
 
                     if ([pds left]) {
-                        pos[0] = [pds getFloat];
-                        pos[1] = [pds getFloat];
-                        pos[2] = [pds getFloat];
+                        _pos[0] = [pds getFloat];
+                        _pos[1] = [pds getFloat];
+                        _pos[2] = [pds getFloat];
                     } else {
-                        pos[0] = pos[1] = pos[2] = 0.0f;
+                        _pos[0] = 0.0f;
+                        _pos[1] = 0.0f;
+                        _pos[2] = 0.0f;
                     }
 
                     [pds release];
@@ -463,7 +465,7 @@ nextframe:
             spx_uint32_t inlen = decodedSamples;
             spx_uint32_t outlen = _outputSize;
             if (_resampler && _lastAlive) {
-                speex_resampler_process_float(_resampler, 0, _resamplerBuffer, &inlen, buffer + _bufferFilled, &outlen);
+                speex_resampler_process_float(_resampler, 0, _resamplerBuffer, &inlen, _buffer + _bufferFilled, &outlen);
             }
             _bufferFilled += outlen;
         }

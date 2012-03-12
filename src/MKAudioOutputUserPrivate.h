@@ -4,10 +4,10 @@
 
 @interface MKAudioOutputUser () {
 @protected
-    NSString    *name;
-    NSUInteger  bufferSize;
-    float       *buffer;
-    float       *volume;
-    float       pos[3];
+    NSString    *_name;
+    NSUInteger   _bufferSize;
+    float       *_buffer;
+    float       *_volume;
+    float        _pos[3];
 }
 @end
