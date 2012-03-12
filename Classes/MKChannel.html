@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -153,13 +153,13 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKChannel.html">MKChannel</a> represents a channel on a Mumble server. <a href="MKChannel.html">MKChannel</a> objects are owned
+						<p>MKChannel represents a channel on a Mumble server. MKChannel objects are owned
 by their respective <a href="../Classes/MKServerModel.html">MKServerModel</a> instances.</p>
 
 <p>The object&rsquo;s <a href="../Classes/MKServerModel.html">MKServerModel</a> may change properties of the channel at any time, but
 all changes are serialized to the main thread.</p>
 
-<p>Generally, as a consumer of this API, most accesses to <a href="MKChannel.html">MKChannel</a> happen in response to
+<p>Generally, as a consumer of this API, most accesses to MKChannel happen in response to
 <a href="../Protocols/MKServerModelDelegate.html">MKServerModelDelegate</a> callbacks, and all calls to delegate methods of <a href="../Classes/MKServerModel.html">MKServerModel</a> are
 ensured to happen on the same thread that modifies MKChannle objects.</p>
 
@@ -204,28 +204,28 @@ ensured to happen on the same thread that modifies MKChannle objects.</p>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/position">&ndash;&nbsp;position</a></code>
-		<span class="tooltip"><p>Returns the <a href="#//api/name/position">position</a> of the channel.</p></span>
+		<span class="tooltip"><p>Returns the position of the channel.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/parent">&ndash;&nbsp;parent</a></code>
-		<span class="tooltip"><p>Returns the channel&rsquo;s <a href="#//api/name/parent">parent</a>.</p></span>
+		<span class="tooltip"><p>Returns the channel&rsquo;s parent.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/channels">&ndash;&nbsp;channels</a></code>
-		<span class="tooltip"><p>Returns an NSArray of the channel&rsquo;s sub<a href="#//api/name/channels">channels</a> represented as MKChannels.</p></span>
+		<span class="tooltip"><p>Returns an NSArray of the channel&rsquo;s subchannels represented as MKChannels.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/users">&ndash;&nbsp;users</a></code>
-		<span class="tooltip"><p>Returns an NSArray of all <a href="#//api/name/users">users</a> in the channel. The <a href="#//api/name/users">users</a> are represented as MKUsers.</p></span>
+		<span class="tooltip"><p>Returns an NSArray of all users in the channel. The users are represented as MKUsers.</p></span>
 	</span>
 	
 	
@@ -419,7 +419,7 @@ is a SHA1 digest).</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns an NSArray of the channel&rsquo;s sub<a href="#//api/name/channels">channels</a> represented as MKChannels.</p>
+		<p>Returns an NSArray of the channel&rsquo;s subchannels represented as MKChannels.</p>
 	</div>		
 	
 	
@@ -576,7 +576,7 @@ Otherwise, returns NO.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the channel&rsquo;s <a href="#//api/name/parent">parent</a>.</p>
+		<p>Returns the channel&rsquo;s parent.</p>
 	</div>		
 	
 	
@@ -587,7 +587,7 @@ Otherwise, returns NO.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>The <a href="MKChannel.html">MKChannel</a> object representing the channel&rsquo;s <a href="#//api/name/parent">parent</a>.
+		<p>The MKChannel object representing the channel&rsquo;s parent.
 Returns nil if the current channel is the root channel.</p>
 	</div>
 	
@@ -616,7 +616,7 @@ Returns nil if the current channel is the root channel.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the <a href="#//api/name/position">position</a> of the channel.</p>
+		<p>Returns the position of the channel.</p>
 	</div>		
 	
 	
@@ -650,7 +650,7 @@ Returns nil if the current channel is the root channel.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns an NSArray of all <a href="#//api/name/users">users</a> in the channel. The <a href="#//api/name/users">users</a> are represented as MKUsers.</p>
+		<p>Returns an NSArray of all users in the channel. The users are represented as MKUsers.</p>
 	</div>		
 	
 	
@@ -690,9 +690,9 @@ Returns nil if the current channel is the root channel.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-31)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
 					</div>
 				</div>

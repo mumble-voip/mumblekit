@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -53,8 +53,6 @@
 	
 	<option value="//api/name/forceTransmit">&nbsp;&nbsp;&nbsp;&nbsp;- forceTransmit</option>
 	
-	<option value="//api/name/getBenchmarkData:">&nbsp;&nbsp;&nbsp;&nbsp;- getBenchmarkData:</option>
-	
 	<option value="//api/name/isRunning">&nbsp;&nbsp;&nbsp;&nbsp;- isRunning</option>
 	
 	<option value="//api/name/restart">&nbsp;&nbsp;&nbsp;&nbsp;- restart</option>
@@ -93,8 +91,6 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Transmission">Transmission</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Benchmark">Benchmark</a></span></li>
-	
 </ul></li>
 
 
@@ -116,8 +112,6 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/audioSettings">audioSettings</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/forceTransmit">forceTransmit</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/getBenchmarkData:">getBenchmarkData:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isRunning">isRunning</a></span></li>
 	
@@ -170,7 +164,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKAudio.html">MKAudio</a> represents the MumbleKit audio subsystem.</p>
+						<p>MKAudio represents the MumbleKit audio subsystem.</p>
 					</div>
 					
 					
@@ -189,7 +183,7 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/sharedAudio">+&nbsp;sharedAudio</a></code>
-		<span class="tooltip"><p>Get a shared copy of the <a href="MKAudio.html">MKAudio</a> object for this process.</p></span>
+		<span class="tooltip"><p>Get a shared copy of the MKAudio object for this process.</p></span>
 	</span>
 	
 	
@@ -269,7 +263,7 @@
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/forceTransmit">&ndash;&nbsp;forceTransmit</a></code>
-		<span class="tooltip"><p>Returns whether <a href="#//api/name/forceTransmit">forceTransmit</a> is enabled.
+		<span class="tooltip"><p>Returns whether forceTransmit is enabled.
 Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 	</span>
 	
@@ -278,21 +272,6 @@ Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/setForceTransmit:">&ndash;&nbsp;setForceTransmit:</a></code>
 		<span class="tooltip"><p>Sets the current force-transmit state.</p></span>
-	</span>
-	
-	
-</li>
-						</ul>
-						
-						
-						<a title="Benchmark" name="task_Benchmark"></a>
-						<h3 class="subsubtitle task-title">Benchmark</h3>
-
-						<ul class="task-list">
-							<li>
-	<span class="tooltip">
-		<code><a href="#//api/name/getBenchmarkData:">&ndash;&nbsp;getBenchmarkData:</a></code>
-		<span class="tooltip"><p>Fills a MKAudioBenchmark struct with the current benchmark data.</p></span>
 	</span>
 	
 	
@@ -318,7 +297,7 @@ Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Get a shared copy of the <a href="MKAudio.html">MKAudio</a> object for this process.</p>
+		<p>Get a shared copy of the MKAudio object for this process.</p>
 	</div>		
 	
 	
@@ -329,7 +308,7 @@ Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Retruns the shared <a href="MKAudio.html">MKAudio</a> object.</p>
+		<p>Retruns the shared MKAudio object.</p>
 	</div>
 	
 	
@@ -399,57 +378,13 @@ Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns whether <a href="#//api/name/forceTransmit">forceTransmit</a> is enabled.
+		<p>Returns whether forceTransmit is enabled.
 Forced-transmit is used to implemented push-to-talk functionality.</p>
 	</div>		
 	
 	
 	<div class="method-subsection method-declaration"><code>- (BOOL)forceTransmit</code></div>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">MKAudio.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/getBenchmarkData:" title="getBenchmarkData:"></a>
-	<h3 class="subsubtitle method-title">getBenchmarkData:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Fills a MKAudioBenchmark struct with the current benchmark data.</p>
-	</div>		
-	
-	
-	<div class="method-subsection method-declaration"><code>- (void)getBenchmarkData:(MKAudioBenchmark *)<em>bench</em></code></div>
-	
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>bench</em></dt>
-			<dd><p>The struct to fill out with benchmark data. Should point to a MKAudioBenchmark struct.</p></dd>
-		</dl>
-		
-	</div>
 	
 	
 	
@@ -742,9 +677,9 @@ Forced-transmit is used to implemented push-to-talk functionality.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-31)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
 					</div>
 				</div>

@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -192,7 +192,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKCertificate.html">MKCertificate</a> is a helper class for creating, reading and exporting X.509 certificates.</p>
+						<p>MKCertificate is a helper class for creating, reading and exporting X.509 certificates.</p>
 					</div>
 					
 					
@@ -211,14 +211,14 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/certificateWithCertificate:privateKey:">+&nbsp;certificateWithCertificate:privateKey:</a></code>
-		<span class="tooltip"><p>Returns a new <a href="MKCertificate.html">MKCertificate</a> object from the given certificate and private key.</p></span>
+		<span class="tooltip"><p>Returns a new MKCertificate object from the given certificate and private key.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/selfSignedCertificateWithName:email:">+&nbsp;selfSignedCertificateWithName:email:</a></code>
-		<span class="tooltip"><p>Generate a self-signed <a href="MKCertificate.html">MKCertificate</a> object using the given name and email address.
+		<span class="tooltip"><p>Generate a self-signed MKCertificate object using the given name and email address.
 This generates a public and private keypair, and uses that key pair to create a self-
 signed X.509 certificate that is compatible with Mumble.</p></span>
 	</span>
@@ -227,7 +227,7 @@ signed X.509 certificate that is compatible with Mumble.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/selfSignedCertificateWithName:email:rsaKeyPair:">+&nbsp;selfSignedCertificateWithName:email:rsaKeyPair:</a></code>
-		<span class="tooltip"><p>Generate a self-signed <a href="MKCertificate.html">MKCertificate</a> object using the given name and email address.
+		<span class="tooltip"><p>Generate a self-signed MKCertificate object using the given name and email address.
 This method optionally takes a <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> which it will use for the certificate it
 generates.</p></span>
 	</span>
@@ -273,7 +273,7 @@ generates.</p></span>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/exportPKCS12WithPassword:">&ndash;&nbsp;exportPKCS12WithPassword:</a></code>
-		<span class="tooltip"><p>Export a <a href="MKCertificate.html">MKCertificate</a> object to a PKCS12 data blob using the given password.</p></span>
+		<span class="tooltip"><p>Export a MKCertificate object to a PKCS12 data blob using the given password.</p></span>
 	</span>
 	
 	
@@ -288,8 +288,8 @@ generates.</p></span>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/digest">&ndash;&nbsp;digest</a></code>
-		<span class="tooltip"><p>Returns a SHA1 <a href="#//api/name/digest">digest</a> of raw DER-data backing the certificate and the public key
-of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p></span>
+		<span class="tooltip"><p>Returns a SHA1 digest of raw DER-data backing the certificate and the public key
+of the receiving MKCertificate object.</p></span>
 	</span>
 	
 	
@@ -297,7 +297,7 @@ of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p></spa
 	<span class="tooltip">
 		<code><a href="#//api/name/hexDigest">&ndash;&nbsp;hexDigest</a></code>
 		<span class="tooltip"><p>Returns a hex-encoded SHA1 <a href="#//api/name/digest">digest</a> of the raw DER-data backing the certifiate and the
-public key of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p></span>
+public key of the receiving MKCertificate object.</p></span>
 	</span>
 	
 	
@@ -360,7 +360,7 @@ an authoritative method of determining certificate validity.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/issuerItem:">&ndash;&nbsp;issuerItem:</a></code>
-		<span class="tooltip"><p>The <a href="#//api/name/issuerItem:">issuerItem:</a> method is used to directly access the issuer items of the X.509
+		<span class="tooltip"><p>The issuerItem: method is used to directly access the issuer items of the X.509
 certificate.</p></span>
 	</span>
 	
@@ -368,7 +368,7 @@ certificate.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/subjectItem:">&ndash;&nbsp;subjectItem:</a></code>
-		<span class="tooltip"><p>The <a href="#//api/name/subjectItem:">subjectItem:</a> method is used to directly access the subject items of the X.509
+		<span class="tooltip"><p>The subjectItem: method is used to directly access the subject items of the X.509
 certificate.</p></span>
 	</span>
 	
@@ -395,7 +395,7 @@ certificate.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns a new <a href="MKCertificate.html">MKCertificate</a> object from the given certificate and private key.</p>
+		<p>Returns a new MKCertificate object from the given certificate and private key.</p>
 	</div>		
 	
 	
@@ -421,7 +421,7 @@ certificate.</p></span>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A <a href="MKCertificate.html">MKCertificate</a> object with the given certificate data and optionally the
+		<p>A MKCertificate object with the given certificate data and optionally the
 given private key. Passing in a private key is mostly used in situations
 where one wants to export the certificate in another format (for example PKCS12).</p>
 	</div>
@@ -479,7 +479,7 @@ the given PKCS12 data.</p></dd>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A <a href="MKCertificate.html">MKCertificate</a> backed by the certificate and public and private keypair
+		<p>A MKCertificate backed by the certificate and public and private keypair
 from the given PKCS12 data.</p>
 	</div>
 	
@@ -508,7 +508,7 @@ from the given PKCS12 data.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Generate a self-signed <a href="MKCertificate.html">MKCertificate</a> object using the given name and email address.
+		<p>Generate a self-signed MKCertificate object using the given name and email address.
 This generates a public and private keypair, and uses that key pair to create a self-
 signed X.509 certificate that is compatible with Mumble.</p>
 	</div>		
@@ -538,7 +538,7 @@ no email address should be included in the generated X.509 certificate.</p></dd>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A <a href="MKCertificate.html">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random
+		<p>A MKCertificate that backs a self-signed X.509 certificate backed by a random
 public and private keypair.</p>
 	</div>
 	
@@ -567,7 +567,7 @@ public and private keypair.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Generate a self-signed <a href="MKCertificate.html">MKCertificate</a> object using the given name and email address.
+		<p>Generate a self-signed MKCertificate object using the given name and email address.
 This method optionally takes a <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPair</a> which it will use for the certificate it
 generates.</p>
 	</div>		
@@ -604,7 +604,7 @@ keypair (by default: 2048 bits).</p></dd>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A <a href="MKCertificate.html">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random
+		<p>A MKCertificate that backs a self-signed X.509 certificate backed by a random
 public and private keypair.</p>
 	</div>
 	
@@ -680,8 +680,8 @@ public and private keypair.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns a SHA1 <a href="#//api/name/digest">digest</a> of raw DER-data backing the certificate and the public key
-of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p>
+		<p>Returns a SHA1 digest of raw DER-data backing the certificate and the public key
+of the receiving MKCertificate object.</p>
 	</div>		
 	
 	
@@ -692,7 +692,7 @@ of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>An NSData object that holds the calculated SHA1 <a href="#//api/name/digest">digest</a>.</p>
+		<p>An NSData object that holds the calculated SHA1 digest.</p>
 	</div>
 	
 	
@@ -760,7 +760,7 @@ of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Export a <a href="MKCertificate.html">MKCertificate</a> object to a PKCS12 data blob using the given password.</p>
+		<p>Export a MKCertificate object to a PKCS12 data blob using the given password.</p>
 	</div>		
 	
 	
@@ -821,7 +821,7 @@ the receiver MKCertificate&rsquo;s certificate and public and private keypair.</
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Returns YES if the <a href="MKCertificate.html">MKCertificate</a> object has a certificate and public key.
+		<p>Returns YES if the MKCertificate object has a certificate and public key.
 Otherwise, returns NO.</p>
 	</div>
 	
@@ -861,7 +861,7 @@ Otherwise, returns NO.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Returns YES if the <a href="MKCertificate.html">MKCertificate</a> object has a private key.
+		<p>Returns YES if the MKCertificate object has a private key.
 Otherwise, returns NO.</p>
 	</div>
 	
@@ -891,7 +891,7 @@ Otherwise, returns NO.</p>
 	
 	<div class="method-subsection brief-description">
 		<p>Returns a hex-encoded SHA1 <a href="#//api/name/digest">digest</a> of the raw DER-data backing the certifiate and the
-public key of the receiving <a href="MKCertificate.html">MKCertificate</a> object.</p>
+public key of the receiving MKCertificate object.</p>
 	</div>		
 	
 	
@@ -930,7 +930,7 @@ public key of the receiving <a href="MKCertificate.html">MKCertificate</a> objec
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The <a href="#//api/name/issuerItem:">issuerItem:</a> method is used to directly access the issuer items of the X.509
+		<p>The issuerItem: method is used to directly access the issuer items of the X.509
 certificate.</p>
 	</div>		
 	
@@ -944,7 +944,7 @@ certificate.</p>
 		<dl class="argument-def parameter-def">
 			<dt><em>item</em></dt>
 			<dd><p>An X.509 subject item key (CN, O, C, etc.)
-(See the &lsquo;<a href="MKCertificate.html">MKCertificate</a> accessor items&rsquo; section for a list
+(See the &lsquo;MKCertificate accessor items&rsquo; section for a list
 of pre-defined symbolic values for the item keys)</p></dd>
 		</dl>
 		
@@ -1104,7 +1104,7 @@ This determines the date from which the certificate is deemed valid.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The <a href="#//api/name/subjectItem:">subjectItem:</a> method is used to directly access the subject items of the X.509
+		<p>The subjectItem: method is used to directly access the subject items of the X.509
 certificate.</p>
 	</div>		
 	
@@ -1118,7 +1118,7 @@ certificate.</p>
 		<dl class="argument-def parameter-def">
 			<dt><em>item</em></dt>
 			<dd><p>An X.509 issuer item key (CN, O, C, etc.)
-(See the &lsquo;<a href="MKCertificate.html">MKCertificate</a> accessor items&rsquo; section for a list
+(See the &lsquo;MKCertificate accessor items&rsquo; section for a list
 of pre-defined symbolic values for the item keys)</p></dd>
 		</dl>
 		
@@ -1163,9 +1163,9 @@ was not found.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-31)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
 					</div>
 				</div>

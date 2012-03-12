@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -71,6 +71,8 @@
 	<option value="//api/name/sendTextMessage:toUser:">&nbsp;&nbsp;&nbsp;&nbsp;- sendTextMessage:toUser:</option>
 	
 	<option value="//api/name/serverCertificates">&nbsp;&nbsp;&nbsp;&nbsp;- serverCertificates</option>
+	
+	<option value="//api/name/serverCertificatesTrusted">&nbsp;&nbsp;&nbsp;&nbsp;- serverCertificatesTrusted</option>
 	
 	<option value="//api/name/setAccessTokens:">&nbsp;&nbsp;&nbsp;&nbsp;- setAccessTokens:</option>
 	
@@ -148,6 +150,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverCertificates">serverCertificates</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverCertificatesTrusted">serverCertificatesTrusted</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAccessTokens:">setAccessTokens:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userWithHash:">userWithHash:</a></span></li>
@@ -194,7 +198,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKServerModel.html">MKServerModel</a> wraps an <a href="../Classes/MKConnection.html">MKConnection</a> and acts as its message handler. It provides an
+						<p>MKServerModel wraps an <a href="../Classes/MKConnection.html">MKConnection</a> and acts as its message handler. It provides an
 easy to use interface for interacting with a Mumble server.</p>
 					</div>
 					
@@ -214,7 +218,7 @@ easy to use interface for interacting with a Mumble server.</p>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/initWithConnection:">&ndash;&nbsp;initWithConnection:</a></code>
-		<span class="tooltip"><p>Initialize a <a href="MKServerModel.html">MKServerModel</a> with the given connection.</p></span>
+		<span class="tooltip"><p>Initialize a MKServerModel with the given connection.</p></span>
 	</span>
 	
 	
@@ -236,7 +240,7 @@ easy to use interface for interacting with a Mumble server.</p>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/removeDelegate:">&ndash;&nbsp;removeDelegate:</a></code>
-		<span class="tooltip"><p>Remove a delegate from the <a href="MKServerModel.html">MKServerModel</a>.</p></span>
+		<span class="tooltip"><p>Remove a delegate from the MKServerModel.</p></span>
 	</span>
 	
 	
@@ -251,14 +255,14 @@ easy to use interface for interacting with a Mumble server.</p>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/hostname">&ndash;&nbsp;hostname</a></code>
-		<span class="tooltip"><p>Returns the <a href="#//api/name/hostname">hostname</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p></span>
+		<span class="tooltip"><p>Returns the hostname of the server that the MKServerModel is currently connected to.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/port">&ndash;&nbsp;port</a></code>
-		<span class="tooltip"><p>Returns the <a href="#//api/name/port">port</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p></span>
+		<span class="tooltip"><p>Returns the port of the server that the MKServerModel is currently connected to.</p></span>
 	</span>
 	
 	
@@ -333,43 +337,33 @@ connected to.</p></span>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/sendTextMessage:toTreeChannels:andChannels:andUsers:">&ndash;&nbsp;sendTextMessage:toTreeChannels:andChannels:andUsers:</a></code>
-		<span class="tooltip"><p>* Send a text message to the given destinations.</p>
+		<span class="tooltip"><ul>
+<li>Send a text message to the given destinations.
+*</li>
+<li>One, or multiple of tree, channels and users must be passed to the method.
+*</li>
+<li>Sending a message to a chnanel is the same as sending to all users in that channel;</li>
+<li>receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</li>
+<li>specifically targetted at them.
+*</li>
+<li>@param  txtMsg The text message to send.
+*</li>
+<li>@param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</li>
+<li><pre><code>         all channels in this array, and recursively to their descendants
+</code></pre></li>
+<li><pre><code>         (subchannels, children of subchannels, and so on).
+</code></pre>
 
-<h1>!~**</h1>
+<p>*</p></li>
+<li>@param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</li>
+<li><pre><code>            channels in this array.
+</code></pre>
 
-<p>* One, or multiple of tree, channels and users must be passed to the method.</p>
-
-<h1>!~**</h1>
-
-<p>* Sending a message to a chnanel is the same as sending to all users in that channel;</p>
-
-<h1>!~** receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</h1>
-
-<p>* specifically targetted at them.</p>
-
-<h1>!~**</h1>
-
-<p>* @param  txtMsg The text message to send.</p>
-
-<h1>!~**</h1>
-
-<p>* @param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</p>
-
-<h1>!~**                all channels in this array, and recursively to their descendants</h1>
-
-<p>*                (subchannels, children of subchannels, and so on).</p>
-
-<h1>!~**</h1>
-
-<p>* @param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</p>
-
-<h1>!~**                   channels in this array.</h1>
-
-<p>*</p>
-
-<h1>!~** @param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).</h1>
-
-<p>@</p></span>
+<p>*</p></li>
+<li>@param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).
+@</li>
+</ul>
+</span>
 	</span>
 	
 	
@@ -414,6 +408,13 @@ connected to.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverCertificates">&ndash;&nbsp;serverCertificates</a></code>
 		<span class="tooltip"><p>Get the server&rsquo;s certificate chain.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverCertificatesTrusted">&ndash;&nbsp;serverCertificatesTrusted</a></code>
+		<span class="tooltip"><p>Get whether or not the certificate chain is verified by the system&rsquo;s root CAs.</p></span>
 	</span>
 	
 	
@@ -563,7 +564,7 @@ connected to.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the <a href="#//api/name/hostname">hostname</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p>
+		<p>Returns the hostname of the server that the MKServerModel is currently connected to.</p>
 	</div>		
 	
 	
@@ -597,7 +598,7 @@ connected to.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Initialize a <a href="MKServerModel.html">MKServerModel</a> with the given connection.</p>
+		<p>Initialize a MKServerModel with the given connection.</p>
 	</div>		
 	
 	
@@ -609,7 +610,7 @@ connected to.</p></span>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>connection</em></dt>
-			<dd><p>The connection that the <a href="MKServerModel.html">MKServerModel</a> should handle.</p></dd>
+			<dd><p>The connection that the MKServerModel should handle.</p></dd>
 		</dl>
 		
 	</div>
@@ -685,7 +686,7 @@ connected to.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the <a href="#//api/name/port">port</a> of the server that the <a href="MKServerModel.html">MKServerModel</a> is currently connected to.</p>
+		<p>Returns the port of the server that the MKServerModel is currently connected to.</p>
 	</div>		
 	
 	
@@ -719,7 +720,7 @@ connected to.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Remove a delegate from the <a href="MKServerModel.html">MKServerModel</a>.</p>
+		<p>Remove a delegate from the MKServerModel.</p>
 	</div>		
 	
 	
@@ -902,43 +903,33 @@ connected to.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>* Send a text message to the given destinations.</p>
+		<ul>
+<li>Send a text message to the given destinations.
+*</li>
+<li>One, or multiple of tree, channels and users must be passed to the method.
+*</li>
+<li>Sending a message to a chnanel is the same as sending to all users in that channel;</li>
+<li>receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</li>
+<li>specifically targetted at them.
+*</li>
+<li>@param  txtMsg The text message to send.
+*</li>
+<li>@param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</li>
+<li><pre><code>         all channels in this array, and recursively to their descendants
+</code></pre></li>
+<li><pre><code>         (subchannels, children of subchannels, and so on).
+</code></pre>
 
-<h1>!~**</h1>
+<p>*</p></li>
+<li>@param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</li>
+<li><pre><code>            channels in this array.
+</code></pre>
 
-<p>* One, or multiple of tree, channels and users must be passed to the method.</p>
+<p>*</p></li>
+<li>@param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).
+@</li>
+</ul>
 
-<h1>!~**</h1>
-
-<p>* Sending a message to a chnanel is the same as sending to all users in that channel;</p>
-
-<h1>!~** receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</h1>
-
-<p>* specifically targetted at them.</p>
-
-<h1>!~**</h1>
-
-<p>* @param  txtMsg The text message to send.</p>
-
-<h1>!~**</h1>
-
-<p>* @param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</p>
-
-<h1>!~**                all channels in this array, and recursively to their descendants</h1>
-
-<p>*                (subchannels, children of subchannels, and so on).</p>
-
-<h1>!~**</h1>
-
-<p>* @param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</p>
-
-<h1>!~**                   channels in this array.</h1>
-
-<p>*</p>
-
-<h1>!~** @param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).</h1>
-
-<p>@</p>
 	</div>		
 	
 	
@@ -1026,6 +1017,40 @@ connected to.</p>
 	
 	
 	<div class="method-subsection method-declaration"><code>- (NSArray *)serverCertificates</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverCertificatesTrusted" title="serverCertificatesTrusted"></a>
+	<h3 class="subsubtitle method-title">serverCertificatesTrusted</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Get whether or not the certificate chain is verified by the system&rsquo;s root CAs.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)serverCertificatesTrusted</code></div>
 	
 	
 	
@@ -1207,9 +1232,9 @@ if the user does not exist on the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-31)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
 					</div>
 				</div>

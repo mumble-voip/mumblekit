@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -189,14 +189,14 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKUser.html">MKUser</a> represents a user on a Mumble server. A user always resides in a <a href="#//api/name/channel">channel</a>, which is
+						<p>MKUser represents a user on a Mumble server. A user always resides in a <a href="#//api/name/channel">channel</a>, which is
 represented by the <a href="../Classes/MKChannel.html">MKChannel</a> object. <a href="../Classes/MKChannel.html">MKChannel</a> objects are owned by their respective <a href="../Classes/MKServerModel.html">MKServerModel</a>
 instances.</p>
 
 <p>The object&rsquo;s <a href="../Classes/MKServerModel.html">MKServerModel</a> may change properties of the user at any time, but
 all changes are serialized to the main thread.</p>
 
-<p>Generally, as a consumer of this API, most accesses to <a href="MKUser.html">MKUser</a> happen in response to
+<p>Generally, as a consumer of this API, most accesses to MKUser happen in response to
 <a href="../Protocols/MKServerModelDelegate.html">MKServerModelDelegate</a> callbacks, and all calls to delegate methods of <a href="../Classes/MKServerModel.html">MKServerModel</a> are
 ensured to happen on the same thread that modifies MKChannle objects.</p>
 
@@ -229,8 +229,8 @@ A user ID of 0 signals that the user is the SuperUser.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/session">&ndash;&nbsp;session</a></code>
-		<span class="tooltip"><p>Returns the user&rsquo;s <a href="#//api/name/session">session</a> ID.
-The <a href="#//api/name/session">session</a> ID is mostly an implementation detail &mdash; it is an identifier that
+		<span class="tooltip"><p>Returns the user&rsquo;s session ID.
+The session ID is mostly an implementation detail &mdash; it is an identifier that
 uniquely identifies a user on a server, regardless of whether or not that user
 is registered with the server.</p></span>
 	</span>
@@ -331,7 +331,7 @@ certificate, but could be any unique hash that identifies the user.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/channel">&ndash;&nbsp;channel</a></code>
-		<span class="tooltip"><p>Returns the <a href="#//api/name/channel">channel</a> that the receiving user is currently residing in.</p></span>
+		<span class="tooltip"><p>Returns the channel that the receiving user is currently residing in.</p></span>
 	</span>
 	
 	
@@ -345,7 +345,7 @@ certificate, but could be any unique hash that identifies the user.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/comment">&ndash;&nbsp;comment</a></code>
-		<span class="tooltip"><p>Return the user&rsquo;s current <a href="#//api/name/comment">comment</a> as an NSString.</p></span>
+		<span class="tooltip"><p>Return the user&rsquo;s current comment as an NSString.</p></span>
 	</span>
 	
 	
@@ -359,8 +359,8 @@ certificate, but could be any unique hash that identifies the user.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/texture">&ndash;&nbsp;texture</a></code>
-		<span class="tooltip"><p>Returns the user&rsquo;s <a href="#//api/name/texture">texture</a> as an NSData object. The NSData object
-contains the binary representation of the user&rsquo;s <a href="#//api/name/texture">texture</a> as an image
+		<span class="tooltip"><p>Returns the user&rsquo;s texture as an NSData object. The NSData object
+contains the binary representation of the user&rsquo;s texture as an image
 in either JPEG, PNG or ARGB32 format.</p></span>
 	</span>
 	
@@ -389,7 +389,7 @@ in either JPEG, PNG or ARGB32 format.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the <a href="#//api/name/channel">channel</a> that the receiving user is currently residing in.</p>
+		<p>Returns the channel that the receiving user is currently residing in.</p>
 	</div>		
 	
 	
@@ -423,7 +423,7 @@ in either JPEG, PNG or ARGB32 format.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Return the user&rsquo;s current <a href="#//api/name/comment">comment</a> as an NSString.</p>
+		<p>Return the user&rsquo;s current comment as an NSString.</p>
 	</div>		
 	
 	
@@ -831,8 +831,8 @@ in either JPEG, PNG or ARGB32 format.</p></span>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the user&rsquo;s <a href="#//api/name/session">session</a> ID.
-The <a href="#//api/name/session">session</a> ID is mostly an implementation detail &mdash; it is an identifier that
+		<p>Returns the user&rsquo;s session ID.
+The session ID is mostly an implementation detail &mdash; it is an identifier that
 uniquely identifies a user on a server, regardless of whether or not that user
 is registered with the server.</p>
 	</div>		
@@ -902,8 +902,8 @@ is registered with the server.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the user&rsquo;s <a href="#//api/name/texture">texture</a> as an NSData object. The NSData object
-contains the binary representation of the user&rsquo;s <a href="#//api/name/texture">texture</a> as an image
+		<p>Returns the user&rsquo;s texture as an NSData object. The NSData object
+contains the binary representation of the user&rsquo;s texture as an image
 in either JPEG, PNG or ARGB32 format.</p>
 	</div>		
 	
@@ -1083,9 +1083,9 @@ A user ID of 0 signals that the user is the SuperUser.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-31)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
 					</div>
 				</div>

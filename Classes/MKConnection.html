@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.4 (build 703)" />
+		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -52,6 +52,8 @@
 	
 	<option value="//api/name/clientIdentity">&nbsp;&nbsp;&nbsp;&nbsp;- clientIdentity</option>
 	
+	<option value="//api/name/connectToHost:port:">&nbsp;&nbsp;&nbsp;&nbsp;- connectToHost:port:</option>
+	
 	<option value="//api/name/connected">&nbsp;&nbsp;&nbsp;&nbsp;- connected</option>
 	
 	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
@@ -63,6 +65,8 @@
 	<option value="//api/name/hostname">&nbsp;&nbsp;&nbsp;&nbsp;- hostname</option>
 	
 	<option value="//api/name/init">&nbsp;&nbsp;&nbsp;&nbsp;- init</option>
+	
+	<option value="//api/name/peerCertificateChainTrusted">&nbsp;&nbsp;&nbsp;&nbsp;- peerCertificateChainTrusted</option>
 	
 	<option value="//api/name/peerCertificates">&nbsp;&nbsp;&nbsp;&nbsp;- peerCertificates</option>
 	
@@ -136,6 +140,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/clientIdentity">clientIdentity</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectToHost:port:">connectToHost:port:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connected">connected</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
@@ -147,6 +153,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hostname">hostname</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/init">init</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/peerCertificateChainTrusted">peerCertificateChainTrusted</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/peerCertificates">peerCertificates</a></span></li>
 	
@@ -214,7 +222,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKConnection.html">MKConnection</a> represents a connection to a Mumble server.
+						<p>MKConnection represents a connection to a Mumble server.
 It is mostly used together with <a href="../Classes/MKServerModel.html">MKServerModel</a> which translates the wire protocol
 to Objective-C delegate callbacks.</p>
 					</div>
@@ -235,14 +243,21 @@ to Objective-C delegate callbacks.</p>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/init">&ndash;&nbsp;init</a></code>
-		<span class="tooltip"><p>Initialize a new <a href="MKConnection.html">MKConnection</a> object.</p></span>
+		<span class="tooltip"><p>Initialize a new MKConnection object.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
-		<span class="tooltip"><p>Deallocate a <a href="MKConnection.html">MKConnection</a> object.</p></span>
+		<span class="tooltip"><p>Deallocate a MKConnection object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/connectToHost:port:">&ndash;&nbsp;connectToHost:port:</a></code>
+		<span class="tooltip"><p>Establish a connection to the given host and <a href="#//api/name/port">port</a>.</p></span>
 	</span>
 	
 	
@@ -272,23 +287,23 @@ for self-signed certificates.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/hostname">&ndash;&nbsp;hostname</a></code>
-		<span class="tooltip"><p>The <a href="#//api/name/hostname">hostname</a> that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+		<span class="tooltip"><p>The hostname that the MKConnection is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/port">&ndash;&nbsp;port</a></code>
-		<span class="tooltip"><p>The <a href="#//api/name/port">port</a> number on the host that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+		<span class="tooltip"><p>The port number on the host that the MKConnection is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/setClientIdentity:">&ndash;&nbsp;setClientIdentity:</a></code>
-		<span class="tooltip"><p>Set a client identity to be used for the <a href="MKConnection.html">MKConnection</a>. This property is only
+		<span class="tooltip"><p>Set a client identity to be used for the MKConnection. This property is only
 used during connection establishment, and as such, chaning this value while the
-<a href="MKConnection.html">MKConnection</a> object is a conncted to a server should not be done.</p></span>
+MKConnection object is a conncted to a server should not be done.</p></span>
 	</span>
 	
 	
@@ -302,7 +317,7 @@ used during connection establishment, and as such, chaning this value while the
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverVersion">&ndash;&nbsp;serverVersion</a></code>
-		<span class="tooltip"><p>A textual description of the version number of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+		<span class="tooltip"><p>A textual description of the version number of the Mumble server that the MKConnection
 object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	</span>
 	
@@ -310,7 +325,7 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverRelease">&ndash;&nbsp;serverRelease</a></code>
-		<span class="tooltip"><p>A textual description of the release name of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+		<span class="tooltip"><p>A textual description of the release name of the Mumble server that the MKConnection
 object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	</span>
 	
@@ -319,7 +334,7 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverOSName">&ndash;&nbsp;serverOSName</a></code>
 		<span class="tooltip"><p>A textual description of the operating system that powers the Mumble server that the
-<a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+MKConnection object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	</span>
 	
 	
@@ -327,7 +342,7 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverOSVersion">&ndash;&nbsp;serverOSVersion</a></code>
 		<span class="tooltip"><p>A textual description of the version of the operating system that powers the Mumble
-server that the <a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
+server that the MKConnection object is currently <a href="#//api/name/connected">connected</a> to.</p></span>
 	</span>
 	
 	
@@ -359,7 +374,7 @@ Mumble server.</p></span>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/setIgnoreSSLVerification:">&ndash;&nbsp;setIgnoreSSLVerification:</a></code>
-		<span class="tooltip"><p>Signals to the <a href="MKConnection.html">MKConnection</a> that it should ignore most verification
+		<span class="tooltip"><p>Signals to the MKConnection that it should ignore most verification
 errors that happen while verifying the server&rsquo;s certificate chain
 during the TLS handshake.</p></span>
 	</span>
@@ -370,6 +385,15 @@ during the TLS handshake.</p></span>
 		<code><a href="#//api/name/peerCertificates">&ndash;&nbsp;peerCertificates</a></code>
 		<span class="tooltip"><p>Once a connection is established, this method returns an array
 containing the TLS certificate chain of the remote server.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/peerCertificateChainTrusted">&ndash;&nbsp;peerCertificateChainTrusted</a></code>
+		<span class="tooltip"><p>Once a connection is established, this method returns the system&rsquo;s
+trust status of the server&rsquo;s certificate chain. This trust is based
+on the system&rsquo;s list of root certificate authorities.</p></span>
 	</span>
 	
 	
@@ -393,7 +417,7 @@ the default value).</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/forceTCP">&ndash;&nbsp;forceTCP</a></code>
-		<span class="tooltip"><p>Returns the current Forced-TCP status of the <a href="MKConnection.html">MKConnection</a> object.</p></span>
+		<span class="tooltip"><p>Returns the current Forced-TCP status of the MKConnection object.</p></span>
 	</span>
 	
 	
@@ -526,7 +550,7 @@ Mumble server.</p>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>user</em></dt>
-			<dd><p>The username of the user that the <a href="MKConnection.html">MKConnection</a> should authenticate
+			<dd><p>The username of the user that the MKConnection should authenticate
 itself as. This can be a registered user, or a new user that is currently
 not registered.</p></dd>
 		</dl>
@@ -636,6 +660,55 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/connectToHost:port:" title="connectToHost:port:"></a>
+	<h3 class="subsubtitle method-title">connectToHost:port:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Establish a connection to the given host and <a href="#//api/name/port">port</a>.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)connectToHost:(NSString *)<em>hostName</em> port:(NSUInteger)<em>port</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>hostName</em></dt>
+			<dd><p>The <a href="#//api/name/hostname">hostname</a> to connect to.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>port</em></dt>
+			<dd><p>The <a href="#//api/name/port">port</a> on <a href="#//api/name/hostname">hostname</a> to connect to.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/connected" title="connected"></a>
 	<h3 class="subsubtitle method-title">connected</h3>
 	
@@ -653,7 +726,7 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Returns YES if the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to a server.
+		<p>Returns YES if the MKConnection is currently connected to a server.
 Returns NO otherwise.</p>
 	</div>
 	
@@ -682,7 +755,7 @@ Returns NO otherwise.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Deallocate a <a href="MKConnection.html">MKConnection</a> object.</p>
+		<p>Deallocate a MKConnection object.</p>
 	</div>		
 	
 	
@@ -750,7 +823,7 @@ Returns NO otherwise.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the current Forced-TCP status of the <a href="MKConnection.html">MKConnection</a> object.</p>
+		<p>Returns the current Forced-TCP status of the MKConnection object.</p>
 	</div>		
 	
 	
@@ -790,7 +863,7 @@ is being tunelled through a TCP connection. Returns NO otherwise.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The <a href="#//api/name/hostname">hostname</a> that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p>
+		<p>The hostname that the MKConnection is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
 	
@@ -824,11 +897,47 @@ is being tunelled through a TCP connection. Returns NO otherwise.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Initialize a new <a href="MKConnection.html">MKConnection</a> object.</p>
+		<p>Initialize a new MKConnection object.</p>
 	</div>		
 	
 	
 	<div class="method-subsection method-declaration"><code>- (id)init</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/peerCertificateChainTrusted" title="peerCertificateChainTrusted"></a>
+	<h3 class="subsubtitle method-title">peerCertificateChainTrusted</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Once a connection is established, this method returns the system&rsquo;s
+trust status of the server&rsquo;s certificate chain. This trust is based
+on the system&rsquo;s list of root certificate authorities.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)peerCertificateChainTrusted</code></div>
 	
 	
 	
@@ -898,7 +1007,7 @@ containing the TLS certificate chain of the remote server.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The <a href="#//api/name/port">port</a> number on the host that the <a href="MKConnection.html">MKConnection</a> is currently <a href="#//api/name/connected">connected</a> to.</p>
+		<p>The port number on the host that the MKConnection is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
 	
@@ -1025,7 +1134,7 @@ transmitted.</p></dd>
 			<dt><em>data</em></dt>
 			<dd><p>The raw data to be sent to the remote server. This is presumed to be
 a message encoded as expected by the remote server. (That is,
-<a href="MKConnection.html">MKConnection</a> will not attempt to serialize the passed-in data).</p></dd>
+MKConnection will not attempt to serialize the passed-in data).</p></dd>
 		</dl>
 		
 	</div>
@@ -1105,7 +1214,7 @@ tunelled through TCP.</p>
 	
 	<div class="method-subsection brief-description">
 		<p>A textual description of the operating system that powers the Mumble server that the
-<a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p>
+MKConnection object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
 	
@@ -1140,7 +1249,7 @@ tunelled through TCP.</p>
 	
 	<div class="method-subsection brief-description">
 		<p>A textual description of the version of the operating system that powers the Mumble
-server that the <a href="MKConnection.html">MKConnection</a> object is currently <a href="#//api/name/connected">connected</a> to.</p>
+server that the MKConnection object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
 	
@@ -1174,7 +1283,7 @@ server that the <a href="MKConnection.html">MKConnection</a> object is currently
 	
 	
 	<div class="method-subsection brief-description">
-		<p>A textual description of the release name of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+		<p>A textual description of the release name of the Mumble server that the MKConnection
 object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
@@ -1209,7 +1318,7 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>A textual description of the version number of the Mumble server that the <a href="MKConnection.html">MKConnection</a>
+		<p>A textual description of the version number of the Mumble server that the MKConnection
 object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
@@ -1244,9 +1353,9 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Set a client identity to be used for the <a href="MKConnection.html">MKConnection</a>. This property is only
+		<p>Set a client identity to be used for the MKConnection. This property is only
 used during connection establishment, and as such, chaning this value while the
-<a href="MKConnection.html">MKConnection</a> object is a conncted to a server should not be done.</p>
+MKConnection object is a conncted to a server should not be done.</p>
 	</div>		
 	
 	
@@ -1337,7 +1446,7 @@ trafic through TCP.</p></dd>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Signals to the <a href="MKConnection.html">MKConnection</a> that it should ignore most verification
+		<p>Signals to the MKConnection that it should ignore most verification
 errors that happen while verifying the server&rsquo;s certificate chain
 during the TLS handshake.</p>
 	</div>		
@@ -1397,9 +1506,9 @@ errors. By default this is set to NO.</p></dd>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-01-31)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.4 (build 703)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
 					</div>
 				</div>
