@@ -6,15 +6,11 @@
 #import "MKAudioOutput.h"
 #import "MKAudioOutputSpeech.h"
 #import "MKAudioOutputUser.h"
-#import "MKReadWriteLock.h"
 
 #import <AudioUnit/AudioUnit.h>
 #import <AudioUnit/AUComponent.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-/*
- * Output callback.
- */
 static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                                UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
     MKAudioOutput *ao = (MKAudioOutput *) udata;
@@ -26,11 +22,9 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 
     done = [ao mixFrames:buf->mData amount:nframes];
     if (! done) {
-        /*
-         * Not very obvious from the documentation, but CoreAudio simply wants you to set your buffer
-         * size to 0, and return a non-zero value when you don't have anything to feed it. It will call
-         * you back later.
-         */
+         // Not very obvious from the documentation, but CoreAudio simply wants you to set your buffer
+         // size to 0, and return a non-zero value when you don't have anything to feed it. It will call
+         // you back later.
         buf->mDataByteSize = 0;
         [pool release];
         return -1;
@@ -50,7 +44,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     int numChannels;
     float *speakerVolume;
     
-    MKReadWriteLock *outputLock;
+    NSLock *outputLock;
     NSMutableDictionary *outputs;
 }
 @end
@@ -58,25 +52,20 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 @implementation MKAudioOutput
 
 - (id) initWithSettings:(MKAudioSettings *)settings {
-    self = [super init];
-    if (self == nil)
-        return nil;
+    if ((self = [super init])) {
+        memcpy(&_settings, settings, sizeof(MKAudioSettings));
 
-    // Copy settings
-    memcpy(&_settings, settings, sizeof(MKAudioSettings));
+        sampleSize = 0;
+        frameSize = SAMPLE_RATE / 100;
+        mixerFrequency = 0;
 
-    sampleSize = 0;
-    frameSize = SAMPLE_RATE / 100;
-    mixerFrequency = 0;
-
-    outputLock = [[MKReadWriteLock alloc] init];
-    outputs = [[NSMutableDictionary alloc] init];
-
+        outputLock = [[NSLock alloc] init];
+        outputs = [[NSMutableDictionary alloc] init];
+    }
     return self;
 }
 
 - (void) dealloc {
-    // fixme(mkrautz): Return value?
     [self teardownDevice];
 
     [outputLock release];
@@ -169,7 +158,8 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         return NO;
     }
 
-    /* On desktop we call AudioDeviceSetProperty() with kAudioDevicePropertyBufferFrameSize to set our frame size up. */
+    // On desktop we call AudioDeviceSetProperty() with kAudioDevicePropertyBufferFrameSize
+    // to setup our frame size.
 
     err = AudioOutputUnitStart(audioUnit);
     if (err != noErr) {
@@ -195,16 +185,11 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     unsigned int i, s;
     BOOL retVal = NO;
 
-    /*
-     * The real mixer:
-     */
     NSMutableArray *mix = [[NSMutableArray alloc] init];
     NSMutableArray *del = [[NSMutableArray alloc] init];
     unsigned int nchan = numChannels;
 
-    /* if volume is too low, skip. */
-
-    [outputLock readLock];
+    [outputLock lock];
     for (NSNumber *sessionKey in outputs) {
         MKAudioOutputUser *ou = [outputs objectForKey:sessionKey];
         if (! [ou needSamples:nsamp]) {
@@ -242,7 +227,6 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     } else {
         memset((short *)frames, 0, nsamp * numChannels);
     }
-
     [outputLock unlock];
 
     for (MKAudioOutputUser *ou in del) {
@@ -258,9 +242,8 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 }
 
 - (void) removeBuffer:(MKAudioOutputUser *)u {
-    // hack(mkrautz): output sources should be a subclass, but should implement a protocol instead.
     if ([u respondsToSelector:@selector(userSession)]) {
-        [outputLock writeLock];
+        [outputLock lock];
         [outputs removeObjectForKey:[NSNumber numberWithUnsignedInt:[(id)u userSession]]];
         [outputLock unlock];
     }
@@ -270,8 +253,9 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     if (numChannels == 0)
         return;
 
-    [outputLock readLock];
+    [outputLock lock];
     MKAudioOutputSpeech *outputUser = [outputs objectForKey:[NSNumber numberWithUnsignedInt:session]];
+    [outputUser retain];
     [outputLock unlock];
 
     if (outputUser == nil || [outputUser messageType] != msgType) {
@@ -279,13 +263,13 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
             [self removeBuffer:outputUser];
         }
         outputUser = [[MKAudioOutputSpeech alloc] initWithSession:session sampleRate:mixerFrequency messageType:msgType];
-        [outputLock writeLock];
+        [outputLock lock];
         [outputs setObject:outputUser forKey:[NSNumber numberWithUnsignedInt:session]];
         [outputLock unlock];
-        [outputUser release];
     }
 
     [outputUser addFrame:data forSequence:seq];
+    [outputUser release];
 }
 
 @end
