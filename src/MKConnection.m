@@ -114,9 +114,23 @@
 // there is new data available (it only uses the kCFSocketDataCallback callback mode).
 static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
                                     CFDataRef addr, const void *data, void *udata) {
-    if (type != kCFSocketDataCallBack || !udata || !data)
-        return;
     MKConnection *conn = (MKConnection *)udata;
+
+    if (conn == NULL) {
+        NSLog(@"MKConnection: MKConnectionUDPCallback called with udata == NULL");
+        return;
+    }
+
+    if (type != kCFSocketDataCallBack) {
+        NSLog(@"MKConnection: MKConnectionUDPCallback called with type=%lu", type);
+        return;
+    }
+
+    if (data == NULL) {
+        NSLog(@"MKConnection: MKConnectionUDPCallback called with data == NULL");
+        return;
+    }
+
     [conn _udpDataReady:(NSData *)data];
 }
 
