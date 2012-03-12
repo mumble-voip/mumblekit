@@ -35,17 +35,15 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 }
 
 @interface MKAudioOutput () {
-    MKAudioSettings _settings;
-    
-    AudioUnit audioUnit;
-    int sampleSize;
-    int frameSize;
-    int mixerFrequency;
-    int numChannels;
-    float *speakerVolume;
-    
-    NSLock *outputLock;
-    NSMutableDictionary *outputs;
+    MKAudioSettings       _settings;
+    AudioUnit             _audioUnit;
+    int                   _sampleSize;
+    int                   _frameSize;
+    int                   _mixerFrequency;
+    int                   _numChannels;
+    float                *_speakerVolume;
+    NSLock               *_outputLock;
+    NSMutableDictionary  *_outputs;
 }
 @end
 
@@ -54,23 +52,19 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 - (id) initWithSettings:(MKAudioSettings *)settings {
     if ((self = [super init])) {
         memcpy(&_settings, settings, sizeof(MKAudioSettings));
-
-        sampleSize = 0;
-        frameSize = SAMPLE_RATE / 100;
-        mixerFrequency = 0;
-
-        outputLock = [[NSLock alloc] init];
-        outputs = [[NSMutableDictionary alloc] init];
+        _sampleSize = 0;
+        _frameSize = SAMPLE_RATE / 100;
+        _mixerFrequency = 0;
+        _outputLock = [[NSLock alloc] init];
+        _outputs = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
 - (void) dealloc {
     [self teardownDevice];
-
-    [outputLock release];
-    [outputs release];
-
+    [_outputLock release];
+    [_outputs release];
     [super dealloc];
 }
 
@@ -97,52 +91,52 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         return NO;
     }
 
-    err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &audioUnit);
+    err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &_audioUnit);
     if (err != noErr) {
         NSLog(@"MKAudioOutput: Unable to instantiate new AudioUnit.");
         return NO;
     }
 
-    err = AudioUnitInitialize(audioUnit);
+    err = AudioUnitInitialize(_audioUnit);
     if (err != noErr) {
         NSLog(@"MKAudioOutput: Unable to initialize AudioUnit.");
         return NO;
     }
 
     len = sizeof(AudioStreamBasicDescription);
-    err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &fmt, &len);
+    err = AudioUnitGetProperty(_audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &fmt, &len);
     if (err != noErr) {
         NSLog(@"MKAudioOuptut: Unable to get output stream format from AudioUnit.");
         return NO;
     }
 
-    mixerFrequency = (int) 48000;
-    numChannels = (int) fmt.mChannelsPerFrame;
-    sampleSize = numChannels * sizeof(short);
+    _mixerFrequency = (int) 48000;
+    _numChannels = (int) fmt.mChannelsPerFrame;
+    _sampleSize = _numChannels * sizeof(short);
 
-    if (speakerVolume) {
-        free(speakerVolume);
+    if (_speakerVolume) {
+        free(_speakerVolume);
     }
-    speakerVolume = malloc(sizeof(float)*numChannels);
+    _speakerVolume = malloc(sizeof(float)*_numChannels);
 
     int i;
-    for (i = 0; i < numChannels; ++i) {
-        speakerVolume[i] = 1.0f;
+    for (i = 0; i < _numChannels; ++i) {
+        _speakerVolume[i] = 1.0f;
     }
 
     fmt.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
     fmt.mBitsPerChannel = sizeof(short) * 8;
 
-    NSLog(@"MKAudioOutput: Output device currently configured as %iHz sample rate, %i channels, %i sample size", mixerFrequency, numChannels, sampleSize);
+    NSLog(@"MKAudioOutput: Output device currently configured as %iHz sample rate, %i channels, %i sample size", _mixerFrequency, _numChannels, _sampleSize);
 
     fmt.mFormatID = kAudioFormatLinearPCM;
-    fmt.mSampleRate = mixerFrequency;
-    fmt.mBytesPerFrame = sampleSize;
-    fmt.mBytesPerPacket = sampleSize;
+    fmt.mSampleRate = _mixerFrequency;
+    fmt.mBytesPerFrame = _sampleSize;
+    fmt.mBytesPerPacket = _sampleSize;
     fmt.mFramesPerPacket = 1;
 
     len = sizeof(AudioStreamBasicDescription);
-    err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &fmt, len);
+    err = AudioUnitSetProperty(_audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &fmt, len);
     if (err != noErr) {
         NSLog(@"MKAudioOutput: Unable to set stream format for output device.");
         return NO;
@@ -152,7 +146,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     cb.inputProc = outputCallback;
     cb.inputProcRefCon = self;
     len = sizeof(AURenderCallbackStruct);
-    err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &cb, len);
+    err = AudioUnitSetProperty(_audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &cb, len);
     if (err != noErr) {
         NSLog(@"MKAudioOutput: Could not set render callback.");
         return NO;
@@ -161,7 +155,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     // On desktop we call AudioDeviceSetProperty() with kAudioDevicePropertyBufferFrameSize
     // to setup our frame size.
 
-    err = AudioOutputUnitStart(audioUnit);
+    err = AudioOutputUnitStart(_audioUnit);
     if (err != noErr) {
         NSLog(@"MKAudioOutput: Unable to start AudioUnit");
         return NO;
@@ -171,7 +165,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 }
 
 - (BOOL) teardownDevice {
-    OSStatus err = AudioOutputUnitStop(audioUnit);
+    OSStatus err = AudioOutputUnitStop(_audioUnit);
     if (err != noErr) {
         NSLog(@"MKAudioOutput: Unable to stop AudioUnit.");
         return NO;
@@ -187,11 +181,11 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 
     NSMutableArray *mix = [[NSMutableArray alloc] init];
     NSMutableArray *del = [[NSMutableArray alloc] init];
-    unsigned int nchan = numChannels;
+    unsigned int nchan = _numChannels;
 
-    [outputLock lock];
-    for (NSNumber *sessionKey in outputs) {
-        MKAudioOutputUser *ou = [outputs objectForKey:sessionKey];
+    [_outputLock lock];
+    for (NSNumber *sessionKey in _outputs) {
+        MKAudioOutputUser *ou = [_outputs objectForKey:sessionKey];
         if (! [ou needSamples:nsamp]) {
             [del addObject:ou];
         } else {
@@ -199,14 +193,14 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         }
     }
 
-    float *mixBuffer = alloca(sizeof(float)*numChannels*nsamp);
-    memset(mixBuffer, 0, sizeof(float)*numChannels*nsamp);
+    float *mixBuffer = alloca(sizeof(float)*_numChannels*nsamp);
+    memset(mixBuffer, 0, sizeof(float)*_numChannels*nsamp);
 
     if ([mix count] > 0) {
         for (MKAudioOutputUser *ou in mix) {
             const float * restrict userBuffer = [ou buffer];
             for (s = 0; s < nchan; ++s) {
-                const float str = speakerVolume[s];
+                const float str = _speakerVolume[s];
                 float * restrict o = (float *)mixBuffer + s;
                 for (i = 0; i < nsamp; ++i) {
                     o[i*nchan] += userBuffer[i] * str;
@@ -215,7 +209,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         }
 
         short *outputBuffer = (short *)frames;
-        for (i = 0; i < nsamp * numChannels; ++i) {
+        for (i = 0; i < nsamp * _numChannels; ++i) {
             if (mixBuffer[i] > 1.0f) {
                 outputBuffer[i] = 32768;
             } else if (mixBuffer[i] < -1.0f) {
@@ -225,9 +219,9 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
             }
         }
     } else {
-        memset((short *)frames, 0, nsamp * numChannels);
+        memset((short *)frames, 0, nsamp * _numChannels);
     }
-    [outputLock unlock];
+    [_outputLock unlock];
 
     for (MKAudioOutputUser *ou in del) {
         [self removeBuffer:ou];
@@ -243,29 +237,29 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 
 - (void) removeBuffer:(MKAudioOutputUser *)u {
     if ([u respondsToSelector:@selector(userSession)]) {
-        [outputLock lock];
-        [outputs removeObjectForKey:[NSNumber numberWithUnsignedInt:[(id)u userSession]]];
-        [outputLock unlock];
+        [_outputLock lock];
+        [_outputs removeObjectForKey:[NSNumber numberWithUnsignedInt:[(id)u userSession]]];
+        [_outputLock unlock];
     }
 }
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType {
-    if (numChannels == 0)
+    if (_numChannels == 0)
         return;
 
-    [outputLock lock];
-    MKAudioOutputSpeech *outputUser = [outputs objectForKey:[NSNumber numberWithUnsignedInt:session]];
+    [_outputLock lock];
+    MKAudioOutputSpeech *outputUser = [_outputs objectForKey:[NSNumber numberWithUnsignedInt:session]];
     [outputUser retain];
-    [outputLock unlock];
+    [_outputLock unlock];
 
     if (outputUser == nil || [outputUser messageType] != msgType) {
         if (outputUser != nil) {
             [self removeBuffer:outputUser];
         }
-        outputUser = [[MKAudioOutputSpeech alloc] initWithSession:session sampleRate:mixerFrequency messageType:msgType];
-        [outputLock lock];
-        [outputs setObject:outputUser forKey:[NSNumber numberWithUnsignedInt:session]];
-        [outputLock unlock];
+        outputUser = [[MKAudioOutputSpeech alloc] initWithSession:session sampleRate:_mixerFrequency messageType:msgType];
+        [_outputLock lock];
+        [_outputs setObject:outputUser forKey:[NSNumber numberWithUnsignedInt:session]];
+        [_outputLock unlock];
     }
 
     [outputUser addFrame:data forSequence:seq];
