@@ -266,8 +266,11 @@
             memset(output, 0, _frameSize * sizeof(float));
         } else {
             int avail = 0;
+            
+            [_jitterLock lock];
             int ts = jitter_buffer_get_pointer_timestamp(_jitter);
             jitter_buffer_ctl(_jitter, JITTER_BUFFER_GET_AVAILABLE_COUNT, &avail);
+            [_jitterLock unlock];
             
             if (ts == 0) {
                 int want = (int) _averageAvailable;
@@ -398,7 +401,9 @@
                 update = (pow < (_powerMin + 0.01f * (_powerMax - _powerMin)));
 
                 if ([_frames count] == 0 && update) {
+                    [_jitterLock lock];
                     jitter_buffer_update_delay(_jitter, NULL, NULL);
+                    [_jitterLock unlock];
                 }
 
                 if ([_frames count] == 0 && _hasTerminator) {
@@ -426,9 +431,11 @@
                 }
             }
 
+            [_jitterLock lock];
             int j;
             for (j = decodedSamples / _frameSize; j > 0; j--)
                 jitter_buffer_tick(_jitter);
+            [_jitterLock unlock];
         }
         
         if (! nextAlive)
