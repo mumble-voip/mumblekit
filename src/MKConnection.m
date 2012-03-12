@@ -218,6 +218,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         if (_connectionEstablished && !_rejected) {
             if ([_delegate respondsToSelector:@selector(connection:closedWithError:)]) {
                 NSError *err = [_connError retain];
+                _connectionEstablished = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_delegate connection:self closedWithError:err];
                     [err release];

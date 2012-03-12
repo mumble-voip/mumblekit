@@ -67,6 +67,7 @@
 
 - (void) removeAllUsersFromChannel:(MKChannel *)channel;
 - (void) removeAllChannels;
+- (void) removeAllModelItems;
 @end
 
 @implementation MKServerModel
@@ -99,20 +100,14 @@
 }
 
 - (void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MKAudioUserTalkStateChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [_connection setMessageHandler:nil];
 
     [(MulticastDelegate *) _delegate release];
 
-    [self removeAllUsersFromChannel:_rootChannel];
-    [_userMap release];
-
-    [self removeAllChannels];
-    [_channelMap release];
-
-    [_rootChannel release];
-
+    [self removeAllModelItems];
+    
     [_connection release];
 
     [super dealloc];
@@ -153,6 +148,21 @@
     } while (nparents > 0);
 }
 
+// Removes all model items (MKUsers and MKChannels), and
+// deallocates the internal containers for them.
+- (void) removeAllModelItems {
+    [self removeAllUsersFromChannel:_rootChannel];
+    [_userMap release];
+    _userMap = nil;
+    
+    [self removeAllChannels];
+    [_channelMap release];
+    _channelMap = nil;
+    
+    [_rootChannel release];
+    _rootChannel = nil;
+}
+
 - (void) addDelegate:(id)delegate {
     [(MulticastDelegate *)_delegate addDelegate:delegate];
 }
@@ -166,6 +176,7 @@
 
 - (void) connectionClosed:(MKConnection *)conn {
     [_delegate serverModelDisconnected:self];
+    [self removeAllModelItems];
 }
 
 #pragma mark -
@@ -453,7 +464,10 @@
     NSNumber *session = [infoDict objectForKey:@"userSession"];
     NSNumber *talkState = [infoDict objectForKey:@"talkState"];
     MKUser *user = nil;
-    
+
+    if (![_connection connected])
+        return;
+
     if (talkState) {
         // An infoDict with a missing userSession means that our own talkState changed.
         if (session == nil) {
@@ -463,6 +477,7 @@
         }
         [user setTalkState:(MKTalkState)[talkState unsignedIntValue]];
     }
+
     if (_connectedUser && user) {
         [_delegate serverModel:self userTalkStateChanged:user];
     }
