@@ -208,6 +208,11 @@
     if ([msg hasCertHash]) {
         [user setUserHash:[msg certHash]];
     }
+    // Call this after both the userId and certHash has been assigned
+    // to the user.
+    if (!newUser && [msg hasUserId]) {
+        [_delegate serverModel:self userAuthenticatedStateChanged:user];
+    }
 
     // The user just connected. Tell our delegate listeners.
     if (newUser && _connectedUser) {

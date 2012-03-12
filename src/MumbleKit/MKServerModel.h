@@ -297,9 +297,17 @@ typedef enum {
  */
 - (void) serverModel:(MKServerModel *)model userMuteStateChanged:(MKUser *)user;
 
-///-------------------------------------
-/// @name Priority speaker and recording
-///-------------------------------------
+///------------------------------
+/// @name Other user flag changes
+///------------------------------
+
+/**
+ * Called when the user's authenticated flag changes.
+ *
+ * @param model  The MKServerModel in which this event originated.
+ * @param user   The user whose authenticated flag changed. 
+ */
+- (void) serverModel:(MKServerModel *)model userAuthenticatedStateChanged:(MKUser *)user;
 
 /**
  * Called when a user's priorty speaker flag changes.
