@@ -75,6 +75,9 @@
 - (void) setupPingerState {
     _sock6 = socket(AF_INET6, SOCK_DGRAM, 0);
     if (_sock6 > 0) {
+        int val = 1;
+        if (setsockopt(_sock6, SOL_SOCKET, SO_NOSIGPIPE, &val, sizeof(val)) == -1)
+            NSLog(@"MKServerPinger: unable to set SO_NOSIGPIPE for _sock6: %s", strerror(errno));
         int flags = fcntl(_sock6, F_GETFL, 0);
         if (flags != -1) {
             fcntl(_sock6, F_SETFL, flags | O_NONBLOCK);
@@ -93,11 +96,16 @@
                 });
                 dispatch_resume(_reader6);
             }
+        } else {
+            NSLog(@"MKServerPinger: unable to bind _sock6: %s", strerror(errno));
         }
     }
 
     _sock4 = socket(AF_INET, SOCK_DGRAM, 0);
     if (_sock4 > 0) {
+        int val = 1;
+        if (setsockopt(_sock4, SOL_SOCKET, SO_NOSIGPIPE, &val, sizeof(val)) == -1)
+            NSLog(@"MKServerPinger: unable to set SO_NOSIGPIPE for _sock4: %s", strerror(errno));
         int flags = fcntl(_sock4, F_GETFL, 0);
         if (flags != -1) {
             fcntl(_sock4, F_SETFL, flags | O_NONBLOCK);
@@ -116,6 +124,8 @@
                 });
                 dispatch_resume(_reader4);
             }
+        } else {
+            NSLog(@"MKServerPinger: unable to bind _sock4: %s", strerror(errno));
         }
     }
     
