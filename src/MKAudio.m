@@ -10,8 +10,8 @@
 @interface MKAudio () {
     MKAudioInput     *_audioInput;
     MKAudioOutput    *_audioOutput;
-    MKAudioSettings  _audioSettings;
-    BOOL             _running;
+    MKAudioSettings   _audioSettings;
+    BOOL              _running;
 }
 
 - (id) init;
@@ -40,7 +40,7 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
         val = audioInputAvailable ? kAudioSessionCategory_PlayAndRecord : kAudioSessionCategory_MediaPlayback;
         err = AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(val), &val);
         if (err != kAudioSessionNoError) {
-            NSLog(@"MKAudio: Unable to set AudioCategory property.");
+            NSLog(@"MKAudio: unable to set AudioCategory property.");
             return;
         }
 
@@ -48,7 +48,7 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
             val = 1;
             err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
             if (err != kAudioSessionNoError) {
-                NSLog(@"MKAudio: Unable to set OverrideCategoryDefaultToSpeaker property.");
+                NSLog(@"MKAudio: unable to set OverrideCategoryDefaultToSpeaker property.");
                 return;
             }
         }
@@ -58,7 +58,7 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
 }
 
 static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionPropertyID prop, UInt32 len, NSDictionary *dict) {
-    NSLog(@"MKAudio: Audio route changed.");
+    NSLog(@"MKAudio: audio route changed.");
 
 }
 #endif
@@ -91,7 +91,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     // Initialize Audio Session
     err = AudioSessionInitialize(CFRunLoopGetMain(), kCFRunLoopDefaultMode, MKAudio_InterruptCallback, self);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to initialize AudioSession.");
+        NSLog(@"MKAudio: unable to initialize AudioSession.");
         return nil;
     }
 
@@ -100,7 +100,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
                                           (AudioSessionPropertyListener)MKAudio_AudioRouteChangedCallback,
                                           self);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to register property listener for AudioRouteChange.");
+        NSLog(@"MKAudio: unable to register property listener for AudioRouteChange.");
         return nil;
     }
 
@@ -109,16 +109,15 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
                                           (AudioSessionPropertyListener)MKAudio_AudioInputAvailableCallback,
                                           self);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to register property listener for AudioInputAvailable.");
+        NSLog(@"MKAudio: unable to register property listener for AudioInputAvailable.");
         return nil;
     }
 
-    // To be able to select the correct category, we must query whethe audio input is
-    // available.
+    // To be able to select the correct category, we must query whethe audio input is available.
     valSize = sizeof(UInt32);
     err = AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, &valSize, &val);
     if (err != kAudioSessionNoError || valSize != sizeof(UInt32)) {
-        NSLog(@"MKAudio: Unable to query for input availability.");
+        NSLog(@"MKAudio: unable to query for input availability.");
     }
 
     // Set the correct category for our Audio Session depending on our current audio input situation.
@@ -126,7 +125,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     val = audioInputAvailable ? kAudioSessionCategory_PlayAndRecord : kAudioSessionCategory_MediaPlayback;
     err = AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(val), &val);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to set AudioCategory property.");
+        NSLog(@"MKAudio: unable to set AudioCategory property.");
         return nil;
     }
 
@@ -136,7 +135,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
         val = TRUE;
         err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
         if (err != kAudioSessionNoError) {
-            NSLog(@"MKAudio: Unable to set OverrideCategoryDefaultToSpeaker property.");
+            NSLog(@"MKAudio: unable to set OverrideCategoryDefaultToSpeaker property.");
             return nil;
         }
     }
@@ -145,7 +144,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     val = TRUE;
     err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to set MixWithOthers property.");
+        NSLog(@"MKAudio: unable to set MixWithOthers property.");
         return nil;
     }
 
@@ -157,8 +156,18 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     fval = SAMPLE_RATE;
     err = AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareSampleRate, sizeof(Float64), &fval);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to set preferred hardware sample rate.");
+        NSLog(@"MKAudio: unable to set preferred hardware sample rate.");
         return nil;
+    }
+
+    if (audioInputAvailable) {
+        // Allow input from Bluetooth devices.
+        val = 1;
+        err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryEnableBluetoothInput, sizeof(val), &val);
+        if (err != kAudioSessionNoError) {
+            NSLog(@"MKAudio: unable to enable bluetooth input.");
+            return nil;
+        }
     }
 
 #elif TARGET_OS_MAC == 1
@@ -258,7 +267,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     UInt32 len = sizeof(NSString *);
     OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRoute, &len, &route);
     if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: Unable to query for current audio route.");
+        NSLog(@"MKAudio: unable to query for current audio route.");
         return @"Unknown";
     }
     return route;
