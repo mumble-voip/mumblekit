@@ -985,6 +985,7 @@ out:
                         [_delegate connection:self trustFailureInCertificateChain:[self peerCertificates]];
                     });
                 }
+                CFRelease(trust);
                 return YES;
             }
         }

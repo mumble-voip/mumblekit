@@ -255,6 +255,7 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
     if (outputUser == nil || [outputUser messageType] != msgType) {
         if (outputUser != nil) {
             [self removeBuffer:outputUser];
+            [outputUser release];
         }
         outputUser = [[MKAudioOutputSpeech alloc] initWithSession:session sampleRate:_mixerFrequency messageType:msgType];
         [_outputLock lock];
