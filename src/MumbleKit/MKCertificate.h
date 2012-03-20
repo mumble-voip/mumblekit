@@ -178,7 +178,15 @@ extern NSString *MKCertificateItemSerialNumber;
 ///------------------------------------------
 
 /**
- * Retruns the CN (Common Name) value of subjecdt of the X.509 certificate.
+ * Returns the subject name of the X.509 certificate.
+ * This can either be a common name, or an email address, depending on the certificate.
+ *
+ * @returns An NSString representing the subject name.
+ */
+- (NSString *) subjectName;
+
+/**
+ * Returns the CN (Common Name) value of subject of the X.509 certificate.
  *
  * @returns An NSString with the Common Name.
  */

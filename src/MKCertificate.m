@@ -485,6 +485,30 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return [NSString stringWithCString:hexstr encoding:NSASCIIStringEncoding];
 }
 
+// Returns a subject name that is suitable for display to a user.
+- (NSString *) subjectName {
+    // If the subject has a CN, use that.
+    NSString *name = [_subjectDict objectForKey:MKCertificateItemCommonName];
+    if (name != nil) {
+        return name;
+    }
+    
+    // Check DNS entries next. There's a large chance that a server certificate
+    // will have an email set alongside a DNS entry, but there's a only very small
+    // chance that a client certificate will have a DNS entry, so this is (hopefully)
+    // a no-op for client certificates.
+    if ([_dnsEntries count] > 0) {
+        return [_dnsEntries objectAtIndex:0];
+    }
+
+    // OK, no DNS entries present. Check for email addreses.
+    if ([_emailAddresses count] > 0) {
+        return [_emailAddresses objectAtIndex:0];
+    }
+
+    return nil;
+}
+
 // Get the common name of a MKCertificate.  If no common name is available,
 // nil is returned.
 - (NSString *) commonName {
