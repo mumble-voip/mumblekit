@@ -61,7 +61,7 @@
     id             _delegate;
     int            _socket;
     CFSocketRef    _udpSock;
-    SecIdentityRef _clientIdentity;
+    NSArray        *_certificateChain;
     NSError        *_connError;
     BOOL           _rejected;
 
@@ -150,9 +150,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     [self disconnect];
 
     [_peerCertificates release];
-
-    if (_clientIdentity)
-        CFRelease(_clientIdentity);
+    [_certificateChain release];
 
     [super dealloc];
 }
@@ -316,15 +314,13 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     return _port;
 }
 
-// Sets the SecIdentityRef the client should use for authenticating
-// with the server.
-- (void) setClientIdentity:(SecIdentityRef)secIdentity {
-    _clientIdentity = (SecIdentityRef)CFRetain(secIdentity);
+- (void) setCertificateChain:(NSArray *)chain {
+    [_certificateChain release];
+    _certificateChain = [chain retain];
 }
 
-// Returns the current clientIdentity.
-- (SecIdentityRef) clientIdentity {
-    return _clientIdentity;
+- (NSArray *) certificateChain {
+    return _certificateChain;
 }
 
 #pragma mark Server Information
@@ -505,10 +501,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         CFDictionaryAddValue(sslDictionary, kCFStreamSSLLevel, kCFStreamSocketSecurityLevelTLSv1);
         CFDictionaryAddValue(sslDictionary, kCFStreamSSLValidatesCertificateChain, _ignoreSSLVerification ? kCFBooleanFalse : kCFBooleanTrue);
         
-        if (_clientIdentity) {
-            CFArrayRef array = CFArrayCreate(kCFAllocatorDefault, (const void **)&_clientIdentity, 1, NULL);
-            CFDictionaryAddValue(sslDictionary, kCFStreamSSLCertificates, array);
-            CFRelease(array);
+        if (_certificateChain) {
+            CFDictionaryAddValue(sslDictionary, kCFStreamSSLCertificates, _certificateChain);
         }
 
         CFWriteStreamSetProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLSettings, sslDictionary);

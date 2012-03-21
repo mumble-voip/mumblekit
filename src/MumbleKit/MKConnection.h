@@ -365,18 +365,18 @@ typedef enum {
 - (NSUInteger) port;
 
 /**
- * Set a client identity to be used for the MKConnection. This property is only
+ * Set a certificate chain to be used for the MKConnection. This property is only
  * used during connection establishment, and as such, chaning this value while the
- * MKConnection object is a conncted to a server should not be done.
+ * MKConnection object is a conncted to a server has no effect.
  *
- * @param secIdentity  A SecIdentityRef that should be used as the client identity.
+ * @param chain A NSArray containing a SecIdentityRef as its first item, and SecCertificateRefs subsequently.
  */
-- (void) setClientIdentity:(SecIdentityRef)secIdentity;
+- (void) setCertificateChain:(NSArray *)chain;
 
 /**
- * Returns the client identity that is to be used during the next connection attempt.
+ * Returns the certificate chain that is to be presented to the server during the next connection attempt.
  */
-- (SecIdentityRef) clientIdentity;
+- (NSArray *) certificateChain;
 
 #pragma mark Server Info
 
