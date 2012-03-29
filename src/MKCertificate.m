@@ -57,7 +57,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
 - (NSData *) privateKey;
 
 - (void) extractCertInfo;
-
+- (X509 *) copyOpenSSLX509;
 @end
 
 @implementation MKCertificate
@@ -457,6 +457,33 @@ static int add_ext(X509 * crt, int nid, char *value) {
         sk_pop_free((_STACK *) subjAltNames, (void (*)(void *)) sk_free);
         X509_free(x509);
     }
+}
+
+- (BOOL) isSignedBy:(MKCertificate *)parentCert {
+    X509 *us = [self copyOpenSSLX509];
+    X509 *parent = [parentCert copyOpenSSLX509];
+    BOOL result = NO;
+
+    if (us != NULL && parent != NULL)
+        result = X509_verify(us, X509_get_pubkey(parent)) != -1;
+
+    if (us)
+        X509_free(us);
+    if (parent)
+        X509_free(parent);
+
+    return result;
+}
+
+- (BOOL) isValidOnDate:(NSDate *)date {
+    NSComparisonResult notBefore = [date compare:_notBeforeDate];
+    NSComparisonResult notAfter = [date compare:_notAfterDate];
+    return notBefore == NSOrderedDescending && notAfter == NSOrderedAscending;
+}
+
+- (X509 *) copyOpenSSLX509 {
+    const unsigned char *p = [_derCert bytes];
+    return d2i_X509(NULL, &p, [_derCert length]);
 }
 
 // Return a SHA1 digest of the contents of the certificate
