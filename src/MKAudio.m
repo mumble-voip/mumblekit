@@ -58,8 +58,17 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
 }
 
 static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionPropertyID prop, UInt32 len, NSDictionary *dict) {
-    NSLog(@"MKAudio: audio route changed.");
-
+    int reason = [[dict objectForKey:(id)kAudioSession_RouteChangeKey_Reason] intValue];
+    switch (reason) {
+        case kAudioSessionRouteChangeReason_Override:
+        case kAudioSessionRouteChangeReason_CategoryChange:
+        case kAudioSessionRouteChangeReason_NoSuitableRouteForCategory:
+            NSLog(@"MKAudio: audio route changed, skipping; reason=%i", reason);
+            return;
+    }
+    
+    NSLog(@"MKAudio: audio route changed, restarting audio; reason=%i", reason);
+    [audio restart];
 }
 #endif
 
