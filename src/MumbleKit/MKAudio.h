@@ -42,6 +42,7 @@ typedef struct _MKAudioSettings {
     int             outputDelay;
     float           micBoost;
     BOOL            enablePreprocessor;
+    BOOL            enableEchoCancellation;
 } MKAudioSettings;
 
 /**
