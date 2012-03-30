@@ -167,11 +167,17 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
 - (BOOL) teardownDevice {
     OSStatus err = AudioOutputUnitStop(_audioUnit);
     if (err != noErr) {
-        NSLog(@"MKAudioOutput: Unable to stop AudioUnit.");
+        NSLog(@"MKAudioOutput: unable to stop AudioUnit.");
+        return NO;
+    }
+    
+    err = AudioComponentInstanceDispose(_audioUnit);
+    if (err != noErr) {
+        NSLog(@"MKAudioOutput: unable to dispose of AudioUnit.");
         return NO;
     }
 
-    NSLog(@"MKAudioOuptut: Teardown finished.");
+    NSLog(@"MKAudioOuptut: teardown finished.");
     return YES;
 }
 

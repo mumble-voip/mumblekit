@@ -496,7 +496,13 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
     err = AudioOutputUnitStop(audioUnit);
     if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to stop AudioUnit.");
+        NSLog(@"MKAudioInput: unable to stop AudioUnit.");
+        return NO;
+    }
+    
+    err = AudioComponentInstanceDispose(audioUnit);
+    if (err != noErr) {
+        NSLog(@"MKAudioInput: unable to dispose of AudioUnit.");
         return NO;
     }
 
@@ -504,7 +510,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     if (b && b->mData)
         free(b->mData);
 
-    NSLog(@"MKAudioInput: Teardown finished.");
+    NSLog(@"MKAudioInput: teardown finished.");
     return YES;
 }
 
