@@ -231,10 +231,9 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return retcert;
 }
 
-// Export a MKCertificate object as a PKCS12-encoded NSData blob. This is useful for
-// APIs that only accept PKCS12 encoded data for import, like some the iOS keychain
-// APIs.
-- (NSData *) exportPKCS12WithPassword:(NSString *)password {
+// Export a chain of certificates to a PKCS12-encoded data blob. In most cases, the leaf
+// certificate is expected to contain a private key, but this is not required.
++ (NSData *) exportCertificateChainAsPKCS12:(NSArray *)chain withPassword:(NSString *)password {
     X509 *x509 = NULL;
     EVP_PKEY *pkey = NULL;
     PKCS12 *pkcs = NULL;
@@ -244,45 +243,46 @@ static int add_ext(X509 * crt, int nid, char *value) {
     long size;
     char *data = NULL;
     NSData *retData = nil;
-
-    if (!_derCert || !_derPrivKey) {
+    
+    if ([chain count] == 0)
         return nil;
-    }
-
-    p = [_derPrivKey bytes];
-    pkey = d2i_AutoPrivateKey(NULL, &p, [_derPrivKey length]);
-
-    if (pkey) {
-        p = [_derCert bytes];
-        x509 = d2i_X509(NULL, &p, [_derCert length]);
-
-        if (x509 && X509_check_private_key(x509, pkey)) {
-            X509_keyid_set1(x509, NULL, 0);
-            X509_alias_set1(x509, NULL, 0);
-
-            /* fixme(mkrautz): Currently we only support exporting our own self-signed certs,
-               which obviously do not have any intermediate certificates. If we need to add
-               this in the future, do this: */
-#if 0
-            for (/* each certificate*/) {
-                unsigned char *p = [data bytes];
-                X509 *c = d2i_X509(NULL, &p, [data len])
-                if (c)
-                    sk_X509_push(certs, c);
-            }
-#endif
-
-            pkcs = PKCS12_create(password ? (char *) [password UTF8String] : NULL, "Mumble Identity", pkey, x509, certs, 0, 0, 0, 0, 0);
-            if (pkcs) {
-                mem = BIO_new(BIO_s_mem());
-                i2d_PKCS12_bio(mem, pkcs);
-                int _flush __attribute__((unused)) = BIO_flush(mem);
-                size = BIO_get_mem_data(mem, &data);
-                retData = [[NSData alloc] initWithBytes:data length:size];
-            }
+    
+    MKCertificate *leaf = [chain objectAtIndex:0];
+    
+    if ([leaf certificate] == nil)
+        return nil;
+    
+    p = [[leaf privateKey] bytes];
+    if (p)
+        pkey = d2i_AutoPrivateKey(NULL, &p, [[leaf privateKey] length]);
+    
+    p = [[leaf certificate] bytes];
+    x509 = d2i_X509(NULL, &p, [[leaf certificate] length]);
+    
+    if (x509 && (pkey ? X509_check_private_key(x509, pkey) : true)) {
+        X509_keyid_set1(x509, NULL, 0);
+        X509_alias_set1(x509, NULL, 0);
+        
+        for (int i = 1; i < [chain count]; i++) {
+            MKCertificate *cert = [chain objectAtIndex:i];
+            if ([cert certificate] == nil)
+                continue;
+            const unsigned char *p = [[cert certificate] bytes];
+            X509 *c = d2i_X509(NULL, &p, [[cert certificate] length]);
+            if (c)
+                sk_X509_push(certs, c);
+        }
+        
+        pkcs = PKCS12_create(password ? (char *) [password UTF8String] : NULL, "Mumble Identity", pkey, x509, certs, 0, 0, 0, 0, 0);
+        if (pkcs) {
+            mem = BIO_new(BIO_s_mem());
+            i2d_PKCS12_bio(mem, pkcs);
+            int _flush __attribute__((unused)) = BIO_flush(mem);
+            size = BIO_get_mem_data(mem, &data);
+            retData = [[NSData alloc] initWithBytes:data length:size];
         }
     }
-
+    
     if (pkey)
         EVP_PKEY_free(pkey);
     if (x509)
@@ -293,8 +293,13 @@ static int add_ext(X509 * crt, int nid, char *value) {
         BIO_free(mem);
     if (certs)
         sk_X509_free(certs);
-
+    
     return [retData autorelease];
+}
+
+// Export a MKCertificate object as a PKCS12-encoded NSData blob.
+- (NSData *) exportPKCS12WithPassword:(NSString *)password {
+    return [MKCertificate exportCertificateChainAsPKCS12:[NSArray arrayWithObject:self] withPassword:password];
 }
 
 - (BOOL) hasCertificate {

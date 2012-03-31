@@ -122,12 +122,39 @@ extern NSString *MKCertificateItemSerialNumber;
 ///--------------------------------
 
 /**
+ * Export a chain of certificates presented an array of MKCertificate objects to a
+ * PKCS12 data blob. The PKCS12 blob will be encrypted and password protected with
+ * the given password.
+ *
+ * The leaf certificate (which is the MKCertificate object at index 0) may have a
+ * private key. If this is the case, the private key will also be exported along
+ * with the public parts of the certificate.
+ *
+ * Only the private key (if any) of the leaf certificate will be marshalled. The
+ * private keys of any other certificates in the chain will not.
+ *
+ * @param  chain     An NSArray of MKCertificate objects to be exported.
+ * @param  password  The password needed to decode the generated PKCS12 blob.
+ *
+ * @returns Returns an NSData object that holds the PKCS12 encoded version
+ *          of the passed-in certificate chain.
+ */
++ (NSData *) exportCertificateChainAsPKCS12:(NSArray *)chain withPassword:(NSString *)password;
+
+/**
  * Export a MKCertificate object to a PKCS12 data blob using the given password.
+ * The method will export both the certificate and its corresponding private key
+ * (if available) to the PKCS12 data blob.
  *
- * @param password  The password needed to decode the generated PKCS12-blob.
+ * Invoking this method is equivalent to calling the class method
+ * exportCertificateChainAsPKCS12:withPassword: with a lone MKCertificate in the
+ * chain array.
  *
- * @returns Returns a NSData object that holds the PKCS12-encoded version of
- *          the receiver MKCertificate's certificate and public and private keypair.
+ * @param password  The password needed to decode the generated PKCS12 blob.
+ *
+ * @returns Returns a NSData object that holds the PKCS12 encoded version of
+ *          the receiver MKCertificate's certificate, public key and (if available)
+ *          private key.
  */
 - (NSData *) exportPKCS12WithPassword:(NSString *)password;
 
