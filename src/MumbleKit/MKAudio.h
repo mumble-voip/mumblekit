@@ -10,6 +10,8 @@
 
 #define SAMPLE_RATE 48000
 
+extern NSString *MKAudioDidRestartNotification;
+
 typedef enum _MKCodecFormat {
     MKCodecFormatSpeex,
     MKCodecFormatCELT,

@@ -7,6 +7,8 @@
 #import "MKAudioInput.h"
 #import "MKAudioOutput.h"
 
+NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
+
 @interface MKAudio () {
     MKAudioInput     *_audioInput;
     MKAudioOutput    *_audioOutput;
@@ -251,6 +253,8 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
 - (void) restart {
     [self stop];
     [self start];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:MKAudioDidRestartNotification object:self];
 }
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType {
