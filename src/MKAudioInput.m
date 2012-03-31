@@ -377,8 +377,13 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     AudioComponentDescription desc;
     AudioStreamBasicDescription fmt;
     
+    BOOL shouldCancelEcho = NO;
+    if ([[MKAudio sharedAudio] echoCancellationAvailable]) {
+        shouldCancelEcho = _settings.enableEchoCancellation;
+    }
+    
     desc.componentType = kAudioUnitType_Output;
-    if (_settings.enableEchoCancellation)
+    if (shouldCancelEcho)
         desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
     else
         desc.componentSubType = kAudioUnitSubType_RemoteIO;
@@ -455,7 +460,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         return NO;
     }
     
-    if (_settings.enableEchoCancellation) {
+    if (shouldCancelEcho) {
         val = 0;
         len = sizeof(UInt32);
         err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);

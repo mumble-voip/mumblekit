@@ -289,4 +289,26 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     [_audioInput setMuted:muted];
 }
 
+- (BOOL) echoCancellationAvailable {
+    NSDictionary *dict = nil;
+    UInt32 valSize = sizeof(NSDictionary *);
+    OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRouteDescription, &valSize, &dict);
+    if (err != kAudioSessionNoError) {
+        return NO;
+    }
+
+    NSArray *inputs = [dict objectForKey:(id)kAudioSession_AudioRouteKey_Inputs];
+    if ([inputs count] == 0) {
+        return NO;
+    }
+
+    NSDictionary *input = [inputs objectAtIndex:0]; 
+    NSString *inputKind = [input objectForKey:(id)kAudioSession_AudioRouteKey_Type];
+
+    if ([inputKind isEqualToString:(NSString *)kAudioSessionInputRoute_BuiltInMic])
+        return YES;
+
+    return NO;
+}
+
 @end

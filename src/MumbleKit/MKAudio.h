@@ -125,6 +125,12 @@ typedef struct _MKAudioSettings {
  */
 - (void) setForceTransmit:(BOOL)enableForceTransmit;
 
+/**
+ * Returns whether or not the system's current audio route is
+ * suitable for echo cancellation.
+ */
+- (BOOL) echoCancellationAvailable;
+
 - (float) speechProbablity;
 - (float) peakCleanMic;
 
