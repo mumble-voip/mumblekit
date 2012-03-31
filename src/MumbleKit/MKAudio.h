@@ -125,7 +125,6 @@ typedef struct _MKAudioSettings {
  */
 - (void) setForceTransmit:(BOOL)enableForceTransmit;
 
-- (NSString *) currentAudioRoute;
 - (float) speechProbablity;
 - (float) peakCleanMic;
 
