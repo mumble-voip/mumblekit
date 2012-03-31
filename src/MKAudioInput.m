@@ -378,7 +378,10 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     AudioStreamBasicDescription fmt;
     
     desc.componentType = kAudioUnitType_Output;
-    desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
+    if (_settings.enableEchoCancellation)
+        desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
+    else
+        desc.componentSubType = kAudioUnitSubType_RemoteIO;
     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
     desc.componentFlags = 0;
     desc.componentFlagsMask = 0;
@@ -452,30 +455,32 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         return NO;
     }
     
-    val = _settings.enableEchoCancellation ? 0 : 1;
-    len = sizeof(UInt32);
-    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to disable VPIO voice processing.");
-        return NO;
-    }
+    if (_settings.enableEchoCancellation) {
+        val = 0;
+        len = sizeof(UInt32);
+        err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);
+        if (err != noErr) {
+            NSLog(@"MKAudioInput: Unable to disable VPIO voice processing.");
+            return NO;
+        }
     
-    val = 0;
-    len = sizeof(UInt32);
-    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingEnableAGC, kAudioUnitScope_Global, 0, &val, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to disable VPIO AGC.");
-        return NO;
-    }
+        val = 0;
+        len = sizeof(UInt32);
+        err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingEnableAGC, kAudioUnitScope_Global, 0, &val, len);
+        if (err != noErr) {
+            NSLog(@"MKAudioInput: Unable to disable VPIO AGC.");
+            return NO;
+        }
 
-    // It's sufficient to set the quality to 0 for our use case; we do our own preprocessing
-    // after this, and the job of the VPIO is only to do echo cancellation.
-    val = 0;
-    len = sizeof(UInt32);
-    err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingQuality, kAudioUnitScope_Global, 0, &val, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: unable to set VPIO quality.");
-        return NO;
+        // It's sufficient to set the quality to 0 for our use case; we do our own preprocessing
+        // after this, and the job of the VPIO is only to do echo cancellation.
+        val = 0;
+        len = sizeof(UInt32);
+        err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingQuality, kAudioUnitScope_Global, 0, &val, len);
+        if (err != noErr) {
+            NSLog(@"MKAudioInput: unable to set VPIO quality.");
+            return NO;
+        }
     }
 
     err = AudioUnitInitialize(audioUnit);
