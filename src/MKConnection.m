@@ -751,7 +751,9 @@ out:
 
     if ([crypted length] > 4) {
         NSData *plain = [_crypt decryptData:crypted];
-        [self _udpMessageReceived:plain];
+        if (plain) {
+            [self _udpMessageReceived:plain];
+        }
     }
 }
 
