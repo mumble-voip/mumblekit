@@ -92,18 +92,19 @@ typedef struct _MKAudioSettings {
 ///---------------
 
 /**
- * Returns the current configuration of the MumbleKit audio subsystem.
+ * Reads the current configuration of the MumbleKit audio subsystem
+ * into settings.
+ *
+ * @param  settings  A pointer to the MKAudioSettings struct the settings should be read into.
  */
-- (MKAudioSettings *) audioSettings;
+- (void) readAudioSettings:(MKAudioSettings *)settings;
 
 /**
  * Updates the MumbleKit audio subsystem with a new configuration.
  *
- * @param settings A pointer to a MKAudioSettings struct with the new audio subsystem settings.
+ * @param settings  A pointer to a MKAudioSettings struct with the new audio subsystem settings.
  */
 - (void) updateAudioSettings:(MKAudioSettings *)settings;
-
-- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
 
 ///-------------------
 /// @name Transmission
@@ -133,6 +134,7 @@ typedef struct _MKAudioSettings {
  */
 - (BOOL) echoCancellationAvailable;
 
+- (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
 - (float) speechProbablity;
 - (float) peakCleanMic;
 
