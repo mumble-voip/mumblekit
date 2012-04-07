@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
 		2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492310132ED60700B4EAAC /* libCELT-0.7.0.a */; };
+		281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */; };
+		281EADA61530EA30000793AB /* MKDistinguishedNameParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */; };
+		281EADA71530EA30000793AB /* MKDistinguishedNameParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 281EADA41530EA30000793AB /* MKDistinguishedNameParser.m */; };
+		281EADA81530EA30000793AB /* MKDistinguishedNameParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 281EADA41530EA30000793AB /* MKDistinguishedNameParser.m */; };
 		282F6B0813624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; };
 		282F6B0913624187008F555B /* MKServerPinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 282F6B0613624187008F555B /* MKServerPinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		282F6B0A13624187008F555B /* MKServerPinger.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F6B0713624187008F555B /* MKServerPinger.m */; };
@@ -306,6 +310,8 @@
 		2815C4E0150D559800136082 /* BetaDist.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BetaDist.xcconfig; path = cfg/BetaDist.xcconfig; sourceTree = "<group>"; };
 		2815C4E1150D559800136082 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = cfg/Release.xcconfig; sourceTree = "<group>"; };
 		2815C4E6150D55BC00136082 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = cfg/Debug.xcconfig; sourceTree = "<group>"; };
+		281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKDistinguishedNameParser.h; path = src/MKDistinguishedNameParser.h; sourceTree = SOURCE_ROOT; };
+		281EADA41530EA30000793AB /* MKDistinguishedNameParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKDistinguishedNameParser.m; path = src/MKDistinguishedNameParser.m; sourceTree = SOURCE_ROOT; };
 		282F6B0613624187008F555B /* MKServerPinger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerPinger.h; path = src/MumbleKit/MKServerPinger.h; sourceTree = SOURCE_ROOT; };
 		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
 		283363DC13EF535B00A04F04 /* MKChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelPrivate.h; path = src/MKChannelPrivate.h; sourceTree = SOURCE_ROOT; };
@@ -482,6 +488,7 @@
 				2845A792132D9C220034D631 /* MKVersion.m */,
 				2845A793132D9C220034D631 /* MulticastDelegate.m */,
 				2879526114C1BAB900567430 /* MKTextMessage.m */,
+				281EADA41530EA30000793AB /* MKDistinguishedNameParser.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -520,6 +527,7 @@
 				2845A7D1132D9C520034D631 /* MKPacketDataStream.h */,
 				283363DC13EF535B00A04F04 /* MKChannelPrivate.h */,
 				283363DE13EF536C00A04F04 /* MKUserPrivate.h */,
+				281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */,
 			);
 			name = "Private Headers";
 			sourceTree = "<group>";
@@ -658,6 +666,7 @@
 				28F2FAD613E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
 				2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */,
 				2879526914C1BDD800567430 /* MKTextMessage.h in Headers */,
+				281EADA61530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,6 +697,7 @@
 				28F2FAD513E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */,
 				283363DD13EF535B00A04F04 /* MKChannelPrivate.h in Headers */,
 				2879526814C1BDD800567430 /* MKTextMessage.h in Headers */,
+				281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -916,6 +926,7 @@
 				28CC36FD132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */,
 				282F6B0B13624187008F555B /* MKServerPinger.m in Sources */,
 				2879526514C1BAB900567430 /* MKTextMessage.m in Sources */,
+				281EADA81530EA30000793AB /* MKDistinguishedNameParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -944,6 +955,7 @@
 				28CC36FC132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */,
 				282F6B0A13624187008F555B /* MKServerPinger.m in Sources */,
 				2879526414C1BAB900567430 /* MKTextMessage.m in Sources */,
+				281EADA71530EA30000793AB /* MKDistinguishedNameParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 #import <MumbleKit/MKCertificate.h>
+#import "MKDistinguishedNameParser.h"
 
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -310,24 +311,6 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return _derPrivKey != nil;
 }
 
-// Parse a one-line UTF8 representation of subject or issuer info
-// from a certificate. Returns a dictionary with the keys and values
-// as-is.
-- (NSDictionary *) copyDictForOneLineUTF8Repr:(NSData *)data {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-    NSArray *components = [str componentsSeparatedByString:@", "];
-    for (NSString *component in components) {
-        NSArray *pairs = [component componentsSeparatedByString:@" = "];
-        if ([pairs count] != 2) {
-            [dict release];
-            return nil;
-        }
-        [dict setObject:[pairs objectAtIndex:1] forKey:[pairs objectAtIndex:0]];
-    }
-    return dict;
-}
-
 // Parse an ASN1 string representing time from an X509 PKIX certificate.
 - (NSDate *) copyAndParseASN1Date:(ASN1_TIME *)time {
     struct tm tm;
@@ -395,7 +378,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
                 BUF_MEM *buf = NULL;
                 BIO_get_mem_ptr(mem, &buf);
                 NSData *data = [[NSData alloc] initWithBytes:buf->data length:buf->length];
-                _subjectDict = [self copyDictForOneLineUTF8Repr:data];
+                _subjectDict = [[MKDistinguishedNameParser parseName:data] retain];
                 [data release];
             }
             BIO_free(mem);
@@ -409,7 +392,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
                 BUF_MEM *buf = NULL;
                 BIO_get_mem_ptr(mem, &buf);
                 NSData *data = [[NSData alloc] initWithBytesNoCopy:buf->data length:buf->length freeWhenDone:NO];
-                _issuerDict = [self copyDictForOneLineUTF8Repr:data];
+                _issuerDict = [[MKDistinguishedNameParser parseName:data] retain];
                 [data release];
             }
             BIO_free(mem);
