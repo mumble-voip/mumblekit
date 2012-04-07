@@ -50,7 +50,7 @@
 	
 	<option value="//api/name/betaCodec">&nbsp;&nbsp;&nbsp;&nbsp;- betaCodec</option>
 	
-	<option value="//api/name/clientIdentity">&nbsp;&nbsp;&nbsp;&nbsp;- clientIdentity</option>
+	<option value="//api/name/certificateChain">&nbsp;&nbsp;&nbsp;&nbsp;- certificateChain</option>
 	
 	<option value="//api/name/connectToHost:port:">&nbsp;&nbsp;&nbsp;&nbsp;- connectToHost:port:</option>
 	
@@ -88,7 +88,7 @@
 	
 	<option value="//api/name/serverVersion">&nbsp;&nbsp;&nbsp;&nbsp;- serverVersion</option>
 	
-	<option value="//api/name/setClientIdentity:">&nbsp;&nbsp;&nbsp;&nbsp;- setClientIdentity:</option>
+	<option value="//api/name/setCertificateChain:">&nbsp;&nbsp;&nbsp;&nbsp;- setCertificateChain:</option>
 	
 	<option value="//api/name/setForceTCP:">&nbsp;&nbsp;&nbsp;&nbsp;- setForceTCP:</option>
 	
@@ -138,7 +138,7 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/betaCodec">betaCodec</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/clientIdentity">clientIdentity</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/certificateChain">certificateChain</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectToHost:port:">connectToHost:port:</a></span></li>
 	
@@ -176,7 +176,7 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverVersion">serverVersion</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setClientIdentity:">setClientIdentity:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setCertificateChain:">setCertificateChain:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setForceTCP:">setForceTCP:</a></span></li>
 	
@@ -300,17 +300,17 @@ for self-signed certificates.</p></span>
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/setClientIdentity:">&ndash;&nbsp;setClientIdentity:</a></code>
-		<span class="tooltip"><p>Set a client identity to be used for the MKConnection. This property is only
+		<code><a href="#//api/name/setCertificateChain:">&ndash;&nbsp;setCertificateChain:</a></code>
+		<span class="tooltip"><p>Set a certificate chain to be used for the MKConnection. This property is only
 used during connection establishment, and as such, chaning this value while the
-MKConnection object is a conncted to a server should not be done.</p></span>
+MKConnection object is a conncted to a server has no effect.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/clientIdentity">&ndash;&nbsp;clientIdentity</a></code>
-		<span class="tooltip"><p>Returns the client identity that is to be used during the next connection attempt.</p></span>
+		<code><a href="#//api/name/certificateChain">&ndash;&nbsp;certificateChain</a></code>
+		<span class="tooltip"><p>Returns the certificate chain that is to be presented to the server during the next connection attempt.</p></span>
 	</span>
 	
 	
@@ -626,17 +626,17 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/clientIdentity" title="clientIdentity"></a>
-	<h3 class="subsubtitle method-title">clientIdentity</h3>
+	<a name="//api/name/certificateChain" title="certificateChain"></a>
+	<h3 class="subsubtitle method-title">certificateChain</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the client identity that is to be used during the next connection attempt.</p>
+		<p>Returns the certificate chain that is to be presented to the server during the next connection attempt.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (SecIdentityRef)clientIdentity</code></div>
+	<div class="method-subsection method-declaration"><code>- (NSArray *)certificateChain</code></div>
 	
 	
 	
@@ -1347,27 +1347,27 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p>
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/setClientIdentity:" title="setClientIdentity:"></a>
-	<h3 class="subsubtitle method-title">setClientIdentity:</h3>
+	<a name="//api/name/setCertificateChain:" title="setCertificateChain:"></a>
+	<h3 class="subsubtitle method-title">setCertificateChain:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Set a client identity to be used for the MKConnection. This property is only
+		<p>Set a certificate chain to be used for the MKConnection. This property is only
 used during connection establishment, and as such, chaning this value while the
-MKConnection object is a conncted to a server should not be done.</p>
+MKConnection object is a conncted to a server has no effect.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (void)setClientIdentity:(SecIdentityRef)<em>secIdentity</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)setCertificateChain:(NSArray *)<em>chain</em></code></div>
 	
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
 		
 		<dl class="argument-def parameter-def">
-			<dt><em>secIdentity</em></dt>
-			<dd><p>A SecIdentityRef that should be used as the client identity.</p></dd>
+			<dt><em>chain</em></dt>
+			<dd><p>A NSArray containing a SecIdentityRef as its first item, and SecCertificateRefs subsequently.</p></dd>
 		</dl>
 		
 	</div>
@@ -1506,7 +1506,7 @@ errors. By default this is set to NO.</p></dd>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-04-08)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						

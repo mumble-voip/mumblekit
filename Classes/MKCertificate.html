@@ -46,6 +46,8 @@
 	
 	<option value="//api/name/certificateWithPKCS12:password:">&nbsp;&nbsp;&nbsp;&nbsp;+ certificateWithPKCS12:password:</option>
 	
+	<option value="//api/name/exportCertificateChainAsPKCS12:withPassword:">&nbsp;&nbsp;&nbsp;&nbsp;+ exportCertificateChainAsPKCS12:withPassword:</option>
+	
 	<option value="//api/name/selfSignedCertificateWithName:email:">&nbsp;&nbsp;&nbsp;&nbsp;+ selfSignedCertificateWithName:email:</option>
 	
 	<option value="//api/name/selfSignedCertificateWithName:email:rsaKeyPair:">&nbsp;&nbsp;&nbsp;&nbsp;+ selfSignedCertificateWithName:email:rsaKeyPair:</option>
@@ -69,6 +71,10 @@
 	
 	<option value="//api/name/hexDigest">&nbsp;&nbsp;&nbsp;&nbsp;- hexDigest</option>
 	
+	<option value="//api/name/isSignedBy:">&nbsp;&nbsp;&nbsp;&nbsp;- isSignedBy:</option>
+	
+	<option value="//api/name/isValidOnDate:">&nbsp;&nbsp;&nbsp;&nbsp;- isValidOnDate:</option>
+	
 	<option value="//api/name/issuerItem:">&nbsp;&nbsp;&nbsp;&nbsp;- issuerItem:</option>
 	
 	<option value="//api/name/issuerName">&nbsp;&nbsp;&nbsp;&nbsp;- issuerName</option>
@@ -78,6 +84,8 @@
 	<option value="//api/name/notBefore">&nbsp;&nbsp;&nbsp;&nbsp;- notBefore</option>
 	
 	<option value="//api/name/subjectItem:">&nbsp;&nbsp;&nbsp;&nbsp;- subjectItem:</option>
+	
+	<option value="//api/name/subjectName">&nbsp;&nbsp;&nbsp;&nbsp;- subjectName</option>
 	
 	
 	
@@ -105,6 +113,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Validity Dates">Validity Dates</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Signature and Date Verification">Signature and Date Verification</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Certificate Subject and Issuer data">Certificate Subject and Issuer data</a></span></li>
 	
 </ul></li>
@@ -120,6 +130,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/certificateWithCertificate:privateKey:">certificateWithCertificate:privateKey:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/certificateWithPKCS12:password:">certificateWithPKCS12:password:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/exportCertificateChainAsPKCS12:withPassword:">exportCertificateChainAsPKCS12:withPassword:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/selfSignedCertificateWithName:email:">selfSignedCertificateWithName:email:</a></span></li>
 	
@@ -145,6 +157,10 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hexDigest">hexDigest</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isSignedBy:">isSignedBy:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isValidOnDate:">isValidOnDate:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/issuerItem:">issuerItem:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/issuerName">issuerName</a></span></li>
@@ -154,6 +170,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/notBefore">notBefore</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/subjectItem:">subjectItem:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/subjectName">subjectName</a></span></li>
 	
 </ul></li>
 
@@ -272,8 +290,19 @@ generates.</p></span>
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
+		<code><a href="#//api/name/exportCertificateChainAsPKCS12:withPassword:">+&nbsp;exportCertificateChainAsPKCS12:withPassword:</a></code>
+		<span class="tooltip"><p>Export a chain of certificates presented an array of MKCertificate objects to a
+PKCS12 data blob. The PKCS12 blob will be encrypted and password protected with
+the given password.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
 		<code><a href="#//api/name/exportPKCS12WithPassword:">&ndash;&nbsp;exportPKCS12WithPassword:</a></code>
-		<span class="tooltip"><p>Export a MKCertificate object to a PKCS12 data blob using the given password.</p></span>
+		<span class="tooltip"><p>Export a MKCertificate object to a PKCS12 data blob using the given password.
+The method will export both the certificate and its corresponding private key
+(if available) to the PKCS12 data blob.</p></span>
 	</span>
 	
 	
@@ -331,14 +360,45 @@ an authoritative method of determining certificate validity.</p></span>
 						</ul>
 						
 						
+						<a title="Signature and Date Verification" name="task_Signature and Date Verification"></a>
+						<h3 class="subsubtitle task-title">Signature and Date Verification</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isSignedBy:">&ndash;&nbsp;isSignedBy:</a></code>
+		<span class="tooltip"><p>Checks whether the signature of the receiver certificate is signed by the
+parentCert certificate.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isValidOnDate:">&ndash;&nbsp;isValidOnDate:</a></code>
+		<span class="tooltip"><p>Checks whether the signature of the receiver certificate is valid on the given date.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
 						<a title="Certificate Subject and Issuer data" name="task_Certificate Subject and Issuer data"></a>
 						<h3 class="subsubtitle task-title">Certificate Subject and Issuer data</h3>
 
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
+		<code><a href="#//api/name/subjectName">&ndash;&nbsp;subjectName</a></code>
+		<span class="tooltip"><p>Returns the subject name of the X.509 certificate.
+This can either be a common name, or an email address, depending on the certificate.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
 		<code><a href="#//api/name/commonName">&ndash;&nbsp;commonName</a></code>
-		<span class="tooltip"><p>Retruns the CN (Common Name) value of subjecdt of the X.509 certificate.</p></span>
+		<span class="tooltip"><p>Returns the CN (Common Name) value of subject of the X.509 certificate.</p></span>
 	</span>
 	
 	
@@ -502,6 +562,73 @@ from the given PKCS12 data.</p>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/exportCertificateChainAsPKCS12:withPassword:" title="exportCertificateChainAsPKCS12:withPassword:"></a>
+	<h3 class="subsubtitle method-title">exportCertificateChainAsPKCS12:withPassword:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Export a chain of certificates presented an array of MKCertificate objects to a
+PKCS12 data blob. The PKCS12 blob will be encrypted and password protected with
+the given password.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (NSData *)exportCertificateChainAsPKCS12:(NSArray *)<em>chain</em> withPassword:(NSString *)<em>password</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>chain</em></dt>
+			<dd><p>An NSArray of MKCertificate objects to be exported.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>password</em></dt>
+			<dd><p>The password needed to decode the generated PKCS12 blob.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns an NSData object that holds the PKCS12 encoded version
+of the passed-in certificate chain.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The leaf certificate (which is the MKCertificate object at index 0) may have a
+private key. If this is the case, the private key will also be exported along
+with the public parts of the certificate.</p>
+
+<p>Only the private key (if any) of the leaf certificate will be marshalled. The
+private keys of any other certificates in the chain will not.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/selfSignedCertificateWithName:email:" title="selfSignedCertificateWithName:email:"></a>
 	<h3 class="subsubtitle method-title">selfSignedCertificateWithName:email:</h3>
 	
@@ -641,7 +768,7 @@ public and private keypair.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Retruns the CN (Common Name) value of subjecdt of the X.509 certificate.</p>
+		<p>Returns the CN (Common Name) value of subject of the X.509 certificate.</p>
 	</div>		
 	
 	
@@ -760,7 +887,9 @@ of the receiving MKCertificate object.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Export a MKCertificate object to a PKCS12 data blob using the given password.</p>
+		<p>Export a MKCertificate object to a PKCS12 data blob using the given password.
+The method will export both the certificate and its corresponding private key
+(if available) to the PKCS12 data blob.</p>
 	</div>		
 	
 	
@@ -772,7 +901,7 @@ of the receiving MKCertificate object.</p>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>password</em></dt>
-			<dd><p>The password needed to decode the generated PKCS12-blob.</p></dd>
+			<dd><p>The password needed to decode the generated PKCS12 blob.</p></dd>
 		</dl>
 		
 	</div>
@@ -781,13 +910,21 @@ of the receiving MKCertificate object.</p>
 	
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Returns a NSData object that holds the PKCS12-encoded version of
-the receiver MKCertificate&rsquo;s certificate and public and private keypair.</p>
+		<p>Returns a NSData object that holds the PKCS12 encoded version of
+the receiver MKCertificate&rsquo;s certificate, public key and (if available)
+private key.</p>
 	</div>
 	
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Invoking this method is equivalent to calling the class method
+<a href="#//api/name/exportCertificateChainAsPKCS12:withPassword:">exportCertificateChainAsPKCS12:withPassword:</a> with a lone MKCertificate in the
+chain array.</p>
+	</div>
 	
 	
 	
@@ -903,6 +1040,85 @@ public key of the receiving MKCertificate object.</p>
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
 		<p>A NSString with the (lowercase) hex-encoded SHA1 <a href="#//api/name/digest">digest</a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isSignedBy:" title="isSignedBy:"></a>
+	<h3 class="subsubtitle method-title">isSignedBy:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Checks whether the signature of the receiver certificate is signed by the
+parentCert certificate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isSignedBy:(MKCertificate *)<em>parentCert</em></code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>YES if a valid signature was found, otherwise returns NO.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isValidOnDate:" title="isValidOnDate:"></a>
+	<h3 class="subsubtitle method-title">isValidOnDate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Checks whether the signature of the receiver certificate is valid on the given date.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isValidOnDate:(NSDate *)<em>date</em></code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>YES is the certificate is valid on the given date, otherwise returns NO.</p>
 	</div>
 	
 	
@@ -1150,6 +1366,46 @@ was not found.</p>
 	
 </div>
 						
+						<div class="section-method">
+	<a name="//api/name/subjectName" title="subjectName"></a>
+	<h3 class="subsubtitle method-title">subjectName</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the subject name of the X.509 certificate.
+This can either be a common name, or an email address, depending on the certificate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)subjectName</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSString representing the subject name.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
 					</div>
 					
 					
@@ -1163,7 +1419,7 @@ was not found.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-04-08)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						

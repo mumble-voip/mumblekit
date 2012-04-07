@@ -49,11 +49,13 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/audioSettings">&nbsp;&nbsp;&nbsp;&nbsp;- audioSettings</option>
+	<option value="//api/name/echoCancellationAvailable">&nbsp;&nbsp;&nbsp;&nbsp;- echoCancellationAvailable</option>
 	
 	<option value="//api/name/forceTransmit">&nbsp;&nbsp;&nbsp;&nbsp;- forceTransmit</option>
 	
 	<option value="//api/name/isRunning">&nbsp;&nbsp;&nbsp;&nbsp;- isRunning</option>
+	
+	<option value="//api/name/readAudioSettings:">&nbsp;&nbsp;&nbsp;&nbsp;- readAudioSettings:</option>
 	
 	<option value="//api/name/restart">&nbsp;&nbsp;&nbsp;&nbsp;- restart</option>
 	
@@ -109,11 +111,13 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/audioSettings">audioSettings</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/echoCancellationAvailable">echoCancellationAvailable</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/forceTransmit">forceTransmit</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isRunning">isRunning</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/readAudioSettings:">readAudioSettings:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/restart">restart</a></span></li>
 	
@@ -233,8 +237,9 @@
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/audioSettings">&ndash;&nbsp;audioSettings</a></code>
-		<span class="tooltip"><p>Returns the current configuration of the MumbleKit audio subsystem.</p></span>
+		<code><a href="#//api/name/readAudioSettings:">&ndash;&nbsp;readAudioSettings:</a></code>
+		<span class="tooltip"><p>Reads the current configuration of the MumbleKit audio subsystem
+into settings.</p></span>
 	</span>
 	
 	
@@ -272,6 +277,14 @@ Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 	<span class="tooltip">
 		<code><a href="#//api/name/setForceTransmit:">&ndash;&nbsp;setForceTransmit:</a></code>
 		<span class="tooltip"><p>Sets the current force-transmit state.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/echoCancellationAvailable">&ndash;&nbsp;echoCancellationAvailable</a></code>
+		<span class="tooltip"><p>Returns whether or not the system&rsquo;s current audio route is
+suitable for echo cancellation.</p></span>
 	</span>
 	
 	
@@ -338,17 +351,18 @@ Forced-transmit is used to implemented push-to-talk functionality.</p></span>
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/audioSettings" title="audioSettings"></a>
-	<h3 class="subsubtitle method-title">audioSettings</h3>
+	<a name="//api/name/echoCancellationAvailable" title="echoCancellationAvailable"></a>
+	<h3 class="subsubtitle method-title">echoCancellationAvailable</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns the current configuration of the MumbleKit audio subsystem.</p>
+		<p>Returns whether or not the system&rsquo;s current audio route is
+suitable for echo cancellation.</p>
 	</div>		
 	
 	
-	<div class="method-subsection method-declaration"><code>- (MKAudioSettings *)audioSettings</code></div>
+	<div class="method-subsection method-declaration"><code>- (BOOL)echoCancellationAvailable</code></div>
 	
 	
 	
@@ -419,6 +433,51 @@ Forced-transmit is used to implemented push-to-talk functionality.</p>
 	
 	<div class="method-subsection method-declaration"><code>- (BOOL)isRunning</code></div>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKAudio.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/readAudioSettings:" title="readAudioSettings:"></a>
+	<h3 class="subsubtitle method-title">readAudioSettings:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Reads the current configuration of the MumbleKit audio subsystem
+into settings.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)readAudioSettings:(MKAudioSettings *)<em>settings</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>settings</em></dt>
+			<dd><p>A pointer to the MKAudioSettings struct the settings should be read into.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -677,7 +736,7 @@ Forced-transmit is used to implemented push-to-talk functionality.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-04-08)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						

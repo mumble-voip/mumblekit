@@ -78,6 +78,8 @@
 	
 	<option value="//api/name/serverModel:textMessageReceived:fromUser:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:textMessageReceived:fromUser:</option>
 	
+	<option value="//api/name/serverModel:userAuthenticatedStateChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userAuthenticatedStateChanged:</option>
+	
 	<option value="//api/name/serverModel:userBanned:byUser:forReason:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userBanned:byUser:forReason:</option>
 	
 	<option value="//api/name/serverModel:userCommentChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:userCommentChanged:</option>
@@ -170,7 +172,7 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Muting, deafening and suppressing">Muting, deafening and suppressing</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Priority speaker and recording">Priority speaker and recording</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Other user flag changes">Other user flag changes</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Leaving users">Leaving users</a></span></li>
 	
@@ -223,6 +225,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:permissionDeniedForReason:">serverModel:permissionDeniedForReason:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:textMessageReceived:fromUser:">serverModel:textMessageReceived:fromUser:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userAuthenticatedStateChanged:">serverModel:userAuthenticatedStateChanged:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:userBanned:byUser:forReason:">serverModel:userBanned:byUser:forReason:</a></span></li>
 	
@@ -561,11 +565,18 @@ case user is equivalent to mover).</p></span>
 						</ul>
 						
 						
-						<a title="Priority speaker and recording" name="task_Priority speaker and recording"></a>
-						<h3 class="subsubtitle task-title">Priority speaker and recording</h3>
+						<a title="Other user flag changes" name="task_Other user flag changes"></a>
+						<h3 class="subsubtitle task-title">Other user flag changes</h3>
 
 						<ul class="task-list">
 							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:userAuthenticatedStateChanged:">&ndash;&nbsp;serverModel:userAuthenticatedStateChanged:</a></code>
+		<span class="tooltip"><p>Called when the user&rsquo;s authenticated flag changes.</p></span>
+	</span>
+	
+	
+</li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/serverModel:userPrioritySpeakerChanged:">&ndash;&nbsp;serverModel:userPrioritySpeakerChanged:</a></code>
 		<span class="tooltip"><p>Called when a user&rsquo;s priorty speaker flag changes.</p></span>
@@ -1638,6 +1649,55 @@ to understand all error types.</p>
 		<dl class="argument-def parameter-def">
 			<dt><em>user</em></dt>
 			<dd><p>The <a href="../Classes/MKUser.html">MKUser</a> that sent the text message.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModel:userAuthenticatedStateChanged:" title="serverModel:userAuthenticatedStateChanged:"></a>
+	<h3 class="subsubtitle method-title">serverModel:userAuthenticatedStateChanged:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when the user&rsquo;s authenticated flag changes.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userAuthenticatedStateChanged:(MKUser *)<em>user</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>user</em></dt>
+			<dd><p>The user whose authenticated flag changed.</p></dd>
 		</dl>
 		
 	</div>
@@ -3380,7 +3440,7 @@ which was not allowed by the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-03-12)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-04-08)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
 						
