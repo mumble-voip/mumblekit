@@ -8,7 +8,6 @@
     NSString             *_name;
     NSInteger            _pos;
     NSMutableArray       *_pairs;
-    NSMutableArray       *_put;
 }
 - (id) initWithName:(NSData *)dn;
 
@@ -46,7 +45,6 @@
         [nameString appendString:[NSString stringWithCharacters:&nul length:1]];        
         _name = nameString;
         _pairs = [[NSMutableArray alloc] init];
-        _put = [[NSMutableArray alloc] init];
         _pos = 0;
     }
     return self;
@@ -55,7 +53,6 @@
 - (void) dealloc {
     [_pairs release];
     [_name release];
-    [_put release];
     [super dealloc];
 }
 
@@ -82,12 +79,6 @@
 }
 
 - (unichar) getch {
-    NSInteger putCount = [_put count];
-    if (putCount > 0) {
-        unsigned long c = [[_put objectAtIndex:putCount-1] unsignedLongValue];
-        [_put removeObjectAtIndex:putCount-1];
-        return (unichar) c;
-    }
     if (_pos > [_name length]-1) {
         [self rejectWithReason:@"no more characters in string"];
     }
@@ -95,7 +86,9 @@
 }
 
 - (void) putch:(unichar)c {
-    [_put addObject:[NSNumber numberWithUnsignedLong:c]];
+    _pos--;
+    if ([_name characterAtIndex:_pos] != c)
+       [self rejectWithReason:@"internal consistency error"]; 
 }
 
 - (void) rejectWithReason:(NSString *)msg {
