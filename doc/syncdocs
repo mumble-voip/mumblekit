@@ -7,4 +7,4 @@ rsync -avz html/* ghpages/
 cd ghpages
 git add .
 git commit -m "doc: update to MumbleKit ${rev}"
-git push git@github.com:mkrautz/mumblekit.git gh-pages
+git push git@github.com:mumble-voip/mumblekit.git gh-pages
