@@ -71,7 +71,7 @@
     if (([_pairs count] % 2) != 0) {
         return nil;
     }
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:[_pairs count]/2];
+    NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithCapacity:[_pairs count]/2] autorelease];
     for (int i = 0; i < [_pairs count]; i += 2) {
         [dict setObject:[_pairs objectAtIndex:i+1] forKey:[_pairs objectAtIndex:i]];
     }
@@ -87,7 +87,7 @@
 
 - (void) putch:(unichar)c {
     _pos--;
-    if ([_name characterAtIndex:_pos] != c)
+    if (_pos < 0 || [_name characterAtIndex:_pos] != c)
        [self rejectWithReason:@"internal consistency error"]; 
 }
 
@@ -222,8 +222,10 @@
                 [self rejectWithReason:@"only quote-escapes are allowed inside quotes"];
             }
             [quotedString appendString:@"\""];
-        } else {
+        } else if ([charSet characterIsMember:c]) {
             [quotedString appendString:[NSString stringWithCharacters:&c length:1]];
+        } else {
+            [self rejectWithReason:@"unexpected character inside quoted string"];
         }
     }
 }
