@@ -354,6 +354,12 @@
     MKUser *user = [self userWithSession:[msg session]];
     _connectedUser = user;
 
+    MKAudioSettings settings;
+    [[MKAudio sharedAudio] readAudioSettings:&settings];
+    if (settings.transmitType == MKTransmitTypeContinuous) {
+        [_connectedUser setTalkState:MKTalkStateTalking];
+    }
+    
     [_delegate serverModel:self joinedServerAsUser:user];
 
     MKTextMessage *txtMsg = [MKTextMessage messageWithString:[msg welcomeText]];
