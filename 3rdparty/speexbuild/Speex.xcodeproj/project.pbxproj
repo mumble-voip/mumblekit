@@ -91,7 +91,7 @@
 		287F0263132AEFEF003C03FE /* high_lsp_tables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = high_lsp_tables.c; path = ../speex/libspeex/high_lsp_tables.c; sourceTree = "<group>"; };
 		28D1DAE8132AEB1400456ED6 /* libSpeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSpeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D1DAEB132AEB1500456ED6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		28D1DAF9132AEB2200456ED6 /* Speex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = Speex; sourceTree = BUILT_PRODUCTS_DIR; };
+		28D1DAF9132AEB2200456ED6 /* Speex.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Speex.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		28D1DAFF132AEB2200456ED6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28D1DB08132AEBB500456ED6 /* Speex.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Speex.pch; sourceTree = SOURCE_ROOT; };
 		28D1DB0C132AEBD300456ED6 /* bits.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bits.c; path = ../speex/libspeex/bits.c; sourceTree = SOURCE_ROOT; };
@@ -168,7 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				28D1DAE8132AEB1400456ED6 /* libSpeex.a */,
-				28D1DAF9132AEB2200456ED6 /* Speex */,
+				28D1DAF9132AEB2200456ED6 /* Speex.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -303,7 +303,7 @@
 			);
 			name = "Speex (Mac)";
 			productName = "Speex (Mac)";
-			productReference = 28D1DAF9132AEB2200456ED6 /* Speex */;
+			productReference = 28D1DAF9132AEB2200456ED6 /* Speex.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -434,6 +434,8 @@
 		28498F2B138AB6DB000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
@@ -453,6 +455,8 @@
 		28A2AED41478AA3200F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};
@@ -485,12 +489,16 @@
 		28D1DB04132AEB2200456ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		28D1DB05132AEB2200456ED6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

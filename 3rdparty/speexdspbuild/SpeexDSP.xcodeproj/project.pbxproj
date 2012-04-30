@@ -35,7 +35,7 @@
 		28190D0B150D624800E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		28877EBE132D96F300793CC5 /* libSpeexDSP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSpeexDSP.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28877EC1132D96F300793CC5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		28877ECF132D975D00793CC5 /* SpeexDSP */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = SpeexDSP; sourceTree = BUILT_PRODUCTS_DIR; };
+		28877ECF132D975D00793CC5 /* SpeexDSP.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = SpeexDSP.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		28877ED5132D975D00793CC5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				28877EBE132D96F300793CC5 /* libSpeexDSP.a */,
-				28877ECF132D975D00793CC5 /* SpeexDSP */,
+				28877ECF132D975D00793CC5 /* SpeexDSP.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,7 +191,7 @@
 			);
 			name = "SpeexDSP (Mac)";
 			productName = "SpeexDSP (Mac)";
-			productReference = 28877ECF132D975D00793CC5 /* SpeexDSP */;
+			productReference = 28877ECF132D975D00793CC5 /* SpeexDSP.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -268,6 +268,8 @@
 		28498F2F138AB6E2000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
@@ -300,12 +302,16 @@
 		28877EDA132D975D00793CC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		28877EDB132D975D00793CC5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -325,6 +331,8 @@
 		28A2AED81478AA3C00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};

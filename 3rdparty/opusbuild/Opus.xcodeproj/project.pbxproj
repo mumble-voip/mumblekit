@@ -262,7 +262,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2815CCC414E6DF9700AAE69C /* Opus */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = Opus; sourceTree = BUILT_PRODUCTS_DIR; };
+		2815CCC414E6DF9700AAE69C /* Opus.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Opus.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		28190D02150D611E00E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		2867AAD014E6D6ED00E24B98 /* bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bands.c; path = ../opus/celt/bands.c; sourceTree = "<group>"; };
 		2867AAD114E6D6ED00E24B98 /* celt_lpc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt_lpc.c; path = ../opus/celt/celt_lpc.c; sourceTree = "<group>"; };
@@ -589,7 +589,7 @@
 			isa = PBXGroup;
 			children = (
 				287D85A614E6D474002B5D79 /* libOpus.a */,
-				2815CCC414E6DF9700AAE69C /* Opus */,
+				2815CCC414E6DF9700AAE69C /* Opus.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -647,7 +647,7 @@
 			);
 			name = "Opus (Mac)";
 			productName = Opus;
-			productReference = 2815CCC414E6DF9700AAE69C /* Opus */;
+			productReference = 2815CCC414E6DF9700AAE69C /* Opus.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		287D85A514E6D474002B5D79 /* Opus (iOS) */ = {
@@ -966,12 +966,16 @@
 		2815CCD314E6DF9700AAE69C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		2815CCD414E6DF9700AAE69C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -991,6 +995,8 @@
 		285B423B14E6E0F00045E282 /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};
@@ -1010,6 +1016,8 @@
 		285B423F14E6E0F50045E282 /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
