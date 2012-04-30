@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0245A131154F593200476144 /* Opus.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 285B426314E6E1200045E282 /* Opus.dylib */; };
 		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
 		2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492310132ED60700B4EAAC /* libCELT-0.7.0.a */; };
 		281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */; };
@@ -124,6 +125,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0245A132154F593C00476144 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 285B425814E6E1200045E282 /* Opus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2815CCC314E6DF9700AAE69C;
+			remoteInfo = "Opus (Mac)";
+		};
 		283363C913EE070400A04F04 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
@@ -316,7 +324,7 @@
 		282F6B0713624187008F555B /* MKServerPinger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerPinger.m; path = src/MKServerPinger.m; sourceTree = SOURCE_ROOT; };
 		283363DC13EF535B00A04F04 /* MKChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelPrivate.h; path = src/MKChannelPrivate.h; sourceTree = SOURCE_ROOT; };
 		283363DE13EF536C00A04F04 /* MKUserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUserPrivate.h; path = src/MKUserPrivate.h; sourceTree = SOURCE_ROOT; };
-		2845A71A132D9B2F0034D631 /* MumbleKit */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MumbleKit; sourceTree = BUILT_PRODUCTS_DIR; };
+		2845A71A132D9B2F0034D631 /* MumbleKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MumbleKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A781132D9C220034D631 /* CryptState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CryptState.cpp; path = src/CryptState.cpp; sourceTree = SOURCE_ROOT; };
 		2845A782132D9C220034D631 /* MKAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudio.m; path = src/MKAudio.m; sourceTree = SOURCE_ROOT; };
 		2845A783132D9C220034D631 /* MKAudioInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudioInput.m; path = src/MKAudioInput.m; sourceTree = SOURCE_ROOT; };
@@ -389,6 +397,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0245A131154F593200476144 /* Opus.dylib in Frameworks */,
 				28CC36F7132ED8C300241269 /* CoreAudio.framework in Frameworks */,
 				28CC36F5132ED8BA00241269 /* AudioUnit.framework in Frameworks */,
 				28CC36F3132ED8B300241269 /* AudioToolbox.framework in Frameworks */,
@@ -536,7 +545,7 @@
 			isa = PBXGroup;
 			children = (
 				28492310132ED60700B4EAAC /* libCELT-0.7.0.a */,
-				28492312132ED60700B4EAAC /* CELT-0.7.0 */,
+				28492312132ED60700B4EAAC /* CELT-0.7.0.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -545,7 +554,7 @@
 			isa = PBXGroup;
 			children = (
 				2849232A132ED61800B4EAAC /* libProtocolBuffers.a */,
-				2849232C132ED61800B4EAAC /* ProtocolBuffers */,
+				2849232C132ED61800B4EAAC /* ProtocolBuffers.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -554,7 +563,7 @@
 			isa = PBXGroup;
 			children = (
 				28492336132ED63800B4EAAC /* libOpenSSL.a */,
-				28492338132ED63800B4EAAC /* OpenSSL */,
+				28492338132ED63800B4EAAC /* OpenSSL.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -563,7 +572,7 @@
 			isa = PBXGroup;
 			children = (
 				28492345132ED64D00B4EAAC /* libSpeex.a */,
-				28492347132ED64D00B4EAAC /* Speex */,
+				28492347132ED64D00B4EAAC /* Speex.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -572,7 +581,7 @@
 			isa = PBXGroup;
 			children = (
 				28492351132ED65800B4EAAC /* libSpeexDSP.a */,
-				28492353132ED65800B4EAAC /* SpeexDSP */,
+				28492353132ED65800B4EAAC /* SpeexDSP.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -581,7 +590,7 @@
 			isa = PBXGroup;
 			children = (
 				285B426114E6E1200045E282 /* libOpus.a */,
-				285B426314E6E1200045E282 /* Opus */,
+				285B426314E6E1200045E282 /* Opus.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -601,7 +610,7 @@
 			isa = PBXGroup;
 			children = (
 				28BCF2C1132AE3B40003AEC1 /* libMumbleKit.a */,
-				2845A71A132D9B2F0034D631 /* MumbleKit */,
+				2845A71A132D9B2F0034D631 /* MumbleKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -717,6 +726,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0245A133154F593C00476144 /* PBXTargetDependency */,
 				28492355132ED66F00B4EAAC /* PBXTargetDependency */,
 				28492357132ED66F00B4EAAC /* PBXTargetDependency */,
 				28492359132ED66F00B4EAAC /* PBXTargetDependency */,
@@ -725,7 +735,7 @@
 			);
 			name = "MumbleKit (Mac)";
 			productName = MumbleKit;
-			productReference = 2845A71A132D9B2F0034D631 /* MumbleKit */;
+			productReference = 2845A71A132D9B2F0034D631 /* MumbleKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		28BCF2C0132AE3B40003AEC1 /* MumbleKit (iOS) */ = {
@@ -811,10 +821,10 @@
 			remoteRef = 2849230F132ED60700B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492312132ED60700B4EAAC /* CELT-0.7.0 */ = {
+		28492312132ED60700B4EAAC /* CELT-0.7.0.dylib */ = {
 			isa = PBXReferenceProxy;
-			fileType = file;
-			path = "CELT-0.7.0";
+			fileType = "compiled.mach-o.dylib";
+			path = "CELT-0.7.0.dylib";
 			remoteRef = 28492311132ED60700B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -825,10 +835,10 @@
 			remoteRef = 28492329132ED61800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		2849232C132ED61800B4EAAC /* ProtocolBuffers */ = {
+		2849232C132ED61800B4EAAC /* ProtocolBuffers.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = ProtocolBuffers;
+			path = ProtocolBuffers.dylib;
 			remoteRef = 2849232B132ED61800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -839,10 +849,10 @@
 			remoteRef = 28492335132ED63800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492338132ED63800B4EAAC /* OpenSSL */ = {
+		28492338132ED63800B4EAAC /* OpenSSL.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = OpenSSL;
+			path = OpenSSL.dylib;
 			remoteRef = 28492337132ED63800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -853,10 +863,10 @@
 			remoteRef = 28492344132ED64D00B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492347132ED64D00B4EAAC /* Speex */ = {
+		28492347132ED64D00B4EAAC /* Speex.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = Speex;
+			path = Speex.dylib;
 			remoteRef = 28492346132ED64D00B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -867,10 +877,10 @@
 			remoteRef = 28492350132ED65800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		28492353132ED65800B4EAAC /* SpeexDSP */ = {
+		28492353132ED65800B4EAAC /* SpeexDSP.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = SpeexDSP;
+			path = SpeexDSP.dylib;
 			remoteRef = 28492352132ED65800B4EAAC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -881,10 +891,10 @@
 			remoteRef = 285B426014E6E1200045E282 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		285B426314E6E1200045E282 /* Opus */ = {
+		285B426314E6E1200045E282 /* Opus.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = Opus;
+			path = Opus.dylib;
 			remoteRef = 285B426214E6E1200045E282 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -962,6 +972,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0245A133154F593C00476144 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Opus (Mac)";
+			targetProxy = 0245A132154F593C00476144 /* PBXContainerItemProxy */;
+		};
 		283363CA13EE070400A04F04 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CELT-0.7 (iOS)";
@@ -1023,12 +1038,16 @@
 		2845A729132D9B2F0034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		2845A72A132D9B2F0034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -1048,6 +1067,8 @@
 		28498F1C138AB6A9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
@@ -1067,6 +1088,8 @@
 		28A2AEC41478A92700F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};

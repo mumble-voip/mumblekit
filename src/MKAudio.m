@@ -291,6 +291,7 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
 }
 
 - (BOOL) echoCancellationAvailable {
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     NSDictionary *dict = nil;
     UInt32 valSize = sizeof(NSDictionary *);
     OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRouteDescription, &valSize, &dict);
@@ -308,7 +309,7 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
 
     if ([inputKind isEqualToString:(NSString *)kAudioSessionInputRoute_BuiltInMic])
         return YES;
-
+#endif
     return NO;
 }
 

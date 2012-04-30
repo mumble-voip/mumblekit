@@ -57,7 +57,7 @@
 		28190CF2150D5D7300E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		2845A6A7132D99550034D631 /* libProtocolBuffers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocolBuffers.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A6AA132D99550034D631 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2845A6B8132D99600034D631 /* ProtocolBuffers */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.dylib"; path = ProtocolBuffers; sourceTree = BUILT_PRODUCTS_DIR; };
+		2845A6B8132D99600034D631 /* ProtocolBuffers.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = ProtocolBuffers.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		2845A6BE132D99600034D631 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2845A6C7132D9A240034D631 /* AbstractMessage_Builder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractMessage_Builder.m; path = ../protobuf/src/runtime/Classes/AbstractMessage_Builder.m; sourceTree = SOURCE_ROOT; };
 		2845A6C8132D9A240034D631 /* AbstractMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractMessage.m; path = ../protobuf/src/runtime/Classes/AbstractMessage.m; sourceTree = SOURCE_ROOT; };
@@ -124,7 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				2845A6A7132D99550034D631 /* libProtocolBuffers.a */,
-				2845A6B8132D99600034D631 /* ProtocolBuffers */,
+				2845A6B8132D99600034D631 /* ProtocolBuffers.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,7 +241,7 @@
 			);
 			name = "ProtocolBuffers (Mac)";
 			productName = "ProtocolBuffers (Mac)";
-			productReference = 2845A6B8132D99600034D631 /* ProtocolBuffers */;
+			productReference = 2845A6B8132D99600034D631 /* ProtocolBuffers.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -359,12 +359,16 @@
 		2845A6C3132D99600034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		2845A6C4132D99600034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -384,6 +388,8 @@
 		28498F23138AB6C9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = BetaDist;
 		};
@@ -403,6 +409,8 @@
 		28A2AECC1478AA1B00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = macosx;
 			};
 			name = AppStore;
 		};
