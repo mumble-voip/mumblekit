@@ -117,7 +117,7 @@ typedef enum {
 /**
  * This method is called if a connection cannot be stablished to the given server.
  *
- @ @param conn The connection that this occurred in. 
+ * @param conn The connection that this occurred in. 
  * @param err  Error describing why the connection could not be established.
  */
 - (void) connection:(MKConnection *)conn unableToConnectWithError:(NSError *)err;

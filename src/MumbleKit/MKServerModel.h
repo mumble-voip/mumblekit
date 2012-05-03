@@ -665,7 +665,7 @@ typedef enum {
  *                   channels in this array.
  *
  * @param  users  An NSArray of MKUser objects (or nil).
- @
+ *
  */
 - (void) sendTextMessage:(MKTextMessage *)txtMsg toTreeChannels:(NSArray *)trees andChannels:(NSArray *)channels andUsers:(NSArray *)users;
 

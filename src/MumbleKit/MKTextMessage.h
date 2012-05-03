@@ -18,7 +18,7 @@
 /**
  * Create a new MKTextMessage with HTML representation given in html.
  *
- * @param msg  The HTML representing the text message.
+ * @param html  The HTML representing the text message.
  *
  * @returns Returns a MKTextMessage object that can be sent using an
  *          MKServerModel.

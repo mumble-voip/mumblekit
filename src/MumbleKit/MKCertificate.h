@@ -208,12 +208,17 @@ extern NSString *MKCertificateItemSerialNumber;
  * Checks whether the signature of the receiver certificate is signed by the
  * parentCert certificate.
  *
+ * @param  parentCert  A certificate that might have signed the receiver certificate.
+ *
  * @returns YES if a valid signature was found, otherwise returns NO.
  */
 - (BOOL) isSignedBy:(MKCertificate *)parentCert;
 
 /**
  * Checks whether the signature of the receiver certificate is valid on the given date.
+ *
+ * @param  date  The date that is checked against the certificate's notBefore and
+ *               notAfter dates.
  *
  * @returns YES is the certificate is valid on the given date, otherwise returns NO.
  */
