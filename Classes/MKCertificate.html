@@ -1075,6 +1075,16 @@ parentCert certificate.</p>
 	<div class="method-subsection method-declaration"><code>- (BOOL)isSignedBy:(MKCertificate *)<em>parentCert</em></code></div>
 	
 	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>parentCert</em></dt>
+			<dd><p>A certificate that might have signed the receiver certificate.</p></dd>
+		</dl>
+		
+	</div>
+	
 	
 	
 	<div class="method-subsection return">
@@ -1113,6 +1123,17 @@ parentCert certificate.</p>
 	
 	<div class="method-subsection method-declaration"><code>- (BOOL)isValidOnDate:(NSDate *)<em>date</em></code></div>
 	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>date</em></dt>
+			<dd><p>The date that is checked against the certificate&rsquo;s <a href="#//api/name/notBefore">notBefore</a> and
+<a href="#//api/name/notAfter">notAfter</a> dates.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	

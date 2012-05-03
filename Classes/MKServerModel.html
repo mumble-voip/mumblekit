@@ -343,33 +343,7 @@ connected to.</p></span>
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/sendTextMessage:toTreeChannels:andChannels:andUsers:">&ndash;&nbsp;sendTextMessage:toTreeChannels:andChannels:andUsers:</a></code>
-		<span class="tooltip"><ul>
-<li>Send a text message to the given destinations.
-*</li>
-<li>One, or multiple of tree, channels and users must be passed to the method.
-*</li>
-<li>Sending a message to a chnanel is the same as sending to all users in that channel;</li>
-<li>receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</li>
-<li>specifically targetted at them.
-*</li>
-<li>@param  txtMsg The text message to send.
-*</li>
-<li>@param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</li>
-<li><pre><code>         all channels in this array, and recursively to their descendants
-</code></pre></li>
-<li><pre><code>         (subchannels, children of subchannels, and so on).
-</code></pre>
-
-<p>*</p></li>
-<li>@param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</li>
-<li><pre><code>            channels in this array.
-</code></pre>
-
-<p>*</p></li>
-<li>@param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).
-@</li>
-</ul>
-</span>
+		<span class="tooltip"><p>Send a text message to the given destinations.</p></span>
 	</span>
 	
 	
@@ -958,44 +932,55 @@ connected to.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<ul>
-<li>Send a text message to the given destinations.
-*</li>
-<li>One, or multiple of tree, channels and users must be passed to the method.
-*</li>
-<li>Sending a message to a chnanel is the same as sending to all users in that channel;</li>
-<li>receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message</li>
-<li>specifically targetted at them.
-*</li>
-<li>@param  txtMsg The text message to send.
-*</li>
-<li>@param  trees  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to</li>
-<li><pre><code>         all channels in this array, and recursively to their descendants
-</code></pre></li>
-<li><pre><code>         (subchannels, children of subchannels, and so on).
-</code></pre>
-
-<p>*</p></li>
-<li>@param  channels  An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all</li>
-<li><pre><code>            channels in this array.
-</code></pre>
-
-<p>*</p></li>
-<li>@param  users  An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).
-@</li>
-</ul>
-
+		<p>Send a text message to the given destinations.</p>
 	</div>		
 	
 	
 	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toTreeChannels:(NSArray *)<em>trees</em> andChannels:(NSArray *)<em>channels</em> andUsers:(NSArray *)<em>users</em></code></div>
 	
 	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>txtMsg</em></dt>
+			<dd><p>The text message to send.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>trees</em></dt>
+			<dd><p>An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to
+all channels in this array, and recursively to their descendants
+(subchannels, children of subchannels, and so on).</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>channels</em></dt>
+			<dd><p>An NSArray of <a href="../Classes/MKChannel.html">MKChannel</a> objects (or nil). The message will be sent to all
+channels in this array.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>users</em></dt>
+			<dd><p>An NSArray of <a href="../Classes/MKUser.html">MKUser</a> objects (or nil).</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
 	
 	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>One, or multiple of tree, channels and users must be passed to the method.</p>
+
+<p>Sending a message to a chnanel is the same as sending to all users in that channel;
+receivers cannot distinguish between receiving a &lsquo;channel&rsquo; message, and a message
+specifically targetted at them.</p>
+	</div>
 	
 	
 	

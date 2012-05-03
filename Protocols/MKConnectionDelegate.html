@@ -156,13 +156,7 @@ with the server.</p></span>
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/connection:unableToConnectWithError:">&ndash;&nbsp;connection:unableToConnectWithError:</a></code>
-		<span class="tooltip"><ul>
-<li>This method is called if a connection cannot be stablished to the given server.
-*
-@ @param conn The connection that this occurred in.</li>
-<li>@param err  Error describing why the connection could not be established.</li>
-</ul>
-</span>
+		<span class="tooltip"><p>This method is called if a connection cannot be stablished to the given server.</p></span>
 	</span>
 	
 	<span class="task-item-suffix">required method</span>
@@ -387,18 +381,27 @@ reconnect to the <a href="../Classes/MKConnection.html">MKConnection</a> object.
 	
 	
 	<div class="method-subsection brief-description">
-		<ul>
-<li>This method is called if a connection cannot be stablished to the given server.
-*
-@ @param conn The connection that this occurred in.</li>
-<li>@param err  Error describing why the connection could not be established.</li>
-</ul>
-
+		<p>This method is called if a connection cannot be stablished to the given server.</p>
 	</div>		
 	
 	
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> unableToConnectWithError:(NSError *)<em>err</em></code></div>
 	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>conn</em></dt>
+			<dd><p>The connection that this occurred in.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>err</em></dt>
+			<dd><p>Error describing why the connection could not be established.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
