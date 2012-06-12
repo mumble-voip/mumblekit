@@ -547,4 +547,9 @@ typedef enum {
  */
 - (BOOL) preferAlphaCodec;
 
+/**
+ * Returns whether ot not the connected client should use the Opus codec.
+ */
+- (BOOL) shouldUseOpus;
+
 @end

@@ -69,7 +69,8 @@
     NSUInteger     _alphaCodec;
     NSUInteger     _betaCodec;
     BOOL           _preferAlpha;
-
+    BOOL           _shouldUseOpus;
+    
     // Server info.
     NSString       *_serverVersion;
     NSString       *_serverRelease;
@@ -927,6 +928,12 @@ out:
     _alphaCodec = alpha;
     _betaCodec = beta;
     _preferAlpha = pref;
+
+    if ([[MKVersion sharedVersion] isOpusEnabled] && [codec hasOpus]) {
+        _shouldUseOpus = [codec opus];
+    } else {
+        _shouldUseOpus = NO;
+    }
 }
 
 - (void) _handleError:(NSError *)streamError {
@@ -1245,6 +1252,10 @@ out:
 
 - (BOOL) preferAlphaCodec {
     return _preferAlpha;
+}
+
+- (BOOL) shouldUseOpus {
+    return _shouldUseOpus;
 }
 
 @end

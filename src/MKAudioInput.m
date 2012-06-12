@@ -595,8 +595,19 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     
     if (max < 500)
         return -1;
+
+    BOOL useOpus = NO;
+    if (_lastTransmit) {
+        useOpus = udpMessageType == UDPVoiceOpusMessage;
+    } else if ([[MKVersion sharedVersion] isOpusEnabled]) {
+        NSArray *conns = [[MKConnectionController sharedController] allConnections];
+        if ([conns count] > 0) {
+            MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
+            useOpus = [conn shouldUseOpus];
+        }
+    }
     
-    if (_settings.codec == MKCodecFormatOpus) {
+    if (useOpus && (_settings.codec == MKCodecFormatOpus || _settings.codec == MKCodecFormatCELT)) {
         encoded = 0;
         udpMessageType = UDPVoiceOpusMessage;
         if (_opusBuffer == nil)
@@ -616,7 +627,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
             }
             encoded = 1;
         }
-    } else if (_settings.codec == MKCodecFormatCELT) {
+    } else if (!useOpus && (_settings.codec == MKCodecFormatCELT || _settings.codec == MKCodecFormatOpus)) {
         CELTEncoder *encoder = _celtEncoder;
         if (encoder == NULL) {
             CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
