@@ -604,6 +604,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         _bufferedFrames++;
         [_opusBuffer appendBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
         if (!isSpeech || _bufferedFrames >= _settings.audioPerPacket) {
+            if (!_lastTransmit) {
+                opus_encoder_ctl(_opusEncoder, OPUS_RESET_STATE, NULL);
+            }
             opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
             len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, encbuf, max);
             bitrate = len * 100 * 8;
