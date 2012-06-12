@@ -554,7 +554,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
                 speex_resampler_process_int(_micResampler, 0, psMic, &inlen, psOut, &outlen);
             }
             micFilled = 0;
-            [self encodeAudioFrame];
+            [self processAndEncodeAudioFrame];
         }
     }
 }
@@ -588,7 +588,92 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
 }
 
-- (void) encodeAudioFrame {
+- (int) encodeAudioFrameOfSpeech:(BOOL)isSpeech intoBuffer:(unsigned char *)encbuf ofSize:(int)max  {
+    int len = 0;
+    int encoded = 1;  
+    BOOL resampled = micFrequency != sampleRate;
+    
+    if (max < 500)
+        return -1;
+    
+    if (_settings.codec == MKCodecFormatOpus) {
+        encoded = 0;
+        udpMessageType = UDPVoiceOpusMessage;
+        if (_opusBuffer == nil)
+            _opusBuffer = [[NSMutableData alloc] init];
+        _bufferedFrames++;
+        [_opusBuffer appendBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
+        if (!isSpeech || _bufferedFrames >= _settings.audioPerPacket) {
+            opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
+            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, encbuf, max);
+            bitrate = len * 100 * 8;
+            [_opusBuffer setLength:0];
+            if (len <= 0) {
+                return -1;
+            }
+            encoded = 1;
+        }
+    } else if (_settings.codec == MKCodecFormatCELT) {
+        CELTEncoder *encoder = _celtEncoder;
+        if (encoder == NULL) {
+            CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
+            _celtEncoder = celt_encoder_create(mode, 1, NULL);
+            encoder = _celtEncoder;
+        }
+        
+        // Make sure our messageType is set up correctly....
+        // This is just temporary. We should have a MKCodecController that should handle this.
+        NSArray *conns = [[MKConnectionController sharedController] allConnections];
+        if ([conns count] > 0) {
+            MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
+            if ([conn connected]) {
+                NSUInteger ourCodec = 0x8000000b;
+                NSUInteger alpha = [conn alphaCodec];
+                NSUInteger beta = [conn betaCodec];
+                BOOL preferAlpha = [conn preferAlphaCodec];
+                
+                NSInteger newCodec = preferAlpha ? alpha : beta;
+                NSInteger msgType = preferAlpha ? UDPVoiceCELTAlphaMessage : UDPVoiceCELTBetaMessage;
+                
+                if (newCodec != ourCodec) {
+                    newCodec = preferAlpha ? beta : alpha;
+                    msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
+                }
+                if (msgType != udpMessageType) {
+                    udpMessageType = msgType;
+                }
+            }
+        }
+        if (!_lastTransmit) {
+            celt_encoder_ctl(encoder, CELT_RESET_STATE);
+        }
+        
+        celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
+        celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(_settings.quality));
+        len = celt_encode(encoder, resampled ? psOut : psMic, NULL, encbuf, MIN(_settings.quality / 800, 127));
+        _bufferedFrames++;
+        bitrate = len * 100 * 8;
+    } else if (_settings.codec == MKCodecFormatSpeex) {
+        int vbr = 0;
+        speex_encoder_ctl(_speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
+        if (vbr != _settings.quality) {
+            vbr = _settings.quality;
+            speex_encoder_ctl(_speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &vbr);
+        }
+        if (!_lastTransmit)
+            speex_encoder_ctl(_speexEncoder, SPEEX_RESET_STATE, NULL);
+        speex_encode_int(_speexEncoder, psOut, &_speexBits);
+        len = speex_bits_write(&_speexBits, (char *)encbuf, 127);
+        speex_bits_reset(&_speexBits);
+        _bufferedFrames++;
+        bitrate = len * 50 * 8;
+        udpMessageType = UDPVoiceSpeexMessage;
+    }
+    
+    return encoded ? len : -1;
+}
+
+- (void) processAndEncodeAudioFrame {
     frameCounter++;
 
     if (doResetPreprocessor) {
@@ -611,87 +696,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         }
     }
 
-    unsigned char buffer[512];
-    int len = 0;
-    int encoded = 1;
-
-    BOOL resampled = micFrequency != sampleRate;
     
-    if (_settings.codec == MKCodecFormatOpus) {
-        encoded = 0;
-        udpMessageType = UDPVoiceOpusMessage;
-        if (_opusBuffer == nil)
-            _opusBuffer = [[NSMutableData alloc] init];
-        _bufferedFrames++;
-        [_opusBuffer appendBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
-        if (!isSpeech || _bufferedFrames >= _settings.audioPerPacket) {
-            opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
-            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, buffer, 512);
-            bitrate = len * 100 * 8;
-            [_opusBuffer setLength:0];
-            if (len <= 0) {
-                NSLog(@"bad pkt!");
-                return;
-            }
-            encoded = 1;
-        }
-    } else if (_settings.codec == MKCodecFormatCELT) {
-        CELTEncoder *encoder = _celtEncoder;
-        if (encoder == NULL) {
-            CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
-            _celtEncoder = celt_encoder_create(mode, 1, NULL);
-            encoder = _celtEncoder;
-        }
-
-        // Make sure our messageType is set up correctly....
-        // This is just temporary. We should have a MKCodecController that should handle this.
-        NSArray *conns = [[MKConnectionController sharedController] allConnections];
-        if ([conns count] > 0) {
-            MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
-            if ([conn connected]) {
-                NSUInteger ourCodec = 0x8000000b;
-                NSUInteger alpha = [conn alphaCodec];
-                NSUInteger beta = [conn betaCodec];
-                BOOL preferAlpha = [conn preferAlphaCodec];
-                
-                NSInteger newCodec = preferAlpha ? alpha : beta;
-                NSInteger msgType = preferAlpha ? UDPVoiceCELTAlphaMessage : UDPVoiceCELTBetaMessage;
-
-                if (newCodec != ourCodec) {
-                    newCodec = preferAlpha ? beta : alpha;
-                    msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
-                }
-                if (msgType != udpMessageType) {
-                    udpMessageType = msgType;
-                }
-            }
-        }
-        if (!_lastTransmit) {
-            celt_encoder_ctl(encoder, CELT_RESET_STATE);
-        }
-        
-        celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
-        celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(_settings.quality));
-        len = celt_encode(encoder, resampled ? psOut : psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
-        _bufferedFrames++;
-        bitrate = len * 100 * 8;
-    } else if (_settings.codec == MKCodecFormatSpeex) {
-        int vbr = 0;
-        speex_encoder_ctl(_speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
-        if (vbr != _settings.quality) {
-            vbr = _settings.quality;
-            speex_encoder_ctl(_speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &vbr);
-        }
-        if (!_lastTransmit)
-            speex_encoder_ctl(_speexEncoder, SPEEX_RESET_STATE, NULL);
-        speex_encode_int(_speexEncoder, psOut, &_speexBits);
-        len = speex_bits_write(&_speexBits, (char *)buffer, 127);
-        speex_bits_reset(&_speexBits);
-        _bufferedFrames++;
-        bitrate = len * 50 * 8;
-        udpMessageType = UDPVoiceSpeexMessage;
-    }
-
     float sum = 1.0f;
     int i;
     for (i = 0; i < frameSize; i++) {
@@ -749,7 +754,14 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         NSNotification *notification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
         [center performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
     }
-    if (encoded > 0) {
+     
+     if (!_lastTransmit && !_doTransmit) {
+         return;
+     }
+    
+    unsigned char buffer[500];
+    int len = [self encodeAudioFrameOfSpeech:_doTransmit intoBuffer:&buffer[0] ofSize:500];
+    if (len >= 0) {
         NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
         [self flushCheck:outputBuffer terminator:!_doTransmit];
         [outputBuffer release];
