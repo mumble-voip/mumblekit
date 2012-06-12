@@ -801,7 +801,8 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     if (udpMessageType == UDPVoiceOpusMessage) {
        NSData *frame = [frameList objectAtIndex:0]; 
         uint64_t header = [frame length];
-        header |= (1 << 13); // Opus terminator flag
+        if (terminator)
+            header |= (1 << 13); // Opus terminator flag
         [pds addVarint:header];
         [pds appendBytes:(unsigned char *)[frame bytes] length:[frame length]];
     } else {
