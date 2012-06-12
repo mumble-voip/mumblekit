@@ -197,7 +197,8 @@
 
     int samples = 0;
     if (_msgType == UDPVoiceOpusMessage) {
-        int size = [pds getInt];
+        uint64_t header = [pds getVarint];
+        NSUInteger size = (header & ((1 << 13) - 1));
         if (size > 0) {
             NSData *opusFrames = [pds copyDataBlock:size];
             int nframes = opus_packet_get_nb_frames([opusFrames bytes], size);
@@ -303,7 +304,7 @@
                     
                     if (_msgType == UDPVoiceOpusMessage) {
                         uint64_t header = [pds getVarint];
-                        int size = (header & ((1 << 13) - 1));
+                        NSUInteger size = (header & ((1 << 13) - 1));
                         _hasTerminator = header & (1 << 13);
                         if (size > 0) {
                             NSData *block = [pds copyDataBlock:size];
