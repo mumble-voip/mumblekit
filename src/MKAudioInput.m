@@ -42,6 +42,7 @@
     int                    micLength;
     int                    bitrate;
     int                    frameCounter;
+    int                    _bufferedFrames;
 
     BOOL                   doResetPreprocessor;
 
@@ -123,6 +124,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     _micResampler = NULL;
     _speexEncoder = NULL;
     frameCounter = 0;
+    _bufferedFrames = 0;
     
     // Fall back to CELT if Opus is not enabled.
     if (![[MKVersion sharedVersion] isOpusEnabled] && _settings.codec == MKCodecFormatOpus) {
@@ -620,10 +622,11 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         udpMessageType = UDPVoiceOpusMessage;
         if (_opusBuffer == nil)
             _opusBuffer = [[NSMutableData alloc] init];
+        _bufferedFrames++;
         [_opusBuffer appendBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
-        if (!isSpeech || [_opusBuffer length] >= frameSize*sizeof(short)*_settings.audioPerPacket) {
+        if (!isSpeech || _bufferedFrames >= _settings.audioPerPacket) {
             opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
-            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], [_opusBuffer length]/sizeof(short), buffer, 512);
+            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, buffer, 512);
             bitrate = len * 100 * 8;
             [_opusBuffer setLength:0];
             if (len <= 0) {
@@ -670,7 +673,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
         celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(_settings.quality));
         len = celt_encode(encoder, resampled ? psOut : psMic, NULL, buffer, MIN(_settings.quality / 800, 127));
-        
+        _bufferedFrames++;
         bitrate = len * 100 * 8;
     } else if (_settings.codec == MKCodecFormatSpeex) {
         int vbr = 0;
@@ -684,6 +687,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         speex_encode_int(_speexEncoder, psOut, &_speexBits);
         len = speex_bits_write(&_speexBits, (char *)buffer, 127);
         speex_bits_reset(&_speexBits);
+        _bufferedFrames++;
         bitrate = len * 50 * 8;
         udpMessageType = UDPVoiceSpeexMessage;
     }
@@ -745,9 +749,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         NSNotification *notification = [NSNotification notificationWithName:@"MKAudioUserTalkStateChanged" object:talkStateDict];
         [center performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
     }
-    if (_doTransmit && encoded > 0) {
+    if (encoded > 0) {
         NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
-        [self flushCheck:outputBuffer terminator:NO];
+        [self flushCheck:outputBuffer terminator:!_doTransmit];
         [outputBuffer release];
     }
     _lastTransmit = _doTransmit;
@@ -759,7 +763,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 - (void) flushCheck:(NSData *)codedSpeech terminator:(BOOL)terminator {
     [frameList addObject:codedSpeech];
     
-    if (! terminator && udpMessageType != UDPVoiceOpusMessage && [frameList count] < _settings.audioPerPacket) {
+    if (! terminator && _bufferedFrames < _settings.audioPerPacket) {
         return;
     }
 
@@ -776,12 +780,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     unsigned char data[1024];
     data[0] = (unsigned char )(flags & 0xff);
     
-    int frames = MIN([frameList count], _settings.audioPerPacket);
-    if (udpMessageType == UDPVoiceOpusMessage) {
-        // fixme(pcgod): This will be wrong for Opus packets which are sent early because the user stopped talking.
-        frames = _settings.audioPerPacket;
-    }
-
+    int frames = _bufferedFrames;
+    _bufferedFrames = 0;
+    
     MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(data+1) length:1023];
     [pds addVarint:(frameCounter - frames)];
 
