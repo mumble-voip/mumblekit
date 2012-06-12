@@ -787,7 +787,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 
     if (udpMessageType == UDPVoiceOpusMessage) {
        NSData *frame = [frameList objectAtIndex:0]; 
-        [pds addVarint:[frame length]];
+        uint64_t header = [frame length];
+        header |= (1 << 13); // Opus terminator flag
+        [pds addVarint:header];
         [pds appendBytes:(unsigned char *)[frame bytes] length:[frame length]];
     } else {
         /* fix terminator stuff here. */
@@ -807,16 +809,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     NSUInteger len = [pds size] + 1;
     NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
     [pds release];
-
-    NSData *termData = nil;
-    if (terminator) {
-        pds = [[MKPacketDataStream alloc] initWithBuffer:(data+1) length:1023];
-        [pds addVarint:frameCounter];
-        [pds addVarint:0];        
-        len = [pds size] + 1;
-        termData = [[NSData alloc] initWithBytes:data length:len];
-        [pds release];
-    }
     
     // fixme(mkrautz): Fix locking...
     MKConnectionController *conns = [MKConnectionController sharedController];
@@ -824,13 +816,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     for (NSValue *val in connections) {
         MKConnection *conn = [val pointerValue];
         [conn sendVoiceData:msgData];
-        if (termData) {
-            [conn sendVoiceData:termData];
-        }
     }
 
     [msgData release];
-    [termData release];
 }
 
 - (void) setForceTransmit:(BOOL)flag {

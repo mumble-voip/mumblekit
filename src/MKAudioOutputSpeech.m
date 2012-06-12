@@ -302,13 +302,13 @@
                     _hasTerminator = NO;
                     
                     if (_msgType == UDPVoiceOpusMessage) {
-                        int size = [pds getInt];
+                        uint64_t header = [pds getVarint];
+                        int size = (header & ((1 << 13) - 1));
+                        _hasTerminator = header & (1 << 13);
                         if (size > 0) {
                             NSData *block = [pds copyDataBlock:size];
                             [_frames addObject:block];
                             [block release];
-                        } else {
-                            _hasTerminator = YES;
                         }
                     } else {
                         unsigned int header = 0;
