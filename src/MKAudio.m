@@ -24,6 +24,12 @@ static void MKAudio_InterruptCallback(void *udata, UInt32 interrupt) {
     if (interrupt == kAudioSessionBeginInterruption) {
         [audio stop];
     } else if (interrupt == kAudioSessionEndInterruption) {
+        UInt32 val = TRUE;
+        OSStatus err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
+        if (err != kAudioSessionNoError) {
+            NSLog(@"MKAudio: unable to set MixWithOthers property in InterruptCallback.");
+        }
+
         [audio start];
     }
 }
@@ -50,6 +56,12 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
                 return;
             }
         }
+        
+        UInt32 val = TRUE;
+        OSStatus err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
+        if (err != kAudioSessionNoError) {
+            NSLog(@"MKAudio: unable to set MixWithOthers property in AudioInputAvailableCallback.");
+        }
 
         [audio restart];
     }
@@ -63,6 +75,12 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
         case kAudioSessionRouteChangeReason_NoSuitableRouteForCategory:
             NSLog(@"MKAudio: audio route changed, skipping; reason=%i", reason);
             return;
+    }
+
+    UInt32 val = TRUE;
+    OSStatus err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
+    if (err != kAudioSessionNoError) {
+        NSLog(@"MKAudio: unable to set MixWithOthers property in AudioRouteChangedCallback.");
     }
     
     NSLog(@"MKAudio: audio route changed, restarting audio; reason=%i", reason);
@@ -128,14 +146,6 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
         }
     }
     
-    // Do we want to be mixed with other applications?
-    val = TRUE;
-    err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
-    if (err != kAudioSessionNoError) {
-        NSLog(@"MKAudio: unable to set MixWithOthers property.");
-        return;
-    }
-    
     // Set the preferred hardware sample rate.
     //
     // fixme(mkrautz): The AudioSession *can* reject this, in which case we need
@@ -156,6 +166,16 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
             NSLog(@"MKAudio: unable to enable bluetooth input.");
             return;
         }
+    }
+    
+    // Allow us to be mixed with other applications.
+    // It's important that this call comes last, since changing the other OverrideCategory properties
+    // apparently reset the state of this property.
+    val = TRUE;
+    err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
+    if (err != kAudioSessionNoError) {
+        NSLog(@"MKAudio: unable to set MixWithOthers property.");
+        return;
     }
 }
 #else
