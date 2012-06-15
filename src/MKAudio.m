@@ -6,14 +6,16 @@
 #import "MKUtils.h"
 #import "MKAudioInput.h"
 #import "MKAudioOutput.h"
+#import "MKAudioOutputSidetone.h"
 
 NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
 
 @interface MKAudio () {
-    MKAudioInput     *_audioInput;
-    MKAudioOutput    *_audioOutput;
-    MKAudioSettings   _audioSettings;
-    BOOL              _running;
+    MKAudioInput           *_audioInput;
+    MKAudioOutput          *_audioOutput;
+    MKAudioOutputSidetone  *_sidetoneOutput;
+    MKAudioSettings        _audioSettings;
+    BOOL                   _running;
 }
 @end
 
@@ -227,6 +229,8 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
         _audioInput = nil;
         [_audioOutput release];
         _audioOutput = nil;
+        [_sidetoneOutput release];
+        _sidetoneOutput = nil;
         _running = NO;
     }
 #if TARGET_OS_IPHONE == 1
@@ -242,6 +246,9 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
     @synchronized(self) {
         _audioInput = [[MKAudioInput alloc] initWithSettings:&_audioSettings];
         _audioOutput = [[MKAudioOutput alloc] initWithSettings:&_audioSettings];
+        if (_audioSettings.enableSideTone) {
+            _sidetoneOutput = [[MKAudioOutputSidetone alloc] initWithSettings:&_audioSettings];
+        }
         [_audioInput setupDevice];
         [_audioOutput setupDevice];
         _running = YES;
@@ -260,6 +267,10 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
     @synchronized(self) {
         [_audioOutput addFrameToBufferWithSession:session data:data sequence:seq type:msgType];
     }
+}
+
+- (MKAudioOutputSidetone *) sidetoneOutput {
+    return _sidetoneOutput;
 }
 
 - (MKTransmitType) transmitType {

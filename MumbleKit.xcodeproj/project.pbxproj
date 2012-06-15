@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0245A131154F593200476144 /* Opus.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 285B426314E6E1200045E282 /* Opus.dylib */; };
+		28074E90158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */ = {isa = PBXBuildFile; fileRef = 28074E8E158A6E5100E0A4D0 /* MKAudioOutputSidetone.h */; };
+		28074E91158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */ = {isa = PBXBuildFile; fileRef = 28074E8E158A6E5100E0A4D0 /* MKAudioOutputSidetone.h */; };
+		28074E92158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */ = {isa = PBXBuildFile; fileRef = 28074E8F158A6E5100E0A4D0 /* MKAudioOutputSidetone.m */; };
+		28074E93158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */ = {isa = PBXBuildFile; fileRef = 28074E8F158A6E5100E0A4D0 /* MKAudioOutputSidetone.m */; };
 		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
 		2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492310132ED60700B4EAAC /* libCELT-0.7.0.a */; };
 		281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */; };
@@ -313,6 +317,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		28074E8E158A6E5100E0A4D0 /* MKAudioOutputSidetone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputSidetone.h; path = src/MKAudioOutputSidetone.h; sourceTree = SOURCE_ROOT; };
+		28074E8F158A6E5100E0A4D0 /* MKAudioOutputSidetone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKAudioOutputSidetone.m; path = src/MKAudioOutputSidetone.m; sourceTree = SOURCE_ROOT; };
 		2815C4DE150D559800136082 /* AppStore.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = AppStore.xcconfig; path = cfg/AppStore.xcconfig; sourceTree = "<group>"; };
 		2815C4DF150D559800136082 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = cfg/Base.xcconfig; sourceTree = "<group>"; };
 		2815C4E0150D559800136082 /* BetaDist.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BetaDist.xcconfig; path = cfg/BetaDist.xcconfig; sourceTree = "<group>"; };
@@ -483,6 +489,7 @@
 				2845A783132D9C220034D631 /* MKAudioInput.m */,
 				2845A784132D9C220034D631 /* MKAudioOutput.m */,
 				2845A785132D9C220034D631 /* MKAudioOutputSpeech.m */,
+				28074E8F158A6E5100E0A4D0 /* MKAudioOutputSidetone.m */,
 				2845A786132D9C220034D631 /* MKAudioOutputUser.m */,
 				2845A787132D9C220034D631 /* MKCertificate.m */,
 				2845A788132D9C220034D631 /* MKChannel.m */,
@@ -530,6 +537,7 @@
 				2845A7C8132D9C520034D631 /* MKAudioInput.h */,
 				2845A7C9132D9C520034D631 /* MKAudioOutput.h */,
 				2845A7CA132D9C520034D631 /* MKAudioOutputSpeech.h */,
+				28074E8E158A6E5100E0A4D0 /* MKAudioOutputSidetone.h */,
 				2845A7CB132D9C520034D631 /* MKAudioOutputUser.h */,
 				2845A7D7132D9C520034D631 /* MKUtils.h */,
 				2845A7D0132D9C520034D631 /* MKCryptState.h */,
@@ -676,6 +684,7 @@
 				2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */,
 				2879526914C1BDD800567430 /* MKTextMessage.h in Headers */,
 				281EADA61530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
+				28074E91158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -707,6 +716,7 @@
 				283363DD13EF535B00A04F04 /* MKChannelPrivate.h in Headers */,
 				2879526814C1BDD800567430 /* MKTextMessage.h in Headers */,
 				281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
+				28074E90158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,6 +947,7 @@
 				282F6B0B13624187008F555B /* MKServerPinger.m in Sources */,
 				2879526514C1BAB900567430 /* MKTextMessage.m in Sources */,
 				281EADA81530EA30000793AB /* MKDistinguishedNameParser.m in Sources */,
+				28074E93158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -966,6 +977,7 @@
 				282F6B0A13624187008F555B /* MKServerPinger.m in Sources */,
 				2879526414C1BAB900567430 /* MKTextMessage.m in Sources */,
 				281EADA71530EA30000793AB /* MKDistinguishedNameParser.m in Sources */,
+				28074E92158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

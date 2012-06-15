@@ -7,6 +7,7 @@
 #import <MumbleKit/MKVersion.h>
 #import "MKPacketDataStream.h"
 #import "MKAudioInput.h"
+#import "MKAudioOutputSidetone.h"
 
 #include <speex/speex.h>
 #include <speex/speex_preprocess.h>
@@ -554,9 +555,17 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
                 speex_resampler_process_int(_micResampler, 0, psMic, &inlen, psOut, &outlen);
             }
             micFilled = 0;
+
             [self processAndEncodeAudioFrame];
         }
     }
+}
+
+- (void) processSidetone {
+    BOOL resampled = _micResampler != NULL;
+    NSData *data = [[NSData alloc] initWithBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
+    [[[MKAudio sharedAudio] sidetoneOutput] addFrame:data];
+    [data release];
 }
 
 - (void) resetPreprocessor {
@@ -757,6 +766,10 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         _doTransmit = NO;
     if (_muted)
         _doTransmit = NO;
+    
+    if (_settings.enableSideTone && (_doTransmit || _lastTransmit)) {
+        [self processSidetone];
+    }
     
     if (_lastTransmit != _doTransmit) {
         // fixme(mkrautz): Handle more talkstates

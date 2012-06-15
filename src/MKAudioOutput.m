@@ -198,6 +198,13 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
             [mix addObject:ou];
         }
     }
+    
+    if (_settings.enableSideTone) {
+        MKAudioOutputSidetone *sidetone = [[MKAudio sharedAudio] sidetoneOutput];
+        if ([sidetone needSamples:nsamp]) {
+            [mix addObject:[[MKAudio sharedAudio] sidetoneOutput]];
+        }
+    }
 
     float *mixBuffer = alloca(sizeof(float)*_numChannels*nsamp);
     memset(mixBuffer, 0, sizeof(float)*_numChannels*nsamp);

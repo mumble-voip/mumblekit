@@ -7,6 +7,7 @@
 
 @class MKAudioInput;
 @class MKAudioOutput;
+@class MKAudioOutputSidetone;
 
 #define SAMPLE_RATE 48000
 
@@ -45,6 +46,8 @@ typedef struct _MKAudioSettings {
     float           micBoost;
     BOOL            enablePreprocessor;
     BOOL            enableEchoCancellation;
+    BOOL            enableSideTone;
+    float           sidetoneVolume;
 } MKAudioSettings;
 
 /**
@@ -135,6 +138,8 @@ typedef struct _MKAudioSettings {
 - (BOOL) echoCancellationAvailable;
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
+- (void) addSideToneBuffer:(NSData *)data;
+- (MKAudioOutputSidetone *) sidetoneOutput;
 - (float) speechProbablity;
 - (float) peakCleanMic;
 
