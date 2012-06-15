@@ -85,6 +85,13 @@
         }
     }
     
+    for (NSUInteger i = 0; i < nsamples; i++) {
+        if (_buffer[i] > 1.0f)
+            _buffer[i] = 1.0f;
+        else if (_buffer[i] < -1.0f)
+            _buffer[i] = -1.0f;
+    }
+    
     _filled = 0;
     return YES;
 }
