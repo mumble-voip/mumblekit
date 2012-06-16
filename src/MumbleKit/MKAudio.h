@@ -138,7 +138,6 @@ typedef struct _MKAudioSettings {
 - (BOOL) echoCancellationAvailable;
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
-- (void) addSideToneBuffer:(NSData *)data;
 - (MKAudioOutputSidetone *) sidetoneOutput;
 - (float) speechProbablity;
 - (float) peakCleanMic;

@@ -20,7 +20,6 @@
 
 - (void) resetPreprocessor;
 - (void) addMicrophoneDataWithBuffer:(short *)input amount:(NSUInteger)nsamp;
-- (void) encodeAudioFrame;
 - (void) flushCheck:(NSData *)outputBuffer terminator:(BOOL)terminator;
 
 - (void) setForceTransmit:(BOOL)flag;
