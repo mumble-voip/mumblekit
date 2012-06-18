@@ -525,6 +525,14 @@ typedef enum {
 - (void) serverModelChannelFullError:(MKServerModel *)model;
 
 /**
+ * Called when a channel user create operation failed because the channel
+ * name was invalid.
+ *
+ * @param  model  The MKServerModel in which this error occurred.
+ */
+- (void) serverModelChannelNameError:(MKServerModel *)model;
+
+/**
  * Called when a simple 'Permission denied.' message is sufficient to show to the user.
  * Can include a reason. This kind of permission error is also used as a fallback, if
  * the server detects that a client is using a too old version of the Mumble protocol
@@ -641,6 +649,16 @@ typedef enum {
  * @param channel  The channel to join.
  */
 - (void) joinChannel:(MKChannel *)channel;
+
+/**
+ * Create a new channel in the server the underlying MKConnection is currently
+ * connected to.
+ *
+ * @param channelName   The name of the channel to create.
+ * @param parent        The MKChannel from where the new subchannel will be created.
+ * @param temp          Specify if the channel is temporary or not.
+ */
+- (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp;
 
 ///------------------------------
 /// @name Text message operations

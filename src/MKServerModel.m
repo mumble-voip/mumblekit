@@ -399,7 +399,7 @@
             break;
         }
         case MPPermissionDenied_DenyTypeChannelName: {
-            [_delegate serverModelChannelFullError:self];
+            [_delegate serverModelChannelNameError:self];
             break;
         }
         case MPPermissionDenied_DenyTypeTextTooLong: {
@@ -858,6 +858,17 @@
 
     NSData *data = [[userState build] data];
     [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
+// Create a channel
+- (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp {
+    MPChannelState_Builder *channelState = [MPChannelState builder];
+    [channelState setName:channelName];
+    [channelState setParent:parent.channelId];
+    [channelState setTemporary:temp];
+    
+    NSData *data = [[channelState build] data];
+    [_connection sendMessageWithType:ChannelStateMessage data:data];
 }
 
 #pragma mark -
