@@ -126,6 +126,8 @@
 		28CC3717132EDC7300241269 /* libSpeexDSP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3712132EDC7300241269 /* libSpeexDSP.a */; };
 		28F2FAD513E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */; };
 		28F2FAD613E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */; };
+		BCD11DF2158F3FD600321E06 /* MKPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF1158F3FD600321E06 /* MKPermission.h */; };
+		BCD11DF3158F3FD600321E06 /* MKPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF1158F3FD600321E06 /* MKPermission.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,6 +398,7 @@
 		28CC3711132EDC7300241269 /* libSpeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSpeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CC3712132EDC7300241269 /* libSpeexDSP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSpeexDSP.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputUserPrivate.h; path = src/MKAudioOutputUserPrivate.h; sourceTree = SOURCE_ROOT; };
+		BCD11DF1158F3FD600321E06 /* MKPermission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKPermission.h; path = src/MumbleKit/MKPermission.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -517,6 +520,7 @@
 				2845A7CD132D9C520034D631 /* MKChannel.h */,
 				2845A7CE132D9C520034D631 /* MKConnection.h */,
 				2845A7CF132D9C520034D631 /* MKConnectionController.h */,
+				BCD11DF1158F3FD600321E06 /* MKPermission.h */,
 				2845A7D3132D9C520034D631 /* MKServerModel.h */,
 				282F6B0613624187008F555B /* MKServerPinger.h */,
 				2845A7D5132D9C520034D631 /* MKServices.h */,
@@ -685,6 +689,7 @@
 				2879526914C1BDD800567430 /* MKTextMessage.h in Headers */,
 				281EADA61530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
 				28074E91158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */,
+				BCD11DF3158F3FD600321E06 /* MKPermission.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,6 +722,7 @@
 				2879526814C1BDD800567430 /* MKTextMessage.h in Headers */,
 				281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
 				28074E90158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */,
+				BCD11DF2158F3FD600321E06 /* MKPermission.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
