@@ -128,6 +128,18 @@
 		28F2FAD613E37BA000034BF2 /* MKAudioOutputUserPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */; };
 		BCD11DF2158F3FD600321E06 /* MKPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF1158F3FD600321E06 /* MKPermission.h */; };
 		BCD11DF3158F3FD600321E06 /* MKPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF1158F3FD600321E06 /* MKPermission.h */; };
+		BCD11DF7158F40A900321E06 /* MKACL.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF4158F40A900321E06 /* MKACL.h */; };
+		BCD11DF8158F40A900321E06 /* MKACL.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF4158F40A900321E06 /* MKACL.h */; };
+		BCD11DF9158F40A900321E06 /* MKChannelACL.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF5158F40A900321E06 /* MKChannelACL.h */; };
+		BCD11DFA158F40A900321E06 /* MKChannelACL.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF5158F40A900321E06 /* MKChannelACL.h */; };
+		BCD11DFB158F40A900321E06 /* MKChannelGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF6158F40A900321E06 /* MKChannelGroup.h */; };
+		BCD11DFC158F40A900321E06 /* MKChannelGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF6158F40A900321E06 /* MKChannelGroup.h */; };
+		BCD11E09158F40FA00321E06 /* MKACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E06158F40FA00321E06 /* MKACL.m */; };
+		BCD11E0A158F40FA00321E06 /* MKACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E06158F40FA00321E06 /* MKACL.m */; };
+		BCD11E0B158F40FA00321E06 /* MKChannelACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E07158F40FA00321E06 /* MKChannelACL.m */; };
+		BCD11E0C158F40FA00321E06 /* MKChannelACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E07158F40FA00321E06 /* MKChannelACL.m */; };
+		BCD11E0D158F40FA00321E06 /* MKChannelGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E08158F40FA00321E06 /* MKChannelGroup.m */; };
+		BCD11E0E158F40FA00321E06 /* MKChannelGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E08158F40FA00321E06 /* MKChannelGroup.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -399,6 +411,12 @@
 		28CC3712132EDC7300241269 /* libSpeexDSP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSpeexDSP.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F2FAD413E37BA000034BF2 /* MKAudioOutputUserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKAudioOutputUserPrivate.h; path = src/MKAudioOutputUserPrivate.h; sourceTree = SOURCE_ROOT; };
 		BCD11DF1158F3FD600321E06 /* MKPermission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKPermission.h; path = src/MumbleKit/MKPermission.h; sourceTree = SOURCE_ROOT; };
+		BCD11DF4158F40A900321E06 /* MKACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKACL.h; path = src/MumbleKit/MKACL.h; sourceTree = SOURCE_ROOT; };
+		BCD11DF5158F40A900321E06 /* MKChannelACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelACL.h; path = src/MumbleKit/MKChannelACL.h; sourceTree = SOURCE_ROOT; };
+		BCD11DF6158F40A900321E06 /* MKChannelGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannelGroup.h; path = src/MumbleKit/MKChannelGroup.h; sourceTree = SOURCE_ROOT; };
+		BCD11E06158F40FA00321E06 /* MKACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKACL.m; path = src/MKACL.m; sourceTree = SOURCE_ROOT; };
+		BCD11E07158F40FA00321E06 /* MKChannelACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKChannelACL.m; path = src/MKChannelACL.m; sourceTree = SOURCE_ROOT; };
+		BCD11E08158F40FA00321E06 /* MKChannelGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKChannelGroup.m; path = src/MKChannelGroup.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -488,6 +506,7 @@
 				28CC36F8132ED92500241269 /* Mumble.pb.m */,
 				28CC36F9132ED92500241269 /* ObjectivecDescriptor.pb.m */,
 				2845A781132D9C220034D631 /* CryptState.cpp */,
+				BCD11E06158F40FA00321E06 /* MKACL.m */,
 				2845A782132D9C220034D631 /* MKAudio.m */,
 				2845A783132D9C220034D631 /* MKAudioInput.m */,
 				2845A784132D9C220034D631 /* MKAudioOutput.m */,
@@ -496,6 +515,8 @@
 				2845A786132D9C220034D631 /* MKAudioOutputUser.m */,
 				2845A787132D9C220034D631 /* MKCertificate.m */,
 				2845A788132D9C220034D631 /* MKChannel.m */,
+				BCD11E07158F40FA00321E06 /* MKChannelACL.m */,
+				BCD11E08158F40FA00321E06 /* MKChannelGroup.m */,
 				2845A789132D9C220034D631 /* MKConnection.m */,
 				2845A78A132D9C220034D631 /* MKConnectionController.m */,
 				2845A78B132D9C220034D631 /* MKCryptState_openssl.mm */,
@@ -515,9 +536,12 @@
 		2845A780132D9BF50034D631 /* Public Headers */ = {
 			isa = PBXGroup;
 			children = (
+				BCD11DF4158F40A900321E06 /* MKACL.h */,
 				2845A7C7132D9C520034D631 /* MKAudio.h */,
 				2845A7CC132D9C520034D631 /* MKCertificate.h */,
 				2845A7CD132D9C520034D631 /* MKChannel.h */,
+				BCD11DF5158F40A900321E06 /* MKChannelACL.h */,
+				BCD11DF6158F40A900321E06 /* MKChannelGroup.h */,
 				2845A7CE132D9C520034D631 /* MKConnection.h */,
 				2845A7CF132D9C520034D631 /* MKConnectionController.h */,
 				BCD11DF1158F3FD600321E06 /* MKPermission.h */,
@@ -690,6 +714,9 @@
 				281EADA61530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
 				28074E91158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */,
 				BCD11DF3158F3FD600321E06 /* MKPermission.h in Headers */,
+				BCD11DF8158F40A900321E06 /* MKACL.h in Headers */,
+				BCD11DFA158F40A900321E06 /* MKChannelACL.h in Headers */,
+				BCD11DFC158F40A900321E06 /* MKChannelGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,6 +750,9 @@
 				281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */,
 				28074E90158A6E5100E0A4D0 /* MKAudioOutputSidetone.h in Headers */,
 				BCD11DF2158F3FD600321E06 /* MKPermission.h in Headers */,
+				BCD11DF7158F40A900321E06 /* MKACL.h in Headers */,
+				BCD11DF9158F40A900321E06 /* MKChannelACL.h in Headers */,
+				BCD11DFB158F40A900321E06 /* MKChannelGroup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -954,6 +984,9 @@
 				2879526514C1BAB900567430 /* MKTextMessage.m in Sources */,
 				281EADA81530EA30000793AB /* MKDistinguishedNameParser.m in Sources */,
 				28074E93158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */,
+				BCD11E0A158F40FA00321E06 /* MKACL.m in Sources */,
+				BCD11E0C158F40FA00321E06 /* MKChannelACL.m in Sources */,
+				BCD11E0E158F40FA00321E06 /* MKChannelGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -984,6 +1017,9 @@
 				2879526414C1BAB900567430 /* MKTextMessage.m in Sources */,
 				281EADA71530EA30000793AB /* MKDistinguishedNameParser.m in Sources */,
 				28074E92158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */,
+				BCD11E09158F40FA00321E06 /* MKACL.m in Sources */,
+				BCD11E0B158F40FA00321E06 /* MKChannelACL.m in Sources */,
+				BCD11E0D158F40FA00321E06 /* MKChannelGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

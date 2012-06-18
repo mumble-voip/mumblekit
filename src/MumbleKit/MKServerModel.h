@@ -7,6 +7,7 @@
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKTextMessage.h>
 #import <MumbleKit/MKPermission.h>
+#import <MumbleKit/MKACL.h>
 
 @class MulticastDelegate;
 @class MKServerModel;
@@ -524,6 +525,16 @@
  * @param  reason  The reason for the error. May be nil if no reason was given.
  */
 - (void) serverModel:(MKServerModel *)model permissionDeniedForReason:(NSString *)reason;
+
+/**
+ * Response of an ACL request for a channel.
+ *
+ * @param  model   The MKServerModel in which this event originated.
+ * @param  acl     The received ACL.
+ * @param  channel The channel for which acls were requested for.
+ */
+- (void) serverModel:(MKServerModel *)model didReceiveACL:(MKACL *)acl forChannel:(MKChannel *)channel;
+
 @end
 
 /**
@@ -641,6 +652,21 @@
  * @param temp          Specify if the channel is temporary or not.
  */
 - (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp;
+
+/**
+ * Ask the underlying connection to get ACL for the given channel.
+ *
+ * @param channel  The channel to join.
+ */
+- (void) requestACLForChannel:(MKChannel *)channel;
+
+/**
+ * Set an ACL to the given channel.
+ *
+ * @param acl       ACLs.
+ * @param channel   The channel.
+ */
+- (void) setACL:(MKACL *)acl forChannel:(MKChannel *)channel;
 
 ///------------------------------
 /// @name Text message operations
