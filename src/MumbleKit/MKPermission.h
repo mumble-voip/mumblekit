@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-#ifndef MumbleKit_MKPermission_h
-#define MumbleKit_MKPermission_h
-
 typedef enum {
     MKPermissionNone             = 0x00000,
     MKPermissionWrite            = 0x00001,
@@ -25,4 +22,3 @@ typedef enum {
     MKPermissionAll              = 0xf07ff,
 } MKPermission;
 
-#endif
