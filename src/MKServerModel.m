@@ -460,53 +460,53 @@
     MKChannel *chan = [self channelWithId:[msg channelId]];
     
     MKACL *acl = [[MKACL alloc] init];
-    [acl setInheritACLs:msg.inheritAcls];
-    [acl setAcls:[NSMutableArray array]];
-    [acl setGroups:[NSMutableArray array]];
+    acl.inheritACLs = msg.inheritAcls;
+    acl.acls = [NSMutableArray array];
+    acl.groups = [NSMutableArray array];
     
     for (MPACL_ChanACL *chanACL in msg.acls) {
         MKChannelACL *channelACL = [[MKChannelACL alloc] init];
         if (chanACL.hasUserId) {
-            [channelACL setUserID:chanACL.userId];
-            [channelACL setGroup:nil];
+            channelACL.userID = chanACL.userId;
+            channelACL.group = nil;
         } else {
-            [channelACL setUserID:-1];
-            [channelACL setGroup:chanACL.group];
+            channelACL.userID = -1;
+            channelACL.group = chanACL.group;
         }
         
-        [channelACL setApplyHere:chanACL.applyHere];
-        [channelACL setApplySubs:chanACL.applySubs];
-        [channelACL setDeny:chanACL.deny];
-        [channelACL setGrant:chanACL.grant];
-        [channelACL setInherited:chanACL.inherited];
+        channelACL.applyHere = chanACL.applyHere;
+        channelACL.applySubs = chanACL.applySubs;
+        channelACL.deny = chanACL.deny;
+        channelACL.grant = chanACL.grant;
+        channelACL.inherited = chanACL.inherited;
         
-        [[acl acls] addObject:channelACL];
+        [acl.acls addObject:channelACL];
         [channelACL release];
     }
     
     
     for (MPACL_ChanGroup *chanGroup in msg.groups) {
         MKChannelGroup *channelGroup = [[MKChannelGroup alloc] init];
-        [channelGroup setName:chanGroup.name];
-        [channelGroup setInheritable:chanGroup.inheritable];
-        [channelGroup setInherit:chanGroup.inherit];
-        [channelGroup setInherited:chanGroup.inherited];
+        channelGroup.name = chanGroup.name;
+        channelGroup.inheritable = chanGroup.inheritable;
+        channelGroup.inherit = chanGroup.inherit;
+        channelGroup.inherited = chanGroup.inherited;
         
-        [channelGroup setMembers:[NSMutableArray array]];
-        [channelGroup setExcludedMembers:[NSMutableArray array]];
-        [channelGroup setInheritedMembers:[NSMutableArray array]];
+        channelGroup.members = [NSMutableArray array];
+        channelGroup.excludedMembers = [NSMutableArray array];
+        channelGroup.inheritedMembers = [NSMutableArray array];
         
-        for (NSNumber *value in [chanGroup add]) {
+        for (NSNumber *value in chanGroup.add) {
             [channelGroup.members addObject:value];
         }
-        for (NSNumber *value in [chanGroup remove]) {
+        for (NSNumber *value in chanGroup.remove) {
             [channelGroup.excludedMembers addObject:value];
         }
-        for (NSNumber *value in [chanGroup inheritedMembers]) {
+        for (NSNumber *value in chanGroup.inheritedMembers) {
             [channelGroup.inheritedMembers addObject:value];
         }
         
-        [[acl groups] addObject:channelGroup];
+        [acl.groups addObject:channelGroup];
         [channelGroup release];
     }
     
@@ -924,9 +924,9 @@
 // Create a channel
 - (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp {
     MPChannelState_Builder *channelState = [MPChannelState builder];
-    [channelState setName:channelName];
-    [channelState setParent:parent.channelId];
-    [channelState setTemporary:temp];
+    channelState.name = channelName;
+    channelState.parent = parent.channelId;
+    channelState.temporary = temp;
     
     NSData *data = [[channelState build] data];
     [_connection sendMessageWithType:ChannelStateMessage data:data];
@@ -935,8 +935,8 @@
 // Request ACL for a channel
 - (void) requestACLForChannel:(MKChannel *)channel {
     MPACL_Builder *mpacl = [MPACL builder];
-    [mpacl setChannelId:channel.channelId];
-    [mpacl setQuery:YES];
+    mpacl.channelId = channel.channelId;
+    mpacl.query = YES;
     
     NSData *data = [[mpacl build] data];
     [_connection sendMessageWithType:ACLMessage data:data];
@@ -945,9 +945,9 @@
 // Set ACL for a channel
 - (void) setACL:(MKACL *)acl forChannel:(MKChannel *)channel {
     MPACL_Builder *mpacl = [MPACL builder];
-    [mpacl setChannelId:channel.channelId];
-    [mpacl setQuery:NO];
-    [mpacl setInheritAcls:acl.inheritACLs];
+    mpacl.channelId = channel.channelId;
+    mpacl.query = YES;
+    mpacl.inheritAcls = acl.inheritACLs;
     
     NSMutableArray *aclsArray = [NSMutableArray array];
     for (MKChannelACL *channelACL in acl.acls) {
@@ -956,15 +956,15 @@
         }
         
         MPACL_ChanACL_Builder *chanACL = [MPACL_ChanACL builder];
-        [chanACL setApplyHere:channelACL.applyHere];
-        [chanACL setApplySubs:channelACL.applySubs];
-        [chanACL setDeny:channelACL.deny];
-        [chanACL setGrant:channelACL.grant];
+        chanACL.applyHere = channelACL.applyHere;
+        chanACL.applySubs = channelACL.applySubs;
+        chanACL.deny = channelACL.deny;
+        chanACL.grant = channelACL.grant;
         
         if (channelACL.hasUserID) {
-            [chanACL setUserId:channelACL.userID];
+            chanACL.userId = channelACL.userID;
         } else {
-            [chanACL setGroup:channelACL.group];
+            chanACL.group = channelACL.group;
         }
         
         [aclsArray addObject:[chanACL build]];
@@ -978,11 +978,11 @@
         }
         
         MPACL_ChanGroup_Builder *chanGroup = [MPACL_ChanGroup builder];
-        [chanGroup setName:channelGroup.name];
-        [chanGroup setInherit:channelGroup.inherit];
-        [chanGroup setInheritable:channelGroup.inheritable];
-        [chanGroup setAddArray:channelGroup.members];
-        [chanGroup setRemoveArray:channelGroup.excludedMembers];
+        chanGroup.name = channelGroup.name;
+        chanGroup.inherit = channelGroup.inherit;
+        chanGroup.inheritable = channelGroup.inheritable;
+        chanGroup.addArray = channelGroup.members;
+        chanGroup.removeArray = channelGroup.excludedMembers;
         [groupsArray addObject:[chanGroup build]];
     }
     [mpacl setGroupsArray:groupsArray];
