@@ -459,7 +459,7 @@
     
     MKChannel *chan = [self channelWithId:[msg channelId]];
     
-    MKACL *acl = [[MKACL alloc] init];
+    MKAccessControl *acl = [[MKAccessControl alloc] init];
     acl.inheritACLs = msg.inheritAcls;
     acl.acls = [NSMutableArray array];
     acl.groups = [NSMutableArray array];
@@ -932,8 +932,8 @@
     [_connection sendMessageWithType:ChannelStateMessage data:data];
 }
 
-// Request ACL for a channel
-- (void) requestACLForChannel:(MKChannel *)channel {
+// Request the access control for a channel
+- (void) requestAccessControlForChannel:(MKChannel *)channel {
     MPACL_Builder *mpacl = [MPACL builder];
     mpacl.channelId = channel.channelId;
     mpacl.query = YES;
@@ -942,15 +942,15 @@
     [_connection sendMessageWithType:ACLMessage data:data];
 }
 
-// Set ACL for a channel
-- (void) setACL:(MKACL *)acl forChannel:(MKChannel *)channel {
+// Set the access control for a channel
+- (void) setAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel {
     MPACL_Builder *mpacl = [MPACL builder];
     mpacl.channelId = channel.channelId;
     mpacl.query = YES;
-    mpacl.inheritAcls = acl.inheritACLs;
+    mpacl.inheritAcls = accessControl.inheritACLs;
     
     NSMutableArray *aclsArray = [NSMutableArray array];
-    for (MKChannelACL *channelACL in acl.acls) {
+    for (MKChannelACL *channelACL in accessControl.acls) {
         if (channelACL.inherited) {
             continue;
         }
@@ -972,7 +972,7 @@
     [mpacl setAclsArray:aclsArray];
     
     NSMutableArray *groupsArray = [NSMutableArray array];
-    for (MKChannelGroup *channelGroup in acl.groups) {
+    for (MKChannelGroup *channelGroup in accessControl.groups) {
         if (channelGroup.inherited) {
             continue;
         }

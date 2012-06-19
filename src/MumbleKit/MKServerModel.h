@@ -7,7 +7,7 @@
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKTextMessage.h>
 #import <MumbleKit/MKPermission.h>
-#import <MumbleKit/MKACL.h>
+#import <MumbleKit/MKAccessControl.h>
 
 @class MulticastDelegate;
 @class MKServerModel;
@@ -533,7 +533,7 @@
  * @param  acl     The requested ACL.
  * @param  channel The channel to which ACL refers.
  */
-- (void) serverModel:(MKServerModel *)model didReceiveACL:(MKACL *)acl forChannel:(MKChannel *)channel;
+- (void) serverModel:(MKServerModel *)model didReceiveACL:(MKAccessControl *)acl forChannel:(MKChannel *)channel;
 
 @end
 
@@ -654,19 +654,19 @@
 - (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp;
 
 /**
- * Ask the underlying connection to receive ACL for the given channel.
+ * Ask the underlying connection to receive the access control for the given channel.
  *
- * @param channel  The channel for which you are requesting ACL.
+ * @param channel  The channel for which you are requesting the access control.
  */
-- (void) requestACLForChannel:(MKChannel *)channel;
+- (void) requestAccessControlForChannel:(MKChannel *)channel;
 
 /**
- * Set ACL for a channel.
+ * Set access control for a channel.
  *
- * @param acl       The ACL you want to set.
- * @param channel   The channel for which you are setting ACL.
+ * @param acl       The access control you want to set.
+ * @param channel   The channel for which you are setting the access control.
  */
-- (void) setACL:(MKACL *)acl forChannel:(MKChannel *)channel;
+- (void) setAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel;
 
 ///------------------------------
 /// @name Text message operations
