@@ -510,7 +510,7 @@
         [channelGroup release];
     }
     
-    [_delegate serverModel:self didReceiveACL:[acl autorelease] forChannel:chan];   
+    [_delegate serverModel:self didReceiveAccessControl:[acl autorelease] forChannel:chan];   
 }
 
 - (void) connection:(MKConnection *)conn handleQueryUsersMessage: (MPQueryUsers *)msg {

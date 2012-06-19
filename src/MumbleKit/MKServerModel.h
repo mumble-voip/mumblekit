@@ -527,13 +527,13 @@
 - (void) serverModel:(MKServerModel *)model permissionDeniedForReason:(NSString *)reason;
 
 /**
- * Called after an ACL request
+ * Called after an access control request
  *
- * @param  model   The MKServerModel in which this event originated.
- * @param  acl     The requested ACL.
- * @param  channel The channel to which ACL refers.
+ * @param  model            The MKServerModel in which this event originated.
+ * @param  accessControl    The requested access control.
+ * @param  channel          The channel to which access control refers.
  */
-- (void) serverModel:(MKServerModel *)model didReceiveACL:(MKAccessControl *)acl forChannel:(MKChannel *)channel;
+- (void) serverModel:(MKServerModel *)model didReceiveAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel;
 
 @end
 
