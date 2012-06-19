@@ -1,10 +1,6 @@
-//
-//  MKPermission.h
-//  MumbleKit
-//
-//  Created by Emilio Pavia on 18/06/12.
-//  Copyright (c) 2012 TOK.TV Inc. All rights reserved.
-//
+// Copyright 2010-2012 The MumbleKit Developers. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
 
 #ifndef MumbleKit_MKPermission_h
 #define MumbleKit_MKPermission_h
