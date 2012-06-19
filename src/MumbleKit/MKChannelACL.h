@@ -12,7 +12,7 @@
 @property (nonatomic) BOOL applySubs;
 @property (nonatomic) BOOL inherited;
 @property (nonatomic) NSInteger userID;
-@property (nonatomic, strong) NSString *group;
+@property (nonatomic, strong) NSString * group;
 @property (nonatomic) MKPermission grant;
 @property (nonatomic) MKPermission deny;
 @property (nonatomic, readonly) BOOL hasUserID;

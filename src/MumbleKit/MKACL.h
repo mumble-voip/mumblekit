@@ -7,7 +7,7 @@
 @interface MKACL : NSObject
 
 @property (nonatomic) BOOL inheritACLs;
-@property (nonatomic, strong) NSMutableArray *groups;
-@property (nonatomic, strong) NSMutableArray *acls;
+@property (nonatomic, strong) NSMutableArray * groups;
+@property (nonatomic, strong) NSMutableArray * acls;
 
 @end

@@ -14,13 +14,11 @@
 @synthesize grant;
 @synthesize deny;
 
-- (BOOL)hasUserID
-{
+- (BOOL) hasUserID {
     return (self.userID > -1);
 }
 
-- (NSString *)description
-{
+- (NSString *) description {
     NSMutableString *grantDescription = [[NSMutableString alloc] init];
     if (self.grant == MKPermissionAll) {
         [grantDescription appendString:@"All"];

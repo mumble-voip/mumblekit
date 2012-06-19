@@ -14,8 +14,7 @@
 @synthesize excludedMembers;
 @synthesize inheritedMembers;
 
-- (NSString *)description
-{
+- (NSString *) description {
     return [NSString stringWithFormat:@"{name: %@; inherited: %@; inherit: %@; inheritable: %@; members: %@; excludedMembers: %@; inheritedMembers: %@}",
             self.name,
             self.inherited ? @"YES" : @"NO",

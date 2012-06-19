@@ -508,7 +508,7 @@
 - (void) serverModelChannelFullError:(MKServerModel *)model;
 
 /**
- * Called when a channel user create operation failed because the channel
+ * Called when a channel create operation failed because the channel
  * name was invalid.
  *
  * @param  model  The MKServerModel in which this error occurred.
@@ -527,11 +527,11 @@
 - (void) serverModel:(MKServerModel *)model permissionDeniedForReason:(NSString *)reason;
 
 /**
- * Response of an ACL request for a channel.
+ * Called after an ACL request
  *
  * @param  model   The MKServerModel in which this event originated.
- * @param  acl     The received ACL.
- * @param  channel The channel for which acls were requested for.
+ * @param  acl     The requested ACL.
+ * @param  channel The channel to which ACL refers.
  */
 - (void) serverModel:(MKServerModel *)model didReceiveACL:(MKACL *)acl forChannel:(MKChannel *)channel;
 
@@ -648,23 +648,23 @@
  * connected to.
  *
  * @param channelName   The name of the channel to create.
- * @param parent        The MKChannel from where the new subchannel will be created.
+ * @param parent        The MKChannel that must contain the newly created one.
  * @param temp          Specify if the channel is temporary or not.
  */
 - (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp;
 
 /**
- * Ask the underlying connection to get ACL for the given channel.
+ * Ask the underlying connection to receive ACL for the given channel.
  *
- * @param channel  The channel to join.
+ * @param channel  The channel for which you are requesting ACL.
  */
 - (void) requestACLForChannel:(MKChannel *)channel;
 
 /**
- * Set an ACL to the given channel.
+ * Set ACL for a channel.
  *
- * @param acl       ACLs.
- * @param channel   The channel.
+ * @param acl       The ACL you want to set.
+ * @param channel   The channel for which you are setting ACL.
  */
 - (void) setACL:(MKACL *)acl forChannel:(MKChannel *)channel;
 

@@ -10,8 +10,7 @@
 @synthesize groups;
 @synthesize acls;
 
-- (NSString *)description
-{
+- (NSString *) description {
     return [NSString stringWithFormat:@"{\n\tinheritACLs: %@\n\tgroups: %@\n\tacls: %@\n}", self.inheritACLs ? @"YES" : @"NO", self.groups, self.acls];
 }
 
