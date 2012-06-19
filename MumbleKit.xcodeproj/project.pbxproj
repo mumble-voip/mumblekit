@@ -134,12 +134,12 @@
 		BCD11DFA158F40A900321E06 /* MKChannelACL.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF5158F40A900321E06 /* MKChannelACL.h */; };
 		BCD11DFB158F40A900321E06 /* MKChannelGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF6158F40A900321E06 /* MKChannelGroup.h */; };
 		BCD11DFC158F40A900321E06 /* MKChannelGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = BCD11DF6158F40A900321E06 /* MKChannelGroup.h */; };
-		BCD11E09158F40FA00321E06 /* MKACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E06158F40FA00321E06 /* MKACL.m */; };
-		BCD11E0A158F40FA00321E06 /* MKACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E06158F40FA00321E06 /* MKACL.m */; };
-		BCD11E0B158F40FA00321E06 /* MKChannelACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E07158F40FA00321E06 /* MKChannelACL.m */; };
-		BCD11E0C158F40FA00321E06 /* MKChannelACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E07158F40FA00321E06 /* MKChannelACL.m */; };
-		BCD11E0D158F40FA00321E06 /* MKChannelGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E08158F40FA00321E06 /* MKChannelGroup.m */; };
-		BCD11E0E158F40FA00321E06 /* MKChannelGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E08158F40FA00321E06 /* MKChannelGroup.m */; };
+		BCD11E09158F40FA00321E06 /* MKACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E06158F40FA00321E06 /* MKACL.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		BCD11E0A158F40FA00321E06 /* MKACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E06158F40FA00321E06 /* MKACL.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		BCD11E0B158F40FA00321E06 /* MKChannelACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E07158F40FA00321E06 /* MKChannelACL.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		BCD11E0C158F40FA00321E06 /* MKChannelACL.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E07158F40FA00321E06 /* MKChannelACL.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		BCD11E0D158F40FA00321E06 /* MKChannelGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E08158F40FA00321E06 /* MKChannelGroup.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		BCD11E0E158F40FA00321E06 /* MKChannelGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BCD11E08158F40FA00321E06 /* MKChannelGroup.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

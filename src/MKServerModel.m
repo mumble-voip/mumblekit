@@ -481,6 +481,7 @@
         [channelACL setInherited:chanACL.inherited];
         
         [[acl acls] addObject:channelACL];
+        [channelACL release];
     }
     
     
@@ -506,9 +507,10 @@
         }
         
         [[acl groups] addObject:channelGroup];
+        [channelGroup release];
     }
     
-    [_delegate serverModel:self didReceiveACL:acl forChannel:chan];   
+    [_delegate serverModel:self didReceiveACL:[acl autorelease] forChannel:chan];   
 }
 
 - (void) connection:(MKConnection *)conn handleQueryUsersMessage: (MPQueryUsers *)msg {
