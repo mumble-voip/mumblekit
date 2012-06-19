@@ -20,6 +20,9 @@
 
 #import "MulticastDelegate.h"
 
+#import <MumbleKit/MKChannelACL.h>
+#import <MumbleKit/MKChannelGroup.h>
+
 // fixme(mkrautz): Refactor once 1.0's out the door.
 @interface MKAudio ()
 - (void) setSelfMuted:(BOOL)selfMuted;
@@ -399,7 +402,7 @@
             break;
         }
         case MPPermissionDenied_DenyTypeChannelName: {
-            [_delegate serverModelChannelFullError:self];
+            [_delegate serverModelChannelNameError:self];
             break;
         }
         case MPPermissionDenied_DenyTypeTextTooLong: {
@@ -449,7 +452,65 @@
     [_delegate serverModel:self textMessageReceived:txtMsg fromUser:sender];
 }
 
-- (void) connection:(MKConnection *)conn handleACLMessage: (MPACL *)msg {
+- (void) connection:(MKConnection *)conn handleACLMessage: (MPACL *)msg {    
+    if (! [msg hasChannelId]) {
+        return;
+    }
+    
+    MKChannel *chan = [self channelWithId:[msg channelId]];
+    
+    MKAccessControl *acl = [[MKAccessControl alloc] init];
+    acl.inheritACLs = msg.inheritAcls;
+    acl.acls = [NSMutableArray array];
+    acl.groups = [NSMutableArray array];
+    
+    for (MPACL_ChanACL *chanACL in msg.acls) {
+        MKChannelACL *channelACL = [[MKChannelACL alloc] init];
+        if (chanACL.hasUserId) {
+            channelACL.userID = chanACL.userId;
+            channelACL.group = nil;
+        } else {
+            channelACL.userID = -1;
+            channelACL.group = chanACL.group;
+        }
+        
+        channelACL.applyHere = chanACL.applyHere;
+        channelACL.applySubs = chanACL.applySubs;
+        channelACL.deny = chanACL.deny;
+        channelACL.grant = chanACL.grant;
+        channelACL.inherited = chanACL.inherited;
+        
+        [acl.acls addObject:channelACL];
+        [channelACL release];
+    }
+    
+    
+    for (MPACL_ChanGroup *chanGroup in msg.groups) {
+        MKChannelGroup *channelGroup = [[MKChannelGroup alloc] init];
+        channelGroup.name = chanGroup.name;
+        channelGroup.inheritable = chanGroup.inheritable;
+        channelGroup.inherit = chanGroup.inherit;
+        channelGroup.inherited = chanGroup.inherited;
+        
+        channelGroup.members = [NSMutableArray array];
+        channelGroup.excludedMembers = [NSMutableArray array];
+        channelGroup.inheritedMembers = [NSMutableArray array];
+        
+        for (NSNumber *value in chanGroup.add) {
+            [channelGroup.members addObject:value];
+        }
+        for (NSNumber *value in chanGroup.remove) {
+            [channelGroup.excludedMembers addObject:value];
+        }
+        for (NSNumber *value in chanGroup.inheritedMembers) {
+            [channelGroup.inheritedMembers addObject:value];
+        }
+        
+        [acl.groups addObject:channelGroup];
+        [channelGroup release];
+    }
+    
+    [_delegate serverModel:self didReceiveAccessControl:[acl autorelease] forChannel:chan];   
 }
 
 - (void) connection:(MKConnection *)conn handleQueryUsersMessage: (MPQueryUsers *)msg {
@@ -858,6 +919,77 @@
 
     NSData *data = [[userState build] data];
     [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
+// Create a channel
+- (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp {
+    MPChannelState_Builder *channelState = [MPChannelState builder];
+    channelState.name = channelName;
+    channelState.parent = parent.channelId;
+    channelState.temporary = temp;
+    
+    NSData *data = [[channelState build] data];
+    [_connection sendMessageWithType:ChannelStateMessage data:data];
+}
+
+// Request the access control for a channel
+- (void) requestAccessControlForChannel:(MKChannel *)channel {
+    MPACL_Builder *mpacl = [MPACL builder];
+    mpacl.channelId = channel.channelId;
+    mpacl.query = YES;
+    
+    NSData *data = [[mpacl build] data];
+    [_connection sendMessageWithType:ACLMessage data:data];
+}
+
+// Set the access control for a channel
+- (void) setAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel {
+    MPACL_Builder *mpacl = [MPACL builder];
+    mpacl.channelId = channel.channelId;
+    mpacl.query = YES;
+    mpacl.inheritAcls = accessControl.inheritACLs;
+    
+    NSMutableArray *aclsArray = [NSMutableArray array];
+    for (MKChannelACL *channelACL in accessControl.acls) {
+        if (channelACL.inherited) {
+            continue;
+        }
+        
+        MPACL_ChanACL_Builder *chanACL = [MPACL_ChanACL builder];
+        chanACL.applyHere = channelACL.applyHere;
+        chanACL.applySubs = channelACL.applySubs;
+        chanACL.deny = channelACL.deny;
+        chanACL.grant = channelACL.grant;
+        
+        if (channelACL.hasUserID) {
+            chanACL.userId = channelACL.userID;
+        } else {
+            chanACL.group = channelACL.group;
+        }
+        
+        [aclsArray addObject:[chanACL build]];
+    }
+    [mpacl setAclsArray:aclsArray];
+    
+    NSMutableArray *groupsArray = [NSMutableArray array];
+    for (MKChannelGroup *channelGroup in accessControl.groups) {
+        if (channelGroup.inherited) {
+            continue;
+        }
+        
+        MPACL_ChanGroup_Builder *chanGroup = [MPACL_ChanGroup builder];
+        chanGroup.name = channelGroup.name;
+        chanGroup.inherit = channelGroup.inherit;
+        chanGroup.inheritable = channelGroup.inheritable;
+        chanGroup.addArray = channelGroup.members;
+        chanGroup.removeArray = channelGroup.excludedMembers;
+        [groupsArray addObject:[chanGroup build]];
+    }
+    [mpacl setGroupsArray:groupsArray];
+    
+    NSData *data = [[mpacl build] data];
+    
+    [_connection sendMessageWithType:ACLMessage data:data];
 }
 
 #pragma mark -

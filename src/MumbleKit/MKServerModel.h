@@ -6,28 +6,11 @@
 #import <MumbleKit/MKChannel.h>
 #import <MumbleKit/MKConnection.h>
 #import <MumbleKit/MKTextMessage.h>
+#import <MumbleKit/MKPermission.h>
+#import <MumbleKit/MKAccessControl.h>
 
 @class MulticastDelegate;
 @class MKServerModel;
-
-typedef enum {
-    MKPermissionNone             = 0x00000,
-    MKPermissionWrite            = 0x00001,
-    MKPermissionTraverse         = 0x00002,
-    MKPermissionEnter            = 0x00004,
-    MKPermissionSpeak            = 0x00008,
-    MKPermissionMuteDeafen       = 0x00010,
-    MKPermissionMove             = 0x00020,
-    MKPermissionMakeChannel      = 0x00040,
-    MKPermissionLinkChannel      = 0x00080,
-    MKPermissionWhisper          = 0x00100,
-    MKPermissionTextMessage      = 0x00200,
-    MKPermissionMakeTempChannel  = 0x00400,
-    MKPermissionKick             = 0x10000,
-    MKPermissionBan              = 0x20000,
-    MKPermissionRegister         = 0x40000,
-    MKPermissionSelfRegister     = 0x80000,
-} MKPermission;
 
 /**
  * MKServerModelDelegate is the delegate of MKServerModel.
@@ -525,6 +508,14 @@ typedef enum {
 - (void) serverModelChannelFullError:(MKServerModel *)model;
 
 /**
+ * Called when a channel create operation failed because the channel
+ * name was invalid.
+ *
+ * @param  model  The MKServerModel in which this error occurred.
+ */
+- (void) serverModelChannelNameError:(MKServerModel *)model;
+
+/**
  * Called when a simple 'Permission denied.' message is sufficient to show to the user.
  * Can include a reason. This kind of permission error is also used as a fallback, if
  * the server detects that a client is using a too old version of the Mumble protocol
@@ -534,6 +525,16 @@ typedef enum {
  * @param  reason  The reason for the error. May be nil if no reason was given.
  */
 - (void) serverModel:(MKServerModel *)model permissionDeniedForReason:(NSString *)reason;
+
+/**
+ * Called after an access control request
+ *
+ * @param  model            The MKServerModel in which this event originated.
+ * @param  accessControl    The requested access control.
+ * @param  channel          The channel to which access control refers.
+ */
+- (void) serverModel:(MKServerModel *)model didReceiveAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel;
+
 @end
 
 /**
@@ -641,6 +642,31 @@ typedef enum {
  * @param channel  The channel to join.
  */
 - (void) joinChannel:(MKChannel *)channel;
+
+/**
+ * Create a new channel in the server the underlying MKConnection is currently
+ * connected to.
+ *
+ * @param channelName   The name of the channel to create.
+ * @param parent        The MKChannel that must contain the newly created one.
+ * @param temp          Specify if the channel is temporary or not.
+ */
+- (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp;
+
+/**
+ * Ask the underlying connection to receive the access control for the given channel.
+ *
+ * @param channel  The channel for which you are requesting the access control.
+ */
+- (void) requestAccessControlForChannel:(MKChannel *)channel;
+
+/**
+ * Set access control for a channel.
+ *
+ * @param acl       The access control you want to set.
+ * @param channel   The channel for which you are setting the access control.
+ */
+- (void) setAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel;
 
 ///------------------------------
 /// @name Text message operations
