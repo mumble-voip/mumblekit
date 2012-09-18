@@ -8,6 +8,10 @@
 #import "MKAudioOutput.h"
 #import "MKAudioOutputSidetone.h"
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#import <UIKit/UIKit.h>
+#endif
+
 NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
 
 @interface MKAudio () {
@@ -323,6 +327,16 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
 
 - (BOOL) echoCancellationAvailable {
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+    // Disable Echo Cancellation on iOS 6 due to its faulty VoiceProcessingIO.
+    NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+    NSArray *versionComponents = [systemVersion componentsSeparatedByString:@"."];
+    if (versionComponents.count == 0) {
+        return NO;
+    }
+    if ([[versionComponents objectAtIndex:0] integerValue] >= 6) {
+        return NO;
+    }
+
     NSDictionary *dict = nil;
     UInt32 valSize = sizeof(NSDictionary *);
     OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRouteDescription, &valSize, &dict);
