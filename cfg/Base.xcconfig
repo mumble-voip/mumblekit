@@ -6,7 +6,7 @@ ARCHS = armv7
 SDKROOT = iphoneos
 
 MACOSX_DEPLOYMENT_TARGET = 10.7
-IPHONEOS_DEPLOYMENT_TARGET = 4.3
+IPHONEOS_DEPLOYMENT_TARGET = 5.0
 
 HEADER_SEARCH_PATHS = src proto 3rdparty/speex/include 3rdparty/celt-0.7.0/libcelt 3rdparty/opus/include 3rdparty/openssl/include 3rdparty/protobuf/src/runtime/Classes
 LIBRARY_SEARCH_PATHS = $(inherited) "$(SRCROOT)"

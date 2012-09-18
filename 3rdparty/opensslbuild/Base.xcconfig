@@ -5,6 +5,9 @@
 ARCHS = armv7
 SDKROOT = iphoneos
 
+MACOSX_DEPLOYMENT_TARGET = 10.7
+IPHONEOS_DEPLOYMENT_TARGET = 5.0
+
 HEADER_SEARCH_PATHS = $(PROJECT_DIR)/../openssl $(PROJECT_DIR)/../openssl/include $(PROJECT_DIR)/../openssl/crypto $(PROJECT_DIR)/../openssl/crypto/asn1 $(PROJECT_DIR)/../openssl/crypto/evp
 ALWAYS_SEARCH_USER_PATHS = NO
 
