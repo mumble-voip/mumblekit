@@ -673,7 +673,7 @@
 		287D859D14E6D474002B5D79 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 287D85A014E6D474002B5D79 /* Build configuration list for PBXProject "Opus" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -967,6 +967,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -975,6 +976,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -996,6 +998,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = AppStore;
@@ -1017,6 +1020,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = BetaDist;

@@ -252,7 +252,7 @@
 		280D5F7C132AE73C00540C3D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 280D5F7F132AE73C00540C3D /* Build configuration list for PBXProject "CELT-0.7" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -371,6 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = BetaDist;
@@ -379,6 +380,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -387,6 +389,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -408,6 +411,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = AppStore;

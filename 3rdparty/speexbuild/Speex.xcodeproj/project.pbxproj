@@ -312,7 +312,7 @@
 		28D1DADF132AEB1400456ED6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 28D1DAE2132AEB1400456ED6 /* Build configuration list for PBXProject "Speex" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -435,6 +435,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = BetaDist;
@@ -456,6 +457,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = AppStore;
@@ -490,6 +492,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -498,6 +501,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
