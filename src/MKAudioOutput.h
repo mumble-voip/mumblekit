@@ -6,16 +6,14 @@
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKConnection.h>
 #import "MKAudioOutputUser.h"
+#import "MKAudioDevice.h"
 
 @class MKUser;
 
 @interface MKAudioOutput : NSObject
 
-- (id) initWithSettings:(MKAudioSettings *)settings;
+- (id) initWithDevice:(MKAudioDevice *)device andSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
-
-- (BOOL) setupDevice;
-- (BOOL) teardownDevice;
 
 - (void) removeBuffer:(MKAudioOutputUser *)u;
 - (BOOL) mixFrames: (void *)frames amount:(unsigned int)nframes;

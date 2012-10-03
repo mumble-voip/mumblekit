@@ -8,6 +8,7 @@
 #import "MKPacketDataStream.h"
 #import "MKAudioInput.h"
 #import "MKAudioOutputSidetone.h"
+#import "MKAudioDevice.h"
 
 #include <speex/speex.h>
 #include <speex/speex_preprocess.h>
@@ -20,12 +21,11 @@
 
 @interface MKAudioInput () {
     @public
-    AudioUnit              audioUnit;
-    AudioBufferList        buflist;
     int                    micSampleSize;
     int                    numMicChannels;
 
     @private
+    MKAudioDevice          *_device;
     MKAudioSettings        _settings;
 
     SpeexPreprocessState   *_preprocessorState;
@@ -70,52 +70,17 @@
     
     NSMutableData          *_opusBuffer;
 }
-- (BOOL) setupMacDevice;
-- (BOOL) setupiOSDevice;
 @end
-
-static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
-                              UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
-    MKAudioInput *i = (MKAudioInput *)udata;
-    OSStatus err;
-    
-    if (! i->buflist.mBuffers->mData) {
-        NSLog(@"MKAudioInput: No buffer allocated.");
-        i->buflist.mNumberBuffers = 1;
-        AudioBuffer *b = i->buflist.mBuffers;
-        b->mNumberChannels = i->numMicChannels;
-        b->mDataByteSize = i->micSampleSize * nframes;
-        b->mData = calloc(1, b->mDataByteSize);
-    }
-
-    if (i->buflist.mBuffers->mDataByteSize < (nframes/i->micSampleSize)) {
-        NSLog(@"MKAudioInput: Buffer too small. Allocating more space.");
-        AudioBuffer *b = i->buflist.mBuffers;
-        free(b->mData);
-        b->mDataByteSize = i->micSampleSize * nframes;
-        b->mData = calloc(1, b->mDataByteSize);
-    }
-
-    err = AudioUnitRender(i->audioUnit, flags, ts, busnum, nframes, &i->buflist);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: AudioUnitRender failed. err = %ld", err);
-        return err;
-    }
-
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    short *buf = (short *)i->buflist.mBuffers->mData;
-    [i addMicrophoneDataWithBuffer:buf amount:nframes];
-    [pool release];
-
-    return noErr;
-}
 
 @implementation MKAudioInput
 
-- (id) initWithSettings:(MKAudioSettings *)settings {
+- (id) initWithDevice:(MKAudioDevice *)device andSettings:(MKAudioSettings *)settings {
     self = [super init];
     if (self == nil)
         return nil;
+    
+    // Set device
+    _device = [device retain];
 
     // Copy settings
     memcpy(&_settings, settings, sizeof(MKAudioSettings));
@@ -184,13 +149,22 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     frameList = [[NSMutableArray alloc] initWithCapacity:_settings.audioPerPacket];
 
     udpMessageType = ~0;
+    
+    [_device setupInput:^BOOL(short *frames, unsigned int nsamp) {
+        [self addMicrophoneDataWithBuffer:frames amount:nsamp];
+        return YES;
+    }];
+    
+    micFrequency = [_device inputSampleRate];
+    numMicChannels = [_device numberOfInputChannels];
+    
+    [self initializeMixer];
 
     return self;
 }
 
 - (void) dealloc {
-    // fixme(mkrautz): Return value?
-    [self teardownDevice];
+    [_device release];
 
     [frameList release];
     [_opusBuffer release];
@@ -240,295 +214,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     doResetPreprocessor = YES;
 
     NSLog(@"MKAudioInput: Initialized mixer for %i channel %i Hz and %i channel %i Hz echo", numMicChannels, micFrequency, 0, 0);
-}
-
-- (BOOL) setupDevice {
-#if TARGET_IPHONE_SIMULATOR
-    return [self setupiOSDevice];
-#else
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
-    return [self setupMacDevice];
-#elif TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 1
-    return [self setupiOSDevice];
-#endif
-#endif
-}
-
-- (BOOL) setupMacDevice {
-#if TARGET_OS_MAC == 1 && TARGET_OS_IPHONE == 0
-    UInt32 len;
-    UInt32 val;
-    OSStatus err;
-    AudioComponent comp;
-    AudioComponentDescription desc;
-    AudioStreamBasicDescription fmt;
-    AudioDeviceID devId;
-
-    // Get default device
-    len = sizeof(AudioDeviceID);
-    err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &len, &devId);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to query for default device.");
-        return NO;
-    }
-
-    desc.componentType = kAudioUnitType_Output;
-    desc.componentSubType = kAudioUnitSubType_HALOutput;
-    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-    desc.componentFlags = 0;
-    desc.componentFlagsMask = 0;
-
-    comp = AudioComponentFindNext(NULL, &desc);
-    if (! comp) {
-        NSLog(@"MKAudioInput: Unable to find AudioUnit.");
-        return NO;
-    }
-
-    err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &audioUnit);
-    if (err != noErr) {
-        NSLog(@"AudioInput: Unable to instantiate new AudioUnit.");
-        return NO;
-    }
-
-    err = AudioUnitInitialize(audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to initialize AudioUnit.");
-        return NO;
-    }
-
-    val = 1;
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &val, sizeof(UInt32));
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to configure input scope on AudioUnit.");
-        return NO;
-    }
-
-    val = 0;
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, 0, &val, sizeof(UInt32));
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to configure output scope on AudioUnit.");
-        return NO;
-    }
-
-    // Set default device
-    len = sizeof(AudioDeviceID);
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &devId, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to set default device.");
-        return NO;
-    }
-
-    len = sizeof(AudioStreamBasicDescription);
-    err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &fmt, &len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to query device for stream info.");
-        return NO;
-    }
-
-    if (fmt.mChannelsPerFrame > 1) {
-        NSLog(@"MKAudioInput: Input device with more than one channel detected. Defaulting to 1.");
-    }
-
-    micFrequency = (int) fmt.mSampleRate;
-    numMicChannels = 1;
-    [self initializeMixer];
-
-    fmt.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
-    fmt.mBitsPerChannel = sizeof(short) * 8;
-    fmt.mFormatID = kAudioFormatLinearPCM;
-    fmt.mSampleRate = micFrequency;
-    fmt.mChannelsPerFrame = numMicChannels;
-    fmt.mBytesPerFrame = micSampleSize;
-    fmt.mBytesPerPacket = micSampleSize;
-    fmt.mFramesPerPacket = 1;
-
-    len = sizeof(AudioStreamBasicDescription);
-    err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &fmt, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to set stream format for output device. (output scope)");
-        return NO;
-    }
-
-    AURenderCallbackStruct cb;
-    cb.inputProc = inputCallback;
-    cb.inputProcRefCon = self;
-    len = sizeof(AURenderCallbackStruct);
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 0, &cb, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to setup callback.");
-        return NO;
-    }
-
-    err = AudioOutputUnitStart(audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to start AudioUnit.");
-        return NO;
-    }
-
-    return YES;
-#else
-    return NO;
-#endif
-}
-
-- (BOOL) setupiOSDevice {
-#if TARGET_OS_IPHONE == 1
-    UInt32 len;
-    UInt32 val;
-    OSStatus err;
-    AudioComponent comp;
-    AudioComponentDescription desc;
-    AudioStreamBasicDescription fmt;
-    
-    BOOL shouldCancelEcho = NO;
-    if ([[MKAudio sharedAudio] echoCancellationAvailable]) {
-        shouldCancelEcho = _settings.enableEchoCancellation;
-    }
-    
-    desc.componentType = kAudioUnitType_Output;
-    if (shouldCancelEcho)
-        desc.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
-    else
-        desc.componentSubType = kAudioUnitSubType_RemoteIO;
-    desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-    desc.componentFlags = 0;
-    desc.componentFlagsMask = 0;
-    
-    comp = AudioComponentFindNext(NULL, &desc);
-    if (! comp) {
-        NSLog(@"MKAudioInput: Unable to find AudioUnit.");
-        return NO;
-    }
-    
-    err = AudioComponentInstanceNew(comp, (AudioComponentInstance *) &audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to instantiate new AudioUnit.");
-        return NO;
-    }
-    
-    /* fixme(mkrautz): Backport some of this to the desktop CoreAudio backend? */
-    
-    val = 1;
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &val, sizeof(UInt32));
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to configure input scope on AudioUnit.");
-        return NO;
-    }
-    
-    val = 0;
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, 0, &val, sizeof(UInt32));
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to configure output scope on AudioUnit.");
-        return NO;
-    }
-    
-    AURenderCallbackStruct cb;
-    cb.inputProc = inputCallback;
-    cb.inputProcRefCon = self;
-    len = sizeof(AURenderCallbackStruct);
-    err = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 0, &cb, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to setup callback.");
-        return NO;
-    }
-    
-    len = sizeof(AudioStreamBasicDescription);
-    err = AudioUnitGetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &fmt, &len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to query device for stream info.");
-        return NO;
-    }
-    
-    if (fmt.mChannelsPerFrame > 1) {
-        NSLog(@"MKAudioInput: Input device with more than one channel detected. Defaulting to 1.");
-    }
-    
-    micFrequency = (int) 48000;
-    numMicChannels = 1;
-    [self initializeMixer];
-    
-    fmt.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
-    fmt.mBitsPerChannel = sizeof(short) * 8;
-    fmt.mFormatID = kAudioFormatLinearPCM;
-    fmt.mSampleRate = micFrequency;
-    fmt.mChannelsPerFrame = numMicChannels;
-    fmt.mBytesPerFrame = micSampleSize;
-    fmt.mBytesPerPacket = micSampleSize;
-    fmt.mFramesPerPacket = 1;
-    
-    len = sizeof(AudioStreamBasicDescription);
-    err = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &fmt, len);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to set stream format for output device. (output scope)");
-        return NO;
-    }
-    
-    if (shouldCancelEcho) {
-        val = 0;
-        len = sizeof(UInt32);
-        err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_BypassVoiceProcessing, kAudioUnitScope_Global, 0, &val, len);
-        if (err != noErr) {
-            NSLog(@"MKAudioInput: Unable to disable VPIO voice processing.");
-            return NO;
-        }
-    
-        val = 0;
-        len = sizeof(UInt32);
-        err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingEnableAGC, kAudioUnitScope_Global, 0, &val, len);
-        if (err != noErr) {
-            NSLog(@"MKAudioInput: Unable to disable VPIO AGC.");
-            return NO;
-        }
-
-        // It's sufficient to set the quality to 0 for our use case; we do our own preprocessing
-        // after this, and the job of the VPIO is only to do echo cancellation.
-        val = 0;
-        len = sizeof(UInt32);
-        err = AudioUnitSetProperty(audioUnit, kAUVoiceIOProperty_VoiceProcessingQuality, kAudioUnitScope_Global, 0, &val, len);
-        if (err != noErr) {
-            NSLog(@"MKAudioInput: unable to set VPIO quality.");
-            return NO;
-        }
-    }
-
-    err = AudioUnitInitialize(audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to initialize AudioUnit.");
-        return NO;
-    }
-    
-    err = AudioOutputUnitStart(audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: Unable to start AudioUnit.");
-        return NO;
-    }
-    
-    return YES;
-#endif
-    return NO;
-}
-
-- (BOOL) teardownDevice {
-    OSStatus err;
-
-    err = AudioOutputUnitStop(audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: unable to stop AudioUnit.");
-        return NO;
-    }
-    
-    err = AudioComponentInstanceDispose(audioUnit);
-    if (err != noErr) {
-        NSLog(@"MKAudioInput: unable to dispose of AudioUnit.");
-        return NO;
-    }
-
-    AudioBuffer *b = buflist.mBuffers;
-    if (b && b->mData)
-        free(b->mData);
-
-    NSLog(@"MKAudioInput: teardown finished.");
-    return YES;
 }
 
 - (void) addMicrophoneDataWithBuffer:(short *)input amount:(NSUInteger)nsamp {
@@ -718,7 +403,6 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
             buf[i] = val * 32767.0f;
         }
     }
-
     
     float sum = 1.0f;
     int i;

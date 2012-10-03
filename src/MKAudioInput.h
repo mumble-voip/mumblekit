@@ -4,17 +4,12 @@
 
 #import <MumbleKit/MKAudio.h>
 #import <MumbleKit/MKConnection.h>
-#import <AudioUnit/AudioUnit.h>
-#import <AudioUnit/AUComponent.h>
-#import <AudioToolbox/AudioToolbox.h>
+#import "MKAudioDevice.h"
 
 @interface MKAudioInput : NSObject
 
-- (id) initWithSettings:(MKAudioSettings *)settings;
+- (id) initWithDevice:(MKAudioDevice *)device andSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
-
-- (BOOL) setupDevice;
-- (BOOL) teardownDevice;
 
 - (void) initializeMixer;
 

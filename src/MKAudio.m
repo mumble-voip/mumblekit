@@ -4,9 +4,17 @@
 
 #import <MumbleKit/MKAudio.h>
 #import "MKUtils.h"
+#import "MKAudioDevice.h"
 #import "MKAudioInput.h"
 #import "MKAudioOutput.h"
 #import "MKAudioOutputSidetone.h"
+
+#import "MKVoiceProcessingDevice.h"
+#import "MKiOSAudioDevice.h"
+
+#import <AudioUnit/AudioUnit.h>
+#import <AudioUnit/AUComponent.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #import <UIKit/UIKit.h>
@@ -15,11 +23,12 @@
 NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
 
 @interface MKAudio () {
-    MKAudioInput           *_audioInput;
-    MKAudioOutput          *_audioOutput;
-    MKAudioOutputSidetone  *_sidetoneOutput;
-    MKAudioSettings        _audioSettings;
-    BOOL                   _running;
+    MKAudioDevice            *_audioDevice;
+    MKAudioInput             *_audioInput;
+    MKAudioOutput            *_audioOutput;
+    MKAudioOutputSidetone    *_sidetoneOutput;
+    MKAudioSettings          _audioSettings;
+    BOOL                     _running;
 }
 @end
 
@@ -233,6 +242,9 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
         _audioInput = nil;
         [_audioOutput release];
         _audioOutput = nil;
+        [_audioDevice teardownDevice];
+        [_audioDevice release];
+        _audioDevice = nil;
         [_sidetoneOutput release];
         _sidetoneOutput = nil;
         _running = NO;
@@ -248,13 +260,21 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
     AudioSessionSetActive(YES);
 #endif
     @synchronized(self) {
-        _audioInput = [[MKAudioInput alloc] initWithSettings:&_audioSettings];
-        _audioOutput = [[MKAudioOutput alloc] initWithSettings:&_audioSettings];
+#if TARGET_OS_IPHONE == 1
+        if ([[MKAudio sharedAudio] echoCancellationAvailable] && _audioSettings.enableEchoCancellation) {
+            _audioDevice = [[MKVoiceProcessingDevice alloc] initWithSettings:&_audioSettings];
+        } else {
+            _audioDevice = [[MKiOSAudioDevice alloc] initWithSettings:&_audioSettings];
+        }
+#else
+# error Missing MKAudioDevice
+#endif
+        [_audioDevice setupDevice];
+        _audioInput = [[MKAudioInput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
+        _audioOutput = [[MKAudioOutput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
         if (_audioSettings.enableSideTone) {
             _sidetoneOutput = [[MKAudioOutputSidetone alloc] initWithSettings:&_audioSettings];
         }
-        [_audioInput setupDevice];
-        [_audioOutput setupDevice];
         _running = YES;
     }
 }
@@ -327,16 +347,6 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
 
 - (BOOL) echoCancellationAvailable {
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-    // Disable Echo Cancellation on iOS 6 due to its faulty VoiceProcessingIO.
-    NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
-    NSArray *versionComponents = [systemVersion componentsSeparatedByString:@"."];
-    if (versionComponents.count == 0) {
-        return NO;
-    }
-    if ([[versionComponents objectAtIndex:0] integerValue] >= 6) {
-        return NO;
-    }
-
     NSDictionary *dict = nil;
     UInt32 valSize = sizeof(NSDictionary *);
     OSStatus err = AudioSessionGetProperty(kAudioSessionProperty_AudioRouteDescription, &valSize, &dict);
