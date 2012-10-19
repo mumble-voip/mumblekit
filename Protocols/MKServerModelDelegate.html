@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -55,6 +55,8 @@
 	<option value="//api/name/serverModel:channelRemoved:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:channelRemoved:</option>
 	
 	<option value="//api/name/serverModel:channelRenamed:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:channelRenamed:</option>
+	
+	<option value="//api/name/serverModel:didReceiveAccessControl:forChannel:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:didReceiveAccessControl:forChannel:</option>
 	
 	<option value="//api/name/serverModel:invalidUsernameErrorForName:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModel:invalidUsernameErrorForName:</option>
 	
@@ -136,6 +138,8 @@
 	
 	<option value="//api/name/serverModelChannelFullError:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelChannelFullError:</option>
 	
+	<option value="//api/name/serverModelChannelNameError:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelChannelNameError:</option>
+	
 	<option value="//api/name/serverModelDisconnected:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelDisconnected:</option>
 	
 	<option value="//api/name/serverModelInvalidChannelNameError:">&nbsp;&nbsp;&nbsp;&nbsp;- serverModelInvalidChannelNameError:</option>
@@ -203,6 +207,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:channelRemoved:">serverModel:channelRemoved:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:channelRenamed:">serverModel:channelRenamed:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:didReceiveAccessControl:forChannel:">serverModel:didReceiveAccessControl:forChannel:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModel:invalidUsernameErrorForName:">serverModel:invalidUsernameErrorForName:</a></span></li>
 	
@@ -284,6 +290,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelChannelFullError:">serverModelChannelFullError:</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelChannelNameError:">serverModelChannelNameError:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelDisconnected:">serverModelDisconnected:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverModelInvalidChannelNameError:">serverModelInvalidChannelNameError:</a></span></li>
@@ -328,7 +336,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKServerModelDelegate.html">MKServerModelDelegate</a> is the delegate of <a href="../Classes/MKServerModel.html">MKServerModel</a>.
+						<p>MKServerModelDelegate is the delegate of <a href="../Classes/MKServerModel.html">MKServerModel</a>.
 It is called to notify any registered delegates of events happening on the server, or
 of replies to previously sent messages.</p>
 					</div>
@@ -775,11 +783,26 @@ channel was full. (Note: A joinChannel: also counts as a move operation.)</p></s
 	
 </li><li>
 	<span class="tooltip">
+		<code><a href="#//api/name/serverModelChannelNameError:">&ndash;&nbsp;serverModelChannelNameError:</a></code>
+		<span class="tooltip"><p>Called when a channel create operation failed because the channel
+name was invalid.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
 		<code><a href="#//api/name/serverModel:permissionDeniedForReason:">&ndash;&nbsp;serverModel:permissionDeniedForReason:</a></code>
 		<span class="tooltip"><p>Called when a simple &lsquo;Permission denied.&rsquo; message is sufficient to show to the user.
 Can include a reason. This kind of permission error is also used as a fallback, if
 the server detects that a client is using a too old version of the Mumble protocol
 to understand all error types.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/serverModel:didReceiveAccessControl:forChannel:">&ndash;&nbsp;serverModel:didReceiveAccessControl:forChannel:</a></code>
+		<span class="tooltip"><p>Called after an access control request</p></span>
 	</span>
 	
 	
@@ -810,9 +833,11 @@ to understand all error types.</p></span>
 		<p>Called when a new channel is added.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> channelAdded:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -859,9 +884,11 @@ to understand all error types.</p></span>
 		<p>Called when a channel description is changed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> channelDescriptionChanged:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -908,9 +935,11 @@ to understand all error types.</p></span>
 		<p>Called when a channel (and all of its subchannels, and users) is re-parented.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> channelMoved:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -957,9 +986,11 @@ to understand all error types.</p></span>
 		<p>Called when a channel&rsquo;s position is changed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> channelPositionChanged:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1006,9 +1037,11 @@ to understand all error types.</p></span>
 		<p>Called when a channel is removed from the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> channelRemoved:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1055,9 +1088,11 @@ to understand all error types.</p></span>
 		<p>Called when a channel is renamed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> channelRenamed:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1095,6 +1130,62 @@ to understand all error types.</p></span>
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/serverModel:didReceiveAccessControl:forChannel:" title="serverModel:didReceiveAccessControl:forChannel:"></a>
+	<h3 class="subsubtitle method-title">serverModel:didReceiveAccessControl:forChannel:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called after an access control request</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> didReceiveAccessControl:(MKAccessControl *)<em>accessControl</em> forChannel:(MKChannel *)<em>channel</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> in which this event originated.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>accessControl</em></dt>
+			<dd><p>The requested access control.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>channel</em></dt>
+			<dd><p>The channel to which access control refers.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/serverModel:invalidUsernameErrorForName:" title="serverModel:invalidUsernameErrorForName:"></a>
 	<h3 class="subsubtitle method-title">serverModel:invalidUsernameErrorForName:</h3>
 	
@@ -1104,9 +1195,11 @@ to understand all error types.</p></span>
 		<p>Called when an action involving an invalid username occurs.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> invalidUsernameErrorForName:(NSString *)<em>name</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1154,9 +1247,11 @@ to understand all error types.</p></span>
 This method is deprecated, see <a href="#//api/name/serverModel:joinedServerAsUser:withWelcomeMessage:">serverModel:joinedServerAsUser:withWelcomeMessage:</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> joinedServerAsUser:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1203,9 +1298,11 @@ This method is deprecated, see <a href="#//api/name/serverModel:joinedServerAsUs
 		<p>Called upon successfully authenticating with a server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> joinedServerAsUser:(MKUser *)<em>user</em> withWelcomeMessage:(MKTextMessage *)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1257,9 +1354,11 @@ This method is deprecated, see <a href="#//api/name/serverModel:joinedServerAsUs
 		<p>Called when new channels links are added to a channel.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> linksAdded:(NSArray *)<em>newLinks</em> toChannel:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1311,9 +1410,11 @@ This method is deprecated, see <a href="#//api/name/serverModel:joinedServerAsUs
 		<p>Called when a channel&rsquo;s links change.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> linksChangedForChannel:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1360,9 +1461,11 @@ This method is deprecated, see <a href="#//api/name/serverModel:joinedServerAsUs
 		<p>Called when channel links are removed from a channel.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> linksRemoved:(NSArray *)<em>removedLinks</em> fromChannel:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1415,9 +1518,11 @@ This method is deprecated, see <a href="#//api/name/serverModel:joinedServerAsUs
 mostly during initial connect).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> linksSet:(NSArray *)<em>newLinks</em> forChannel:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1469,9 +1574,11 @@ mostly during initial connect).</p>
 		<p>Called when a certificate is needed, but not persent, for a given operation.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> missingCertificateErrorForUser:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1518,9 +1625,11 @@ mostly during initial connect).</p>
 		<p>Called when a permission error occurred for a given channel for a given user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> permissionDenied:(MKPermission)<em>perm</em> forUser:(MKUser *)<em>user</em> inChannel:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1580,9 +1689,11 @@ the server detects that a client is using a too old version of the Mumble protoc
 to understand all error types.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> permissionDeniedForReason:(NSString *)<em>reason</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1629,9 +1740,11 @@ to understand all error types.</p>
 		<p>Called whenever a text message is receieved.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> textMessageReceived:(MKTextMessage *)<em>msg</em> fromUser:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1683,9 +1796,11 @@ to understand all error types.</p>
 		<p>Called when the user&rsquo;s authenticated flag changes.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userAuthenticatedStateChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1734,9 +1849,11 @@ When a user is banned, he is also kicked from the server at the
 same time.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userBanned:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em> forReason:(NSString *)<em>reason</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1794,9 +1911,11 @@ ban was initiated by the server.</p></dd>
 		<p>Called when a user&rsquo;s comment is changed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userCommentChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1843,9 +1962,11 @@ ban was initiated by the server.</p></dd>
 		<p>Called when a user is deafened by another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userDeafened:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1898,9 +2019,11 @@ the server.</p></dd>
 		<p>Called when a user disconnects from the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userDisconnected:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1947,9 +2070,11 @@ the server.</p></dd>
 		<p>Called when a new user joins the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userJoined:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1996,9 +2121,11 @@ the server.</p></dd>
 		<p>Called when a user is kicked by another user (or the server).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userKicked:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em> forReason:(NSString *)<em>reason</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2056,9 +2183,11 @@ server initiated the kick.</p></dd>
 		<p>Called when a user leaves the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userLeft:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2107,9 +2236,11 @@ This is also called when a user changes the channel he resides in (in which
 case user is equivalent to mover).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMoved:(MKUser *)<em>user</em> toChannel:(MKChannel *)<em>chan</em> byUser:(MKUser *)<em>mover</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2174,9 +2305,11 @@ This is also called when a user changes the channel he resides in (in which
 case user is equivalent to mover).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMoved:(MKUser *)<em>user</em> toChannel:(MKChannel *)<em>chan</em> fromChannel:(MKChannel *)<em>prevChan</em> byUser:(MKUser *)<em>mover</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2244,9 +2377,11 @@ performed by the server, mover is nil.</p></dd>
 		<p>Called when a user&rsquo;s mute state changes.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMuteStateChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2293,9 +2428,11 @@ performed by the server, mover is nil.</p></dd>
 		<p>Called when a user is muted by another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMuted:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2348,9 +2485,11 @@ the server.</p></dd>
 		<p>Called when a user mutes-deafens another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userMutedAndDeafened:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2403,9 +2542,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user&rsquo;s priorty speaker flag changes.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userPrioritySpeakerChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2452,9 +2593,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user&rsquo;s recording flag changes.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userRecordingStateChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2501,9 +2644,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user removes his self-mute status.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userRemovedSelfMute:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2550,9 +2695,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user removes his self-mute-deafen status.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userRemovedSelfMuteAndDeafen:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2599,9 +2746,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user is renamed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userRenamed:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2648,9 +2797,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called by the <a href="../Classes/MKServerModel.html">MKServerModel</a> when a user&rsquo;s self-mute-deafen status changes.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userSelfMuteDeafenStateChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2697,9 +2848,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user self-mutes himself.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userSelfMuted:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2746,9 +2899,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user self-mute-deafens himself.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userSelfMutedAndDeafened:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2795,9 +2950,11 @@ May be nil if the server mute-deafened the user.</p></dd>
 		<p>Called when a user is suppressed by another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userSuppressed:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2853,9 +3010,11 @@ the <a href="../Classes/MKServerModel.html">MKServerModel</a> that audio data fr
 server model is being played back.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userTalkStateChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2902,9 +3061,11 @@ server model is being played back.</p>
 		<p>Called when a user&rsquo;s texture is changed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userTextureChanged:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -2951,9 +3112,11 @@ server model is being played back.</p>
 		<p>Called when a user is undeafened by another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userUndeafened:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3006,9 +3169,11 @@ by the server.</p></dd>
 		<p>Called when a user is unmuted by another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userUnmuted:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3061,9 +3226,11 @@ server.</p></dd>
 		<p>Called when a user removes mute-deafen status from another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userUnmutedAndUndeafened:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3116,9 +3283,11 @@ May be nil if the server removed the mute-deafen status.</p></dd>
 		<p>Called when a user is unsuppressed by another user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModel:(MKServerModel *)<em>model</em> userUnsuppressed:(MKUser *)<em>user</em> byUser:(MKUser *)<em>actor</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3172,9 +3341,58 @@ unsupressed by the server.</p></dd>
 channel was full. (Note: A joinChannel: also counts as a move operation.)</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModelChannelFullError:(MKServerModel *)<em>model</em></code></div>
+
+    
 	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>model</em></dt>
+			<dd><p>The <a href="../Classes/MKServerModel.html">MKServerModel</a> in which this error occurred.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/serverModelChannelNameError:" title="serverModelChannelNameError:"></a>
+	<h3 class="subsubtitle method-title">serverModelChannelNameError:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a channel create operation failed because the channel
+name was invalid.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)serverModelChannelNameError:(MKServerModel *)<em>model</em></code></div>
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3216,9 +3434,11 @@ channel was full. (Note: A joinChannel: also counts as a move operation.)</p>
 		<p>Called when disconnected from the server (forcefully or not).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModelDisconnected:(MKServerModel *)<em>model</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3261,9 +3481,11 @@ channel was full. (Note: A joinChannel: also counts as a move operation.)</p>
 which was not allowed by the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModelInvalidChannelNameError:(MKServerModel *)<em>model</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3305,9 +3527,11 @@ which was not allowed by the server.</p>
 		<p>Called when an attempt to modify the SuperUser failed.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModelModifySuperUserError:(MKServerModel *)<em>model</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3349,9 +3573,11 @@ which was not allowed by the server.</p>
 		<p>Called when an action could not be performed on a temporary channel.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModelTemporaryChannelError:(MKServerModel *)<em>model</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3393,9 +3619,11 @@ which was not allowed by the server.</p>
 		<p>Called when the server received a text message that was too long.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)serverModelTextMessageTooLongError:(MKServerModel *)<em>model</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -3440,9 +3668,9 @@ which was not allowed by the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-05-03)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-10-19)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>
@@ -3530,6 +3758,14 @@ which was not allowed by the server.</p>
 			}
 			
 			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
 		</script>
 	</body>
 </html>

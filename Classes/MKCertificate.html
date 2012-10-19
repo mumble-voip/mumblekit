@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -458,9 +458,11 @@ certificate.</p></span>
 		<p>Returns a new MKCertificate object from the given certificate and private key.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)certificateWithCertificate:(NSData *)<em>cert</em> privateKey:(NSData *)<em>privkey</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -514,9 +516,11 @@ where one wants to export the certificate in another format (for example PKCS12)
 		<p>Import a certificate from a PKCS12 file with the given password.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)certificateWithPKCS12:(NSData *)<em>pkcs12</em> password:(NSString *)<em>password</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -573,9 +577,11 @@ PKCS12 data blob. The PKCS12 blob will be encrypted and password protected with
 the given password.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (NSData *)exportCertificateChainAsPKCS12:(NSArray *)<em>chain</em> withPassword:(NSString *)<em>password</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -640,9 +646,11 @@ This generates a public and private keypair, and uses that key pair to create a 
 signed X.509 certificate that is compatible with Mumble.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)selfSignedCertificateWithName:(NSString *)<em>name</em> email:(NSString *)<em>email</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -699,9 +707,11 @@ This method optionally takes a <a href="../Classes/MKRSAKeyPair.html">MKRSAKeyPa
 generates.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>+ (MKCertificate *)selfSignedCertificateWithName:(NSString *)<em>name</em> email:(NSString *)<em>email</em> rsaKeyPair:(MKRSAKeyPair *)<em>keyPair</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -771,9 +781,11 @@ public and private keypair.</p>
 		<p>Returns the CN (Common Name) value of subject of the X.509 certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)commonName</code></div>
-	
+
+    
 	
 	
 	
@@ -811,9 +823,11 @@ public and private keypair.</p>
 of the receiving MKCertificate object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSData *)digest</code></div>
-	
+
+    
 	
 	
 	
@@ -851,9 +865,11 @@ of the receiving MKCertificate object.</p>
 (This email is looked after in Subject Alt. Names.)</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)emailAddress</code></div>
-	
+
+    
 	
 	
 	
@@ -892,9 +908,11 @@ The method will export both the certificate and its corresponding private key
 (if available) to the PKCS12 data blob.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSData *)exportPKCS12WithPassword:(NSString *)<em>password</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -950,9 +968,11 @@ chain array.</p>
 		<p>Determine whether the certificate has a certificate (and public key)</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)hasCertificate</code></div>
-	
+
+    
 	
 	
 	
@@ -990,9 +1010,11 @@ Otherwise, returns NO.</p>
 		<p>Determine whether the MKCertficiate object has private key data.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)hasPrivateKey</code></div>
-	
+
+    
 	
 	
 	
@@ -1031,9 +1053,11 @@ Otherwise, returns NO.</p>
 public key of the receiving MKCertificate object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)hexDigest</code></div>
-	
+
+    
 	
 	
 	
@@ -1071,9 +1095,11 @@ public key of the receiving MKCertificate object.</p>
 parentCert certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)isSignedBy:(MKCertificate *)<em>parentCert</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1120,9 +1146,11 @@ parentCert certificate.</p>
 		<p>Checks whether the signature of the receiver certificate is valid on the given date.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)isValidOnDate:(NSDate *)<em>date</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1171,9 +1199,11 @@ parentCert certificate.</p>
 certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)issuerItem:(NSString *)<em>item</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1223,9 +1253,11 @@ item was not found.</p>
 		<p>Returns the name of the body that issued the X.509 certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)issuerName</code></div>
-	
+
+    
 	
 	
 	
@@ -1265,9 +1297,11 @@ Note that a X.509 certificates can also be revoked, so the Not After date is not
 an authoritative method of determining certificate validity.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSDate *)notAfter</code></div>
-	
+
+    
 	
 	
 	
@@ -1305,9 +1339,11 @@ an authoritative method of determining certificate validity.</p>
 This determines the date from which the certificate is deemed valid.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSDate *)notBefore</code></div>
-	
+
+    
 	
 	
 	
@@ -1345,9 +1381,11 @@ This determines the date from which the certificate is deemed valid.</p>
 certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)subjectItem:(NSString *)<em>item</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1398,9 +1436,11 @@ was not found.</p>
 This can either be a common name, or an email address, depending on the certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)subjectName</code></div>
-	
+
+    
 	
 	
 	
@@ -1440,9 +1480,9 @@ This can either be a common name, or an email address, depending on the certific
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-05-03)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-10-19)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>
@@ -1530,6 +1570,14 @@ This can either be a common name, or an email address, depending on the certific
 			}
 			
 			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
 		</script>
 	</body>
 </html>

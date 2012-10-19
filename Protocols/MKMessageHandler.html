@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -166,7 +166,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p><a href="MKMessageHandler.html">MKMessageHandler</a> implements a set of methods that are called on the messageHandler
+						<p>MKMessageHandler implements a set of methods that are called on the messageHandler
 object of a <a href="../Classes/MKConnection.html">MKConnection</a> when new control channel messages arrive. Only messages that
 the <a href="../Classes/MKConnection.html">MKConnection</a> itself does not know how to handle are delegated to the messageHandler.</p>
 
@@ -332,9 +332,11 @@ VoiceTargetMessage value).</p></span>
 		<p>Called whenever an ACL message is receieved. (See MKMessageType&rsquo;s ACLMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleACLMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -382,9 +384,11 @@ VoiceTargetMessage value).</p></span>
 BanListMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleBanListMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -432,9 +436,11 @@ BanListMessage value).</p>
 ChannelRemoveMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleChannelRemoveMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -482,9 +488,11 @@ ChannelRemoveMessage value).</p>
 ChannelStateMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleChannelStateMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -532,9 +540,11 @@ ChannelStateMessage value).</p>
 ContextActionMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleContextActionMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -582,9 +592,11 @@ ContextActionMessage value).</p>
 ContextActionModify value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleContextActionModifyMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -632,9 +644,11 @@ ContextActionModify value).</p>
 PermissionDeniedMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handlePermissionDeniedMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -681,9 +695,11 @@ PermissionDeniedMessage value).</p>
 		<p>Called whenever a permission query message is receieved.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handlePermissionQueryMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -731,9 +747,11 @@ PermissionDeniedMessage value).</p>
 QueryUsersMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleQueryUsersMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -781,9 +799,11 @@ QueryUsersMessage value).</p>
 ServerSyncMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleServerSyncMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -831,9 +851,11 @@ ServerSyncMessage value).</p>
 TextMessageMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleTextMessageMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -881,9 +903,11 @@ TextMessageMessage value).</p>
 UserListMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleUserListMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -931,9 +955,11 @@ UserListMessage value).</p>
 UserRemoveMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleUserRemoveMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -981,9 +1007,11 @@ UserRemoveMessage value).</p>
 UserStateMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleUserStateMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1031,9 +1059,11 @@ UserStateMessage value).</p>
 VoiceTargetMessage value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connection:(MKConnection *)<em>conn</em> handleVoiceTargetMessage:(id)<em>msg</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1083,9 +1113,9 @@ VoiceTargetMessage value).</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-05-03)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-10-19)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>
@@ -1173,6 +1203,14 @@ VoiceTargetMessage value).</p>
 			}
 			
 			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
 		</script>
 	</body>
 </html>

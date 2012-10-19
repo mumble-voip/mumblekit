@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -93,6 +93,8 @@
 	<option value="//api/name/setForceTCP:">&nbsp;&nbsp;&nbsp;&nbsp;- setForceTCP:</option>
 	
 	<option value="//api/name/setIgnoreSSLVerification:">&nbsp;&nbsp;&nbsp;&nbsp;- setIgnoreSSLVerification:</option>
+	
+	<option value="//api/name/shouldUseOpus">&nbsp;&nbsp;&nbsp;&nbsp;- shouldUseOpus</option>
 	
 	
 	
@@ -181,6 +183,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setForceTCP:">setForceTCP:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setIgnoreSSLVerification:">setIgnoreSSLVerification:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/shouldUseOpus">shouldUseOpus</a></span></li>
 	
 </ul></li>
 
@@ -478,6 +482,13 @@ all possible).</p></span>
 	</span>
 	
 	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/shouldUseOpus">&ndash;&nbsp;shouldUseOpus</a></code>
+		<span class="tooltip"><p>Returns whether ot not the <a href="#//api/name/connected">connected</a> client should use the Opus codec.</p></span>
+	</span>
+	
+	
 </li>
 						</ul>
 						
@@ -505,9 +516,11 @@ all possible).</p></span>
 		<p>The current elected alpha codec, as determined by the server through a mojority vote.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSUInteger)alphaCodec</code></div>
-	
+
+    
 	
 	
 	
@@ -541,9 +554,11 @@ method has been called), this method must be used to authenticate with the remot
 Mumble server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)authenticateWithUsername:(NSString *)<em>user</em> password:(NSString *)<em>pass</em> accessTokens:(NSArray *)<em>tokens</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -601,9 +616,11 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 		<p>The currently elected beta codec, as determined by the server through a majority vote.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSUInteger)betaCodec</code></div>
-	
+
+    
 	
 	
 	
@@ -635,9 +652,11 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 		<p>Returns the certificate chain that is to be presented to the server during the next connection attempt.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSArray *)certificateChain</code></div>
-	
+
+    
 	
 	
 	
@@ -669,9 +688,11 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 		<p>Establish a connection to the given host and <a href="#//api/name/port">port</a>.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)connectToHost:(NSString *)<em>hostName</em> port:(NSUInteger)<em>port</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -718,9 +739,11 @@ This parameter may be nil if the user does not have any access tokens.</p></dd>
 		<p>The current status of the connection.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)connected</code></div>
-	
+
+    
 	
 	
 	
@@ -758,9 +781,11 @@ Returns NO otherwise.</p>
 		<p>Deallocate a MKConnection object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)dealloc</code></div>
-	
+
+    
 	
 	
 	
@@ -792,9 +817,11 @@ Returns NO otherwise.</p>
 		<p>Disconnect from the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)disconnect</code></div>
-	
+
+    
 	
 	
 	
@@ -826,9 +853,11 @@ Returns NO otherwise.</p>
 		<p>Returns the current Forced-TCP status of the MKConnection object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)forceTCP</code></div>
-	
+
+    
 	
 	
 	
@@ -866,9 +895,11 @@ is being tunelled through a TCP connection. Returns NO otherwise.</p>
 		<p>The hostname that the MKConnection is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)hostname</code></div>
-	
+
+    
 	
 	
 	
@@ -900,9 +931,11 @@ is being tunelled through a TCP connection. Returns NO otherwise.</p>
 		<p>Initialize a new MKConnection object.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)init</code></div>
-	
+
+    
 	
 	
 	
@@ -936,9 +969,11 @@ trust status of the server&rsquo;s certificate chain. This trust is based
 on the system&rsquo;s list of root certificate authorities.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)peerCertificateChainTrusted</code></div>
-	
+
+    
 	
 	
 	
@@ -971,9 +1006,11 @@ on the system&rsquo;s list of root certificate authorities.</p>
 containing the TLS certificate chain of the remote server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSArray *)peerCertificates</code></div>
-	
+
+    
 	
 	
 	
@@ -1010,9 +1047,11 @@ containing the TLS certificate chain of the remote server.</p>
 		<p>The port number on the host that the MKConnection is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSUInteger)port</code></div>
-	
+
+    
 	
 	
 	
@@ -1045,9 +1084,11 @@ containing the TLS certificate chain of the remote server.</p>
 all possible).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)preferAlphaCodec</code></div>
-	
+
+    
 	
 	
 	
@@ -1081,9 +1122,11 @@ all possible).</p>
 for self-signed certificates.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)reconnect</code></div>
-	
+
+    
 	
 	
 	
@@ -1117,9 +1160,11 @@ the Mumble server) using the given messageType as the token used for identifying
 how the contents of the message are to be handled by the remote server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sendMessageWithType:(MKMessageType)<em>messageType</em> data:(NSData *)<em>data</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1172,9 +1217,11 @@ the <a href="#//api/name/forceTCP">forceTCP</a> property has been changed to for
 tunelled through TCP.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sendVoiceData:(NSData *)<em>data</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1217,9 +1264,11 @@ tunelled through TCP.</p>
 MKConnection object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)serverOSName</code></div>
-	
+
+    
 	
 	
 	
@@ -1252,9 +1301,11 @@ MKConnection object is currently <a href="#//api/name/connected">connected</a> t
 server that the MKConnection object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)serverOSVersion</code></div>
-	
+
+    
 	
 	
 	
@@ -1287,9 +1338,11 @@ server that the MKConnection object is currently <a href="#//api/name/connected"
 object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)serverRelease</code></div>
-	
+
+    
 	
 	
 	
@@ -1322,9 +1375,11 @@ object is currently <a href="#//api/name/connected">connected</a> to.</p>
 object is currently <a href="#//api/name/connected">connected</a> to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)serverVersion</code></div>
-	
+
+    
 	
 	
 	
@@ -1358,9 +1413,11 @@ used during connection establishment, and as such, chaning this value while the
 MKConnection object is a conncted to a server has no effect.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setCertificateChain:(NSArray *)<em>chain</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1404,9 +1461,11 @@ through TCP. If at all possible, this should be kept as NO (which is also
 the default value).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setForceTCP:(BOOL)<em>shouldForceTCP</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1451,9 +1510,11 @@ errors that happen while verifying the server&rsquo;s certificate chain
 during the TLS handshake.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setIgnoreSSLVerification:(BOOL)<em>shouldIgnoreVerification</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1493,6 +1554,42 @@ errors. By default this is set to NO.</p></dd>
 	
 </div>
 						
+						<div class="section-method">
+	<a name="//api/name/shouldUseOpus" title="shouldUseOpus"></a>
+	<h3 class="subsubtitle method-title">shouldUseOpus</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns whether ot not the <a href="#//api/name/connected">connected</a> client should use the Opus codec.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)shouldUseOpus</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKConnection.h</code><br />
+	</div>				
+	
+	
+</div>
+						
 					</div>
 					
 					
@@ -1506,9 +1603,9 @@ errors. By default this is set to NO.</p></dd>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-05-03)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-10-19)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>
@@ -1596,6 +1693,14 @@ errors. By default this is set to NO.</p></dd>
 			}
 			
 			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
 		</script>
 	</body>
 </html>

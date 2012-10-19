@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=550" />
 		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
 		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.0.5 (build 774)" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
 	</head>
 	<body>
 		<header id="top_header">
@@ -50,6 +50,8 @@
 	
 	<option value="//api/name/connectedUser">&nbsp;&nbsp;&nbsp;&nbsp;- connectedUser</option>
 	
+	<option value="//api/name/createChannelWithName:parent:temporary:">&nbsp;&nbsp;&nbsp;&nbsp;- createChannelWithName:parent:temporary:</option>
+	
 	<option value="//api/name/hostname">&nbsp;&nbsp;&nbsp;&nbsp;- hostname</option>
 	
 	<option value="//api/name/initWithConnection:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithConnection:</option>
@@ -61,6 +63,8 @@
 	<option value="//api/name/registerConnectedUser">&nbsp;&nbsp;&nbsp;&nbsp;- registerConnectedUser</option>
 	
 	<option value="//api/name/removeDelegate:">&nbsp;&nbsp;&nbsp;&nbsp;- removeDelegate:</option>
+	
+	<option value="//api/name/requestAccessControlForChannel:">&nbsp;&nbsp;&nbsp;&nbsp;- requestAccessControlForChannel:</option>
 	
 	<option value="//api/name/rootChannel">&nbsp;&nbsp;&nbsp;&nbsp;- rootChannel</option>
 	
@@ -75,6 +79,8 @@
 	<option value="//api/name/serverCertificates">&nbsp;&nbsp;&nbsp;&nbsp;- serverCertificates</option>
 	
 	<option value="//api/name/serverCertificatesTrusted">&nbsp;&nbsp;&nbsp;&nbsp;- serverCertificatesTrusted</option>
+	
+	<option value="//api/name/setAccessControl:forChannel:">&nbsp;&nbsp;&nbsp;&nbsp;- setAccessControl:forChannel:</option>
 	
 	<option value="//api/name/setAccessTokens:">&nbsp;&nbsp;&nbsp;&nbsp;- setAccessTokens:</option>
 	
@@ -132,6 +138,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/connectedUser">connectedUser</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/createChannelWithName:parent:temporary:">createChannelWithName:parent:temporary:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hostname">hostname</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithConnection:">initWithConnection:</a></span></li>
@@ -143,6 +151,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/registerConnectedUser">registerConnectedUser</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeDelegate:">removeDelegate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/requestAccessControlForChannel:">requestAccessControlForChannel:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rootChannel">rootChannel</a></span></li>
 	
@@ -157,6 +167,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverCertificates">serverCertificates</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/serverCertificatesTrusted">serverCertificatesTrusted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAccessControl:forChannel:">setAccessControl:forChannel:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAccessTokens:">setAccessTokens:</a></span></li>
 	
@@ -332,6 +344,28 @@ connected to.</p></span>
 	</span>
 	
 	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/createChannelWithName:parent:temporary:">&ndash;&nbsp;createChannelWithName:parent:temporary:</a></code>
+		<span class="tooltip"><p>Create a new channel in the server the underlying <a href="../Classes/MKConnection.html">MKConnection</a> is currently
+connected to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/requestAccessControlForChannel:">&ndash;&nbsp;requestAccessControlForChannel:</a></code>
+		<span class="tooltip"><p>Ask the underlying connection to receive the access control for the given channel.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setAccessControl:forChannel:">&ndash;&nbsp;setAccessControl:forChannel:</a></code>
+		<span class="tooltip"><p>Set access control for a channel.</p></span>
+	</span>
+	
+	
 </li>
 						</ul>
 						
@@ -440,9 +474,11 @@ connected to.</p></span>
 		<p>Add a delegate. The delegate may only implement parts of the <a href="../Protocols/MKServerModelDelegate.html">MKServerModelDelegate</a> protocol.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)addDelegate:(id)<em>delegate</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -484,9 +520,11 @@ connected to.</p></span>
 		<p>Look up a channel by its channel ID.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (MKChannel *)channelWithId:(NSUInteger)<em>channelId</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -528,9 +566,68 @@ connected to.</p></span>
 		<p>Returns the connected user. The connected user is the user that</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (MKUser *)connectedUser</code></div>
+
+    
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/createChannelWithName:parent:temporary:" title="createChannelWithName:parent:temporary:"></a>
+	<h3 class="subsubtitle method-title">createChannelWithName:parent:temporary:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Create a new channel in the server the underlying <a href="../Classes/MKConnection.html">MKConnection</a> is currently
+connected to.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)createChannelWithName:(NSString *)<em>channelName</em> parent:(MKChannel *)<em>parent</em> temporary:(BOOL)<em>temp</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>channelName</em></dt>
+			<dd><p>The name of the channel to create.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>parent</em></dt>
+			<dd><p>The <a href="../Classes/MKChannel.html">MKChannel</a> that must contain the newly created one.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>temp</em></dt>
+			<dd><p>Specify if the channel is temporary or not.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -562,9 +659,11 @@ connected to.</p></span>
 		<p>Returns the hostname of the server that the MKServerModel is currently connected to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSString *)hostname</code></div>
-	
+
+    
 	
 	
 	
@@ -596,9 +695,11 @@ connected to.</p></span>
 		<p>Initialize a MKServerModel with the given connection.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (id)initWithConnection:(MKConnection *)<em>connection</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -640,9 +741,11 @@ connected to.</p></span>
 		<p>Ask the underlying connection to join the given channel.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)joinChannel:(MKChannel *)<em>channel</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -684,9 +787,11 @@ connected to.</p></span>
 		<p>Returns the port of the server that the MKServerModel is currently connected to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSInteger)port</code></div>
-	
+
+    
 	
 	
 	
@@ -718,9 +823,11 @@ connected to.</p></span>
 		<p>Registers the currently connected user with the server.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)registerConnectedUser</code></div>
-	
+
+    
 	
 	
 	
@@ -752,9 +859,11 @@ connected to.</p></span>
 		<p>Remove a delegate from the MKServerModel.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)removeDelegate:(id)<em>delegate</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -762,6 +871,52 @@ connected to.</p></span>
 		<dl class="argument-def parameter-def">
 			<dt><em>delegate</em></dt>
 			<dd><p>The delegate to remove.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/requestAccessControlForChannel:" title="requestAccessControlForChannel:"></a>
+	<h3 class="subsubtitle method-title">requestAccessControlForChannel:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Ask the underlying connection to receive the access control for the given channel.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)requestAccessControlForChannel:(MKChannel *)<em>channel</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>channel</em></dt>
+			<dd><p>The channel for which you are requesting the access control.</p></dd>
 		</dl>
 		
 	</div>
@@ -797,9 +952,11 @@ connected to.</p></span>
 connected to.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (MKChannel *)rootChannel</code></div>
-	
+
+    
 	
 	
 	
@@ -836,9 +993,11 @@ connected to.</p>
 		<p>Send a message to all users in the the channel chan.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toChannel:(MKChannel *)<em>chan</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -886,9 +1045,11 @@ connected to.</p>
 (subchannels, children of subchannels, and so on).</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toTree:(MKChannel *)<em>chan</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -935,9 +1096,11 @@ connected to.</p>
 		<p>Send a text message to the given destinations.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toTreeChannels:(NSArray *)<em>trees</em> andChannels:(NSArray *)<em>channels</em> andUsers:(NSArray *)<em>users</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1006,9 +1169,11 @@ specifically targetted at them.</p>
 		<p>Send a message to the user user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)sendTextMessage:(MKTextMessage *)<em>txtMsg</em> toUser:(MKUser *)<em>user</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1055,9 +1220,11 @@ specifically targetted at them.</p>
 		<p>Get the server&rsquo;s certificate chain.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (NSArray *)serverCertificates</code></div>
-	
+
+    
 	
 	
 	
@@ -1089,9 +1256,62 @@ specifically targetted at them.</p>
 		<p>Get whether or not the certificate chain is verified by the system&rsquo;s root CAs.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (BOOL)serverCertificatesTrusted</code></div>
+
+    
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKServerModel.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setAccessControl:forChannel:" title="setAccessControl:forChannel:"></a>
+	<h3 class="subsubtitle method-title">setAccessControl:forChannel:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set access control for a channel.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setAccessControl:(MKAccessControl *)<em>accessControl</em> forChannel:(MKChannel *)<em>channel</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>channel</em></dt>
+			<dd><p>The channel for which you are setting the access control.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>acl</em></dt>
+			<dd><p>The access control you want to set.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	
@@ -1123,9 +1343,11 @@ specifically targetted at them.</p>
 		<p>Set the list of access tokens for the currently connected user.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (void)setAccessTokens:(NSArray *)<em>tokens</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1169,9 +1391,11 @@ connected user.</p></dd>
 of their X.509 certificate.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (MKUser *)userWithHash:(NSString *)<em>hash</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1219,9 +1443,11 @@ does not exist on the server.</p>
 		<p>Look up a user by session ID.</p>
 	</div>		
 	
-	
+    
+
 	<div class="method-subsection method-declaration"><code>- (MKUser *)userWithSession:(NSUInteger)<em>session</em></code></div>
-	
+
+    
 	
 	<div class="method-subsection arguments-section parameters">
 		<h4 class="method-subtitle parameter-title">Parameters</h4>
@@ -1272,9 +1498,9 @@ if the user does not exist on the server.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-05-03)</span><br />
+						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-10-19)</span><br />
 						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 774)</a>.</span></p>
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
 					</div>
 				</div>
@@ -1362,6 +1588,14 @@ if the user does not exist on the server.</p>
 			}
 			
 			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
 		</script>
 	</body>
 </html>
