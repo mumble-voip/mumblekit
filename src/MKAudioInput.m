@@ -67,7 +67,13 @@
     BOOL                   _selfMuted;
     BOOL                   _muted;
     BOOL                   _suppressed;
-    
+ 
+	//atuzzi vadGate 
+    BOOL					_vadGateEnabled;
+    double					_vadGateTimeSeconds;
+	double					_vadOpenLastTime;
+	//atuzzi vadGate end
+
     NSMutableData          *_opusBuffer;
 }
 @end
@@ -92,7 +98,13 @@
     frameCounter = 0;
     _bufferedFrames = 0;
     
-    // Fall back to CELT if Opus is not enabled.
+	//atuzzi vadGate end vad
+	_vadGateEnabled = _settings.enableVadGate;
+	_vadGateTimeSeconds = _settings.vadGateTimeSeconds;
+	_vadOpenLastTime = [[NSDate date] timeIntervalSince1970];
+	//TUX vad gate end
+
+	// Fall back to CELT if Opus is not enabled.
     if (![[MKVersion sharedVersion] isOpusEnabled] && _settings.codec == MKCodecFormatOpus) {
         _settings.codec = MKCodecFormatCELT;
         NSLog(@"Falling back to CELT");
@@ -431,13 +443,32 @@
             level = ((_peakCleanMic)/96.0f) + 1.0;
         }
         _doTransmit = NO;
+		
+		//atuzzi vad gate change
         if (_settings.vadMax == 0 && _settings.vadMin == 0) {
             _doTransmit = NO;
         } else if (level > _settings.vadMax) {
             _doTransmit = YES;
+			if(_vadGateEnabled)
+				_vadOpenLastTime = [[NSDate date] timeIntervalSince1970];
         } else if (level > _settings.vadMin && _lastTransmit) {
             _doTransmit = YES;
-        }
+			if(_vadGateEnabled)
+				_vadOpenLastTime = [[NSDate date] timeIntervalSince1970];
+		}
+		else if (level < _settings.vadMin)
+		{
+			if(_vadGateEnabled)
+			{
+				double currTime = [[NSDate date] timeIntervalSince1970];
+				if((currTime - _vadOpenLastTime) < _vadGateTimeSeconds)
+				{
+					_doTransmit = YES;
+				}
+			}
+		}
+		//atuzzi vad gate change END
+		
     } else if (_settings.transmitType == MKTransmitTypeContinuous) {
         _doTransmit = YES;
     } else if (_settings.transmitType == MKTransmitTypeToggle) {
