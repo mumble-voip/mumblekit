@@ -48,11 +48,11 @@ typedef struct _MKAudioSettings {
     BOOL            enableEchoCancellation;
     BOOL            enableSideTone;
     float           sidetoneVolume;
-	
-    BOOL			enableComfortNoise;
-    float			comfortNoiseLevel;
-    BOOL			enableVadGate;
-    double			vadGateTimeSeconds;
+
+    BOOL            enableComfortNoise;
+    float           comfortNoiseLevel;
+    BOOL            enableVadGate;
+    double          vadGateTimeSeconds;
 } MKAudioSettings;
 
 /**

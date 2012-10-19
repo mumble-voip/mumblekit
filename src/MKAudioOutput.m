@@ -24,13 +24,11 @@
     NSLock               *_outputLock;
     NSMutableDictionary  *_outputs;
 
-	//atuzzi comfort noise generator
-	double				_cngAmpliScaler;
-	double				_cngLastSample;
-	long				_cngRegister1;
-	long				_cngRegister2;
-	BOOL				_cngEnabled;
-	//atuzzi comfort noise generator end
+    double                _cngAmpliScaler;
+    double                _cngLastSample;
+    long                  _cngRegister1;
+    long                  _cngRegister2;
+    BOOL                  _cngEnabled;
 }
 @end
 
@@ -50,16 +48,14 @@
         _numChannels = [_device numberOfInputChannels];
         _sampleSize = _numChannels * sizeof(short);
         
-		//atuzzi comfort noise generator init
-		_cngRegister1 = 0x67452301;
-		_cngRegister2 = 0xefcdab89;
-		_cngEnabled = settings->enableComfortNoise;
-		_cngAmpliScaler = 2.0f / 0xffffffff;
-		_cngAmpliScaler *= 0.00150;
-		_cngAmpliScaler *= settings->comfortNoiseLevel;
-		_cngLastSample = 0.0;
-		//atuzzi comfort noise generator init end
-		
+        _cngRegister1 = 0x67452301;
+        _cngRegister2 = 0xefcdab89;
+        _cngEnabled = settings->enableComfortNoise;
+        _cngAmpliScaler = 2.0f / 0xffffffff;
+        _cngAmpliScaler *= 0.00150;
+        _cngAmpliScaler *= settings->comfortNoiseLevel;
+        _cngLastSample = 0.0;
+            
        if (_speakerVolume) {
             free(_speakerVolume);
         }
@@ -149,32 +145,29 @@
     [mix release];
     [del release];
 
-	//atuzzi comfort noise generator if samples are all at ZERO
-	if(!retVal && _cngEnabled)
-	{
-		short *outputBuffer = (short *)frames;
-		for (i = 0; i < nsamp * _numChannels; ++i)
-		{
-			float	runningvalue;
-			
-			_cngRegister1 ^= _cngRegister2;
-			runningvalue = (float)_cngRegister2 * _cngAmpliScaler;
-			runningvalue += _cngLastSample; //one pole smoother
-			runningvalue *= 0.5;			//one pole smoother
-			_cngLastSample = runningvalue;
-			_cngRegister2 += _cngRegister1;
-			
-			if (runningvalue > 1.0f) {
-				outputBuffer[i] = 32768;
-			} else if (runningvalue < -1.0f) {
-				outputBuffer[i] = -32768;
-			} else {
-				outputBuffer[i] = runningvalue * 32768.0f;
-			}
-		}
-		retVal = YES;
-	}
-	//atuzzi comfort noise generator END
+    if(!retVal && _cngEnabled) {
+        short *outputBuffer = (short *)frames;
+        
+        for (i = 0; i < nsamp * _numChannels; ++i) {
+            float    runningvalue;
+            
+            _cngRegister1 ^= _cngRegister2;
+            runningvalue = (float)_cngRegister2 * _cngAmpliScaler;
+            runningvalue += _cngLastSample; //one pole smoother
+            runningvalue *= 0.5;            //one pole smoother
+            _cngLastSample = runningvalue;
+            _cngRegister2 += _cngRegister1;
+            
+            if (runningvalue > 1.0f) {
+                outputBuffer[i] = 32768;
+            } else if (runningvalue < -1.0f) {
+                outputBuffer[i] = -32768;
+            } else {
+                outputBuffer[i] = runningvalue * 32768.0f;
+            }
+        }
+        retVal = YES;
+    }
 
     return retVal;
 }
