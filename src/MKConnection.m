@@ -461,9 +461,11 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
             break;
         }
 
-        case NSStreamEventEndEncountered:
-            [self stopConnectionThread];
+        case NSStreamEventEndEncountered: {
+            NSError *err = [NSError errorWithDomain:@"MKConnection" code:0 userInfo:nil];
+            [self _handleError:err];
             break;
+        }
 
         default:
             NSLog(@"MKConnection: Unknown event (%u)", eventCode);
@@ -1042,7 +1044,6 @@ out:
 
     [pds release];
 }
-
 
 - (void) _messageRecieved:(NSData *)data {
     dispatch_queue_t main_queue = dispatch_get_main_queue();
