@@ -140,7 +140,7 @@
  *
  * @param model  The MKServerModel in which this event originated.
  * @param msg    The MKTextMessage object representing the received text message.
- * @param user   The MKUser that sent the text message.
+ * @param user   The MKUser that sent the text message (nil if the message was sent by the server).
  */
 - (void) serverModel:(MKServerModel *)model textMessageReceived:(MKTextMessage *)msg fromUser:(MKUser *)user;
 

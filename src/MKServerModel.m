@@ -444,10 +444,13 @@
 }
 
 - (void) connection:(MKConnection *)conn handleTextMessageMessage: (MPTextMessage *)msg {
-    if (![msg hasActor] || ![msg hasMessage]) {
+    if (![msg hasMessage]) {
         return;
     }
-    MKUser *sender = [self userWithSession:[msg actor]];
+    MKUser *sender = nil;
+    if ([msg hasActor]) {
+        sender = [self userWithSession:[msg actor]];
+    }
     MKTextMessage *txtMsg = [MKTextMessage messageWithString:[msg message]];
     [_delegate serverModel:self textMessageReceived:txtMsg fromUser:sender];
 }
