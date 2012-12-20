@@ -113,7 +113,6 @@
 		288211C7161CECD000E72F91 /* MKiOSAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288211C5161CECD000E72F91 /* MKiOSAudioDevice.h */; };
 		288211C8161CECD000E72F91 /* MKiOSAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 288211C5161CECD000E72F91 /* MKiOSAudioDevice.h */; };
 		288211C9161CECD000E72F91 /* MKiOSAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 288211C6161CECD000E72F91 /* MKiOSAudioDevice.m */; };
-		288211CA161CECD000E72F91 /* MKiOSAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 288211C6161CECD000E72F91 /* MKiOSAudioDevice.m */; };
 		28CC36EB132ED87100241269 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC36EA132ED87000241269 /* Security.framework */; };
 		28CC36ED132ED88200241269 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC36EC132ED88200241269 /* Foundation.framework */; };
 		28CC36EF132ED88A00241269 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC36EE132ED88A00241269 /* Cocoa.framework */; };
@@ -1015,7 +1014,6 @@
 				BCD11E0C158F40FA00321E06 /* MKChannelACL.m in Sources */,
 				BCD11E0E158F40FA00321E06 /* MKChannelGroup.m in Sources */,
 				288211C3161CE44B00E72F91 /* MKAudioDevice.m in Sources */,
-				288211CA161CECD000E72F91 /* MKiOSAudioDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

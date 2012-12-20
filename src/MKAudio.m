@@ -266,6 +266,8 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
         } else {
             _audioDevice = [[MKiOSAudioDevice alloc] initWithSettings:&_audioSettings];
         }
+#elif TARGET_OS_MAC == 1
+        _audioDevice = [[MKAudioDevice alloc] initWithSettings:&_audioSettings];
 #else
 # error Missing MKAudioDevice
 #endif
