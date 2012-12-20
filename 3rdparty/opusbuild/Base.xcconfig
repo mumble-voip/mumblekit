@@ -11,7 +11,7 @@ IPHONEOS_DEPLOYMENT_TARGET = 5.0
 //OTHER_LDFLAGS = -x c++
 OTHER_CFLAGS = -x c++
 
-HEADER_SEARCH_PATHS = . $(PROJECT_DIR)/../opus/silk/float $(PROJECT_DIR)/../opus/silk $(PROJECT_DIR)/../opus/include $(PROJECT_DIR)/../opus/celt
+HEADER_SEARCH_PATHS = . "$(PROJECT_DIR)/../opus/silk/float" "$(PROJECT_DIR)/../opus/silk" "$(PROJECT_DIR)/../opus/include" "$(PROJECT_DIR)/../opus/celt"
 ALWAYS_SEARCH_USER_PATHS = YES
 
 GCC_WARN_INHIBIT_ALL_WARNINGS = YES
