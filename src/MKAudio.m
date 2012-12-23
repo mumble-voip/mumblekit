@@ -9,8 +9,13 @@
 #import "MKAudioOutput.h"
 #import "MKAudioOutputSidetone.h"
 
-#import "MKVoiceProcessingDevice.h"
-#import "MKiOSAudioDevice.h"
+#if TARGET_OS_IPHONE == 1
+# import "MKVoiceProcessingDevice.h"
+# import "MKiOSAudioDevice.h"
+#elif TARGET_OS_MAC == 1
+# import "MKVoiceProcessingDevice.h"
+# import "MKMacAudioDevice.h"
+#endif
 
 #import <AudioUnit/AudioUnit.h>
 #import <AudioUnit/AUComponent.h>
@@ -267,7 +272,7 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
             _audioDevice = [[MKiOSAudioDevice alloc] initWithSettings:&_audioSettings];
         }
 #elif TARGET_OS_MAC == 1
-        _audioDevice = [[MKAudioDevice alloc] initWithSettings:&_audioSettings];
+        _audioDevice = [[MKMacAudioDevice alloc] initWithSettings:&_audioSettings];
 #else
 # error Missing MKAudioDevice
 #endif
