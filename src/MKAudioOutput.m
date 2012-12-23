@@ -45,7 +45,7 @@
         _outputs = [[NSMutableDictionary alloc] init];
         
         _mixerFrequency = [_device inputSampleRate];
-        _numChannels = [_device numberOfInputChannels];
+        _numChannels = [_device numberOfOutputChannels];
         _sampleSize = _numChannels * sizeof(short);
         
         _cngRegister1 = 0x67452301;
