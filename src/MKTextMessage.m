@@ -105,7 +105,9 @@
         }
     } else if ([elementName isEqualToString:@"a"]) {
         NSString *href = [attributeDict objectForKey:@"href"];
-        [_linksArray addObject:href];
+        if (href) {
+            [_linksArray addObject:href];
+        }
     }
 }
 
