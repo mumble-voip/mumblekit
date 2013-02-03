@@ -48,7 +48,9 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     
     err = AudioUnitRender(dev->_audioUnit, flags, ts, busnum, nframes, &dev->_buflist);
     if (err != noErr) {
+#ifndef TARGET_IPHONE_SIMULATOR
         NSLog(@"MKiOSAudioDevice: AudioUnitRender failed. err = %ld", err);
+#endif
         return err;
     }
     
