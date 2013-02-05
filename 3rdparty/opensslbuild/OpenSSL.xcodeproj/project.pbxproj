@@ -1261,6 +1261,8 @@
 		2852D775132AF4E70078051B /* str2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 2852D73A132AF4E70078051B /* str2key.c */; };
 		2852D776132AF4E70078051B /* xcbc_enc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2852D73B132AF4E70078051B /* xcbc_enc.c */; };
 		2852D777132AF4E70078051B /* xcbc_enc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2852D73B132AF4E70078051B /* xcbc_enc.c */; };
+		2876DB3416C1CB5D00BB7968 /* s3_cbc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2876DB3316C1CB5D00BB7968 /* s3_cbc.c */; };
+		2876DB3516C1CB5D00BB7968 /* s3_cbc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2876DB3316C1CB5D00BB7968 /* s3_cbc.c */; };
 		28F58C4A132AF1070053C348 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F58C49132AF1070053C348 /* Foundation.framework */; };
 		28F58C67132AF1690053C348 /* OpenSSL.pch in Headers */ = {isa = PBXBuildFile; fileRef = 28F58C66132AF1690053C348 /* OpenSSL.pch */; };
 		28F58C68132AF1690053C348 /* OpenSSL.pch in Headers */ = {isa = PBXBuildFile; fileRef = 28F58C66132AF1690053C348 /* OpenSSL.pch */; };
@@ -1895,6 +1897,7 @@
 		2852D739132AF4E70078051B /* set_key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = set_key.c; path = ../openssl/crypto/des/set_key.c; sourceTree = "<group>"; };
 		2852D73A132AF4E70078051B /* str2key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = str2key.c; path = ../openssl/crypto/des/str2key.c; sourceTree = "<group>"; };
 		2852D73B132AF4E70078051B /* xcbc_enc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = xcbc_enc.c; path = ../openssl/crypto/des/xcbc_enc.c; sourceTree = "<group>"; };
+		2876DB3316C1CB5D00BB7968 /* s3_cbc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = s3_cbc.c; path = ../openssl/ssl/s3_cbc.c; sourceTree = "<group>"; };
 		28F58C46132AF1070053C348 /* libOpenSSL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpenSSL.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F58C49132AF1070053C348 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		28F58C57132AF1170053C348 /* OpenSSL.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = OpenSSL.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2547,6 +2550,7 @@
 				2832A392132D8D5100939B95 /* s2_pkt.c */,
 				2832A393132D8D5100939B95 /* s2_srvr.c */,
 				2832A394132D8D5100939B95 /* s3_both.c */,
+				2876DB3316C1CB5D00BB7968 /* s3_cbc.c */,
 				2832A395132D8D5100939B95 /* s3_clnt.c */,
 				2832A396132D8D5100939B95 /* s3_enc.c */,
 				2832A397132D8D5100939B95 /* s3_lib.c */,
@@ -3763,6 +3767,7 @@
 				2832A45A132D8DE300939B95 /* gost2001_keyx.c in Sources */,
 				2832A45C132D8DE300939B95 /* gost2001.c in Sources */,
 				2832A45E132D8DE300939B95 /* gosthash.c in Sources */,
+				2876DB3416C1CB5D00BB7968 /* s3_cbc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4396,6 +4401,7 @@
 				2832A45B132D8DE300939B95 /* gost2001_keyx.c in Sources */,
 				2832A45D132D8DE300939B95 /* gost2001.c in Sources */,
 				2832A45F132D8DE300939B95 /* gosthash.c in Sources */,
+				2876DB3516C1CB5D00BB7968 /* s3_cbc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
