@@ -61,6 +61,8 @@
 	
 	<option value="//api/name/digest">&nbsp;&nbsp;&nbsp;&nbsp;- digest</option>
 	
+	<option value="//api/name/digestOfKind:">&nbsp;&nbsp;&nbsp;&nbsp;- digestOfKind:</option>
+	
 	<option value="//api/name/emailAddress">&nbsp;&nbsp;&nbsp;&nbsp;- emailAddress</option>
 	
 	<option value="//api/name/exportPKCS12WithPassword:">&nbsp;&nbsp;&nbsp;&nbsp;- exportPKCS12WithPassword:</option>
@@ -70,6 +72,8 @@
 	<option value="//api/name/hasPrivateKey">&nbsp;&nbsp;&nbsp;&nbsp;- hasPrivateKey</option>
 	
 	<option value="//api/name/hexDigest">&nbsp;&nbsp;&nbsp;&nbsp;- hexDigest</option>
+	
+	<option value="//api/name/hexDigestOfKind:">&nbsp;&nbsp;&nbsp;&nbsp;- hexDigestOfKind:</option>
 	
 	<option value="//api/name/isSignedBy:">&nbsp;&nbsp;&nbsp;&nbsp;- isSignedBy:</option>
 	
@@ -147,6 +151,8 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/digest">digest</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/digestOfKind:">digestOfKind:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/emailAddress">emailAddress</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/exportPKCS12WithPassword:">exportPKCS12WithPassword:</a></span></li>
@@ -156,6 +162,8 @@
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasPrivateKey">hasPrivateKey</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hexDigest">hexDigest</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hexDigestOfKind:">hexDigestOfKind:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isSignedBy:">isSignedBy:</a></span></li>
 	
@@ -317,8 +325,16 @@ The method will export both the certificate and its corresponding private key
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/digest">&ndash;&nbsp;digest</a></code>
-		<span class="tooltip"><p>Returns a SHA1 digest of raw DER-data backing the certificate and the public key
+		<span class="tooltip"><p>Returns a SHA1 digest of the raw DER-data backing the certificate and the public key
 of the receiving MKCertificate object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/digestOfKind:">&ndash;&nbsp;digestOfKind:</a></code>
+		<span class="tooltip"><p>Returns a <a href="#//api/name/digest">digest</a> of the given kind of the raw DER-data backing
+the certificate and the public key of the receiving MKCertificate object.</p></span>
 	</span>
 	
 	
@@ -327,6 +343,14 @@ of the receiving MKCertificate object.</p></span>
 		<code><a href="#//api/name/hexDigest">&ndash;&nbsp;hexDigest</a></code>
 		<span class="tooltip"><p>Returns a hex-encoded SHA1 <a href="#//api/name/digest">digest</a> of the raw DER-data backing the certifiate and the
 public key of the receiving MKCertificate object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hexDigestOfKind:">&ndash;&nbsp;hexDigestOfKind:</a></code>
+		<span class="tooltip"><p>Returns a hex-encoded <a href="#//api/name/digest">digest</a> of the given kind of the raw DER-data backing
+the certificate and the public key of the receiving MKCertificate object.</p></span>
 	</span>
 	
 	
@@ -819,7 +843,7 @@ public and private keypair.</p>
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Returns a SHA1 digest of raw DER-data backing the certificate and the public key
+		<p>Returns a SHA1 digest of the raw DER-data backing the certificate and the public key
 of the receiving MKCertificate object.</p>
 	</div>		
 	
@@ -834,6 +858,58 @@ of the receiving MKCertificate object.</p>
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
 		<p>An NSData object that holds the calculated SHA1 digest.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/digestOfKind:" title="digestOfKind:"></a>
+	<h3 class="subsubtitle method-title">digestOfKind:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns a <a href="#//api/name/digest">digest</a> of the given kind of the raw DER-data backing
+the certificate and the public key of the receiving MKCertificate object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSData *)digestOfKind:(NSString *)<em>digestKind</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>A</em></dt>
+			<dd><p><a href="#//api/name/digest">digest</a> kind (currently supports @&ldquo;sha1&rdquo; and @&ldquo;sha256&rdquo;.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An NSData object that holds the calculated <a href="#//api/name/digest">digest</a>.</p>
 	</div>
 	
 	
@@ -1064,6 +1140,48 @@ public key of the receiving MKCertificate object.</p>
 	<div class="method-subsection return">
 		<h4 class="method-subtitle parameter-title">Return Value</h4>
 		<p>A NSString with the (lowercase) hex-encoded SHA1 <a href="#//api/name/digest">digest</a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MKCertificate.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hexDigestOfKind:" title="hexDigestOfKind:"></a>
+	<h3 class="subsubtitle method-title">hexDigestOfKind:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns a hex-encoded <a href="#//api/name/digest">digest</a> of the given kind of the raw DER-data backing
+the certificate and the public key of the receiving MKCertificate object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)hexDigestOfKind:(NSString *)<em>digestKind</em></code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A NSString with the (lowercase) hex-encoded <a href="#//api/name/digest">digest</a>.</p>
 	</div>
 	
 	
@@ -1480,7 +1598,7 @@ This can either be a common name, or an email address, depending on the certific
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Mumble Developers. All rights reserved. (Last updated: 2012-10-19)</span><br />
+						<p><span class="copyright">&copy; 2013 Mumble Developers. All rights reserved. (Last updated: 2013-02-06)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
 						
