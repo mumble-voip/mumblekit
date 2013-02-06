@@ -476,28 +476,56 @@ static int add_ext(X509 * crt, int nid, char *value) {
 
 // Return a SHA1 digest of the contents of the certificate
 - (NSData *) digest {
-    if (_derCert == nil)
-        return nil;
+    return [self digestOfKind:@"sha1"];
+}
 
-    unsigned char buf[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1([_derCert bytes], [_derCert length], buf);
-    return [NSData dataWithBytes:buf length:CC_SHA1_DIGEST_LENGTH];
+// Return a digest of digestKind of the contents of the certificate.
+- (NSData *) digestOfKind:(NSString *)digestKind {
+    if (_derCert == nil) {
+        return nil;
+    }
+
+    digestKind = [digestKind lowercaseString];
+    if ([digestKind isEqualToString:@"sha1"]) {
+        unsigned char buf[CC_SHA1_DIGEST_LENGTH];
+        CC_SHA1([_derCert bytes], [_derCert length], buf);
+        return [NSData dataWithBytes:buf length:CC_SHA1_DIGEST_LENGTH];
+    } else if ([digestKind isEqualToString:@"sha256"]) {
+        unsigned char buf[CC_SHA256_DIGEST_LENGTH];
+        CC_SHA256([_derCert bytes], [_derCert length], buf);
+        return [NSData dataWithBytes:buf length:CC_SHA256_DIGEST_LENGTH];
+    }
+
+    return nil;
 }
 
 // Return a hex-encoded SHA1 digest of the contents of the certificate
 - (NSString *) hexDigest {
-    if (_derCert == nil)
-        return nil;
+    return [self hexDigestOfKind:@"sha1"];
+}
 
+// Return a hex-encoded digest of the given kind of the contents of the certificate.
+- (NSString *) hexDigestOfKind:(NSString *)digestKind {
+    if (_derCert == nil) {
+        return nil;
+    }
+
+    NSData *digest = [self digestOfKind:digestKind];
+    unsigned int len = [digest length];
+    if (len%2 != 0) {
+        return nil;
+    }
+
+    NSMutableData *hexStrBacking = [NSMutableData dataWithCapacity:2*len];
+    [hexStrBacking setLength:2*len];
+    unsigned char *hexstr = [hexStrBacking mutableBytes];
+    unsigned char *buf = (unsigned char *)[digest bytes];
     const char *tbl = "0123456789abcdef";
-    char hexstr[CC_SHA1_DIGEST_LENGTH*2 + 1];
-    unsigned char *buf = (unsigned char *)[[self digest] bytes];
-    for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+    for (int i = 0; i < len; i++) {
         hexstr[2*i+0] = tbl[(buf[i] >> 4) & 0x0f];
         hexstr[2*i+1] = tbl[buf[i] & 0x0f];
     }
-    hexstr[CC_SHA1_DIGEST_LENGTH*2] = 0;
-    return [NSString stringWithCString:hexstr encoding:NSASCIIStringEncoding];
+    return [[[NSString alloc] initWithData:hexStrBacking encoding:NSASCIIStringEncoding] autorelease];
 }
 
 // Returns a subject name that is suitable for display to a user.

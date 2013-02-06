@@ -163,12 +163,22 @@ extern NSString *MKCertificateItemSerialNumber;
 ///--------------------------
 
 /**
- * Returns a SHA1 digest of raw DER-data backing the certificate and the public key
+ * Returns a SHA1 digest of the raw DER-data backing the certificate and the public key
  * of the receiving MKCertificate object.
  *
  * @returns An NSData object that holds the calculated SHA1 digest.
  */
 - (NSData *) digest;
+
+/**
+ * Returns a digest of the given kind of the raw DER-data backing
+ * the certificate and the public key of the receiving MKCertificate object.
+ *
+ * @param  A digest kind (currently supports @"sha1" and @"sha256".
+ *
+ * @returns An NSData object that holds the calculated digest.
+ */
+- (NSData *) digestOfKind:(NSString *)digestKind;
 
 /**
  * Returns a hex-encoded SHA1 digest of the raw DER-data backing the certifiate and the
@@ -177,6 +187,14 @@ extern NSString *MKCertificateItemSerialNumber;
  * @returns A NSString with the (lowercase) hex-encoded SHA1 digest.
  */
 - (NSString *) hexDigest;
+
+/**
+ * Returns a hex-encoded digest of the given kind of the raw DER-data backing
+ * the certificate and the public key of the receiving MKCertificate object.
+ *
+ * @returns A NSString with the (lowercase) hex-encoded digest.
+ */
+- (NSString *) hexDigestOfKind:(NSString *)digestKind;
 
 ///---------------------
 /// @name Validity Dates
