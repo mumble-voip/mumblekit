@@ -19,7 +19,7 @@
 @implementation MKAudioOutputSidetone
 
 - (id) initWithSettings:(MKAudioSettings *)settings {
-    if (([super init])) {
+    if ((self = [super init])) {
         memcpy(&_settings, settings, sizeof(MKAudioSettings));
         _frames = [[NSMutableArray alloc] init];
         _filled = 0;
