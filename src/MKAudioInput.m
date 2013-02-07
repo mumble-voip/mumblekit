@@ -397,41 +397,6 @@
         doResetPreprocessor = NO;
     }
 
-    int isSpeech = 0;
-    if (_settings.enablePreprocessor) {
-        isSpeech = speex_preprocess_run(_preprocessorState, psMic);
-    } else {
-        BOOL resampled = micFrequency != sampleRate;
-        short *buf = resampled ? psOut : psMic;
-        int i;
-        for (i = 0; i < micLength; i++) {
-            float val = (buf[i] / 32767.0f) * (1.0f + _settings.micBoost);
-            if (val > 1.0f)
-                val = 1.0f;
-            buf[i] = val * 32767.0f;
-        }
-    }
-    
-    float sum = 1.0f;
-    int i;
-    for (i = 0; i < frameSize; i++) {
-        sum += psMic[i] * psMic[i];
-    }
-    float micLevel = sqrtf(sum / frameSize);
-    float peakSignal = 20.0f*log10f(micLevel/32768.0f);
-    if (-96.0f > peakSignal)
-        peakSignal = -96.0f;
-    
-    spx_int32_t prob = 0;
-    speex_preprocess_ctl(_preprocessorState, SPEEX_PREPROCESS_GET_PROB, &prob);
-    _speechProbability = prob / 100.0f;
-    
-    int arg;
-    speex_preprocess_ctl(_preprocessorState, SPEEX_PREPROCESS_GET_AGC_GAIN, &arg);
-    _peakCleanMic = peakSignal - (float)arg;
-    if (-96.0f > _peakCleanMic) {
-        _peakCleanMic = -96.0f;
-    }
     
     if (_settings.transmitType == MKTransmitTypeVAD) {
         float level = _speechProbability;
@@ -439,7 +404,7 @@
             level = ((_peakCleanMic)/96.0f) + 1.0;
         }
         _doTransmit = NO;
-
+        
         if (_settings.vadMax == 0 && _settings.vadMin == 0) {
             _doTransmit = NO;
         } else if (level > _settings.vadMax) {
@@ -467,13 +432,51 @@
     } else if (_settings.transmitType == MKTransmitTypeToggle) {
         _doTransmit = _forceTransmit;
     }
-
+    
     if (_selfMuted)
         _doTransmit = NO;
     if (_suppressed)
         _doTransmit = NO;
     if (_muted)
         _doTransmit = NO;
+    
+    if (_doTransmit) {
+        int isSpeech = 0;
+        if (_settings.enablePreprocessor) {
+            isSpeech = speex_preprocess_run(_preprocessorState, psMic);
+        } else {
+            BOOL resampled = micFrequency != sampleRate;
+            short *buf = resampled ? psOut : psMic;
+            int i;
+            for (i = 0; i < micLength; i++) {
+                float val = (buf[i] / 32767.0f) * (1.0f + _settings.micBoost);
+                if (val > 1.0f)
+                    val = 1.0f;
+                buf[i] = val * 32767.0f;
+            }
+        }
+        
+        float sum = 1.0f;
+        int i;
+        for (i = 0; i < frameSize; i++) {
+            sum += psMic[i] * psMic[i];
+        }
+        float micLevel = sqrtf(sum / frameSize);
+        float peakSignal = 20.0f*log10f(micLevel/32768.0f);
+        if (-96.0f > peakSignal)
+            peakSignal = -96.0f;
+        
+        spx_int32_t prob = 0;
+        speex_preprocess_ctl(_preprocessorState, SPEEX_PREPROCESS_GET_PROB, &prob);
+        _speechProbability = prob / 100.0f;
+        
+        int arg;
+        speex_preprocess_ctl(_preprocessorState, SPEEX_PREPROCESS_GET_AGC_GAIN, &arg);
+        _peakCleanMic = peakSignal - (float)arg;
+        if (-96.0f > _peakCleanMic) {
+            _peakCleanMic = -96.0f;
+        }
+    }
     
     if (_settings.enableSideTone && (_doTransmit || _lastTransmit)) {
         [self processSidetone];
