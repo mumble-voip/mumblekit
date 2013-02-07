@@ -110,7 +110,7 @@
         sampleRate = SAMPLE_RATE;
         frameSize = SAMPLE_RATE / 100;
         _opusEncoder = opus_encoder_create(SAMPLE_RATE, 1, OPUS_APPLICATION_VOIP, NULL);
-        opus_encoder_ctl(_opusEncoder, OPUS_SET_VBR(1));
+        opus_encoder_ctl(_opusEncoder, OPUS_SET_VBR(0)); // CBR
         NSLog(@"MKAudioInput: %i bits/s, %d Hz, %d sample Opus", _settings.quality, sampleRate, frameSize);
     } else if (_settings.codec == MKCodecFormatCELT) {
         sampleRate = SAMPLE_RATE;
@@ -317,16 +317,25 @@
         _bufferedFrames++;
         [_opusBuffer appendBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
         if (!isSpeech || _bufferedFrames >= _settings.audioPerPacket) {
+            // Ensure we have enough frames for the Opus encoder.
+            // Pad with silence if needed.
+            if (_bufferedFrames < _settings.audioPerPacket) {
+                NSUInteger numMissingFrames = _settings.audioPerPacket - _bufferedFrames;
+                NSUInteger extraBytes = numMissingFrames * frameSize * sizeof(short);
+                [_opusBuffer increaseLengthBy:extraBytes];
+                _bufferedFrames += numMissingFrames;
+            }
             if (!_lastTransmit) {
                 opus_encoder_ctl(_opusEncoder, OPUS_RESET_STATE, NULL);
             }
             opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
             len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, encbuf, max);
-            bitrate = len * 100 * 8;
             [_opusBuffer setLength:0];
             if (len <= 0) {
+                bitrate = 0;
                 return -1;
             }
+            bitrate = (len * 100 * 8) / _bufferedFrames;
             encoded = 1;
         }
     } else if (!useOpus && (_settings.codec == MKCodecFormatCELT || _settings.codec == MKCodecFormatOpus)) {

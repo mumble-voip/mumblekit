@@ -360,8 +360,6 @@
 
                 if (_msgType == UDPVoiceOpusMessage) {
                     decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], [frameData length], output, _audioBufferSize, 0);
-                    _outputSize = (int)(ceilf((float)decodedSamples * _freq) / (float)_sampleRate);
-                    [self resizeBuffer:_bufferFilled + _outputSize];
                 } else if (_msgType == UDPVoiceSpeexMessage) {
                     if ([frameData length] == 0) {
                         speex_decode(_speexDecoder, NULL, output);
@@ -412,7 +410,7 @@
                 }
             } else {
                 if (_msgType == UDPVoiceOpusMessage) {
-                    opus_decode_float(_opusDecoder, NULL, 0, output, _frameSize, 0);
+                    decodedSamples = opus_decode_float(_opusDecoder, NULL, 0, output, _frameSize, 0);
                 } else if (_msgType == UDPVoiceSpeexMessage) {
                     speex_decode(_speexDecoder, NULL, output);
                     for (unsigned int i = 0; i < _frameSize; i++)
@@ -471,7 +469,8 @@
 nextframe:
         {
             spx_uint32_t inlen = decodedSamples;
-            spx_uint32_t outlen = _outputSize;
+            spx_uint32_t outlen = (unsigned long)(ceilf((float)(decodedSamples * _freq) / (float)_sampleRate));
+            
             if (_resampler && _lastAlive) {
                 speex_resampler_process_float(_resampler, 0, _resamplerBuffer, &inlen, _buffer + _bufferFilled, &outlen);
             }
