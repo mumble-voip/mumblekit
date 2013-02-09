@@ -100,6 +100,7 @@
 - (void) _udpDataReady:(NSData *)data;
 - (void) _udpMessageReceived:(NSData *)data;
 - (void) _sendUDPMessage:(NSData *)data;
+- (void) _sendVoiceDataOnConnectionThread:(NSData *)data;
 
 // Error handling
 - (void) _handleError:(NSError *)streamError;
@@ -723,7 +724,20 @@ out:
 // Send a voice packet to the server.  The method will automagically figure
 // out whether it should be sent via UDP or TCP depending on the current
 // connection conditions.
+//
+// This is a wrapper that ensures the actual call will be made on the connection thread.
 - (void) sendVoiceData:(NSData *)data {
+    NSLog(@"sendVoiceData; thread = %i", [NSThread currentThread] == self);
+    if ([NSThread currentThread] == self) {
+        [self _sendVoiceDataOnConnectionThread:data];
+    } else {
+        [self performSelector:@selector(_sendVoiceDataOnConnectionThread:) onThread:self withObject:data waitUntilDone:NO];
+    }
+}
+
+// Send a voice packet. Must only be called on the MKConnection thread.
+// Internal MKConnection method. Use sendVoiceData to send actual voice data.
+- (void) _sendVoiceDataOnConnectionThread:(NSData *)data {
     if (!_readyVoice || !_connectionEstablished)
         return;
     if (!_forceTCP && _udpAvailable) {
