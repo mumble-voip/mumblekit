@@ -11,6 +11,8 @@
 - (id) initWithDevice:(MKAudioDevice *)device andSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
 
+- (void) setMainConnectionForAudio:(MKConnection *)conn;
+
 - (void) initializeMixer;
 
 - (void) resetPreprocessor;

@@ -41,8 +41,6 @@
 		2845A7A3132D9C220034D631 /* MKChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A788132D9C220034D631 /* MKChannel.m */; };
 		2845A7A4132D9C220034D631 /* MKConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A789132D9C220034D631 /* MKConnection.m */; };
 		2845A7A5132D9C220034D631 /* MKConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A789132D9C220034D631 /* MKConnection.m */; };
-		2845A7A6132D9C220034D631 /* MKConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78A132D9C220034D631 /* MKConnectionController.m */; };
-		2845A7A7132D9C220034D631 /* MKConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78A132D9C220034D631 /* MKConnectionController.m */; };
 		2845A7A8132D9C220034D631 /* MKCryptState_openssl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78B132D9C220034D631 /* MKCryptState_openssl.mm */; };
 		2845A7A9132D9C220034D631 /* MKCryptState_openssl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78B132D9C220034D631 /* MKCryptState_openssl.mm */; };
 		2845A7AA132D9C220034D631 /* MKPacketDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845A78C132D9C220034D631 /* MKPacketDataStream.m */; };
@@ -79,8 +77,6 @@
 		2845A7E6132D9C520034D631 /* MKChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CD132D9C520034D631 /* MKChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7E7132D9C520034D631 /* MKConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CE132D9C520034D631 /* MKConnection.h */; };
 		2845A7E8132D9C520034D631 /* MKConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CE132D9C520034D631 /* MKConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2845A7E9132D9C520034D631 /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CF132D9C520034D631 /* MKConnectionController.h */; };
-		2845A7EA132D9C520034D631 /* MKConnectionController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7CF132D9C520034D631 /* MKConnectionController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2845A7EB132D9C520034D631 /* MKCryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D0132D9C520034D631 /* MKCryptState.h */; };
 		2845A7EC132D9C520034D631 /* MKCryptState.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D0132D9C520034D631 /* MKCryptState.h */; settings = {ATTRIBUTES = (); }; };
 		2845A7ED132D9C520034D631 /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
@@ -366,7 +362,6 @@
 		2845A787132D9C220034D631 /* MKCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCertificate.m; path = src/MKCertificate.m; sourceTree = SOURCE_ROOT; };
 		2845A788132D9C220034D631 /* MKChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKChannel.m; path = src/MKChannel.m; sourceTree = SOURCE_ROOT; };
 		2845A789132D9C220034D631 /* MKConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKConnection.m; path = src/MKConnection.m; sourceTree = SOURCE_ROOT; };
-		2845A78A132D9C220034D631 /* MKConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKConnectionController.m; path = src/MKConnectionController.m; sourceTree = SOURCE_ROOT; };
 		2845A78B132D9C220034D631 /* MKCryptState_openssl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MKCryptState_openssl.mm; path = src/MKCryptState_openssl.mm; sourceTree = SOURCE_ROOT; };
 		2845A78C132D9C220034D631 /* MKPacketDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKPacketDataStream.m; path = src/MKPacketDataStream.m; sourceTree = SOURCE_ROOT; };
 		2845A78E132D9C220034D631 /* MKServerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKServerModel.m; path = src/MKServerModel.m; sourceTree = SOURCE_ROOT; };
@@ -385,7 +380,6 @@
 		2845A7CC132D9C520034D631 /* MKCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCertificate.h; path = src/MumbleKit/MKCertificate.h; sourceTree = SOURCE_ROOT; };
 		2845A7CD132D9C520034D631 /* MKChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKChannel.h; path = src/MumbleKit/MKChannel.h; sourceTree = SOURCE_ROOT; };
 		2845A7CE132D9C520034D631 /* MKConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKConnection.h; path = src/MumbleKit/MKConnection.h; sourceTree = SOURCE_ROOT; };
-		2845A7CF132D9C520034D631 /* MKConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKConnectionController.h; path = src/MumbleKit/MKConnectionController.h; sourceTree = SOURCE_ROOT; };
 		2845A7D0132D9C520034D631 /* MKCryptState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCryptState.h; path = src/MKCryptState.h; sourceTree = SOURCE_ROOT; };
 		2845A7D1132D9C520034D631 /* MKPacketDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKPacketDataStream.h; path = src/MKPacketDataStream.h; sourceTree = SOURCE_ROOT; };
 		2845A7D3132D9C520034D631 /* MKServerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKServerModel.h; path = src/MumbleKit/MKServerModel.h; sourceTree = SOURCE_ROOT; };
@@ -542,7 +536,6 @@
 				BCD11E07158F40FA00321E06 /* MKChannelACL.m */,
 				BCD11E08158F40FA00321E06 /* MKChannelGroup.m */,
 				2845A789132D9C220034D631 /* MKConnection.m */,
-				2845A78A132D9C220034D631 /* MKConnectionController.m */,
 				2845A78B132D9C220034D631 /* MKCryptState_openssl.mm */,
 				2845A78C132D9C220034D631 /* MKPacketDataStream.m */,
 				2845A78E132D9C220034D631 /* MKServerModel.m */,
@@ -567,7 +560,6 @@
 				BCD11DF5158F40A900321E06 /* MKChannelACL.h */,
 				BCD11DF6158F40A900321E06 /* MKChannelGroup.h */,
 				2845A7CE132D9C520034D631 /* MKConnection.h */,
-				2845A7CF132D9C520034D631 /* MKConnectionController.h */,
 				BCD11DF1158F3FD600321E06 /* MKPermission.h */,
 				2845A7D3132D9C520034D631 /* MKServerModel.h */,
 				282F6B0613624187008F555B /* MKServerPinger.h */,
@@ -724,7 +716,6 @@
 				BCD11DFA158F40A900321E06 /* MKChannelACL.h in Headers */,
 				BCD11DFC158F40A900321E06 /* MKChannelGroup.h in Headers */,
 				2845A7E8132D9C520034D631 /* MKConnection.h in Headers */,
-				2845A7EA132D9C520034D631 /* MKConnectionController.h in Headers */,
 				BCD11DF3158F3FD600321E06 /* MKPermission.h in Headers */,
 				2845A7F2132D9C520034D631 /* MKServerModel.h in Headers */,
 				282F6B0913624187008F555B /* MKServerPinger.h in Headers */,
@@ -766,7 +757,6 @@
 				2845A7E3132D9C520034D631 /* MKCertificate.h in Headers */,
 				2845A7E5132D9C520034D631 /* MKChannel.h in Headers */,
 				2845A7E7132D9C520034D631 /* MKConnection.h in Headers */,
-				2845A7E9132D9C520034D631 /* MKConnectionController.h in Headers */,
 				2845A7EB132D9C520034D631 /* MKCryptState.h in Headers */,
 				2845A7ED132D9C520034D631 /* MKPacketDataStream.h in Headers */,
 				2845A7F1132D9C520034D631 /* MKServerModel.h in Headers */,
@@ -1004,7 +994,6 @@
 				2845A7A1132D9C220034D631 /* MKCertificate.m in Sources */,
 				2845A7A3132D9C220034D631 /* MKChannel.m in Sources */,
 				2845A7A5132D9C220034D631 /* MKConnection.m in Sources */,
-				2845A7A7132D9C220034D631 /* MKConnectionController.m in Sources */,
 				2845A7A9132D9C220034D631 /* MKCryptState_openssl.mm in Sources */,
 				2845A7AB132D9C220034D631 /* MKPacketDataStream.m in Sources */,
 				2845A7AF132D9C220034D631 /* MKServerModel.m in Sources */,
@@ -1040,7 +1029,6 @@
 				2845A7A0132D9C220034D631 /* MKCertificate.m in Sources */,
 				2845A7A2132D9C220034D631 /* MKChannel.m in Sources */,
 				2845A7A4132D9C220034D631 /* MKConnection.m in Sources */,
-				2845A7A6132D9C220034D631 /* MKConnectionController.m in Sources */,
 				2845A7A8132D9C220034D631 /* MKCryptState_openssl.mm in Sources */,
 				2845A7AA132D9C220034D631 /* MKPacketDataStream.m in Sources */,
 				2845A7AE132D9C220034D631 /* MKServerModel.m in Sources */,

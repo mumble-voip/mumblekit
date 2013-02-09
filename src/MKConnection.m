@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 #import <MumbleKit/MKConnection.h>
-#import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKUser.h>
 #import <MumbleKit/MKVersion.h>
 #import <MumbleKit/MKCertificate.h>
@@ -238,7 +237,9 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 
         _connectionEstablished = NO;
         _rejected = NO;
-        [[MKConnectionController sharedController] removeConnection:self];
+
+        // Remove the connection as the main connection for audio.
+        [[MKAudio sharedAudio] setMainConnectionForAudio:nil];
 
     } while (_reconnect);
 
@@ -289,7 +290,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 }
 
 - (void) disconnect {
-    [[MKConnectionController sharedController] removeConnection:self];
     [self stopConnectionThread];
     while ([self isExecuting] && ![self isFinished]) {
         // Wait for the thread to be done...
@@ -438,8 +438,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
                 // Make TLS trust status available to clients.
                 [self _updateTLSTrustedStatus];
                 
-                // Add the connection to the MKConnectionController...
-                [[MKConnectionController sharedController] addConnection:self];
+                // Add the connection as the main connection.
+                [[MKAudio sharedAudio] setMainConnectionForAudio:self];
                 
                 // Schedule our ping timer.
                 _pingTimer = [NSTimer timerWithTimeInterval:MKConnectionPingInterval target:self selector:@selector(_pingTimerFired:) userInfo:nil repeats:YES];

@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-#import <MumbleKit/MKConnectionController.h>
 #import <MumbleKit/MKServerModel.h>
 #import <MumbleKit/MKVersion.h>
+#import <MumbleKit/MKConnection.h>
 #import "MKPacketDataStream.h"
 #import "MKAudioInput.h"
 #import "MKAudioOutputSidetone.h"
@@ -73,6 +73,8 @@
     double                 _vadOpenLastTime;
 
     NSMutableData          *_opusBuffer;
+    
+    MKConnection           *_connection;
 }
 @end
 
@@ -196,6 +198,12 @@
     [super dealloc];
 }
 
+- (void) setMainConnectionForAudio:(MKConnection *)conn {
+    @synchronized(self) {
+        _connection = conn;
+    }
+}
+
 - (void) initializeMixer {
     int err;
 
@@ -302,10 +310,8 @@
     if (_lastTransmit) {
         useOpus = udpMessageType == UDPVoiceOpusMessage;
     } else if ([[MKVersion sharedVersion] isOpusEnabled]) {
-        NSArray *conns = [[MKConnectionController sharedController] allConnections];
-        if ([conns count] > 0) {
-            MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
-            useOpus = [conn shouldUseOpus];
+        @synchronized(self) {
+            useOpus = [_connection shouldUseOpus];
         }
     }
     
@@ -347,16 +353,20 @@
         }
         
         // Make sure our messageType is set up correctly....
-        // This is just temporary. We should have a MKCodecController that should handle this.
-        NSArray *conns = [[MKConnectionController sharedController] allConnections];
-        if ([conns count] > 0) {
-            MKConnection *conn = [[conns objectAtIndex:0] pointerValue];
-            if ([conn connected]) {
-                NSUInteger ourCodec = 0x8000000b;
-                NSUInteger alpha = [conn alphaCodec];
-                NSUInteger beta = [conn betaCodec];
-                BOOL preferAlpha = [conn preferAlphaCodec];
-                
+        {
+            BOOL update = NO;
+            NSUInteger ourCodec = 0x8000000b;
+            NSUInteger alpha, beta;
+            BOOL preferAlpha;
+            @synchronized(self) {
+                if ([_connection connected]) {
+                    alpha = [_connection alphaCodec];
+                    beta = [_connection betaCodec];
+                    preferAlpha = [_connection preferAlphaCodec];
+                    update = YES;
+                }
+            }
+            if (update) {
                 NSInteger newCodec = preferAlpha ? alpha : beta;
                 NSInteger msgType = preferAlpha ? UDPVoiceCELTAlphaMessage : UDPVoiceCELTBetaMessage;
                 
@@ -369,6 +379,7 @@
                 }
             }
         }
+
         if (!_lastTransmit) {
             celt_encoder_ctl(encoder, CELT_RESET_STATE);
         }
@@ -568,12 +579,8 @@
     NSData *msgData = [[NSData alloc] initWithBytes:data length:len];
     [pds release];
     
-    // fixme(mkrautz): Fix locking...
-    MKConnectionController *conns = [MKConnectionController sharedController];
-    NSArray *connections = [conns allConnections];
-    for (NSValue *val in connections) {
-        MKConnection *conn = [val pointerValue];
-        [conn sendVoiceData:msgData];
+    @synchronized(self) {
+        [_connection sendVoiceData:msgData];
     }
 
     [msgData release];

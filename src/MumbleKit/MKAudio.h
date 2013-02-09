@@ -142,6 +142,20 @@ typedef struct _MKAudioSettings {
  */
 - (BOOL) echoCancellationAvailable;
 
+/**
+ * Sets the main connection for audio purposes.  This is the connection
+ * that the audio input code will use when tramitting produced packets.
+ *
+ * Currently, this method should not be used. It is a future API.
+ * Internally, any constructed MKConnection will implicitly register
+ * itself as the main connection for audio purposes. In the future,
+ * this will be an explicit choice instead, allowing multiple
+ * connections to live alongside eachother.
+ *
+ * @param  conn  The MKConnection to set as the main connection
+ *               for audio purposes.
+ */
+- (void) setMainConnectionForAudio:(MKConnection *)conn;
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
 - (MKAudioOutputSidetone *) sidetoneOutput;
 - (float) speechProbablity;

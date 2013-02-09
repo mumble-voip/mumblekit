@@ -1,0 +1,16 @@
+This tracks important changes in MumbleKits API.
+
+Feb 9 2013
+==========
+
+ - Removed the acidentally public MKConnectionController.
+ - Added the concept of a main connection for audio purposes.
+ - Any constructed MKConnection will implicitly register itself as
+   the main connection for audio. This means that only a single
+   connection may be constructed in a given application. This is
+   done to ease the migration for users of MumbleKit that aren't
+   Mumble for iOS.
+ - In time, setting the main connection for audio purposes will be
+   an explicit action. It is already exposed in the API (via MKAudio),
+   but should not be touched until the implicit registration in MKConnection
+   is removed.

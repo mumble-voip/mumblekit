@@ -8,6 +8,7 @@
 #import "MKAudioInput.h"
 #import "MKAudioOutput.h"
 #import "MKAudioOutputSidetone.h"
+#import <MumbleKit/MKConnection.h>
 
 #if TARGET_OS_IPHONE == 1
 # import "MKVoiceProcessingDevice.h"
@@ -32,6 +33,7 @@ NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
     MKAudioInput             *_audioInput;
     MKAudioOutput            *_audioOutput;
     MKAudioOutputSidetone    *_sidetoneOutput;
+    MKConnection             *_connection;
     MKAudioSettings          _audioSettings;
     BOOL                     _running;
 }
@@ -278,6 +280,7 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
 #endif
         [_audioDevice setupDevice];
         _audioInput = [[MKAudioInput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
+        [_audioInput setMainConnectionForAudio:_connection];
         _audioOutput = [[MKAudioOutput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
         if (_audioSettings.enableSideTone) {
             _sidetoneOutput = [[MKAudioOutputSidetone alloc] initWithSettings:&_audioSettings];
@@ -292,6 +295,15 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
     [self start];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:MKAudioDidRestartNotification object:self];
+}
+
+- (void) setMainConnectionForAudio:(MKConnection *)conn {
+    @synchronized(self) {
+        [conn retain];
+        [_audioInput setMainConnectionForAudio:conn];
+        [_connection release];
+        _connection = conn;
+    }
 }
 
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType {
