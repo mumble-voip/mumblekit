@@ -727,7 +727,6 @@ out:
 //
 // This is a wrapper that ensures the actual call will be made on the connection thread.
 - (void) sendVoiceData:(NSData *)data {
-    NSLog(@"sendVoiceData; thread = %i", [NSThread currentThread] == self);
     if ([NSThread currentThread] == self) {
         [self _sendVoiceDataOnConnectionThread:data];
     } else {
