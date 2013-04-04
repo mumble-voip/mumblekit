@@ -174,6 +174,7 @@
 }
 
 - (void) dealloc {
+    [_device setupInput:NULL];
     [_device release];
 
     [frameList release];
