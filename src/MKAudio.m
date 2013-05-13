@@ -29,6 +29,7 @@
 NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
 
 @interface MKAudio () {
+    id<MKAudioDelegate>      _delegate;
     MKAudioDevice            *_audioDevice;
     MKAudioInput             *_audioInput;
     MKAudioOutput            *_audioOutput;
@@ -37,6 +38,7 @@ NSString *MKAudioDidRestartNotification = @"MKAudioDidRestartNotification";
     MKAudioSettings          _audioSettings;
     BOOL                     _running;
 }
+- (BOOL) _audioShouldBeRunning;
 @end
 
 #if TARGET_OS_IPHONE == 1
@@ -52,7 +54,9 @@ static void MKAudio_InterruptCallback(void *udata, UInt32 interrupt) {
             NSLog(@"MKAudio: unable to set MixWithOthers property in InterruptCallback.");
         }
 
-        [audio start];
+        if ([audio _audioShouldBeRunning]) {
+            [audio start];
+        }
     }
 }
 
@@ -85,7 +89,11 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
             NSLog(@"MKAudio: unable to set MixWithOthers property in AudioInputAvailableCallback.");
         }
 
-        [audio restart];
+        if ([audio _audioShouldBeRunning]) {
+            [audio restart];
+        } else {
+            [audio stop];
+        }
     }
 }
 
@@ -105,8 +113,13 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
         NSLog(@"MKAudio: unable to set MixWithOthers property in AudioRouteChangedCallback.");
     }
     
-    NSLog(@"MKAudio: audio route changed, restarting audio; reason=%i", reason);
-    [audio restart];
+    if ([audio _audioShouldBeRunning]) {
+        NSLog(@"MKAudio: audio route changed, restarting audio; reason=%i", reason);
+        [audio restart];
+    } else {
+        NSLog(@"MKAudio: audio route changed, stopping audio (because delegate said so); reason=%i", reason);
+        [audio stop];
+    }
 }
 
 static void MKAudio_SetupAudioSession(MKAudio *audio) {
@@ -235,6 +248,23 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
     @synchronized(self) {
         memcpy(&_audioSettings, settings, sizeof(MKAudioSettings));
     }
+}
+
+// Should audio be running?
+- (BOOL) _audioShouldBeRunning {
+    // If a delegate is provided, we should call that.
+    if ([(id)_delegate respondsToSelector:@selector(audioShouldBeRunning:)]) {
+        return [_delegate audioShouldBeRunning:self];
+    }
+    
+    // If no delegate is available, or the audioShouldBeRunning:
+    // method is not implemented in the delegate, fall back to something
+    // relatively sane.
+#if TARGET_OS_IPHONE == 1
+    return [[UIApplication sharedApplication] applicationState] == UIApplicationStateActive;
+#else
+    return YES;
+#endif
 }
 
 // Has MKAudio been started?
