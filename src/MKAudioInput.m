@@ -419,17 +419,17 @@
     }
 
     int isSpeech = 0;
+    BOOL resampled = micFrequency != sampleRate;
+    short *frame = resampled ? psOut : psMic;
     if (_settings.enablePreprocessor) {
-        isSpeech = speex_preprocess_run(_preprocessorState, psMic);
+        isSpeech = speex_preprocess_run(_preprocessorState, frame);
     } else {
-        BOOL resampled = micFrequency != sampleRate;
-        short *buf = resampled ? psOut : psMic;
         int i;
         for (i = 0; i < frameSize; i++) {
-            float val = (buf[i] / 32767.0f) * (1.0f + _settings.micBoost);
+            float val = (frame[i] / 32767.0f) * (1.0f + _settings.micBoost);
             if (val > 1.0f)
                 val = 1.0f;
-            buf[i] = val * 32767.0f;
+            frame[i] = val * 32767.0f;
         }
     }
     
