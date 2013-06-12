@@ -425,7 +425,7 @@
         BOOL resampled = micFrequency != sampleRate;
         short *buf = resampled ? psOut : psMic;
         int i;
-        for (i = 0; i < micLength; i++) {
+        for (i = 0; i < frameSize; i++) {
             float val = (buf[i] / 32767.0f) * (1.0f + _settings.micBoost);
             if (val > 1.0f)
                 val = 1.0f;
