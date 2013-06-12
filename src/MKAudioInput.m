@@ -264,10 +264,20 @@
 }
 
 - (void) processSidetone {
-    BOOL resampled = _micResampler != NULL;
-    NSData *data = [[NSData alloc] initWithBytes:(resampled ? psOut : psMic) length:frameSize*sizeof(short)];
-    [[[MKAudio sharedAudio] sidetoneOutput] addFrame:data];
-    [data release];
+    // Limit sidetone processing to when we have a 48KHz mic sampling rate.
+    // For newer iOS versions, we're always given 48KHz, but for OS X, we can't
+    // be certain. So this most certainly mutes the sidetone on OS X for many audio
+    // devices.
+    //
+    // When resampling from the internal 48KHz sampling rate to 32KHz for Speex UWB, this
+    // sidetone code path will be adding non-preprocessed frames to the sidetone output.
+    // This is a deliberate choice for now, because it allows us to avoid resampling a
+    // perhaps already resampled signal.
+    if (micFrequency == 48000) {
+        NSData *data = [[NSData alloc] initWithBytes:psMic length:micLength*sizeof(short)];
+        [[[MKAudio sharedAudio] sidetoneOutput] addFrame:data];
+        [data release];
+    }
 }
 
 - (void) resetPreprocessor {
