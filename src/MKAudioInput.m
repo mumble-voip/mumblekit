@@ -160,15 +160,15 @@
 
     udpMessageType = ~0;
     
-    [_device setupInput:^BOOL(short *frames, unsigned int nsamp) {
-        [self addMicrophoneDataWithBuffer:frames amount:nsamp];
-        return YES;
-    }];
-    
     micFrequency = [_device inputSampleRate];
     numMicChannels = [_device numberOfInputChannels];
     
     [self initializeMixer];
+ 
+    [_device setupInput:^BOOL(short *frames, unsigned int nsamp) {
+        [self addMicrophoneDataWithBuffer:frames amount:nsamp];
+        return YES;
+    }];
 
     return self;
 }
