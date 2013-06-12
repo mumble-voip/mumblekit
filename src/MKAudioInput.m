@@ -436,7 +436,7 @@
     float sum = 1.0f;
     int i;
     for (i = 0; i < frameSize; i++) {
-        sum += psMic[i] * psMic[i];
+        sum += frame[i] * frame[i];
     }
     float micLevel = sqrtf(sum / frameSize);
     float peakSignal = 20.0f*log10f(micLevel/32768.0f);
