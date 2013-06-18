@@ -2,7 +2,7 @@
 rev=$(git rev-parse HEAD)
 rm -rf ghpages
 git clone git@github.com:mumble-voip/mumblekit.git --branch gh-pages ghpages
-appledoc --project-version $(git rev-parse HEAD) AppledocSettings.plist
+doxygen Doxyfile
 rsync -avz html/* ghpages/
 cd ghpages
 git add .
