@@ -96,7 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">@class</span> <a class="code" href="interface_m_k_connection.html">MKConnection</a>;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">@class</span> MKPacketDataStream;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">@class</span> MKCryptState;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">@class</span> <a class="code" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">@class</span> <a class="code" href="interface_m_k_certificate.html">MKCertificate</a>;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    UDPVoiceCELTAlphaMessage = 0,</div>
@@ -152,128 +152,128 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    MKRejectReasonNoCertificate</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;} MKRejectReason;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="protocol_m_k_connection_delegate-p.html">   83</a></span>&#160;<span class="keyword">@protocol </span><a class="code" href="protocol_m_k_connection_delegate-p.html">MKConnectionDelegate</a></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;- (void) connectionOpened:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn unableToConnectWithError:(NSError *)err;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn closedWithError:(NSError *)err;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn trustFailureInCertificateChain:(NSArray *)chain;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn rejectedWithReason:(MKRejectReason)reason explanation:(NSString *)explanation;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">@end</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="code" href="protocol_m_k_message_handler-p.html">  140</a></span>&#160;<span class="keyword">@protocol </span><a class="code" href="protocol_m_k_message_handler-p.html">MKMessageHandler</a></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleBanListMessage: <span class="comment">/* MPBanList */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleServerSyncMessage: <span class="comment">/* MPServerSync */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handlePermissionDeniedMessage: <span class="comment">/* MPPermissionDenied */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleUserStateMessage: <span class="comment">/* MPUserState */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleUserRemoveMessage: <span class="comment">/* MPUserRemove */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleChannelStateMessage: <span class="comment">/* MPChannelState */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleChannelRemoveMessage: <span class="comment">/* MPChannelRemove */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleTextMessageMessage: <span class="comment">/* MPTextMessage */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleACLMessage: <span class="comment">/* MPACL */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleQueryUsersMessage: <span class="comment">/* MPQueryUsers */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleContextActionMessage: <span class="comment">/* MPContextAction */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleContextActionModifyMessage: <span class="comment">/* MPContextActionModify */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleUserListMessage: <span class="comment">/* MPUserList */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleVoiceTargetMessage: <span class="comment">/* MPVoiceTarget */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handlePermissionQueryMessage: <span class="comment">/* MPPermissionQuery */</span> (<span class="keywordtype">id</span>)msg;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keyword">@end</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00249"></a><span class="lineno"><a class="code" href="interface_m_k_connection.html">  249</a></span>&#160;<span class="keyword">@interface </span><a class="code" href="interface_m_k_connection.html">MKConnection</a> : NSThread &lt;NSStreamDelegate&gt;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;- (id) <a class="code" href="interface_m_k_connection.html#aa6074ceab355cf8c53d4ca2cfd691744" title="Initialize a new MKConnection object.">init</a>;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;- (void) <a class="code" href="interface_m_k_connection.html#aaa8a982ab2745afff6d176809a094264" title="Deallocate a MKConnection object.">dealloc</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="code" href="protocol_m_k_connection_delegate-p.html">   85</a></span>&#160;<span class="keyword">@protocol </span><a class="code" href="protocol_m_k_connection_delegate-p.html">MKConnectionDelegate</a></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;- (void) connectionOpened:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn unableToConnectWithError:(NSError *)err;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn closedWithError:(NSError *)err;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn trustFailureInCertificateChain:(NSArray *)chain;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn rejectedWithReason:(MKRejectReason)reason explanation:(NSString *)explanation;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">@end</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="code" href="protocol_m_k_message_handler-p.html">  144</a></span>&#160;<span class="keyword">@protocol </span><a class="code" href="protocol_m_k_message_handler-p.html">MKMessageHandler</a></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleBanListMessage: <span class="comment">/* MPBanList */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleServerSyncMessage: <span class="comment">/* MPServerSync */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handlePermissionDeniedMessage: <span class="comment">/* MPPermissionDenied */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleUserStateMessage: <span class="comment">/* MPUserState */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleUserRemoveMessage: <span class="comment">/* MPUserRemove */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleChannelStateMessage: <span class="comment">/* MPChannelState */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleChannelRemoveMessage: <span class="comment">/* MPChannelRemove */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleTextMessageMessage: <span class="comment">/* MPTextMessage */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleACLMessage: <span class="comment">/* MPACL */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleQueryUsersMessage: <span class="comment">/* MPQueryUsers */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleContextActionMessage: <span class="comment">/* MPContextAction */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleContextActionModifyMessage: <span class="comment">/* MPContextActionModify */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleUserListMessage: <span class="comment">/* MPUserList */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handleVoiceTargetMessage: <span class="comment">/* MPVoiceTarget */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;- (void) connection:(<a class="code" href="interface_m_k_connection.html">MKConnection</a> *)conn handlePermissionQueryMessage: <span class="comment">/* MPPermissionQuery */</span> (<span class="keywordtype">id</span>)msg;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="keyword">@end</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00255"></a><span class="lineno"><a class="code" href="interface_m_k_connection.html">  255</a></span>&#160;<span class="keyword">@interface </span><a class="code" href="interface_m_k_connection.html">MKConnection</a> : NSThread &lt;NSStreamDelegate&gt;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">#pragma mark -</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;- (void) connectToHost:(NSString *)hostName port:(NSUInteger)port;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;- (void) <a class="code" href="interface_m_k_connection.html#adc4e982552bfe3b6b9ce72bcbe56968d">reconnect</a>;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;- (void) <a class="code" href="interface_m_k_connection.html#a6a47f0d25ad9d8d3361407e9d30c7fc9" title="Disconnect from the server.">disconnect</a>;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#ad961af889c8c4a7e83d8d01a5dbe1aae">connected</a>;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;- (id) <a class="code" href="interface_m_k_connection.html#aa6074ceab355cf8c53d4ca2cfd691744" title="Initialize a new MKConnection object.">init</a>;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;- (void) <a class="code" href="interface_m_k_connection.html#aaa8a982ab2745afff6d176809a094264" title="Deallocate a MKConnection object.">dealloc</a>;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="preprocessor">#pragma mark -</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;- (void) connectToHost:(NSString *)hostName port:(NSUInteger)port;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;- (void) <a class="code" href="interface_m_k_connection.html#adc4e982552bfe3b6b9ce72bcbe56968d">reconnect</a>;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;- (void) <a class="code" href="interface_m_k_connection.html#a6a47f0d25ad9d8d3361407e9d30c7fc9" title="Disconnect from the server.">disconnect</a>;</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#ae959069775b1735b30e58ff39acc4517" title="The hostname that the MKConnection is currently connected to.">hostname</a>;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;- (NSUInteger) <a class="code" href="interface_m_k_connection.html#abdde92d93f4a46bc8d7398118a7bc037" title="The port number on the host that the MKConnection is currently connected to.">port</a>;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#ad961af889c8c4a7e83d8d01a5dbe1aae">connected</a>;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;- (void) setCertificateChain:(NSArray *)chain;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;- (NSArray *) <a class="code" href="interface_m_k_connection.html#aa9280ceeb44d73bf1937c6b9c2f41c8c" title="Returns the certificate chain that is to be presented to the server during the next connection attemp...">certificateChain</a>;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor">#pragma mark Server Info</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#a4ad1d579b93a64bf5a7a5a09b5c7f408">serverVersion</a>;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#ae959069775b1735b30e58ff39acc4517" title="The hostname that the MKConnection is currently connected to.">hostname</a>;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;- (NSUInteger) <a class="code" href="interface_m_k_connection.html#abdde92d93f4a46bc8d7398118a7bc037" title="The port number on the host that the MKConnection is currently connected to.">port</a>;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;- (void) setCertificateChain:(NSArray *)chain;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;- (NSArray *) <a class="code" href="interface_m_k_connection.html#aa9280ceeb44d73bf1937c6b9c2f41c8c" title="Returns the certificate chain that is to be presented to the server during the next connection attemp...">certificateChain</a>;</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#af94e7f58c8e8e02405641ed9fb60ac63">serverRelease</a>;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#af94cbafb6e4ded5bdae43acbb560eb7f">serverOSName</a>;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#a1f1e867c49f9960964579d464fcde406">serverOSVersion</a>;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;- (void) authenticateWithUsername:(NSString *)user password:(NSString *)pass accessTokens:(NSArray *)tokens;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;- (void) setMessageHandler: (<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_m_k_message_handler-p.html">MKMessageHandler</a>&gt;)messageHandler;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;- (id) messageHandler;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;- (void) setDelegate: (<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_m_k_connection_delegate-p.html">MKConnectionDelegate</a>&gt;)delegate;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;- (id) delegate;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;- (void) setIgnoreSSLVerification:(BOOL)shouldIgnoreVerification;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;- (NSArray *) <a class="code" href="interface_m_k_connection.html#a03be93c905532d17ef7ad0b40929db06">peerCertificates</a>;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="preprocessor">#pragma mark Server Info</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#a4ad1d579b93a64bf5a7a5a09b5c7f408">serverVersion</a>;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#af94e7f58c8e8e02405641ed9fb60ac63">serverRelease</a>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#af94cbafb6e4ded5bdae43acbb560eb7f">serverOSName</a>;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;- (NSString *) <a class="code" href="interface_m_k_connection.html#a1f1e867c49f9960964579d464fcde406">serverOSVersion</a>;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;- (void) authenticateWithUsername:(NSString *)user password:(NSString *)pass accessTokens:(NSArray *)tokens;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;- (void) setMessageHandler: (<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_m_k_message_handler-p.html">MKMessageHandler</a>&gt;)messageHandler;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;- (id) messageHandler;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;- (void) setDelegate: (<span class="keywordtype">id</span>&lt;<a class="code" href="protocol_m_k_connection_delegate-p.html">MKConnectionDelegate</a>&gt;)delegate;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;- (id) delegate;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;- (void) setIgnoreSSLVerification:(BOOL)shouldIgnoreVerification;</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#ab7ff582a065bdf79083bbd675291ee73">peerCertificateChainTrusted</a>;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;- (void) setForceTCP:(BOOL)shouldForceTCP;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#a4a4157baf65913d253e7d9ab4ab5b33e">forceTCP</a>;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;- (NSArray *) <a class="code" href="interface_m_k_connection.html#a03be93c905532d17ef7ad0b40929db06">peerCertificates</a>;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#ab7ff582a065bdf79083bbd675291ee73">peerCertificateChainTrusted</a>;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;- (void) setForceTCP:(BOOL)shouldForceTCP;</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;- (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;- (void) sendVoiceData:(NSData *)data;</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;- (NSUInteger) <a class="code" href="interface_m_k_connection.html#acf84aed49b5cc2b8fba626bd83bd67c1" title="The current elected alpha codec, as determined by the server through a mojority vote.">alphaCodec</a>;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;- (NSUInteger) <a class="code" href="interface_m_k_connection.html#ad5285e8531d4c0fa4b677e2ba7699208" title="The currently elected beta codec, as determined by the server through a majority vote.">betaCodec</a>;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#a4a4157baf65913d253e7d9ab4ab5b33e">forceTCP</a>;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;- (void) sendMessageWithType:(MKMessageType)messageType data:(NSData *)data;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;- (void) sendVoiceData:(NSData *)data;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
 <div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#ab127cb5b318cb55a34b9f16a189fd169">preferAlphaCodec</a>;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#a547497721f6405b98730a35858ac8603" title="Returns whether ot not the connected client should use the Opus codec.">shouldUseOpus</a>;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="keyword">@end</span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;- (NSUInteger) <a class="code" href="interface_m_k_connection.html#acf84aed49b5cc2b8fba626bd83bd67c1" title="The current elected alpha codec, as determined by the server through a mojority vote.">alphaCodec</a>;</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;- (NSUInteger) <a class="code" href="interface_m_k_connection.html#ad5285e8531d4c0fa4b677e2ba7699208" title="The currently elected beta codec, as determined by the server through a majority vote.">betaCodec</a>;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#ab127cb5b318cb55a34b9f16a189fd169">preferAlphaCodec</a>;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;- (BOOL) <a class="code" href="interface_m_k_connection.html#a547497721f6405b98730a35858ac8603" title="Returns whether ot not the connected client should use the Opus codec.">shouldUseOpus</a>;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="keyword">@end</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 00:37:44 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 19 2013 00:50:50 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

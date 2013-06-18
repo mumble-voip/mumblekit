@@ -87,10 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> is a helper class for creating, reading and exporting X.509 certificates.  
- <a href="interface_m_k_certificate.html#details">More...</a></p>
-
-<p><code>#import &lt;<a class="el" href="_m_k_certificate_8h_source.html">MKCertificate.h</a>&gt;</code></p>
+<p><code>#import &lt;<a class="el" href="_m_k_certificate_8h_source.html">MumbleKit/MKCertificate.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for MKCertificate:</div>
 <div class="dyncontent">
@@ -181,7 +178,7 @@ Exporting a MKCertificate</h2></td></tr>
 <tr class="separator:aa0156adf6b25a0aba02a240e446b4a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> is a helper class for creating, reading and exporting X.509 certificates. </p>
+<div class="textblock"><p><a class="el" href="interface_m_k_certificate.html">MKCertificate</a> is a helper class for creating, reading and exporting X.509 certificates. </p>
 </div><h2 class="groupheader">Method Documentation</h2>
 <a class="anchor" id="a665f1daaaac69e33b76cae86e20985ea"></a>
 <div class="memitem">
@@ -206,7 +203,7 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a new <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object from the given certificate and private key.</p>
+<p>Returns a new <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object from the given certificate and private key.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cert</td><td>A DER-encoded X.509 certificate </td></tr>
@@ -214,7 +211,7 @@ Exporting a MKCertificate</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object with the given certificate data and optionally the given private key. Passing in a private key is mostly used in situations where one wants to export the certificate in another format (for example PKCS12). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object with the given certificate data and optionally the given private key. Passing in a private key is mostly used in situations where one wants to export the certificate in another format (for example PKCS12). </dd></dl>
 
 </div>
 </div>
@@ -249,7 +246,7 @@ Exporting a MKCertificate</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> backed by the certificate and public and private keypair from the given PKCS12 data. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> backed by the certificate and public and private keypair from the given PKCS12 data. </dd></dl>
 
 </div>
 </div>
@@ -282,7 +279,7 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a SHA1 digest of the raw DER-data backing the certificate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object.</p>
+<p>Returns a SHA1 digest of the raw DER-data backing the certificate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object.</p>
 <dl class="section return"><dt>Returns</dt><dd>An NSData object that holds the calculated SHA1 digest. </dd></dl>
 
 </div>
@@ -300,7 +297,7 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a digest of the given kind of the raw DER-data backing the certificate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object.</p>
+<p>Returns a digest of the given kind of the raw DER-data backing the certificate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>digest kind (currently supports "sha1" and @"sha256".</td></tr>
@@ -351,12 +348,12 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Export a chain of certificates presented an array of <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> objects to a PKCS12 data blob. The PKCS12 blob will be encrypted and password protected with the given password.</p>
-<p>The leaf certificate (which is the <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object at index 0) may have a private key. If this is the case, the private key will also be exported along with the public parts of the certificate.</p>
+<p>Export a chain of certificates presented an array of <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> objects to a PKCS12 data blob. The PKCS12 blob will be encrypted and password protected with the given password.</p>
+<p>The leaf certificate (which is the <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object at index 0) may have a private key. If this is the case, the private key will also be exported along with the public parts of the certificate.</p>
 <p>Only the private key (if any) of the leaf certificate will be marshalled. The private keys of any other certificates in the chain will not.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chain</td><td>An NSArray of <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> objects to be exported. </td></tr>
+    <tr><td class="paramname">chain</td><td>An NSArray of <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> objects to be exported. </td></tr>
     <tr><td class="paramname">password</td><td>The password needed to decode the generated PKCS12 blob.</td></tr>
   </table>
   </dd>
@@ -378,15 +375,15 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Export a <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object to a PKCS12 data blob using the given password. The method will export both the certificate and its corresponding private key (if available) to the PKCS12 data blob.</p>
-<p>Invoking this method is equivalent to calling the class method exportCertificateChainAsPKCS12:withPassword: with a lone <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> in the chain array.</p>
+<p>Export a <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object to a PKCS12 data blob using the given password. The method will export both the certificate and its corresponding private key (if available) to the PKCS12 data blob.</p>
+<p>Invoking this method is equivalent to calling the class method exportCertificateChainAsPKCS12:withPassword: with a lone <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> in the chain array.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">password</td><td>The password needed to decode the generated PKCS12 blob.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns a NSData object that holds the PKCS12 encoded version of the receiver <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a>'s certificate, public key and (if available) private key. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a NSData object that holds the PKCS12 encoded version of the receiver <a class="el" href="interface_m_k_certificate.html">MKCertificate</a>'s certificate, public key and (if available) private key. </dd></dl>
 
 </div>
 </div>
@@ -403,7 +400,7 @@ Exporting a MKCertificate</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Determine whether the certificate has a certificate (and public key)</p>
-<dl class="section return"><dt>Returns</dt><dd>Returns YES if the <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object has a certificate and public key. Otherwise, returns NO. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns YES if the <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object has a certificate and public key. Otherwise, returns NO. </dd></dl>
 
 </div>
 </div>
@@ -420,7 +417,7 @@ Exporting a MKCertificate</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Determine whether the MKCertficiate object has private key data.</p>
-<dl class="section return"><dt>Returns</dt><dd>Returns YES if the <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object has a private key. Otherwise, returns NO. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns YES if the <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object has a private key. Otherwise, returns NO. </dd></dl>
 
 </div>
 </div>
@@ -436,7 +433,7 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a hex-encoded SHA1 digest of the raw DER-data backing the certifiate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object.</p>
+<p>Returns a hex-encoded SHA1 digest of the raw DER-data backing the certifiate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object.</p>
 <dl class="section return"><dt>Returns</dt><dd>A NSString with the (lowercase) hex-encoded SHA1 digest. </dd></dl>
 
 </div>
@@ -454,7 +451,7 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a hex-encoded digest of the given kind of the raw DER-data backing the certificate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object.</p>
+<p>Returns a hex-encoded digest of the given kind of the raw DER-data backing the certificate and the public key of the receiving <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object.</p>
 <dl class="section return"><dt>Returns</dt><dd>A NSString with the (lowercase) hex-encoded digest. </dd></dl>
 
 </div>
@@ -499,7 +496,7 @@ Exporting a MKCertificate</h2></td></tr>
 <p>The issuerItem: method is used to directly access the issuer items of the X.509 certificate.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td>An X.509 subject item key (CN, O, C, etc.) (See the '<a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> accessor items' section for a list of pre-defined symbolic values for the item keys)</td></tr>
+    <tr><td class="paramname">item</td><td>An X.509 subject item key (CN, O, C, etc.) (See the '<a class="el" href="interface_m_k_certificate.html">MKCertificate</a> accessor items' section for a list of pre-defined symbolic values for the item keys)</td></tr>
   </table>
   </dd>
 </dl>
@@ -605,7 +602,7 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Generate a self-signed <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object using the given name and email address. This generates a public and private keypair, and uses that key pair to create a self- signed X.509 certificate that is compatible with Mumble.</p>
+<p>Generate a self-signed <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object using the given name and email address. This generates a public and private keypair, and uses that key pair to create a self- signed X.509 certificate that is compatible with Mumble.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name to be used when creating the certificate. This becomes the Subject Name of the X.509 certificate. </td></tr>
@@ -613,7 +610,7 @@ Exporting a MKCertificate</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random public and private keypair. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random public and private keypair. </dd></dl>
 
 </div>
 </div>
@@ -646,16 +643,16 @@ Exporting a MKCertificate</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Generate a self-signed <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> object using the given name and email address. This method optionally takes a <a class="el" href="interface_m_k_r_s_a_key_pair.html" title="MKRSAKeyPair implements generation of RSA key pairs.">MKRSAKeyPair</a> which it will use for the certificate it generates.</p>
+<p>Generate a self-signed <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> object using the given name and email address. This method optionally takes a <a class="el" href="interface_m_k_r_s_a_key_pair.html">MKRSAKeyPair</a> which it will use for the certificate it generates.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name to be used when creating the certificate. This becomes the Subject Name of the X.509 certificate.</td></tr>
     <tr><td class="paramname">email</td><td>The email address to embed in the certificate. This value may be nil if no email address should be included in the generated X.509 certificate.</td></tr>
-    <tr><td class="paramname">keyPair</td><td>An optional <a class="el" href="interface_m_k_r_s_a_key_pair.html" title="MKRSAKeyPair implements generation of RSA key pairs.">MKRSAKeyPair</a> to use instead of generating a new key pair. If nil is passed for this parameter, the method will generate its own keypair (by default: 2048 bits).</td></tr>
+    <tr><td class="paramname">keyPair</td><td>An optional <a class="el" href="interface_m_k_r_s_a_key_pair.html">MKRSAKeyPair</a> to use instead of generating a new key pair. If nil is passed for this parameter, the method will generate its own keypair (by default: 2048 bits).</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random public and private keypair. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="interface_m_k_certificate.html">MKCertificate</a> that backs a self-signed X.509 certificate backed by a random public and private keypair. </dd></dl>
 
 </div>
 </div>
@@ -675,7 +672,7 @@ Exporting a MKCertificate</h2></td></tr>
 <p>The subjectItem: method is used to directly access the subject items of the X.509 certificate.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td>An X.509 issuer item key (CN, O, C, etc.) (See the '<a class="el" href="interface_m_k_certificate.html" title="MKCertificate is a helper class for creating, reading and exporting X.509 certificates.">MKCertificate</a> accessor items' section for a list of pre-defined symbolic values for the item keys)</td></tr>
+    <tr><td class="paramname">item</td><td>An X.509 issuer item key (CN, O, C, etc.) (See the '<a class="el" href="interface_m_k_certificate.html">MKCertificate</a> accessor items' section for a list of pre-defined symbolic values for the item keys)</td></tr>
   </table>
   </dd>
 </dl>
@@ -706,7 +703,7 @@ Exporting a MKCertificate</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 00:37:44 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 19 2013 00:50:50 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

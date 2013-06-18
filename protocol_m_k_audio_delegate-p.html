@@ -88,7 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><code>#import &lt;<a class="el" href="_m_k_audio_8h_source.html">MKAudio.h</a>&gt;</code></p>
+<p><code>#import &lt;<a class="el" href="_m_k_audio_8h_source.html">MumbleKit/MKAudio.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Instance Methods</h2></td></tr>
@@ -96,7 +96,7 @@ Instance Methods</h2></td></tr>
 <tr class="separator:a02f53ea3f06d8f688eb2e44f2a79fd55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="protocol_m_k_audio_delegate-p.html">MKAudioDelegate</a> a set of optional methods that helps <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> in its operation. </p>
+<div class="textblock"><p><a class="el" href="protocol_m_k_audio_delegate-p.html">MKAudioDelegate</a> a set of optional methods that helps <a class="el" href="interface_m_k_audio.html">MKAudio</a> in its operation. </p>
 </div><h2 class="groupheader">Method Documentation</h2>
 <a class="anchor" id="a02f53ea3f06d8f688eb2e44f2a79fd55"></a>
 <div class="memitem">
@@ -119,21 +119,21 @@ Instance Methods</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Called when the <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> singleton needs to determine whether it should be running. This is needed because <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> abstracts away Audio Session handling on iOS.</p>
-<p>The method should return whether or not <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> should be running at the time the method is called. A typical app using MumbleKit will shut down <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> when it is backgrounded &ndash; this must be done manually by the app.</p>
-<p>However, Audio Session events can come in at inopportune times. For example, if Siri is acivated while in another app, and your MumbleKit-using app is backgrounded, it is possible that <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a>'s interruption callback on the AudioSession is invoked.</p>
+<p>Called when the <a class="el" href="interface_m_k_audio.html">MKAudio</a> singleton needs to determine whether it should be running. This is needed because <a class="el" href="interface_m_k_audio.html">MKAudio</a> abstracts away Audio Session handling on iOS.</p>
+<p>The method should return whether or not <a class="el" href="interface_m_k_audio.html">MKAudio</a> should be running at the time the method is called. A typical app using MumbleKit will shut down <a class="el" href="interface_m_k_audio.html">MKAudio</a> when it is backgrounded &ndash; this must be done manually by the app.</p>
+<p>However, Audio Session events can come in at inopportune times. For example, if Siri is acivated while in another app, and your MumbleKit-using app is backgrounded, it is possible that <a class="el" href="interface_m_k_audio.html">MKAudio</a>'s interruption callback on the AudioSession is invoked.</p>
 <p>To properly handle such inopportune requests, MumbleKit will ask this delegate method on how to proceed.</p>
 <p>In 'Mumble for iOS', we do the following:</p>
 <ul>
-<li>(void) <a class="el" href="protocol_m_k_audio_delegate-p.html#a02f53ea3f06d8f688eb2e44f2a79fd55">audioShouldBeRunning:</a>audio { UIApplication *app = [[UIApplication sharedApplication] applicationState]; UIApplicationState state = [app applicationState]; switch (state) { case UIApplicationStateActive: // When in the foreground, we always keep <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> running. return YES; case UIApplicationStateBackground: case UIApplicationStateInactive: // When backgrounded, only turn on <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> if we're connected // to a server. return _connectionActive; } return NO; }</li>
+<li>(void) <a class="el" href="protocol_m_k_audio_delegate-p.html#a02f53ea3f06d8f688eb2e44f2a79fd55">audioShouldBeRunning:</a>audio { UIApplication *app = [[UIApplication sharedApplication] applicationState]; UIApplicationState state = [app applicationState]; switch (state) { case UIApplicationStateActive: // When in the foreground, we always keep <a class="el" href="interface_m_k_audio.html">MKAudio</a> running. return YES; case UIApplicationStateBackground: case UIApplicationStateInactive: // When backgrounded, only turn on <a class="el" href="interface_m_k_audio.html">MKAudio</a> if we're connected // to a server. return _connectionActive; } return NO; }</li>
 </ul>
-<p>If this method is not implemented, <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> will fall back to a sane default, depending on OS:</p>
+<p>If this method is not implemented, <a class="el" href="interface_m_k_audio.html">MKAudio</a> will fall back to a sane default, depending on OS:</p>
 <p>For iOS, audioShouldBeRunning: returns YES if the application state is 'active'.</p>
 <p>For Mac OS X, audioShouldBeRunning: always returns YES.</p>
-<p>Note: This method is only used for internal decisions in <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a>. When a MumbleKit client manually cals the start and/or stop methods of <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a>, this method will not be consulted at all.</p>
+<p>Note: This method is only used for internal decisions in <a class="el" href="interface_m_k_audio.html">MKAudio</a>. When a MumbleKit client manually cals the start and/or stop methods of <a class="el" href="interface_m_k_audio.html">MKAudio</a>, this method will not be consulted at all.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">audio</td><td>The <a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> singleton instance. </td></tr>
+    <tr><td class="paramname">audio</td><td>The <a class="el" href="interface_m_k_audio.html">MKAudio</a> singleton instance. </td></tr>
   </table>
   </dd>
 </dl>
@@ -146,7 +146,7 @@ Instance Methods</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 00:37:44 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 19 2013 00:50:50 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

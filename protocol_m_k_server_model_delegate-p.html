@@ -86,8 +86,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">&lt;MKServerModelDelegate&gt; Protocol Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#import &lt;<a class="el" href="_m_k_server_model_8h_source.html">MKServerModel.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Instance Methods</h2></td></tr>
@@ -234,9 +232,7 @@ Instance Methods</h2></td></tr>
 <tr class="memitem:a224bd628048c62502ce3a1c70f5a14e7"><td class="memItemLeft" align="right" valign="top">(void)&#160;</td><td class="memItemRight" valign="bottom">- <a class="el" href="protocol_m_k_server_model_delegate-p.html#a224bd628048c62502ce3a1c70f5a14e7">serverModel:didReceiveAccessControl:forChannel:</a></td></tr>
 <tr class="separator:a224bd628048c62502ce3a1c70f5a14e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="protocol_m_k_server_model_delegate-p.html">MKServerModelDelegate</a> is the delegate of <a class="el" href="interface_m_k_server_model.html">MKServerModel</a>. It is called to notify any registered delegates of events happening on the server, or of replies to previously sent messages. </p>
-</div><h2 class="groupheader">Method Documentation</h2>
+<h2 class="groupheader">Method Documentation</h2>
 <a class="anchor" id="a559559254c72f89555d304c79680c01e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -897,7 +893,7 @@ Instance Methods</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">model</td><td>The <a class="el" href="interface_m_k_server_model.html">MKServerModel</a> in which this event originated. </td></tr>
-    <tr><td class="paramname">msg</td><td>The <a class="el" href="interface_m_k_text_message.html">MKTextMessage</a> object representing the received text message. </td></tr>
+    <tr><td class="paramname">msg</td><td>The <a class="el" href="interface_m_k_text_message.html" title=" .">MKTextMessage</a> object representing the received text message. </td></tr>
     <tr><td class="paramname">user</td><td>The <a class="el" href="interface_m_k_user.html">MKUser</a> that sent the text message (nil if the message was sent by the server). </td></tr>
   </table>
   </dd>
@@ -1769,7 +1765,7 @@ Instance Methods</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Called when the talk state of a user changes. This event is fired when the audio subsystem (<a class="el" href="interface_m_k_audio.html" title="MKAudio represents the MumbleKit audio subsystem.">MKAudio</a> and its minions) notify the <a class="el" href="interface_m_k_server_model.html">MKServerModel</a> that audio data from a user on the connection handled by the server model is being played back.</p>
+<p>Called when the talk state of a user changes. This event is fired when the audio subsystem (<a class="el" href="interface_m_k_audio.html">MKAudio</a> and its minions) notify the <a class="el" href="interface_m_k_server_model.html">MKServerModel</a> that audio data from a user on the connection handled by the server model is being played back.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">model</td><td>The <a class="el" href="interface_m_k_server_model.html">MKServerModel</a> object in which this event originated. </td></tr>
@@ -2139,7 +2135,7 @@ Instance Methods</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 19 2013 00:37:44 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 19 2013 00:50:50 for MumbleKit by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>
