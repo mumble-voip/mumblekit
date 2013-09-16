@@ -54,6 +54,8 @@ typedef struct _MKAudioSettings {
     float           comfortNoiseLevel;
     BOOL            enableVadGate;
     double          vadGateTimeSeconds;
+
+    BOOL            preferReceiverOverSpeaker;
 } MKAudioSettings;
 
 /// @protocol MKAudioDelegate MKAudio.h MumbleKit/MKAudio.h

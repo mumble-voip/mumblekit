@@ -75,7 +75,12 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
         }
 
         if (val == kAudioSessionCategory_PlayAndRecord) {
+            MKAudioSettings settings;
+            [audio readAudioSettings:&settings];
             val = 1;
+            if (settings.preferReceiverOverSpeaker) {
+                val = 0;
+            }
             err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
             if (err != kAudioSessionNoError) {
                 NSLog(@"MKAudio: unable to set OverrideCategoryDefaultToSpeaker property.");
@@ -172,8 +177,14 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
     
     if (audioInputAvailable) {
         // The OverrideCategoryDefaultToSpeaker property makes us output to the speakers of the iOS device
-        // as long as there's not a headset connected.
-        val = TRUE;
+        // as long as there's not a headset connected. However, if the user prefers the audio to be output
+        // to the receiver, honor that.
+        MKAudioSettings settings;
+        [audio readAudioSettings:&settings];
+        val = 1;
+        if (settings.preferReceiverOverSpeaker) {
+            val = 0;
+        }
         err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
         if (err != kAudioSessionNoError) {
             NSLog(@"MKAudio: unable to set OverrideCategoryDefaultToSpeaker property.");
@@ -213,8 +224,45 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
         return;
     }
 }
+
+static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
+    OSStatus err;
+    UInt32 val, valSize;
+    BOOL audioInputAvailable = YES;
+    
+
+    // To be able to select the correct category, we must query whethe audio input is available.
+    valSize = sizeof(UInt32);
+    err = AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, &valSize, &val);
+    if (err != kAudioSessionNoError || valSize != sizeof(UInt32)) {
+        NSLog(@"MKAudio: unable to query for input availability.");
+        return;
+    }
+    audioInputAvailable = (BOOL) val;
+    
+    if (audioInputAvailable) {
+        // The OverrideCategoryDefaultToSpeaker property makes us output to the speakers of the iOS device
+        // as long as there's not a headset connected. However, if the user prefers the audio to be output
+        // to the receiver, honor that.
+        MKAudioSettings settings;
+        [audio readAudioSettings:&settings];
+        val = 1;
+        if (settings.preferReceiverOverSpeaker) {
+            val = 0;
+        }
+        err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(val), &val);
+        if (err != kAudioSessionNoError) {
+            NSLog(@"MKAudio: unable to set OverrideCategoryDefaultToSpeaker property.");
+            return;
+        }
+    }
+}
 #else
 static void MKAudio_SetupAudioSession(MKAudio *audio) {
+    (void) audio;
+}
+
+static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
     (void) audio;
 }
 #endif
@@ -322,6 +370,7 @@ static void MKAudio_SetupAudioSession(MKAudio *audio) {
 // Restart the audio engine
 - (void) restart {
     [self stop];
+    MKAudio_UpdateAudioSessionSettings(self);
     [self start];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:MKAudioDidRestartNotification object:self];
