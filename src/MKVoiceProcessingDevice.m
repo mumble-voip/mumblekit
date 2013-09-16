@@ -9,6 +9,7 @@
 #import <AudioUnit/AudioUnit.h>
 #import <AudioUnit/AUComponent.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import <UIKit/UIKit.h>
 
 @interface MKVoiceProcessingDevice () {
 @public
@@ -22,6 +23,21 @@
     MKAudioDeviceInputFunc       _inputFunc;
 }
 @end
+
+// DeviceIsRunningiOS7OrGreater returns YES if
+// the iOS device is on iOS 7 or greater.
+static BOOL DeviceIsRunningiOS7OrGreater() {
+    BOOL iOS7OrGreater = NO;
+    NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
+    if (iOSVersion) {
+        NSArray *iOSVersionComponents = [iOSVersion componentsSeparatedByString:@"."];
+        if ([iOSVersionComponents count] > 0) {
+            NSInteger majorVersion = [[iOSVersionComponents objectAtIndex:0] integerValue];
+            iOS7OrGreater = majorVersion >= 7;
+        }
+    }
+    return iOS7OrGreater;
+}
 
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
@@ -215,17 +231,30 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         NSLog(@"MKVoiceProcessingDevice: Unable to disable VPIO AGC.");
         return NO;
     }
-        
-    // It's sufficient to set the quality to 0 for our use case; we do our own preprocessing
-    // after this, and the job of the VPIO is only to do echo cancellation.
-    val = 0;
-    len = sizeof(UInt32);
-    err = AudioUnitSetProperty(_audioUnit, kAUVoiceIOProperty_VoiceProcessingQuality, kAudioUnitScope_Global, 0, &val, len);
-    if (err != noErr) {
-        NSLog(@"MKVoiceProcessingDevice: unable to set VPIO quality.");
-        return NO;
+
+    // When running Mumble built with the iOS 6.1 SDK, built using Xcode 4.6.3 on iOS 7,
+    // we sometimes get zero samples from the VPIO Audio Unit.  When building with Xcode 5
+    // against the iOS 7 SDK, everything is OK, though.
+    //
+    // This is somehow related to setting VoiceProcessingQuality in the 'low' range. If we don't set
+    // it at all (and thus presumably stay in the 'high quality' range) iOS 7 doesn't complain. So do
+    // that as a workaround for now.
+#if __IPHONE_OS_VERSION_MAX_ALLOWED <= 60100
+    if (!DeviceIsRunningiOS7OrGreater()) {
+#else
+    {
+#endif
+        // It's sufficient to set the quality to 0 for our use case; we do our own preprocessing
+        // after this, and the job of the VPIO is only to do echo cancellation.
+        val = 0;
+        len = sizeof(UInt32);
+        err = AudioUnitSetProperty(_audioUnit, kAUVoiceIOProperty_VoiceProcessingQuality, kAudioUnitScope_Global, 0, &val, len);
+        if (err != noErr) {
+            NSLog(@"MKVoiceProcessingDevice: unable to set VPIO quality.");
+            return NO;
+        }
     }
-        
+    
     val = 0;
     len = sizeof(UInt32);
     err = AudioUnitSetProperty(_audioUnit, kAUVoiceIOProperty_MuteOutput, kAudioUnitScope_Global, 0, &val, len);
