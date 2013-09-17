@@ -82,9 +82,23 @@ extern NSString *MKCertificateItemSerialNumber;
 ///          from the given PKCS12 data.
 + (MKCertificate *) certificateWithPKCS12:(NSData *)pkcs12 password:(NSString *)password;
 
-///---------------------------------
-/// @name Certificate content status
-///---------------------------------
+/// Import one or more certificates from a PKCS12 file with the given password.
+///
+/// @param pkcs12    A PKCS12-encoded bundle of certificates and possibly also a private key for
+///                  for one of the certificates.
+/// @param password  The password to decode the given PKCS12-encoded file.
+///                  May be nil if no password, or a blank password should be used for decoding
+///                  the given PKCS12 data.
+///
+/// @returns An NSArray of MKCertificates corresponding to the content of the pkcs12 blob.
+///          If the pkcs12 blob contained a private key, that private key will be paired with
+///          the certificate it corresponds to.
+///          The leaf certificate is guaranteed to be at index 0 in the returned NSArray.
++ (NSArray *) certificatesWithPKCS12:(NSData *)pkcs12 password:(NSString *)password;
+
+///---------------------------------------------
+/// @name Certificate content and content status
+///---------------------------------------------
 
 /// Determine whether the certificate has a certificate (and public key)
 ///
@@ -92,11 +106,21 @@ extern NSString *MKCertificateItemSerialNumber;
 ///         Otherwise, returns NO.
 - (BOOL) hasCertificate;
 
+/// Get a pointer to the NSData object holding the certificate in DER format.
+///
+/// @return Returns the DER-formatted certificate underlying this MKCertificate object.
+- (NSData *) certificate;
+
 /// Determine whether the MKCertficiate object has private key data.
 ///
 /// @returns Returns YES if the MKCertificate object has a private key.
 ///          Otherwise, returns NO.
 - (BOOL) hasPrivateKey;
+
+/// Get a pointer to the NSData object holding the private key in DER format.
+///
+/// @return Returns the DER-formatted private key underlying this MKCertificate object.
+- (NSData *) privateKey;
 
 ///--------------------------------
 /// @name Exporting a MKCertificate

@@ -232,6 +232,119 @@ static int add_ext(X509 * crt, int nid, char *value) {
     return retcert;
 }
 
+// Transliterated from C++ to C/Objective-C from libmumble's X509CertificatePrivate::FromPKCS12
+// with a minor fix to avoid duplicating the leaf certificate (sha256 comparison).
+// TODO(mkrautz): backport the above fix, or one like it, to libmumble.
++ (NSArray *) certificatesWithPKCS12:(NSData *)pkcs12 password:(NSString *)password {
+    NSMutableArray *out_certs = [NSMutableArray array];
+    X509 *x509 = NULL;
+    EVP_PKEY *pkey = NULL;
+    PKCS12 *pkcs = NULL;
+    BIO *mem = NULL;
+    STACK_OF(X509) *certs = NULL;
+    int ret = 0;
+    
+    if (!pkcs12) {
+        return out_certs;
+    }
+    
+    void *buf = (void *) [pkcs12 bytes];
+    int len = [pkcs12 length];
+    
+    mem = BIO_new_mem_buf(buf, len);
+    (void) BIO_set_close(mem, BIO_NOCLOSE);
+    pkcs = d2i_PKCS12_bio(mem, NULL);
+    
+    if (pkcs) {
+        ret = PKCS12_parse(pkcs, [password UTF8String], &pkey, &x509, &certs);
+        // If we're using an empty password, try with nullptr as the
+        // password argument. Some software might have botched this,
+        // an we need to stay compatible.
+        if (ret == 0 && [password length] == 0) {
+            ret = PKCS12_parse(pkcs, NULL, &pkey, &x509, &certs);
+        }
+        // We got a certs stack. This means that we're extracting a
+        // PKCS12 blob that didn't include a private key.
+        if (ret == 1 && certs != NULL && x509 == NULL && pkey == NULL) {
+            // Fallthrough to extraction of the chain stack.
+            
+            // PKCS12_parse filled out both our x509 and or pkey. This means
+            // we're extracting a PKCS12 with a leaf certificate, a private key,
+            // and possibly a certificate chain following the leaf.
+        } else if (ret == 1 && x509 != NULL && pkey != NULL) {
+            // Ensure that the leaf and private key match.
+            if (X509_check_private_key(x509, pkey) > 0) {
+                int len = i2d_PrivateKey(pkey, NULL);
+                
+                NSMutableData *pkey_der = [[NSMutableData alloc] initWithLength:len];
+                char *buf = (char *) [pkey_der bytes];
+                i2d_PrivateKey(pkey, (unsigned char **)(&buf));
+                EVP_PKEY_free(pkey);
+                
+                len = i2d_X509(x509, NULL);
+                NSMutableData *leaf_der = [[NSMutableData alloc] initWithLength:len];
+                buf = (char *) [leaf_der bytes];
+                i2d_X509(x509, (unsigned char **)(&buf));
+                X509_free(x509);
+                
+                MKCertificate *cert = [MKCertificate certificateWithCertificate:leaf_der privateKey:pkey_der];
+                [out_certs addObject:cert];
+            }
+        } else {
+            assert(ret == 0);
+            assert(x509 == NULL);
+            assert(pkey == NULL);
+            assert(certs == NULL);
+        }
+        // If we found a leaf, and there are extra certs, attempt to extract
+        // those as well.
+        if (certs != NULL) {
+            // If we have no leaf certificate, don't expect there to be any certificates in out_certs
+            // at this point.
+            // If we do have a leaf certificate, having no certificates in out_certs is an error (there
+            // should be exactly one in there).
+            X509 *leaf = x509;
+            if (([out_certs count] == 0 && leaf == NULL) || ([out_certs count] == 1 && leaf != NULL)) {
+                int ncerts = sk_X509_num(certs);
+                for (int i = 0; i < ncerts; i++) {
+                    x509 = sk_X509_pop(certs);
+                    
+                    int len = i2d_X509(x509, NULL);
+                    NSMutableData *leaf_der = [[NSMutableData alloc] initWithLength:len];
+                    char *buf = (char *) [leaf_der bytes];
+                    i2d_X509(x509, (unsigned char **)(&buf));
+                    
+                    // Avoid inserting duplicates of the leaf certiifcate into out_certs.
+                    // We can't be sure of the order, and we can't do pointer comparisons
+                    // either. Settle for SHA256 equality.
+                    BOOL shouldAdd = YES;
+                    MKCertificate *cert = [MKCertificate certificateWithCertificate:leaf_der privateKey:nil];
+                    if (leaf) {
+                        MKCertificate *leafCert = [out_certs objectAtIndex:0];
+                        if ([[cert hexDigestOfKind:@"sha256"] isEqualToString:[leafCert hexDigestOfKind:@"sha256"]]) {
+                            shouldAdd = NO;
+                        }
+                    }
+                    if (shouldAdd) {
+                        [out_certs addObject:cert];
+                    }
+                    
+                    X509_free(x509);
+                }
+            }
+        }
+    }
+    
+    if (certs)
+        sk_X509_pop_free(certs, X509_free);
+    if (pkcs)
+        PKCS12_free(pkcs);
+    if (mem)
+        BIO_free(mem);
+    
+    return out_certs;
+}
+
 // Export a chain of certificates to a PKCS12-encoded data blob. In most cases, the leaf
 // certificate is expected to contain a private key, but this is not required.
 + (NSData *) exportCertificateChainAsPKCS12:(NSArray *)chain withPassword:(NSString *)password {
