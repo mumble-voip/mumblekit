@@ -345,6 +345,15 @@
             if (!_lastTransmit) {
                 opus_encoder_ctl(_opusEncoder, OPUS_RESET_STATE, NULL);
             }
+
+            // Force CELT mode when using Opus if we were asked to.
+            if (_settings.opusForceCELTMode) {
+#define OPUS_SET_FORCE_MODE_REQUEST  11002
+#define OPUS_SET_FORCE_MODE(x)       OPUS_SET_FORCE_MODE_REQUEST, __opus_check_int(x)
+#define MODE_CELT_ONLY               1002
+                opus_encoder_ctl(_opusEncoder, OPUS_SET_FORCE_MODE(MODE_CELT_ONLY));
+            }
+
             opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
             len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, encbuf, max);
             [_opusBuffer setLength:0];

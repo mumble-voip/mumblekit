@@ -56,6 +56,7 @@ typedef struct _MKAudioSettings {
     double          vadGateTimeSeconds;
 
     BOOL            preferReceiverOverSpeaker;
+    BOOL            opusForceCELTMode;
 } MKAudioSettings;
 
 /// @protocol MKAudioDelegate MKAudio.h MumbleKit/MKAudio.h
