@@ -18,5 +18,6 @@
 - (void) removeBuffer:(MKAudioOutputUser *)u;
 - (BOOL) mixFrames: (void *)frames amount:(unsigned int)nframes;
 - (void) addFrameToBufferWithSession:(NSUInteger)session data:(NSData *)data sequence:(NSUInteger)seq type:(MKUDPMessageType)msgType;
+- (NSDictionary *) copyMixerInfo;
 
 @end

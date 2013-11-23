@@ -466,4 +466,8 @@ static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
     return NO;
 }
 
+- (NSDictionary *) copyAudioOutputMixerDebugInfo {
+    return [_audioOutput copyMixerInfo];
+}
+
 @end

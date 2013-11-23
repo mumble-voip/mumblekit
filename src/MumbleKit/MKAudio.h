@@ -57,6 +57,7 @@ typedef struct _MKAudioSettings {
 
     BOOL            preferReceiverOverSpeaker;
     BOOL            opusForceCELTMode;
+    BOOL            audioMixerDebug;
 } MKAudioSettings;
 
 /// @protocol MKAudioDelegate MKAudio.h MumbleKit/MKAudio.h
@@ -211,5 +212,17 @@ typedef struct _MKAudioSettings {
 - (MKAudioOutputSidetone *) sidetoneOutput;
 - (float) speechProbablity;
 - (float) peakCleanMic;
+
+///----------------------------
+/// @name Audio Mixer Debugging
+///----------------------------
+
+/// Query the MKAudioOutput module for debugging
+/// data from its mixer.
+///
+/// If this method is called without enabling the
+/// audioMixerDebug flag in MKSettings, the debug
+/// info will be mostly empty, but still valid.
+- (NSDictionary *) copyAudioOutputMixerDebugInfo;
 
 @end

@@ -6,6 +6,7 @@
 #import "MKAudioOutput.h"
 #import "MKAudioOutputSpeech.h"
 #import "MKAudioOutputUser.h"
+#import "MKAudioOutputSidetone.h"
 #import "MKAudioDevice.h"
 
 #import <AudioUnit/AudioUnit.h>
@@ -23,6 +24,9 @@
     float                *_speakerVolume;
     NSLock               *_outputLock;
     NSMutableDictionary  *_outputs;
+    
+    NSLock               *_mixerInfoLock;
+    NSDictionary         *_mixerInfo;
 
     double                _cngAmpliScaler;
     double                _cngLastSample;
@@ -69,16 +73,65 @@
         [_device setupOutput:^BOOL(short *frames, unsigned int nsamp) {
             return [self mixFrames:frames amount:nsamp];
         }];
+        
+        _mixerInfo = [[NSDictionary dictionaryWithObjectsAndKeys:
+                [NSDate date], @"last-update",
+                [NSArray array], @"sources",
+                [NSArray array], @"removed",
+            nil] retain];
+        _mixerInfoLock = [[NSLock alloc] init];
     }
     return self;
 }
 
 - (void) dealloc {
+    [_mixerInfoLock release];
+    [_mixerInfo release];
     [_device setupOutput:NULL];
     [_device release];
     [_outputLock release];
     [_outputs release];
     [super dealloc];
+}
+
+- (NSDictionary *) audioOutputDebugDescription:(id)ou {
+    if ([ou isKindOfClass:[MKAudioOutputSpeech class]]) {
+        MKAudioOutputSpeech *ous = (MKAudioOutputSpeech *)ou;
+        
+        NSString *msgType = nil;
+        switch ([ous messageType]) {
+            case UDPVoiceCELTAlphaMessage:
+                msgType = @"celt-alpha";
+                break;
+            case UDPVoiceCELTBetaMessage:
+                msgType = @"celt-beta";
+                break;
+            case UDPVoiceSpeexMessage:
+                msgType = @"speex";
+                break;
+            case UDPVoiceOpusMessage:
+                msgType = @"opus";
+                break;
+            default:
+                msgType = @"unknown";
+                break;
+        }
+        
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                @"user", @"kind",
+                [NSString stringWithFormat:@"session %lu codec %@", (unsigned long) [ous userSession], msgType], @"identifier",
+            nil];
+    } else if ([ou isKindOfClass:[MKAudioOutputSidetone class]]) {
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                    @"sidetone", @"kind",
+                    @"sidetone", @"identifier",
+            nil];
+    } else {
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                @"unknown", @"kind",
+                @"unknown", @"identifier",
+            nil];
+    }
 }
 
 - (BOOL) mixFrames:(void *)frames amount:(unsigned int)nsamp {
@@ -105,7 +158,31 @@
             [mix addObject:[[MKAudio sharedAudio] sidetoneOutput]];
         }
     }
+    
+    if (_settings.audioMixerDebug) {
+        NSMutableDictionary *mixerInfo = [[[NSMutableDictionary alloc] init] autorelease];
+        NSMutableArray *sources = [[[NSMutableArray alloc] init] autorelease];
+        NSMutableArray *removed = [[[NSMutableArray alloc] init] autorelease];
 
+        for (id ou in mix) {
+            [sources addObject:[self audioOutputDebugDescription:ou]];
+        }
+    
+        for (id ou in del) {
+            [sources addObject:[self audioOutputDebugDescription:ou]];
+        }
+
+    
+        [mixerInfo setObject:[NSDate date] forKey:@"last-update"];
+        [mixerInfo setObject:sources forKey:@"sources"];
+        [mixerInfo setObject:removed forKey:@"removed"];
+    
+        [_mixerInfoLock lock];
+        [_mixerInfo release];
+        _mixerInfo = [mixerInfo retain];
+        [_mixerInfoLock unlock];
+    }
+    
     float *mixBuffer = alloca(sizeof(float)*_numChannels*nsamp);
     memset(mixBuffer, 0, sizeof(float)*_numChannels*nsamp);
 
@@ -202,6 +279,14 @@
 
     [outputUser addFrame:data forSequence:seq];
     [outputUser release];
+}
+
+- (NSDictionary *) copyMixerInfo {
+    NSDictionary *mixerInfoCopy = nil;
+    [_mixerInfoLock lock];
+    mixerInfoCopy = [_mixerInfo copy];
+    [_mixerInfoLock unlock];
+    return mixerInfoCopy;
 }
 
 @end
