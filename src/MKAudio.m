@@ -281,6 +281,20 @@ static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
     return audio;
 }
 
+- (void) setDelegate:(id<MKAudioDelegate>)delegate {
+    @synchronized(self) {
+        _delegate = delegate;
+    }
+}
+
+- (id<MKAudioDelegate>) delegate {
+    id<MKAudioDelegate> delegate;
+    @synchronized(self) {
+        delegate = _delegate;
+    }
+    return delegate;
+}
+
 // Read the current audio engine settings
 - (void) readAudioSettings:(MKAudioSettings *)settings {
     if (settings == NULL)
@@ -300,9 +314,13 @@ static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
 
 // Should audio be running?
 - (BOOL) _audioShouldBeRunning {
+    id<MKAudioDelegate> delegate;
+    @synchronized(self) {
+        delegate = _delegate;
+    }
     // If a delegate is provided, we should call that.
-    if ([(id)_delegate respondsToSelector:@selector(audioShouldBeRunning:)]) {
-        return [_delegate audioShouldBeRunning:self];
+    if ([(id)delegate respondsToSelector:@selector(audioShouldBeRunning:)]) {
+        return [delegate audioShouldBeRunning:self];
     }
     
     // If no delegate is available, or the audioShouldBeRunning:
