@@ -72,6 +72,7 @@
     double                 _vadGateTimeSeconds;
     double                 _vadOpenLastTime;
 
+    NSMutableData          *_encodingOutputBuffer;
     NSMutableData          *_opusBuffer;
     
     MKConnection           *_connection;
@@ -179,6 +180,7 @@
 
     [frameList release];
     [_opusBuffer release];
+    [_encodingOutputBuffer release];
 
     if (psMic)
         free(psMic);
@@ -534,10 +536,11 @@
          return;
      }
     
-    unsigned char buffer[500];
-    int len = [self encodeAudioFrameOfSpeech:_doTransmit intoBuffer:&buffer[0] ofSize:500];
+    if (_encodingOutputBuffer == nil)
+        _encodingOutputBuffer = [[NSMutableData alloc] initWithLength:960];
+    int len = [self encodeAudioFrameOfSpeech:_doTransmit intoBuffer:[_encodingOutputBuffer mutableBytes] ofSize:[_encodingOutputBuffer length]];
     if (len >= 0) {
-        NSData *outputBuffer = [[NSData alloc] initWithBytes:buffer length:len];
+        NSData *outputBuffer = [[NSData alloc] initWithBytes:[_encodingOutputBuffer bytes] length:len];
         [self flushCheck:outputBuffer terminator:!_doTransmit];
         [outputBuffer release];
     }
