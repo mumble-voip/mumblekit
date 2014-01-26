@@ -259,6 +259,22 @@
 		2867ABCC14E6D85900E24B98 /* opus_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 2867ABC814E6D85900E24B98 /* opus_encoder.c */; };
 		2867ABCD14E6D85900E24B98 /* opus.c in Sources */ = {isa = PBXBuildFile; fileRef = 2867ABC914E6D85900E24B98 /* opus.c */; };
 		2867ABCE14E6D85900E24B98 /* repacketizer.c in Sources */ = {isa = PBXBuildFile; fileRef = 2867ABCA14E6D85900E24B98 /* repacketizer.c */; };
+		28AD14CA189520D700DBBC08 /* opus_multistream.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14C9189520D700DBBC08 /* opus_multistream.c */; };
+		28AD14CB189520D700DBBC08 /* opus_multistream.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14C9189520D700DBBC08 /* opus_multistream.c */; };
+		28AD14CD189520E100DBBC08 /* opus_multistream_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14CC189520E100DBBC08 /* opus_multistream_encoder.c */; };
+		28AD14CE189520E100DBBC08 /* opus_multistream_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14CC189520E100DBBC08 /* opus_multistream_encoder.c */; };
+		28AD14D0189520E600DBBC08 /* opus_multistream_decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14CF189520E600DBBC08 /* opus_multistream_decoder.c */; };
+		28AD14D1189520E600DBBC08 /* opus_multistream_decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14CF189520E600DBBC08 /* opus_multistream_decoder.c */; };
+		28AD14D3189520F300DBBC08 /* analysis.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14D2189520F300DBBC08 /* analysis.c */; };
+		28AD14D4189520F300DBBC08 /* analysis.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14D2189520F300DBBC08 /* analysis.c */; };
+		28AD14D6189520FB00DBBC08 /* mlp.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14D5189520FB00DBBC08 /* mlp.c */; };
+		28AD14D7189520FB00DBBC08 /* mlp.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14D5189520FB00DBBC08 /* mlp.c */; };
+		28AD14D91895211300DBBC08 /* mlp_data.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14D81895211300DBBC08 /* mlp_data.c */; };
+		28AD14DA1895211300DBBC08 /* mlp_data.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14D81895211300DBBC08 /* mlp_data.c */; };
+		28AD14DC1895217500DBBC08 /* celt_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14DB1895217500DBBC08 /* celt_encoder.c */; };
+		28AD14DD1895217500DBBC08 /* celt_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14DB1895217500DBBC08 /* celt_encoder.c */; };
+		28AD14DF1895218000DBBC08 /* celt_decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14DE1895218000DBBC08 /* celt_decoder.c */; };
+		28AD14E01895218000DBBC08 /* celt_decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 28AD14DE1895218000DBBC08 /* celt_decoder.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -392,6 +408,14 @@
 		2867ABCA14E6D85900E24B98 /* repacketizer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = repacketizer.c; path = ../opus/src/repacketizer.c; sourceTree = "<group>"; };
 		287D85A614E6D474002B5D79 /* libOpus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		287D85D014E6D585002B5D79 /* Opus.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Opus.pch; sourceTree = SOURCE_ROOT; };
+		28AD14C9189520D700DBBC08 /* opus_multistream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = opus_multistream.c; path = ../opus/src/opus_multistream.c; sourceTree = "<group>"; };
+		28AD14CC189520E100DBBC08 /* opus_multistream_encoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = opus_multistream_encoder.c; path = ../opus/src/opus_multistream_encoder.c; sourceTree = "<group>"; };
+		28AD14CF189520E600DBBC08 /* opus_multistream_decoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = opus_multistream_decoder.c; path = ../opus/src/opus_multistream_decoder.c; sourceTree = "<group>"; };
+		28AD14D2189520F300DBBC08 /* analysis.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = analysis.c; path = ../opus/src/analysis.c; sourceTree = "<group>"; };
+		28AD14D5189520FB00DBBC08 /* mlp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mlp.c; path = ../opus/src/mlp.c; sourceTree = "<group>"; };
+		28AD14D81895211300DBBC08 /* mlp_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mlp_data.c; path = ../opus/src/mlp_data.c; sourceTree = "<group>"; };
+		28AD14DB1895217500DBBC08 /* celt_encoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt_encoder.c; path = ../opus/celt/celt_encoder.c; sourceTree = "<group>"; };
+		28AD14DE1895218000DBBC08 /* celt_decoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt_decoder.c; path = ../opus/celt/celt_decoder.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -424,6 +448,8 @@
 			isa = PBXGroup;
 			children = (
 				2867AAD014E6D6ED00E24B98 /* bands.c */,
+				28AD14DB1895217500DBBC08 /* celt_encoder.c */,
+				28AD14DE1895218000DBBC08 /* celt_decoder.c */,
 				2867AAD114E6D6ED00E24B98 /* celt_lpc.c */,
 				2867AAD214E6D6ED00E24B98 /* celt.c */,
 				2867AAD314E6D6ED00E24B98 /* cwrs.c */,
@@ -570,7 +596,13 @@
 				2867ABC714E6D85900E24B98 /* opus_decoder.c */,
 				2867ABC814E6D85900E24B98 /* opus_encoder.c */,
 				2867ABC914E6D85900E24B98 /* opus.c */,
+				28AD14C9189520D700DBBC08 /* opus_multistream.c */,
+				28AD14CC189520E100DBBC08 /* opus_multistream_encoder.c */,
+				28AD14CF189520E600DBBC08 /* opus_multistream_decoder.c */,
 				2867ABCA14E6D85900E24B98 /* repacketizer.c */,
+				28AD14D2189520F300DBBC08 /* analysis.c */,
+				28AD14D5189520FB00DBBC08 /* mlp.c */,
+				28AD14D81895211300DBBC08 /* mlp_data.c */,
 			);
 			name = opus;
 			sourceTree = "<group>";
@@ -824,6 +856,14 @@
 				2815CD5014E6DFF200AAE69C /* quant_bands.c in Sources */,
 				2815CD5114E6DFF200AAE69C /* rate.c in Sources */,
 				2815CD5214E6DFF200AAE69C /* vq.c in Sources */,
+				28AD14CB189520D700DBBC08 /* opus_multistream.c in Sources */,
+				28AD14CE189520E100DBBC08 /* opus_multistream_encoder.c in Sources */,
+				28AD14D1189520E600DBBC08 /* opus_multistream_decoder.c in Sources */,
+				28AD14D4189520F300DBBC08 /* analysis.c in Sources */,
+				28AD14D7189520FB00DBBC08 /* mlp.c in Sources */,
+				28AD14DA1895211300DBBC08 /* mlp_data.c in Sources */,
+				28AD14DD1895217500DBBC08 /* celt_encoder.c in Sources */,
+				28AD14E01895218000DBBC08 /* celt_decoder.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +997,14 @@
 				2867ABCC14E6D85900E24B98 /* opus_encoder.c in Sources */,
 				2867ABCD14E6D85900E24B98 /* opus.c in Sources */,
 				2867ABCE14E6D85900E24B98 /* repacketizer.c in Sources */,
+				28AD14CA189520D700DBBC08 /* opus_multistream.c in Sources */,
+				28AD14CD189520E100DBBC08 /* opus_multistream_encoder.c in Sources */,
+				28AD14D0189520E600DBBC08 /* opus_multistream_decoder.c in Sources */,
+				28AD14D3189520F300DBBC08 /* analysis.c in Sources */,
+				28AD14D6189520FB00DBBC08 /* mlp.c in Sources */,
+				28AD14D91895211300DBBC08 /* mlp_data.c in Sources */,
+				28AD14DC1895217500DBBC08 /* celt_encoder.c in Sources */,
+				28AD14DF1895218000DBBC08 /* celt_decoder.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

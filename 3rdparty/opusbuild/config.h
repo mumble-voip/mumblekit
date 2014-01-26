@@ -1,9 +1,5 @@
 #define OPUS_BUILD /**/
-#define OPUS_EXTRA_VERSION ""
-#define OPUS_MAJOR_VERSION 0
-#define OPUS_MICRO_VERSION 8
-#define OPUS_MINOR_VERSION 9
-#define OPUS_VERSION "0.9.8"
+#define PACKAGE_VERSION "v1.1"
 
 #define FLOATING_POINT
 #define VAR_ARRAYS
