@@ -201,6 +201,11 @@
         NSUInteger size = (header & ((1 << 13) - 1));
         if (size > 0) {
             NSData *opusFrames = [pds copyDataBlock:size];
+            if ([opusFrames length] != size || ![pds valid]) {
+                [pds release];
+                [_jitterLock unlock];
+                return;
+            }
             int nframes = opus_packet_get_nb_frames([opusFrames bytes], size);
             samples = nframes * opus_packet_get_samples_per_frame([opusFrames bytes], SAMPLE_RATE);
             [opusFrames release];
@@ -308,8 +313,10 @@
                         _hasTerminator = header & (1 << 13);
                         if (size > 0) {
                             NSData *block = [pds copyDataBlock:size];
-                            [_frames addObject:block];
-                            [block release];
+                            if (block != nil) {
+                                [_frames addObject:block];
+                                [block release];
+                            }
                         }
                     } else {
                         unsigned int header = 0;
@@ -317,8 +324,10 @@
                             header = (unsigned int)[pds next];
                             if (header) {
                                 NSData *block = [pds copyDataBlock:(header & 0x7f)];
-                                [_frames addObject:block];
-                                [block release];
+                                if (block != nil) {
+                                    [_frames addObject:block];
+                                    [block release];
+                                }
                             } else {
                                 _hasTerminator = YES;
                             }
@@ -360,6 +369,10 @@
 
                 if (_msgType == UDPVoiceOpusMessage) {
                     decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], [frameData length], output, _audioBufferSize, 0);
+                    if (decodedSamples < 0) {
+                        decodedSamples = _frameSize;
+                        memset(output, 0, _frameSize * sizeof(float));
+                    }
                 } else if (_msgType == UDPVoiceSpeexMessage) {
                     if ([frameData length] == 0) {
                         speex_decode(_speexDecoder, NULL, output);
