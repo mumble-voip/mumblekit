@@ -3116,7 +3116,7 @@
 		28F58C3D132AF1070053C348 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 28F58C40132AF1070053C348 /* Build configuration list for PBXProject "OpenSSL" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4424,7 +4424,6 @@
 		28498F1F138AB6C0000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
@@ -4446,7 +4445,6 @@
 		28A2AEC81478AA0F00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
@@ -4456,6 +4454,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
@@ -4481,7 +4480,6 @@
 		28F58C62132AF1170053C348 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
@@ -4490,7 +4488,6 @@
 		28F58C63132AF1170053C348 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				SDKROOT = macosx;
 			};
