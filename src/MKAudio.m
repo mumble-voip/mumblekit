@@ -108,6 +108,9 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
         case kAudioSessionRouteChangeReason_Override:
         case kAudioSessionRouteChangeReason_CategoryChange:
         case kAudioSessionRouteChangeReason_NoSuitableRouteForCategory:
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+        case kAudioSessionRouteChangeReason_RouteConfigurationChange:
+#endif
             NSLog(@"MKAudio: audio route changed, skipping; reason=%i", reason);
             return;
     }
