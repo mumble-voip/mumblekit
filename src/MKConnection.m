@@ -988,8 +988,6 @@ out:
             case kSecTrustResultInvalid:
             // May be trusted for the purposes designated. ('Always Trust' in Keychain)
             case kSecTrustResultProceed:
-            // User confirmation is required before proceeding. ('Ask Permission' in Keychain)
-            case kSecTrustResultConfirm:
             // This certificate is not trusted. ('Never Trust' in Keychain)
             case kSecTrustResultDeny:
             // No trust setting specified. ('Use System Policy' in Keychain)
@@ -1000,6 +998,15 @@ out:
             // A non-trust related error. Possibly internal error in SecTrustEvaluate().
             case kSecTrustResultOtherError:
                 break;
+
+            // kSecTrustResultConfirm is deprecated since iOS 7 and Mavericks,
+            // but MumbleKit's deployment target is 5.1, so silence the deprecation warning.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            // User confirmation is required before proceeding. ('Ask Permission' in Keychain)
+            case kSecTrustResultConfirm:
+                break;
+#pragma clang diagnostic pop
 
             // A recoverable trust failure.
             case kSecTrustResultRecoverableTrustFailure: {
