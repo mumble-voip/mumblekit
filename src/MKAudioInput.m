@@ -239,7 +239,7 @@
     int i;
 
     while (nsamp > 0) {
-        unsigned int left = MIN(nsamp, micLength - micFilled);
+        NSUInteger left = MIN(nsamp, micLength - micFilled);
 
         short *output = psMic + micFilled;
 
@@ -311,7 +311,7 @@
     speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
 }
 
-- (int) encodeAudioFrameOfSpeech:(BOOL)isSpeech intoBuffer:(unsigned char *)encbuf ofSize:(int)max  {
+- (int) encodeAudioFrameOfSpeech:(BOOL)isSpeech intoBuffer:(unsigned char *)encbuf ofSize:(NSUInteger)max  {
     int len = 0;
     int encoded = 1;  
     BOOL resampled = micFrequency != sampleRate;
@@ -357,7 +357,7 @@
             }
 
             opus_encoder_ctl(_opusEncoder, OPUS_SET_BITRATE(_settings.quality));
-            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], _bufferedFrames * frameSize, encbuf, max);
+            len = opus_encode(_opusEncoder, (short *) [_opusBuffer bytes], (opus_int32)(_bufferedFrames * frameSize), encbuf, (opus_int32)max);
             [_opusBuffer setLength:0];
             if (len <= 0) {
                 bitrate = 0;
@@ -397,7 +397,7 @@
                     msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
                 }
                 if (msgType != udpMessageType) {
-                    udpMessageType = msgType;
+                    udpMessageType = (MKUDPMessageType)msgType;
                 }
             }
         }
@@ -585,7 +585,7 @@
         [pds appendBytes:(unsigned char *)[frame bytes] length:[frame length]];
     } else {
         /* fix terminator stuff here. */
-        int i, nframes = [frameList count];
+        NSUInteger i, nframes = [frameList count];
         for (i = 0; i < nframes; i++) {
             NSData *frame = [frameList objectAtIndex:i];
             unsigned char head = (unsigned char)[frame length];

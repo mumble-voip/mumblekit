@@ -188,7 +188,11 @@ static int add_ext(X509 * crt, int nid, char *value) {
     STACK_OF(X509) *certs = NULL;
     int ret = 0;
 
-    mem = BIO_new_mem_buf((void *)[pkcs12 bytes], [pkcs12 length]);
+    if ([pkcs12 length] > INT_MAX) {
+        return nil;
+    }
+    
+    mem = BIO_new_mem_buf((void *)[pkcs12 bytes], (int)[pkcs12 length]);
     (void) BIO_set_close(mem, BIO_NOCLOSE);
     pkcs = d2i_PKCS12_bio(mem, NULL);
     if (pkcs) {
@@ -248,8 +252,12 @@ static int add_ext(X509 * crt, int nid, char *value) {
         return out_certs;
     }
     
+    if ([pkcs12 length] > INT_MAX) {
+        return nil;
+    }
+    
     void *buf = (void *) [pkcs12 bytes];
-    int len = [pkcs12 length];
+    int len = (int) [pkcs12 length];
     
     mem = BIO_new_mem_buf(buf, len);
     (void) BIO_set_close(mem, BIO_NOCLOSE);
@@ -597,15 +605,19 @@ static int add_ext(X509 * crt, int nid, char *value) {
     if (_derCert == nil) {
         return nil;
     }
+    
+    if ([_derCert length] > UINT32_MAX) {
+        return nil;
+    }
 
     digestKind = [digestKind lowercaseString];
     if ([digestKind isEqualToString:@"sha1"]) {
         unsigned char buf[CC_SHA1_DIGEST_LENGTH];
-        CC_SHA1([_derCert bytes], [_derCert length], buf);
+        CC_SHA1([_derCert bytes], (CC_LONG)[_derCert length], buf);
         return [NSData dataWithBytes:buf length:CC_SHA1_DIGEST_LENGTH];
     } else if ([digestKind isEqualToString:@"sha256"]) {
         unsigned char buf[CC_SHA256_DIGEST_LENGTH];
-        CC_SHA256([_derCert bytes], [_derCert length], buf);
+        CC_SHA256([_derCert bytes], (CC_LONG)[_derCert length], buf);
         return [NSData dataWithBytes:buf length:CC_SHA256_DIGEST_LENGTH];
     }
 
@@ -624,7 +636,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
     }
 
     NSData *digest = [self digestOfKind:digestKind];
-    unsigned int len = [digest length];
+    NSUInteger len = [digest length];
     if (len%2 != 0) {
         return nil;
     }
@@ -634,7 +646,7 @@ static int add_ext(X509 * crt, int nid, char *value) {
     unsigned char *hexstr = [hexStrBacking mutableBytes];
     unsigned char *buf = (unsigned char *)[digest bytes];
     const char *tbl = "0123456789abcdef";
-    for (int i = 0; i < len; i++) {
+    for (NSUInteger i = 0; i < len; i++) {
         hexstr[2*i+0] = tbl[(buf[i] >> 4) & 0x0f];
         hexstr[2*i+1] = tbl[buf[i] & 0x0f];
     }

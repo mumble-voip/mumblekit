@@ -63,7 +63,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         
     err = AudioUnitRender(dev->_audioUnit, flags, ts, busnum, nframes, &dev->_buflist);
     if (err != noErr) {
-        NSLog(@"MKVoiceProcessingDevice: AudioUnitRender failed. err = %ld", err);
+        NSLog(@"MKVoiceProcessingDevice: AudioUnitRender failed. err = %li", (long int)err);
         return err;
     }
     

@@ -469,7 +469,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         }
 
         default:
-            NSLog(@"MKConnection: Unknown event (%u)", eventCode);
+            NSLog(@"MKConnection: Unknown event (%lu)", (unsigned long)eventCode);
             break;
     }
 }
@@ -667,6 +667,11 @@ out:
     }
 
     NSData *crypted = [_crypt encryptData:data];
+    if (crypted == nil) {
+        NSLog(@"MKConnection: unable to encrypt UDP message");
+        return;
+    }
+
     CFSocketError err = CFSocketSendData(_udpSock, NULL, (CFDataRef)crypted, -1.0f);
     if (err != kCFSocketSuccess) {
         NSLog(@"MKConnection: CFSocketSendData failed with err=%i", (int)err);
@@ -716,7 +721,7 @@ out:
 
     NSInteger nwritten = [_outputStream write:[msg bytes] maxLength:[msg length]];
     if (nwritten != expectedLength) {
-        NSLog(@"MKConnection: write error, wrote %d, expected %u", nwritten, expectedLength);
+        NSLog(@"MKConnection: write error, wrote %li, expected %lu", (long int)nwritten, (unsigned long)expectedLength);
     }
     [msg release];
 }

@@ -568,7 +568,7 @@
     MKUser *user = [[MKUser alloc] init];
     [user setSession:userSession];
     [user setUserName:userName];
-    [_userMap setObject:user forKey:[NSNumber numberWithUnsignedInt:userSession]];
+    [_userMap setObject:user forKey:[NSNumber numberWithUnsignedInteger:userSession]];
     [user release];
 
     return user;
@@ -763,7 +763,7 @@
     [chan setChannelName:chanName];
     [chan setParent:parent];
 
-    [_channelMap setObject:chan forKey:[NSNumber numberWithUnsignedInt:chanId]];
+    [_channelMap setObject:chan forKey:[NSNumber numberWithUnsignedInteger:chanId]];
     [parent addChannel:chan];
     [chan release];
 
@@ -774,9 +774,9 @@
 - (void) internalSetLinks:(PBArray *)links forChannel:(MKChannel *)chan {
     [chan unlinkAll];
 
-    int numLinks = [links count];
+    NSUInteger i, numLinks = [links count];
     NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
-    for (int i = 0; i < numLinks; i++) {
+    for (i = 0; i < numLinks; i++) {
         MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];
         [channels addObject:linkedChan];
         [chan linkToChannel:linkedChan];
@@ -792,7 +792,7 @@
 
 // Handle the 'links_add' list from a ChannelState message
 - (void) internalAddLinks:(PBArray *)links toChannel:(MKChannel *)chan {
-    int i, numLinks = [links count];
+    NSUInteger i, numLinks = [links count];
     NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
     for (i = 0; i < numLinks; i++) {
         MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];
@@ -810,7 +810,7 @@
 
 // Handle the 'links_remove' list from a ChannelState message
 - (void) internalRemoveLinks:(PBArray *)links fromChannel:(MKChannel *)chan {
-    int i, numLinks = [links count];
+    NSUInteger i, numLinks = [links count];
     NSMutableArray *channels = [[NSMutableArray alloc] initWithCapacity:numLinks];
     for (i = 0; i < numLinks; i++) {
         MKChannel *linkedChan = [self channelWithId:(NSUInteger)[links uint32AtIndex:i]];
@@ -887,7 +887,7 @@
     if (_connectedUser) {
         [_delegate serverModel:self channelRemoved:chan];
     }
-    [_channelMap removeObjectForKey:[NSNumber numberWithUnsignedInt:[chan channelId]]];
+    [_channelMap removeObjectForKey:[NSNumber numberWithUnsignedInteger:[chan channelId]]];
 }
 
 #pragma mark -
@@ -902,7 +902,7 @@
 }
 
 - (MKUser *) userWithSession:(NSUInteger)session {
-    return [_userMap objectForKey:[NSNumber numberWithUnsignedInt:session]];
+    return [_userMap objectForKey:[NSNumber numberWithUnsignedInteger:session]];
 }
 
 - (MKUser *) userWithHash:(NSString *)hash {
@@ -911,14 +911,14 @@
 
 // Lookup a channel by its channelId.
 - (MKChannel *) channelWithId:(NSUInteger)channelId {
-    return [_channelMap objectForKey:[NSNumber numberWithUnsignedInt:channelId]];
+    return [_channelMap objectForKey:[NSNumber numberWithUnsignedInteger:channelId]];
 }
 
 // Request to join a channel.
 - (void) joinChannel:(MKChannel *)chan {
     MPUserState_Builder *userState = [MPUserState builder];
-    [userState setSession:[[self connectedUser] session]];
-    [userState setChannelId:[chan channelId]];
+    [userState setSession:(uint32_t)[[self connectedUser] session]];
+    [userState setChannelId:(uint32_t)[chan channelId]];
 
     NSData *data = [[userState build] data];
     [_connection sendMessageWithType:UserStateMessage data:data];
@@ -928,7 +928,7 @@
 - (void) createChannelWithName:(NSString *)channelName parent:(MKChannel *)parent temporary:(BOOL)temp {
     MPChannelState_Builder *channelState = [MPChannelState builder];
     channelState.name = channelName;
-    channelState.parent = parent.channelId;
+    channelState.parent = (uint32_t)parent.channelId;
     channelState.temporary = temp;
     
     NSData *data = [[channelState build] data];
@@ -938,7 +938,7 @@
 // Request the access control for a channel
 - (void) requestAccessControlForChannel:(MKChannel *)channel {
     MPACL_Builder *mpacl = [MPACL builder];
-    mpacl.channelId = channel.channelId;
+    mpacl.channelId = (uint32_t)channel.channelId;
     mpacl.query = YES;
     
     NSData *data = [[mpacl build] data];
@@ -948,7 +948,7 @@
 // Set the access control for a channel
 - (void) setAccessControl:(MKAccessControl *)accessControl forChannel:(MKChannel *)channel {
     MPACL_Builder *mpacl = [MPACL builder];
-    mpacl.channelId = channel.channelId;
+    mpacl.channelId = (uint32_t)channel.channelId;
     mpacl.query = YES;
     mpacl.inheritAcls = accessControl.inheritACLs;
     
@@ -965,7 +965,7 @@
         chanACL.grant = channelACL.grant;
         
         if (channelACL.hasUserID) {
-            chanACL.userId = channelACL.userID;
+            chanACL.userId = (uint32_t)channelACL.userID;
         } else {
             chanACL.group = channelACL.group;
         }
@@ -1073,7 +1073,7 @@
 
 - (void) registerConnectedUser {
     MPUserState_Builder *mpus = [MPUserState builder];
-    [mpus setSession:[_connectedUser session]];
+    [mpus setSession:(uint32_t)[_connectedUser session]];
     [mpus setUserId:0];
     
     NSData *data = [[mpus build] data];

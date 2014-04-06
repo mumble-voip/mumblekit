@@ -79,7 +79,7 @@
         memcpy(&data[offset], buffer, len);
         offset += len;
     } else {
-        int l = [self left];
+        NSUInteger l = [self left];
         memset(&data[offset], 0, l);
         overshoot += len - l;
         ok = NO;
@@ -275,7 +275,7 @@
         offset += len;
         return db;
     } else {
-        NSLog(@"PacketDataStream: Unable to copyDataBlock. Requsted=%u, avail=%u", len, [self left]);
+        NSLog(@"PacketDataStream: Unable to copyDataBlock. Requsted=%lu, avail=%lu", (unsigned long)len, (unsigned long)[self left]);
         ok = NO;
         return nil;
     }

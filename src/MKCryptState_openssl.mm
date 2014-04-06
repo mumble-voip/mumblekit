@@ -65,8 +65,12 @@ struct MKCryptStatePrivate {
 }
 
 - (NSData *) encryptData:(NSData *)data {
+	if ([data length] > UINT_MAX) {
+		return nil;
+	}
+
 	NSMutableData *crypted = [[NSMutableData alloc] initWithLength:[data length]+4];
-	_priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], [data length]);
+	_priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], (unsigned int)[data length]);
 	return [crypted autorelease];
 }
 
@@ -74,8 +78,12 @@ struct MKCryptStatePrivate {
 	if (!([data length] > 4))
 		return nil;
 
+	if ([data length] > UINT_MAX) {
+		return nil;
+	}
+
 	NSMutableData *plain = [[NSMutableData alloc] initWithLength:[data length]-4];
-	if (_priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], [data length])) {
+	if (_priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], (unsigned int)[data length])) {
 		return [plain autorelease];
 	} else {
 		[plain release];

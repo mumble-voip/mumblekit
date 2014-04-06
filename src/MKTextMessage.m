@@ -33,7 +33,7 @@
             // Strip extra whitespace
             NSMutableData *filtered = [[NSMutableData alloc] init];
             NSCharacterSet *whitespaceNewlineSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-            int i, len = [_plainStr length];
+            NSUInteger i, len = [_plainStr length];
             unichar lastc = 0;
             for (i = 0; i < len; i++) {
                 unichar c = [_plainStr characterAtIndex:i];

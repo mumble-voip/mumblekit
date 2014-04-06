@@ -198,9 +198,9 @@
 
         struct sockaddr *sa = (struct sockaddr *) [addr bytes];
         if (sa->sa_family == AF_INET)
-            sendto(_sock4, buf, 12, 0, [addr bytes], [addr length]);
+            sendto(_sock4, buf, 12, 0, [addr bytes], (socklen_t)[addr length]);
         else if (sa->sa_family == AF_INET6)
-            sendto(_sock6, buf, 12, 0, [addr bytes], [addr length]);
+            sendto(_sock6, buf, 12, 0, [addr bytes], (socklen_t)[addr length]);
     }
 }
 

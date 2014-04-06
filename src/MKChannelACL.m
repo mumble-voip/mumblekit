@@ -138,7 +138,7 @@
             self.applySubs ? @"YES" : @"NO",
             self.inherited ? @"YES" : @"NO",
             self.hasUserID ? @"userID" : @"group",
-            self.hasUserID ? [NSNumber numberWithInt:self.userID] : self.group,
+            self.hasUserID ? [NSNumber numberWithInteger:self.userID] : self.group,
             grantDescription,
             denyDescription];
 }

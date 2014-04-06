@@ -84,7 +84,7 @@
             _sampleRate = SAMPLE_RATE;
             _frameSize = _sampleRate / 100;
             _audioBufferSize = 12 * _frameSize;
-            _opusDecoder = opus_decoder_create(_sampleRate, _useStereo ? 2 : 1, NULL);
+            _opusDecoder = opus_decoder_create((opus_int32)_sampleRate, _useStereo ? 2 : 1, NULL);
         } else if (type == UDPVoiceSpeexMessage) {
             _sampleRate = 32000;
             speex_bits_init(&_speexBits);
@@ -110,9 +110,9 @@
 
         if (_freq != _sampleRate) {
             int err;
-            _resampler = speex_resampler_init(_useStereo ? 2 : 1, _sampleRate, _freq, 3, &err);
+            _resampler = speex_resampler_init(_useStereo ? 2 : 1, (spx_uint32_t)_sampleRate, (spx_uint32_t)_freq, 3, &err);
             _resamplerBuffer = malloc(sizeof(float)*_audioBufferSize);
-            NSLog(@"AudioOutputSpeech: Resampling from %i Hz to %d Hz", _sampleRate, _freq);
+            NSLog(@"AudioOutputSpeech: Resampling from %lu Hz to %lu Hz", (unsigned long)_sampleRate, (unsigned long)_freq);
         }    
 
         _bufferOffset = 0;
@@ -127,9 +127,9 @@
         _flags = 0xff;
 
         _jitterLock = [[NSLock alloc] init];
-        _jitter = jitter_buffer_init(_frameSize);
+        _jitter = jitter_buffer_init((int)_frameSize);
     
-        int margin = /* g.s.iJitterBufferSize */ 10 * _frameSize;
+        int margin = /* g.s.iJitterBufferSize */ 10 * (int)_frameSize;
         jitter_buffer_ctl(_jitter, JITTER_BUFFER_SET_MARGIN, &margin);
 
         _fadeIn = malloc(sizeof(float) * _frameSize);
@@ -195,13 +195,13 @@
     MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithData:data];
     [pds next];
 
-    int samples = 0;
+    NSUInteger samples = 0;
     if (_msgType == UDPVoiceOpusMessage) {
         uint64_t header = [pds getVarint];
-        NSUInteger size = (header & ((1 << 13) - 1));
+        opus_uint32 size = (header & ((1 << 13) - 1));
         if (size > 0) {
             NSData *opusFrames = [pds copyDataBlock:size];
-            if ([opusFrames length] != size || ![pds valid]) {
+            if ([opusFrames length] != (NSUInteger)size || ![pds valid]) {
                 [pds release];
                 [_jitterLock unlock];
                 return;
@@ -229,13 +229,16 @@
         return;
     }
 
-    JitterBufferPacket jbp;
-    jbp.data = (char *)[data bytes];
-    jbp.len = [data length];
-    jbp.span = samples;
-    jbp.timestamp = _frameSize * seq;
+    if ([data length] <= UINT32_MAX) {
+        JitterBufferPacket jbp;
+        jbp.data = (char *)[data bytes];
+        jbp.len = (spx_uint32_t)[data length];
+        jbp.span = (spx_uint32_t)samples;
+        jbp.timestamp = (spx_uint32_t)_frameSize * (spx_uint32_t)seq;
 
-    jitter_buffer_put(_jitter, &jbp);
+        jitter_buffer_put(_jitter, &jbp);
+    }
+
     [pds release];
     
     [_jitterLock unlock];
@@ -259,7 +262,7 @@
     BOOL nextAlive = _lastAlive;
     
     while (_bufferFilled < nsamples) {
-        int decodedSamples = _frameSize;
+        int decodedSamples = (int)_frameSize;
         [self resizeBuffer:(_bufferFilled + _outputSize)];
 
         if (_resampler) {
@@ -300,7 +303,7 @@
 
                 spx_int32_t startofs = 0;
 
-                if (jitter_buffer_get(_jitter, &jbp, _frameSize, &startofs) == JITTER_BUFFER_OK) {
+                if (jitter_buffer_get(_jitter, &jbp, (spx_int32_t)_frameSize, &startofs) == JITTER_BUFFER_OK) {
                     MKPacketDataStream *pds = [[MKPacketDataStream alloc] initWithBuffer:(unsigned char *)jbp.data length:jbp.len];
 
                     _missCount = 0;
@@ -368,23 +371,29 @@
                 NSData *frameData = [_frames objectAtIndex:0];
 
                 if (_msgType == UDPVoiceOpusMessage) {
-                    decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], [frameData length], output, _audioBufferSize, 0);
-                    if (decodedSamples < 0) {
-                        decodedSamples = _frameSize;
+                    if ([frameData length] <= INT_MAX) {
+                        decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], (int)[frameData length], output, (int)_audioBufferSize, 0);
+                        if (decodedSamples < 0) {
+                            decodedSamples = (int)_frameSize;
+                            memset(output, 0, _frameSize * sizeof(float));
+                        }
+                    } else {
+                        decodedSamples = (int)_frameSize;
                         memset(output, 0, _frameSize * sizeof(float));
                     }
                 } else if (_msgType == UDPVoiceSpeexMessage) {
-                    if ([frameData length] == 0) {
-                        speex_decode(_speexDecoder, NULL, output);
-                    } else {
-                        speex_bits_read_from(&_speexBits, [frameData bytes], [frameData length]);
+                    if ([frameData length] > 0 && [frameData length] <= INT_MAX) {
+                        speex_bits_read_from(&_speexBits, [frameData bytes], (int)[frameData length]);
                         speex_decode(_speexDecoder, &_speexBits, output);
+                    } else {
+                        speex_decode(_speexDecoder, NULL, output);
                     }
-                    for (unsigned int i=0; i < _frameSize; i++)
+                    for (unsigned int i=0; i < _frameSize; i++) {
                         output[i] *= (1.0f / 32767.0f);
+                    }
                 } else {
-                    if ([frameData length] != 0) {
-                        celt_decode_float(_celtDecoder, [frameData bytes], [frameData length], output);
+                    if ([frameData length] > 0 && [frameData length] <= INT_MAX) {
+                        celt_decode_float(_celtDecoder, [frameData bytes], (int)[frameData length], output);
                     } else {
                         celt_decode_float(_celtDecoder, NULL, 0, output);
                     }
@@ -423,7 +432,7 @@
                 }
             } else {
                 if (_msgType == UDPVoiceOpusMessage) {
-                    decodedSamples = opus_decode_float(_opusDecoder, NULL, 0, output, _frameSize, 0);
+                    decodedSamples = opus_decode_float(_opusDecoder, NULL, 0, output, (int)_frameSize, 0);
                 } else if (_msgType == UDPVoiceSpeexMessage) {
                     speex_decode(_speexDecoder, NULL, output);
                     for (unsigned int i = 0; i < _frameSize; i++)
@@ -482,7 +491,7 @@
 nextframe:
         {
             spx_uint32_t inlen = decodedSamples;
-            spx_uint32_t outlen = (unsigned long)(ceilf((float)(decodedSamples * _freq) / (float)_sampleRate));
+            spx_uint32_t outlen = (spx_uint32_t) (ceilf((float)(decodedSamples * _freq) / (float)_sampleRate));
             
             if (_resampler && _lastAlive) {
                 speex_resampler_process_float(_resampler, 0, _resamplerBuffer, &inlen, _buffer + _bufferFilled, &outlen);

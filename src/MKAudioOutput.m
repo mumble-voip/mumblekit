@@ -252,7 +252,7 @@
 - (void) removeBuffer:(MKAudioOutputUser *)u {
     if ([u respondsToSelector:@selector(userSession)]) {
         [_outputLock lock];
-        [_outputs removeObjectForKey:[NSNumber numberWithUnsignedInt:[(id)u userSession]]];
+        [_outputs removeObjectForKey:[NSNumber numberWithUnsignedInteger:[(id)u userSession]]];
         [_outputLock unlock];
     }
 }
@@ -262,7 +262,7 @@
         return;
 
     [_outputLock lock];
-    MKAudioOutputSpeech *outputUser = [_outputs objectForKey:[NSNumber numberWithUnsignedInt:session]];
+    MKAudioOutputSpeech *outputUser = [_outputs objectForKey:[NSNumber numberWithUnsignedInteger:session]];
     [outputUser retain];
     [_outputLock unlock];
 
@@ -273,7 +273,7 @@
         }
         outputUser = [[MKAudioOutputSpeech alloc] initWithSession:session sampleRate:_mixerFrequency messageType:msgType];
         [_outputLock lock];
-        [_outputs setObject:outputUser forKey:[NSNumber numberWithUnsignedInt:session]];
+        [_outputs setObject:outputUser forKey:[NSNumber numberWithUnsignedInteger:session]];
         [_outputLock unlock];
     }
 
