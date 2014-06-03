@@ -882,7 +882,10 @@ out:
 }
 
 - (void) _pingResponseFromServer:(MPPing *)pingMessage {
-    NSLog(@"MKConnection: pingResponseFromServer");
+    uint64_t timeStamp = pingMessage.timestamp;
+    uint64_t now = [self _currentTimeStamp] - _connTime;
+    _lastTcpPing = now - timeStamp;
+    NSLog(@"MKConnection: pingResponseFromServer = %llu usec", self.lastTcpPing);
 }
 
 // The server rejected our connection.

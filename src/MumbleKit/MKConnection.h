@@ -316,6 +316,9 @@ typedef enum {
 /// server that the MKConnection object is currently connected to.
 - (NSString *) serverOSVersion;
 
+/// The last round-trip time from our internal TCP server ping
+@property (readonly) uint64_t lastTcpPing;
+
 ///-------------------------------------
 /// @name Authenticating with the server
 ///-------------------------------------
