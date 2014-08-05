@@ -452,6 +452,7 @@
         sender = [self userWithSession:[msg actor]];
     }
     MKTextMessage *txtMsg = [MKTextMessage messageWithString:[msg message]];
+    [txtMsg _set_isPrivate: msg.channelId.count == 0 && msg.treeId.count == 0 && msg.session.count == 1];
     [_delegate serverModel:self textMessageReceived:txtMsg fromUser:sender];
 }
 

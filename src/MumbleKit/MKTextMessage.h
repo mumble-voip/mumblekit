@@ -61,4 +61,9 @@
 ///          represented as data URIs.
 - (NSArray *) embeddedImages;
 
+/// Returns true if this message was sent to you, and not a channel you're in
+///
+/// @returns Returns true if the message was received only by you
+- (BOOL) isPrivate;
+
 @end
