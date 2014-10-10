@@ -87,7 +87,7 @@ static void MKAudio_AudioInputAvailableCallback(MKAudio *audio, AudioSessionProp
                 return;
             }
         }
-        
+
         UInt32 val = TRUE;
         OSStatus err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(val), &val);
         if (err != kAudioSessionNoError) {
@@ -120,7 +120,7 @@ static void MKAudio_AudioRouteChangedCallback(MKAudio *audio, AudioSessionProper
     if (err != kAudioSessionNoError) {
         NSLog(@"MKAudio: unable to set MixWithOthers property in AudioRouteChangedCallback.");
     }
-    
+
     if ([audio _audioShouldBeRunning]) {
         NSLog(@"MKAudio: audio route changed, restarting audio; reason=%i", reason);
         [audio restart];
@@ -356,14 +356,14 @@ static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
         _running = NO;
     }
 #if TARGET_OS_IPHONE == 1
-    AudioSessionSetActive(NO);
+    //AudioSessionSetActive(NO);
 #endif
 }
 
 // Start the audio engine
 - (void) start {
 #if TARGET_OS_IPHONE == 1
-    AudioSessionSetActive(YES);
+    //AudioSessionSetActive(YES);
 #endif
     @synchronized(self) {
 #if TARGET_OS_IPHONE == 1
