@@ -1143,6 +1143,11 @@
 		28498F1B138AB6A9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = BetaDist;
 		};
@@ -1164,6 +1169,11 @@
 		28A2AEC31478A92700F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = AppStore;
 		};
@@ -1193,12 +1203,23 @@
 		28BCF2CC132AE3B40003AEC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
 		28BCF2CD132AE3B40003AEC1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};

@@ -4412,12 +4412,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 			};
 			name = BetaDist;
 		};
 		28498F1E138AB6C0000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = BetaDist;
 		};
@@ -4433,12 +4439,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 			};
 			name = AppStore;
 		};
 		28A2AEC71478AA0F00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = AppStore;
 		};
@@ -4454,6 +4466,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -4462,18 +4478,26 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 			};
 			name = Release;
 		};
 		28F58C51132AF1070053C348 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
 		28F58C52132AF1070053C348 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
