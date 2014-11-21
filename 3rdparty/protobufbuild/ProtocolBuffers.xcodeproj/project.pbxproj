@@ -335,6 +335,7 @@
 			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
 				ONLY_ACTIVE_ARCH = YES;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -342,6 +343,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -389,6 +391,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -416,6 +419,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190CF2150D5D7300E07613 /* Base.xcconfig */;
 			buildSettings = {
+				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};

@@ -4416,6 +4416,7 @@
 					armv7,
 					armv7s,
 				);
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -4443,6 +4444,7 @@
 					armv7,
 					armv7s,
 				);
+				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};
@@ -4471,6 +4473,7 @@
 					armv7s,
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -4482,6 +4485,7 @@
 					armv7,
 					armv7s,
 				);
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
