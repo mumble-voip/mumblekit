@@ -369,14 +369,25 @@ static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
 #if TARGET_OS_IPHONE == 1
         if ([[MKAudio sharedAudio] echoCancellationAvailable] && _audioSettings.enableEchoCancellation) {
             _audioDevice = [[MKVoiceProcessingDevice alloc] initWithSettings:&_audioSettings];
+
+			/*
+			UInt32 mode = kAudioSessionMode_VoiceChat;
+			OSStatus error = AudioSessionSetProperty(kAudioSessionProperty_Mode, sizeof(mode), &mode);
+			if (error) printf("couldn't set audio session mode to VoiceChat!");
+			 */
         } else {
             _audioDevice = [[MKiOSAudioDevice alloc] initWithSettings:&_audioSettings];
+
+			UInt32 mode = kAudioSessionMode_Default;
+			OSStatus error = AudioSessionSetProperty(kAudioSessionProperty_Mode, sizeof(mode), &mode);
+			if (error) printf("couldn't set audio session mode to DEFAULT!");
         }
 #elif TARGET_OS_MAC == 1
         _audioDevice = [[MKMacAudioDevice alloc] initWithSettings:&_audioSettings];
 #else
 # error Missing MKAudioDevice
 #endif
+
         [_audioDevice setupDevice];
         _audioInput = [[MKAudioInput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
         [_audioInput setMainConnectionForAudio:_connection];
