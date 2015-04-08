@@ -601,14 +601,16 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         return _peerCertificates;
     }
 
-    NSArray *secCerts = (NSArray *) CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerCertificates);
-    _peerCertificates = [[NSMutableArray alloc] initWithCapacity:[secCerts count]];
-    [secCerts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSData *data = (NSData *) SecCertificateCopyData((SecCertificateRef)obj);
+    SecTrustRef trust = (SecTrustRef)CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerTrust);
+    CFIndex certificateCount = SecTrustGetCertificateCount(trust);
+    _peerCertificates = [[NSMutableArray alloc] initWithCapacity:certificateCount];
+    for (CFIndex ix=0; ix<certificateCount; ix++) {
+        SecCertificateRef cert = SecTrustGetCertificateAtIndex(trust, ix);
+        NSData *data = (NSData *)SecCertificateCopyData(cert);
         [_peerCertificates addObject:[MKCertificate certificateWithCertificate:data privateKey:nil]];
         [data release];
-    }];
-    [secCerts release];
+    }
+    CFRelease(trust);
 
     return _peerCertificates;
 }
@@ -616,16 +618,10 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 - (void) _updateTLSTrustedStatus {
     BOOL trusted = NO;
 
-    SecPolicyRef sslPolicy = SecPolicyCreateSSL(YES, (CFStringRef) _hostname);
-    CFArrayRef secCerts = CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerCertificates);
-    
-    SecTrustRef trust = NULL;
-    OSStatus err = SecTrustCreateWithCertificates(secCerts, sslPolicy, &trust);
-    if (err != noErr)
-        goto out;
+    SecTrustRef trust = (SecTrustRef)CFWriteStreamCopyProperty((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLPeerTrust);
 
     SecTrustResultType trustRes;
-    err = SecTrustEvaluate(trust, &trustRes);
+    OSStatus err = SecTrustEvaluate(trust, &trustRes);
     if (err != noErr)
         goto out;
     
@@ -636,8 +632,7 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     }
 out:
     _trustedChain = trusted;
-    CFRelease(sslPolicy);
-    CFRelease(secCerts);
+    CFRelease(trust);
 }
 
 // Returns the trust status of the server's certificate chain.
