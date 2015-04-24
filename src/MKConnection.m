@@ -804,6 +804,10 @@ out:
 
         packetType = (MKMessageType) CFSwapInt16BigToHost(*(UInt16 *)(&buffer[0]));
         packetLength = (int) CFSwapInt32BigToHost(*(UInt32 *)(&buffer[2]));
+		// sanity check to avoid crashing
+		if (packetLength < 0 || packetLength > 8388608) {
+			packetLength = 0;
+		}
 
         packetBufferOffset = 0;
         [packetBuffer setLength:packetLength];
