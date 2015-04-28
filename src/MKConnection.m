@@ -810,7 +810,12 @@ out:
 		}
 
         packetBufferOffset = 0;
-        [packetBuffer setLength:packetLength];
+		@try {
+			[packetBuffer setLength:packetLength];
+		}
+		@catch (NSException *exception) {
+			NSLog(@"%@", exception.reason);
+		}
     }
 
     // Receive in progress.
