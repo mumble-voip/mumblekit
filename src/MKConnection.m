@@ -811,6 +811,7 @@ out:
 		}
 		@catch (NSException *exception) {
 			NSLog(@"%@", exception.reason);
+			[packetBuffer setLength:0];
 		}
     }
 
