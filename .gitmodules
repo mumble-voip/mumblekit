@@ -1,6 +1,6 @@
 [submodule "3rdparty/speex"]
 	path = 3rdparty/speex
-	url = git://git.xiph.org/speex.git/
+	url = https://git.xiph.org/speex.git
 [submodule "3rdparty/celt-0.7.0"]
 	path = 3rdparty/celt-0.7.0
 	url = git://github.com/mumble-voip/celt-0.7.0.git
@@ -9,10 +9,10 @@
 	url = git://github.com/booyah/protobuf-objc.git
 [submodule "3rdparty/celt-0.8.0"]
 	path = 3rdparty/celt-0.8.0
-	url = git://git.xiph.org/celt.git
+	url = https://git.xiph.org/celt.git
 [submodule "3rdparty/openssl"]
 	path = 3rdparty/openssl
 	url = git://github.com/mkrautz/openssl-mirror.git
 [submodule "3rdparty/opus"]
 	path = 3rdparty/opus
-	url = git://git.xiph.org/opus.git
+	url = https://git.xiph.org/opus.git
