@@ -231,29 +231,6 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         NSLog(@"MKVoiceProcessingDevice: Unable to disable VPIO AGC.");
         return NO;
     }
-
-    // When running Mumble built with the iOS 6.1 SDK, built using Xcode 4.6.3 on iOS 7,
-    // we sometimes get zero samples from the VPIO Audio Unit.  When building with Xcode 5
-    // against the iOS 7 SDK, everything is OK, though.
-    //
-    // This is somehow related to setting VoiceProcessingQuality in the 'low' range. If we don't set
-    // it at all (and thus presumably stay in the 'high quality' range) iOS 7 doesn't complain. So do
-    // that as a workaround for now.
-#if __IPHONE_OS_VERSION_MAX_ALLOWED <= 60100
-    if (!DeviceIsRunningiOS7OrGreater()) {
-#else
-    {
-#endif
-        // It's sufficient to set the quality to 0 for our use case; we do our own preprocessing
-        // after this, and the job of the VPIO is only to do echo cancellation.
-        val = 0;
-        len = sizeof(UInt32);
-        err = AudioUnitSetProperty(_audioUnit, kAUVoiceIOProperty_VoiceProcessingQuality, kAudioUnitScope_Global, 0, &val, len);
-        if (err != noErr) {
-            NSLog(@"MKVoiceProcessingDevice: unable to set VPIO quality.");
-            return NO;
-        }
-    }
     
     val = 0;
     len = sizeof(UInt32);
