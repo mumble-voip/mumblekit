@@ -209,7 +209,7 @@
             }
         }
     } else {
-        memset((short *)frames, 0, nsamp * _numChannels);
+        memset((short *)frames, 0, nsamp * _numChannels * sizeof(short));
     }
     [_outputLock unlock];
 
