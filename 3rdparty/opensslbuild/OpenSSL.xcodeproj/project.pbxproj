@@ -4497,6 +4497,28 @@
 			};
 			name = Release;
 		};
+		BCF56B221C9F2E7200CF88DA /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28190CEB150D5B6C00E07613 /* Base.xcconfig */;
+			buildSettings = {
+			};
+			name = Distribution;
+		};
+		BCF56B231C9F2E7200CF88DA /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		BCF56B241C9F2E7200CF88DA /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				SDKROOT = macosx;
+			};
+			name = Distribution;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4505,6 +4527,7 @@
 			buildConfigurations = (
 				28F58C4E132AF1070053C348 /* Debug */,
 				28F58C4F132AF1070053C348 /* Release */,
+				BCF56B221C9F2E7200CF88DA /* Distribution */,
 				28A2AEC61478AA0F00F3B83F /* AppStore */,
 				28498F1D138AB6C0000509DD /* BetaDist */,
 			);
@@ -4516,6 +4539,7 @@
 			buildConfigurations = (
 				28F58C51132AF1070053C348 /* Debug */,
 				28F58C52132AF1070053C348 /* Release */,
+				BCF56B231C9F2E7200CF88DA /* Distribution */,
 				28A2AEC71478AA0F00F3B83F /* AppStore */,
 				28498F1E138AB6C0000509DD /* BetaDist */,
 			);
@@ -4527,6 +4551,7 @@
 			buildConfigurations = (
 				28F58C62132AF1170053C348 /* Debug */,
 				28F58C63132AF1170053C348 /* Release */,
+				BCF56B241C9F2E7200CF88DA /* Distribution */,
 				28A2AEC81478AA0F00F3B83F /* AppStore */,
 				28498F1F138AB6C0000509DD /* BetaDist */,
 			);
