@@ -8,6 +8,8 @@
 
 @interface MKAudioInput : NSObject
 
+@property (copy) void (^inputCallback)(short *frames, unsigned int nsamp);
+
 - (id) initWithDevice:(MKAudioDevice *)device andSettings:(MKAudioSettings *)settings;
 - (void) dealloc;
 

@@ -119,6 +119,9 @@ typedef struct _MKAudioSettings {
 ///
 /// @param audio  The MKAudio singleton instance.
 - (BOOL) audioShouldBeRunning:(MKAudio *)audio;
+
+- (void) audio:(MKAudio *)audio didRecordMicrophoneDataWithBuffer:(short *)input amount:(NSUInteger)nsamp;
+
 @end
 
 /// @class MKAudio MKAudio.h MumbleKit/MKAudio.h

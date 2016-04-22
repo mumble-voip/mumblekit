@@ -379,6 +379,13 @@ static void MKAudio_UpdateAudioSessionSettings(MKAudio *audio) {
 #endif
         [_audioDevice setupDevice];
         _audioInput = [[MKAudioInput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
+
+        _audioInput.inputCallback = ^(short *frames, unsigned int nsamp) {
+            if ([[self delegate] respondsToSelector:@selector(audio:didRecordMicrophoneDataWithBuffer:amount:)]) {
+                [[self delegate] audio:self didRecordMicrophoneDataWithBuffer:frames amount:nsamp];
+            };
+        };
+        
         [_audioInput setMainConnectionForAudio:_connection];
         _audioOutput = [[MKAudioOutput alloc] initWithDevice:_audioDevice andSettings:&_audioSettings];
         if (_audioSettings.enableSideTone) {

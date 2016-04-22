@@ -167,7 +167,12 @@
     [self initializeMixer];
  
     [_device setupInput:^BOOL(short *frames, unsigned int nsamp) {
+        if (self.inputCallback) {
+            self.inputCallback(frames, nsamp);
+        }
+        
         [self addMicrophoneDataWithBuffer:frames amount:nsamp];
+        
         return YES;
     }];
 
