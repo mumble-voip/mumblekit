@@ -200,7 +200,7 @@
 		28877EB5132D96F300793CC5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0810;
 			};
 			buildConfigurationList = 28877EB8132D96F300793CC5 /* Build configuration list for PBXProject "SpeexDSP" */;
 			compatibilityVersion = "Xcode 3.2";
