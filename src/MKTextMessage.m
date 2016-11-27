@@ -10,14 +10,18 @@
     NSString         *_filteredStr;
     NSMutableArray   *_imagesArray;
     NSMutableArray   *_linksArray;
+
+    BOOL             _isPrivate;
 }
 - (id) initWithString:(NSString *)str;
+- (void) _set_isPrivate:(BOOL) value;
 @end
 
 @implementation MKTextMessage
 
 - (id) initWithString:(NSString *)str {
     if ((self = [super init])) {
+        _isPrivate = NO;
         _rawStr = [str retain];
         _imagesArray = [[NSMutableArray alloc] init];
         _linksArray = [[NSMutableArray alloc] init];
@@ -118,6 +122,14 @@
 
 - (void) parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
     [_plainStr appendString:string];
+}
+
+- (BOOL) isPrivate {
+    return _isPrivate;
+}
+
+- (void) _set_isPrivate: (BOOL) value {
+    _isPrivate = value;
 }
 
 @end

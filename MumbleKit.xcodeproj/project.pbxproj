@@ -121,11 +121,11 @@
 		28CC36FB132ED92500241269 /* Mumble.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC36F8132ED92500241269 /* Mumble.pb.m */; };
 		28CC36FC132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC36F9132ED92500241269 /* ObjectivecDescriptor.pb.m */; };
 		28CC36FD132ED92500241269 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC36F9132ED92500241269 /* ObjectivecDescriptor.pb.m */; };
-		28CC3704132EDA5200241269 /* CELT-0.7.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2849235E132ED67E00B4EAAC /* CELT-0.7.0.dylib */; };
-		28CC3705132EDA5200241269 /* OpenSSL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2849235F132ED67E00B4EAAC /* OpenSSL.dylib */; };
-		28CC3706132EDA5200241269 /* ProtocolBuffers.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492360132ED67E00B4EAAC /* ProtocolBuffers.dylib */; };
-		28CC3707132EDA5200241269 /* Speex.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492361132ED67E00B4EAAC /* Speex.dylib */; };
-		28CC3708132EDA5200241269 /* SpeexDSP.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492362132ED67E00B4EAAC /* SpeexDSP.dylib */; };
+		28CC3704132EDA5200241269 /* CELT-0.7.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2849235E132ED67E00B4EAAC /* CELT-0.7.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		28CC3705132EDA5200241269 /* OpenSSL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2849235F132ED67E00B4EAAC /* OpenSSL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		28CC3706132EDA5200241269 /* ProtocolBuffers.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492360132ED67E00B4EAAC /* ProtocolBuffers.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		28CC3707132EDA5200241269 /* Speex.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492361132ED67E00B4EAAC /* Speex.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		28CC3708132EDA5200241269 /* SpeexDSP.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28492362132ED67E00B4EAAC /* SpeexDSP.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		28CC3714132EDC7300241269 /* libOpenSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC370F132EDC7300241269 /* libOpenSSL.a */; };
 		28CC3715132EDC7300241269 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3710132EDC7300241269 /* libProtocolBuffers.a */; };
 		28CC3716132EDC7300241269 /* libSpeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CC3711132EDC7300241269 /* libSpeex.a */; };
@@ -837,7 +837,7 @@
 		28BCF2B8132AE3B40003AEC1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 			};
 			buildConfigurationList = 28BCF2BB132AE3B40003AEC1 /* Build configuration list for PBXProject "MumbleKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1137,6 +1137,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2815C4E0150D559800136082 /* BetaDist.xcconfig */;
 			buildSettings = {
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -1158,6 +1159,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2815C4DE150D559800136082 /* AppStore.xcconfig */;
 			buildSettings = {
+				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};
@@ -1180,6 +1182,7 @@
 			baseConfigurationReference = 2815C4E6150D55BC00136082 /* Debug.xcconfig */;
 			buildSettings = {
 				ONLY_ACTIVE_ARCH = YES;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1187,12 +1190,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2815C4E1150D559800136082 /* Release.xcconfig */;
 			buildSettings = {
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
 		28BCF2CC132AE3B40003AEC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
 			};
 			name = Debug;
 		};

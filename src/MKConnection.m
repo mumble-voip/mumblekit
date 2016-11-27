@@ -806,7 +806,13 @@ out:
         packetLength = (int) CFSwapInt32BigToHost(*(UInt32 *)(&buffer[2]));
 
         packetBufferOffset = 0;
-        [packetBuffer setLength:packetLength];
+        @try {
+            [packetBuffer setLength:packetLength];
+		}
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception.reason);
+			[packetBuffer setLength:0];
+		}
     }
 
     // Receive in progress.
