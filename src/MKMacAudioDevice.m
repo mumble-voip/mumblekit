@@ -45,7 +45,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         b->mData = calloc(1, b->mDataByteSize);
     }
     
-    if (dev->_recordBufList.mBuffers->mDataByteSize < (nframes/dev->_recordSampleSize)) {
+    if (dev->_recordBufList.mBuffers->mDataByteSize < (dev->_recordSampleSize * nframes)) {
         NSLog(@"MKMacAudioDevice: Buffer too small. Allocating more space.");
         AudioBuffer *b = dev->_recordBufList.mBuffers;
         free(b->mData);
@@ -53,11 +53,18 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         b->mData = calloc(1, b->mDataByteSize);
     }
     
+    /*
+     AudioUnitRender modifies the mDataByteSize members with the
+     actual read bytes count. We need to write it back otherwise
+     we'll reallocate the buffer even if not needed.
+     */
+    UInt32 dataByteSize = dev->_buflist.mBuffers->mDataByteSize;
     err = AudioUnitRender(dev->_recordAudioUnit, flags, ts, busnum, nframes, &dev->_recordBufList);
     if (err != noErr) {
         NSLog(@"MKMacAudioDevice: AudioUnitRender failed. err = %ld", (unsigned long)err);
         return err;
     }
+    dev->_buflist.mBuffers->mDataByteSize = dataByteSize;
     
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     short *buf = (short *) dev->_recordBufList.mBuffers->mData;

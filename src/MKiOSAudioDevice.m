@@ -38,7 +38,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         b->mData = calloc(1, b->mDataByteSize);
     }
     
-    if (dev->_buflist.mBuffers->mDataByteSize < (nframes/dev->_micSampleSize)) {
+    if (dev->_buflist.mBuffers->mDataByteSize < (dev->_micSampleSize * nframes)) {
         NSLog(@"MKiOSAudioDevice: Buffer too small. Allocating more space.");
         AudioBuffer *b = dev->_buflist.mBuffers;
         free(b->mData);
@@ -46,6 +46,12 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
         b->mData = calloc(1, b->mDataByteSize);
     }
     
+    /*
+     AudioUnitRender modifies the mDataByteSize members with the
+     actual read bytes count. We need to write it back otherwise
+     we'll reallocate the buffer even if not needed.
+     */
+    UInt32 dataByteSize = dev->_buflist.mBuffers->mDataByteSize;
     err = AudioUnitRender(dev->_audioUnit, flags, ts, busnum, nframes, &dev->_buflist);
     if (err != noErr) {
 #ifndef TARGET_IPHONE_SIMULATOR
@@ -53,6 +59,7 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
 #endif
         return err;
     }
+    dev->_buflist.mBuffers->mDataByteSize = dataByteSize;
     
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     short *buf = (short *) dev->_buflist.mBuffers->mData;
