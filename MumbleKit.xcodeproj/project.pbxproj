@@ -1120,7 +1120,9 @@
 		2845A729132D9B2F0034D631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				INSTALL_PATH = "@rpath";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1128,7 +1130,9 @@
 		2845A72A132D9B2F0034D631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				INSTALL_PATH = "@rpath";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1149,7 +1153,9 @@
 		28498F1C138AB6A9000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				INSTALL_PATH = "@rpath";
 				SDKROOT = macosx;
 			};
 			name = BetaDist;
@@ -1170,7 +1176,9 @@
 		28A2AEC41478A92700F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				INSTALL_PATH = "@rpath";
 				SDKROOT = macosx;
 			};
 			name = AppStore;

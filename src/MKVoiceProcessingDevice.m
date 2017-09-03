@@ -9,7 +9,10 @@
 #import <AudioUnit/AudioUnit.h>
 #import <AudioUnit/AUComponent.h>
 #import <AudioToolbox/AudioToolbox.h>
+
+#if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
+#endif
 
 @interface MKVoiceProcessingDevice () {
 @public
@@ -23,6 +26,9 @@
     MKAudioDeviceInputFunc       _inputFunc;
 }
 @end
+
+// Only for iOS builds
+#if TARGET_OS_IOS
 
 // DeviceIsRunningiOS7OrGreater returns YES if
 // the iOS device is on iOS 7 or greater.
@@ -38,6 +44,8 @@ static BOOL DeviceIsRunningiOS7OrGreater() {
     }
     return iOS7OrGreater;
 }
+
+#endif
 
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
@@ -238,6 +246,10 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
         NSLog(@"MKVoiceProcessingDevice: Unable to disable VPIO AGC.");
         return NO;
     }
+	
+	
+	// Only for iOS builds
+#if TARGET_OS_IOS
 
     // When running Mumble built with the iOS 6.1 SDK, built using Xcode 4.6.3 on iOS 7,
     // we sometimes get zero samples from the VPIO Audio Unit.  When building with Xcode 5
@@ -261,7 +273,9 @@ static OSStatus outputCallback(void *udata, AudioUnitRenderActionFlags *flags, c
             return NO;
         }
     }
-    
+		
+#endif
+		
     val = 0;
     len = sizeof(UInt32);
     err = AudioUnitSetProperty(_audioUnit, kAUVoiceIOProperty_MuteOutput, kAudioUnitScope_Global, 0, &val, len);
