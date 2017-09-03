@@ -16,12 +16,8 @@
 
 using namespace MumbleClient;
 
-struct MKCryptStatePrivate {
-	CryptState cs;
-};
-
 @interface MKCryptState () {
-    struct MKCryptStatePrivate *_priv;
+    CryptState *_cs;
 }
 @end
 
@@ -32,35 +28,35 @@ struct MKCryptStatePrivate {
 	if (self == nil)
 		return nil;
 
-	_priv = (struct MKCryptStatePrivate *) malloc(sizeof(struct MKCryptStatePrivate));
+	_cs = new CryptState;
 
 	return self;
 }
 
 - (void) dealloc {
-	free(_priv);
+	delete _cs;
 
 	[super dealloc];
 }
 
 - (BOOL) valid {
-	return (BOOL)_priv->cs.isValid();
+	return (BOOL)_cs->isValid();
 }
 
 - (void) generateKey {
-	_priv->cs.genKey();
+	_cs->genKey();
 }
 
 - (void) setKey:(NSData *)key eiv:(NSData *)enc div:(NSData *)dec {
 	NSAssert([key length] == AES_BLOCK_SIZE, @"key length not AES_BLOCK_SIZE");
 	NSAssert([enc length] == AES_BLOCK_SIZE, @"enc length not AES_BLOCK_SIZE");
 	NSAssert([dec length] == AES_BLOCK_SIZE, @"dec length not AES_BLOCK_SIZE");
-	_priv->cs.setKey((const unsigned char *)[key bytes], (const unsigned char *)[enc bytes], (const unsigned char *)[dec bytes]);
+	_cs->setKey((const unsigned char *)[key bytes], (const unsigned char *)[enc bytes], (const unsigned char *)[dec bytes]);
 }
 
 - (void) setDecryptIV:(NSData *)dec {
 	NSAssert([dec length] == AES_BLOCK_SIZE, @"dec length not AES_BLOCK_SIZE");
-	_priv->cs.setDecryptIV((const unsigned char *)[dec bytes]);
+	_cs->setDecryptIV((const unsigned char *)[dec bytes]);
 	
 }
 
@@ -70,7 +66,7 @@ struct MKCryptStatePrivate {
 	}
 
 	NSMutableData *crypted = [[NSMutableData alloc] initWithLength:[data length]+4];
-	_priv->cs.encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], (unsigned int)[data length]);
+	_cs->encrypt((const unsigned char *)[data bytes], (unsigned char *)[crypted mutableBytes], (unsigned int)[data length]);
 	return [crypted autorelease];
 }
 
@@ -83,7 +79,7 @@ struct MKCryptStatePrivate {
 	}
 
 	NSMutableData *plain = [[NSMutableData alloc] initWithLength:[data length]-4];
-	if (_priv->cs.decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], (unsigned int)[data length])) {
+	if (_cs->decrypt((const unsigned char *)[data bytes], (unsigned char *)[plain mutableBytes], (unsigned int)[data length])) {
 		return [plain autorelease];
 	} else {
 		[plain release];
