@@ -19,7 +19,7 @@
 }
 
 + (NSURL *) regionalServerListURL {
-    return [NSURL URLWithString:[MKServices regionalServerList]];
+	return [NSURL URLWithString:[MKServices regionalServerList]];
 }
 
 @end
