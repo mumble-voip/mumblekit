@@ -16,6 +16,7 @@
     MKAudioSettings              _settings;
     AudioUnit                    _audioUnit;
     AudioBufferList              _buflist;
+    int                          _bufCapacity;
     int                          _micFrequency;
     int                          _micSampleSize;
     int                          _numMicChannels;
@@ -29,22 +30,24 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
     MKiOSAudioDevice *dev = (MKiOSAudioDevice *)udata;
     OSStatus err;
     
-    if (! dev->_buflist.mBuffers->mData) {
+    if (!dev->_buflist.mBuffers->mData) {
         NSLog(@"MKiOSAudioDevice: No buffer allocated.");
         dev->_buflist.mNumberBuffers = 1;
         AudioBuffer *b = dev->_buflist.mBuffers;
         b->mNumberChannels = dev->_numMicChannels;
-        b->mDataByteSize = dev->_micSampleSize * nframes;
-        b->mData = calloc(1, b->mDataByteSize);
+        dev->_bufCapacity = dev->_micSampleSize * nframes;
+        b->mData = calloc(1, dev->_bufCapacity);
     }
     
-    if (dev->_buflist.mBuffers->mDataByteSize < (nframes/dev->_micSampleSize)) {
+    if (dev->_bufCapacity < (nframes*dev->_micSampleSize)) {
         NSLog(@"MKiOSAudioDevice: Buffer too small. Allocating more space.");
         AudioBuffer *b = dev->_buflist.mBuffers;
         free(b->mData);
-        b->mDataByteSize = dev->_micSampleSize * nframes;
-        b->mData = calloc(1, b->mDataByteSize);
+        dev->_bufCapacity = dev->_micSampleSize * nframes;
+        b->mData = calloc(1, dev->_bufCapacity);
     }
+    
+    dev->_buflist.mBuffers->mDataByteSize = dev->_micSampleSize * nframes;
     
     err = AudioUnitRender(dev->_audioUnit, flags, ts, busnum, nframes, &dev->_buflist);
     if (err != noErr) {
