@@ -9,6 +9,8 @@
 @interface MKServices : NSObject
 
 /// Get the hostname of the closest regional services host.
+///
+/// Note: This method is deprecated and always returns nil.
 + (NSString *) regionalServicesHost;
 
 /// Get the URL of the server list on a server near the client's current location.
