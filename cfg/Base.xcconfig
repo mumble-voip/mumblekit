@@ -8,6 +8,8 @@ SDKROOT = iphoneos
 MACOSX_DEPLOYMENT_TARGET = 10.7
 IPHONEOS_DEPLOYMENT_TARGET = 8.0
 
+SKIP_INSTALL = YES
+
 HEADER_SEARCH_PATHS = "$(SRCROOT)/src" "$(SRCROOT)/proto" "$(SRCROOT)/3rdparty/speex/include" "$(SRCROOT)/3rdparty/celt-0.7.0/libcelt" "$(SRCROOT)/3rdparty/opus/include" "$(SRCROOT)/3rdparty/openssl/include" "$(SRCROOT)/3rdparty/protobuf/src/runtime/Classes"
 LIBRARY_SEARCH_PATHS = "$(inherited)" "$(SRCROOT)"
 
