@@ -243,6 +243,8 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
         [[MKAudio sharedAudio] setMainConnectionForAudio:nil];
 
     } while (_reconnect);
+    
+    [_crypt release];
 
     [NSThread exit];
 }
