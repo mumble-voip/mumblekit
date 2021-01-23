@@ -200,8 +200,8 @@
 
         short *outputBuffer = (short *)frames;
         for (i = 0; i < nsamp * _numChannels; ++i) {
-            if (mixBuffer[i] > 1.0f) {
-                outputBuffer[i] = 32768;
+            if (mixBuffer[i] >= 1.0f) {
+                outputBuffer[i] = 32767;
             } else if (mixBuffer[i] < -1.0f) {
                 outputBuffer[i] = -32768;
             } else {
@@ -235,8 +235,8 @@
             _cngLastSample = runningvalue;
             _cngRegister2 += _cngRegister1;
             
-            if (runningvalue > 1.0f) {
-                outputBuffer[i] = 32768;
+            if (runningvalue >= 1.0f) {
+                outputBuffer[i] = 32767;
             } else if (runningvalue < -1.0f) {
                 outputBuffer[i] = -32768;
             } else {

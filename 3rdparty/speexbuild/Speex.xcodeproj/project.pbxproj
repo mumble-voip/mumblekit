@@ -312,14 +312,15 @@
 		28D1DADF132AEB1400456ED6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 1230;
 			};
 			buildConfigurationList = 28D1DAE2132AEB1400456ED6 /* Build configuration list for PBXProject "Speex" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 28D1DADD132AEB1400456ED6;
 			productRefGroup = 28D1DAE9132AEB1400456ED6 /* Products */;
