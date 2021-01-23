@@ -3116,14 +3116,15 @@
 		28F58C3D132AF1070053C348 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 1230;
 			};
 			buildConfigurationList = 28F58C40132AF1070053C348 /* Build configuration list for PBXProject "OpenSSL" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 28F58C3B132AF1070053C348;
 			productRefGroup = 28F58C47132AF1070053C348 /* Products */;

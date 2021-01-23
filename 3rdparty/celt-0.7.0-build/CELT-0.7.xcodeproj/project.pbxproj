@@ -252,14 +252,15 @@
 		280D5F7C132AE73C00540C3D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 1230;
 			};
 			buildConfigurationList = 280D5F7F132AE73C00540C3D /* Build configuration list for PBXProject "CELT-0.7" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 280D5F7A132AE73C00540C3D;
 			productRefGroup = 280D5F86132AE73C00540C3D /* Products */;

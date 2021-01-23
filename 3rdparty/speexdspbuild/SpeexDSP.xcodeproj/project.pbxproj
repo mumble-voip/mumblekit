@@ -200,14 +200,15 @@
 		28877EB5132D96F300793CC5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 1230;
 			};
 			buildConfigurationList = 28877EB8132D96F300793CC5 /* Build configuration list for PBXProject "SpeexDSP" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 28877EB3132D96F300793CC5;
 			productRefGroup = 28877EBF132D96F300793CC5 /* Products */;
