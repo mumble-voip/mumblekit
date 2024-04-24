@@ -257,12 +257,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190D0B150D624800E07613 /* Base.xcconfig */;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = BetaDist;
 		};
 		28498F2E138AB6E2000509DD /* BetaDist */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				SKIP_INSTALL = YES;
 			};
 			name = BetaDist;
 		};
@@ -278,6 +281,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190D0B150D624800E07613 /* Base.xcconfig */;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -286,18 +290,23 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190D0B150D624800E07613 /* Base.xcconfig */;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
 		28877EC9132D96F300793CC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		28877ECA132D96F300793CC5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -321,12 +330,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190D0B150D624800E07613 /* Base.xcconfig */;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = AppStore;
 		};
 		28A2AED71478AA3C00F3B83F /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				SKIP_INSTALL = YES;
 			};
 			name = AppStore;
 		};
