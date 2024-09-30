@@ -9,7 +9,17 @@
 #import <AudioUnit/AudioUnit.h>
 #import <AudioUnit/AUComponent.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import <UIKit/UIKit.h>
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+    #define IS_UIDEVICE_AVAILABLE 1
+#elif TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_MACCATALYST
+    #define IS_UIDEVICE_AVAILABLE 1
+#else
+    #define IS_UIDEVICE_AVAILABLE 0
+#endif
+
+#if IS_UIDEVICE_AVAILABLE
+    #import <UIKit/UIKit.h>
+#endif
 
 @interface MKVoiceProcessingDevice () {
 @public
@@ -24,6 +34,7 @@
 }
 @end
 
+#if IS_UIDEVICE_AVAILABLE
 // DeviceIsRunningiOS7OrGreater returns YES if
 // the iOS device is on iOS 7 or greater.
 static BOOL DeviceIsRunningiOS7OrGreater() {
@@ -38,6 +49,7 @@ static BOOL DeviceIsRunningiOS7OrGreater() {
     }
     return iOS7OrGreater;
 }
+#endif
 
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {

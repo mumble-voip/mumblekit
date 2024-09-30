@@ -58,13 +58,13 @@ static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, co
      actual read bytes count. We need to write it back otherwise
      we'll reallocate the buffer even if not needed.
      */
-    UInt32 dataByteSize = dev->_buflist.mBuffers->mDataByteSize;
+    UInt32 dataByteSize = dev->_recordBufList.mBuffers->mDataByteSize;
     err = AudioUnitRender(dev->_recordAudioUnit, flags, ts, busnum, nframes, &dev->_recordBufList);
     if (err != noErr) {
         NSLog(@"MKMacAudioDevice: AudioUnitRender failed. err = %ld", (unsigned long)err);
         return err;
     }
-    dev->_buflist.mBuffers->mDataByteSize = dataByteSize;
+    dev->_recordBufList.mBuffers->mDataByteSize = dataByteSize;
     
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     short *buf = (short *) dev->_recordBufList.mBuffers->mData;
