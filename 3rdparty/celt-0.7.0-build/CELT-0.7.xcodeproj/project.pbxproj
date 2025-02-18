@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		280D5F89132AE73C00540C3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280D5F88132AE73C00540C3D /* Foundation.framework */; };
-		28656122132AE8240011637C /* CELT-0.7.pch in Headers */ = {isa = PBXBuildFile; fileRef = 28656121132AE8240011637C /* CELT-0.7.pch */; };
-		28656123132AE8240011637C /* CELT-0.7.pch in Headers */ = {isa = PBXBuildFile; fileRef = 28656121132AE8240011637C /* CELT-0.7.pch */; };
 		28656125132AE83B0011637C /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 28656124132AE83B0011637C /* config.h */; };
 		28656126132AE83B0011637C /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 28656124132AE83B0011637C /* config.h */; };
 		28656128132AE8640011637C /* bands.c in Sources */ = {isa = PBXBuildFile; fileRef = 28656127132AE8640011637C /* bands.c */; };
@@ -58,7 +56,6 @@
 		28190CFB150D600400E07613 /* Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		28656110132AE7A80011637C /* CELT-0.7.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "CELT-0.7.0.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		28656116132AE7A80011637C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		28656121132AE8240011637C /* CELT-0.7.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CELT-0.7.pch"; sourceTree = "<group>"; };
 		28656124132AE83B0011637C /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		28656127132AE8640011637C /* bands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bands.c; path = "../celt-0.7.0/libcelt/bands.c"; sourceTree = "<group>"; };
 		2865612A132AE86F0011637C /* celt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = celt.c; path = "../celt-0.7.0/libcelt/celt.c"; sourceTree = "<group>"; };
@@ -167,7 +164,6 @@
 			isa = PBXGroup;
 			children = (
 				28656124132AE83B0011637C /* config.h */,
-				28656121132AE8240011637C /* CELT-0.7.pch */,
 			);
 			name = "Support Files";
 			sourceTree = "<group>";
@@ -195,7 +191,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28656122132AE8240011637C /* CELT-0.7.pch in Headers */,
 				28656125132AE83B0011637C /* config.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,7 +199,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28656123132AE8240011637C /* CELT-0.7.pch in Headers */,
 				28656126132AE83B0011637C /* config.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
