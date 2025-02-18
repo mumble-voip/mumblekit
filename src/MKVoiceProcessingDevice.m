@@ -34,23 +34,6 @@
 }
 @end
 
-#if IS_UIDEVICE_AVAILABLE
-// DeviceIsRunningiOS7OrGreater returns YES if
-// the iOS device is on iOS 7 or greater.
-static BOOL DeviceIsRunningiOS7OrGreater() {
-    BOOL iOS7OrGreater = NO;
-    NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
-    if (iOSVersion) {
-        NSArray *iOSVersionComponents = [iOSVersion componentsSeparatedByString:@"."];
-        if ([iOSVersionComponents count] > 0) {
-            NSInteger majorVersion = [[iOSVersionComponents objectAtIndex:0] integerValue];
-            iOS7OrGreater = majorVersion >= 7;
-        }
-    }
-    return iOS7OrGreater;
-}
-#endif
-
 static OSStatus inputCallback(void *udata, AudioUnitRenderActionFlags *flags, const AudioTimeStamp *ts,
                               UInt32 busnum, UInt32 nframes, AudioBufferList *buflist) {
     MKVoiceProcessingDevice *dev = (MKVoiceProcessingDevice *)udata;
