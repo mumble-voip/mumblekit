@@ -381,7 +381,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     if (tokens) {
         [authenticate setTokensArray:tokens];
     }
-    [authenticate addCeltVersions:MUMBLEKIT_CELT_BITSTREAM];
 
     if ([[MKVersion sharedVersion] isOpusEnabled])
         [authenticate setOpus:YES];
