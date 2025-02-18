@@ -1,9 +1,6 @@
 [submodule "3rdparty/speex"]
 	path = 3rdparty/speex
 	url = https://github.com/xiph/speex.git
-[submodule "3rdparty/celt-0.7.0"]
-	path = 3rdparty/celt-0.7.0
-	url = https://github.com/mumble-voip/celt-0.7.0.git
 [submodule "3rdparty/protobuf"]
 	path = 3rdparty/protobuf
 	url = https://github.com/booyah/protobuf-objc.git

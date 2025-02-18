@@ -27,8 +27,6 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
-#include <celt.h>
-
 #import "Mumble.pb.h"
 
 // The bitstream we should send to the server.
