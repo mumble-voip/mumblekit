@@ -314,12 +314,14 @@
     if (max < 500)
         return -1;
 
-    BOOL useOpus = NO;
+    BOOL useOpus = YES;
     if (_lastTransmit) {
         useOpus = udpMessageType == UDPVoiceOpusMessage;
     } else if ([[MKVersion sharedVersion] isOpusEnabled]) {
         @synchronized(self) {
-            useOpus = [_connection shouldUseOpus];
+            if (_connection) {
+                useOpus = [_connection shouldUseOpus];
+            }
         }
     }
     
