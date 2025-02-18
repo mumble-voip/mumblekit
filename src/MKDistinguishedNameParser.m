@@ -21,7 +21,6 @@
 - (void) scanAttribute;
 - (void) scanAttributeName;
 - (void) scanWhitespace;
-- (void) scanAttributeValue;
 - (void) scanCharater:(NSString *)str;
 - (void) scanEquals;
 - (void) scanComma;
