@@ -12,9 +12,9 @@ jobs:
           submodules: 'recursive'
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '14'
+          xcode-version: '16'
       - name: Build
         run: |
           gem install --verbose xcpretty
           mkdir ${PWD}/__build__
-          set -o pipefail && xcodebuild -UseModernBuildSystem=NO -configuration Release -target "MumbleKit (iOS)" CONFIGURATION_BUILD_DIR="${PWD}/__build__" | xcpretty
+          set -o pipefail && xcodebuild -configuration Release -target "MumbleKit (iOS)" CONFIGURATION_BUILD_DIR="${PWD}/__build__" | xcpretty

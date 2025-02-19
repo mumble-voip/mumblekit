@@ -27,8 +27,6 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
-#include <celt.h>
-
 #import "Mumble.pb.h"
 
 // The bitstream we should send to the server.
@@ -381,7 +379,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     if (tokens) {
         [authenticate setTokensArray:tokens];
     }
-    [authenticate addCeltVersions:MUMBLEKIT_CELT_BITSTREAM];
 
     if ([[MKVersion sharedVersion] isOpusEnabled])
         [authenticate setOpus:YES];
@@ -955,6 +952,11 @@ out:
         _shouldUseOpus = [codec opus];
     } else {
         _shouldUseOpus = NO;
+    }
+
+    if (_shouldUseOpus == NO) {
+        NSLog(@"MKConnection: Server asks for CELT, but we do not support it. Please upgrade your mumble server. TODO: fail gracefully here");
+        __builtin_trap(); // CELT is no longer an option
     }
 }
 

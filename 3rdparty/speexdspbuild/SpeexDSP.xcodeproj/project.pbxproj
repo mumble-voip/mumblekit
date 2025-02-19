@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -200,7 +200,8 @@
 		28877EB5132D96F300793CC5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1230;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1620;
 			};
 			buildConfigurationList = 28877EB8132D96F300793CC5 /* Build configuration list for PBXProject "SpeexDSP" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -270,6 +271,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = BetaDist;
@@ -278,6 +280,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28190D0B150D624800E07613 /* Base.xcconfig */;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -305,6 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -313,6 +317,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -334,6 +339,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = AppStore;

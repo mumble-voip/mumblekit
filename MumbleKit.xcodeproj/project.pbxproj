@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		28074E92158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */ = {isa = PBXBuildFile; fileRef = 28074E8F158A6E5100E0A4D0 /* MKAudioOutputSidetone.m */; };
 		28074E93158A6E5100E0A4D0 /* MKAudioOutputSidetone.m in Sources */ = {isa = PBXBuildFile; fileRef = 28074E8F158A6E5100E0A4D0 /* MKAudioOutputSidetone.m */; };
 		2808DD9413E4D8C0008448EA /* MKPacketDataStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 2845A7D1132D9C520034D631 /* MKPacketDataStream.h */; };
-		2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28492310132ED60700B4EAAC /* libCELT-0.7.0.a */; };
 		281EADA51530EA30000793AB /* MKDistinguishedNameParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */; };
 		281EADA61530EA30000793AB /* MKDistinguishedNameParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */; };
 		281EADA71530EA30000793AB /* MKDistinguishedNameParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 281EADA41530EA30000793AB /* MKDistinguishedNameParser.m */; };
@@ -158,13 +157,6 @@
 			remoteGlobalIDString = 2815CCC314E6DF9700AAE69C;
 			remoteInfo = "Opus (Mac)";
 		};
-		283363C913EE070400A04F04 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 280D5F84132AE73C00540C3D;
-			remoteInfo = "CELT-0.7 (iOS)";
-		};
 		283363CB13EE070400A04F04 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */;
@@ -192,20 +184,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 28D1DAE7132AEB1400456ED6;
 			remoteInfo = "Speex (iOS)";
-		};
-		2849230F132ED60700B4EAAC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 280D5F85132AE73C00540C3D;
-			remoteInfo = "CELT-0.7 (iOS)";
-		};
-		28492311132ED60700B4EAAC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 28656110132AE7A80011637C;
-			remoteInfo = "CELT-0.7 (Mac)";
 		};
 		28492329132ED61800B4EAAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -276,13 +254,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2845A6B7132D99600034D631;
 			remoteInfo = "ProtocolBuffers (Mac)";
-		};
-		28492358132ED66F00B4EAAC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 2865610F132AE7A80011637C;
-			remoteInfo = "CELT-0.7 (Mac)";
 		};
 		2849235A132ED66F00B4EAAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -387,7 +358,6 @@
 		2845A7D6132D9C520034D631 /* MKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUser.h; path = src/MumbleKit/MKUser.h; sourceTree = SOURCE_ROOT; };
 		2845A7D7132D9C520034D631 /* MKUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKUtils.h; path = src/MKUtils.h; sourceTree = SOURCE_ROOT; };
 		2845A7D8132D9C520034D631 /* MKVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKVersion.h; path = src/MumbleKit/MKVersion.h; sourceTree = SOURCE_ROOT; };
-		28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CELT-0.7.xcodeproj"; path = "3rdparty/celt-0.7.0-build/CELT-0.7.xcodeproj"; sourceTree = "<group>"; };
 		28492321132ED61800B4EAAC /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = 3rdparty/protobufbuild/ProtocolBuffers.xcodeproj; sourceTree = "<group>"; };
 		2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenSSL.xcodeproj; path = 3rdparty/opensslbuild/OpenSSL.xcodeproj; sourceTree = "<group>"; };
 		2849233C132ED64C00B4EAAC /* Speex.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Speex.xcodeproj; path = 3rdparty/speexbuild/Speex.xcodeproj; sourceTree = "<group>"; };
@@ -458,7 +428,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2810DED514EA81D7004482F4 /* libCELT-0.7.0.a in Frameworks */,
 				285B426414E6E1420045E282 /* libOpus.a in Frameworks */,
 				28CC3714132EDC7300241269 /* libOpenSSL.a in Frameworks */,
 				28CC3715132EDC7300241269 /* libProtocolBuffers.a in Frameworks */,
@@ -487,7 +456,6 @@
 			children = (
 				2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */,
 				28492321132ED61800B4EAAC /* ProtocolBuffers.xcodeproj */,
-				28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */,
 				285B425814E6E1200045E282 /* Opus.xcodeproj */,
 				2849233C132ED64C00B4EAAC /* Speex.xcodeproj */,
 				28492348132ED65700B4EAAC /* SpeexDSP.xcodeproj */,
@@ -595,15 +563,6 @@
 				281EADA31530EA30000793AB /* MKDistinguishedNameParser.h */,
 			);
 			name = "Private Headers";
-			sourceTree = "<group>";
-		};
-		28492308132ED60700B4EAAC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				28492310132ED60700B4EAAC /* libCELT-0.7.0.a */,
-				28492312132ED60700B4EAAC /* CELT-0.7.0.dylib */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		28492322132ED61800B4EAAC /* Products */ = {
@@ -799,7 +758,6 @@
 				0245A133154F593C00476144 /* PBXTargetDependency */,
 				28492355132ED66F00B4EAAC /* PBXTargetDependency */,
 				28492357132ED66F00B4EAAC /* PBXTargetDependency */,
-				28492359132ED66F00B4EAAC /* PBXTargetDependency */,
 				2849235B132ED66F00B4EAAC /* PBXTargetDependency */,
 				2849235D132ED66F00B4EAAC /* PBXTargetDependency */,
 			);
@@ -820,7 +778,6 @@
 			);
 			dependencies = (
 				28FB39E8150C4D6F00E6E522 /* PBXTargetDependency */,
-				283363CA13EE070400A04F04 /* PBXTargetDependency */,
 				283363CC13EE070400A04F04 /* PBXTargetDependency */,
 				283363CE13EE070400A04F04 /* PBXTargetDependency */,
 				283363D013EE070400A04F04 /* PBXTargetDependency */,
@@ -837,7 +794,8 @@
 		28BCF2B8132AE3B40003AEC1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1230;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1620;
 			};
 			buildConfigurationList = 28BCF2BB132AE3B40003AEC1 /* Build configuration list for PBXProject "MumbleKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -851,10 +809,6 @@
 			productRefGroup = 28BCF2C2132AE3B40003AEC1 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 28492308132ED60700B4EAAC /* Products */;
-					ProjectRef = 28492307132ED60700B4EAAC /* CELT-0.7.xcodeproj */;
-				},
 				{
 					ProductGroup = 2849232E132ED63600B4EAAC /* Products */;
 					ProjectRef = 2849232D132ED63600B4EAAC /* OpenSSL.xcodeproj */;
@@ -885,20 +839,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		28492310132ED60700B4EAAC /* libCELT-0.7.0.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libCELT-0.7.0.a";
-			remoteRef = 2849230F132ED60700B4EAAC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		28492312132ED60700B4EAAC /* CELT-0.7.0.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = "CELT-0.7.0.dylib";
-			remoteRef = 28492311132ED60700B4EAAC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		2849232A132ED61800B4EAAC /* libProtocolBuffers.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1060,11 +1000,6 @@
 			name = "Opus (Mac)";
 			targetProxy = 0245A132154F593C00476144 /* PBXContainerItemProxy */;
 		};
-		283363CA13EE070400A04F04 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CELT-0.7 (iOS)";
-			targetProxy = 283363C913EE070400A04F04 /* PBXContainerItemProxy */;
-		};
 		283363CC13EE070400A04F04 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "OpenSSL (iOS)";
@@ -1095,11 +1030,6 @@
 			name = "ProtocolBuffers (Mac)";
 			targetProxy = 28492356132ED66F00B4EAAC /* PBXContainerItemProxy */;
 		};
-		28492359132ED66F00B4EAAC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CELT-0.7 (Mac)";
-			targetProxy = 28492358132ED66F00B4EAAC /* PBXContainerItemProxy */;
-		};
 		2849235B132ED66F00B4EAAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Speex (Mac)";
@@ -1122,6 +1052,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1130,6 +1061,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1151,6 +1083,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = BetaDist;
@@ -1172,6 +1105,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				SDKROOT = macosx;
 			};
 			name = AppStore;

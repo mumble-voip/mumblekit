@@ -13,14 +13,10 @@
 #include <speex/speex_resampler.h>
 #include <speex/speex_jitter.h>
 #include <speex/speex_types.h>
-#include <celt.h>
 #include <opus.h>
 
 @interface MKAudioOutputSpeech () {
     OpusDecoder          *_opusDecoder;
-
-    CELTDecoder          *_celtDecoder;
-    CELTMode             *_celtMode;
 
     void                 *_speexDecoder;
     SpeexBits             _speexBits;
@@ -68,8 +64,6 @@
 - (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKUDPMessageType)type {
     if ((self = [super init])) {
         _jitter = NULL;
-        _celtMode = NULL;
-        _celtDecoder = NULL;
         _speexDecoder = NULL;
         _resampler = NULL;
 
@@ -95,11 +89,7 @@
             speex_decoder_ctl(_speexDecoder, SPEEX_GET_SAMPLING_RATE, &_sampleRate);
             _audioBufferSize = _frameSize;
         } else {
-            _sampleRate = SAMPLE_RATE;
-            _frameSize = _sampleRate / 100;
-            _celtMode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE/100, NULL);
-            _celtDecoder = celt_decoder_create(_celtMode, 1, NULL);
-            _audioBufferSize = _frameSize;
+            __builtin_trap(); // CELT is no longer supported
         }
 
         _outputSize = (int)(ceilf((float)_audioBufferSize * _freq) / (float)_sampleRate);
@@ -147,10 +137,6 @@
 }
 
 - (void) dealloc {
-    if (_celtDecoder)
-        celt_decoder_destroy(_celtDecoder);
-    if (_celtMode)
-        celt_mode_destroy(_celtMode);
     if (_speexDecoder) {
         speex_decoder_destroy(_speexDecoder);
         speex_bits_destroy(&_speexBits);
@@ -392,11 +378,7 @@
                         output[i] *= (1.0f / 32767.0f);
                     }
                 } else {
-                    if ([frameData length] > 0 && [frameData length] <= INT_MAX) {
-                        celt_decode_float(_celtDecoder, [frameData bytes], (int)[frameData length], output);
-                    } else {
-                        celt_decode_float(_celtDecoder, NULL, 0, output);
-                    }
+                    __builtin_trap(); // CELT is no longer supported
                 }
 
                 [_frames removeObjectAtIndex:0];
@@ -438,7 +420,7 @@
                     for (unsigned int i = 0; i < _frameSize; i++)
                         output[i] *= (1.0f / 32767.0f);
                 } else {
-                    celt_decode_float(_celtDecoder, NULL, 0, output);
+                    __builtin_trap(); // CELT is no longer supported
                 }
             }
 

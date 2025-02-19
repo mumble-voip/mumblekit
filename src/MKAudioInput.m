@@ -16,7 +16,6 @@
 #include <speex/speex_resampler.h>
 #include <speex/speex_jitter.h>
 #include <speex/speex_types.h>
-#include <celt.h>
 #include <opus.h>
 
 @interface MKAudioInput () {
@@ -29,7 +28,6 @@
     MKAudioSettings        _settings;
 
     SpeexPreprocessState   *_preprocessorState;
-    CELTEncoder            *_celtEncoder;
     SpeexResamplerState    *_micResampler;
     SpeexBits              _speexBits;
     void                   *_speexEncoder;
@@ -93,7 +91,6 @@
     memcpy(&_settings, settings, sizeof(MKAudioSettings));
     
     _preprocessorState = NULL;
-    _celtEncoder = NULL;
     _micResampler = NULL;
     _speexEncoder = NULL;
     frameCounter = 0;
@@ -191,8 +188,6 @@
         speex_encoder_destroy(_speexEncoder);
     if (_micResampler)
         speex_resampler_destroy(_micResampler);
-    if (_celtEncoder)
-        celt_encoder_destroy(_celtEncoder);
     if (_preprocessorState)
         speex_preprocess_state_destroy(_preprocessorState);
     if (_opusEncoder)
@@ -319,12 +314,14 @@
     if (max < 500)
         return -1;
 
-    BOOL useOpus = NO;
+    BOOL useOpus = YES;
     if (_lastTransmit) {
         useOpus = udpMessageType == UDPVoiceOpusMessage;
     } else if ([[MKVersion sharedVersion] isOpusEnabled]) {
         @synchronized(self) {
-            useOpus = [_connection shouldUseOpus];
+            if (_connection) {
+                useOpus = [_connection shouldUseOpus];
+            }
         }
     }
     
@@ -367,50 +364,7 @@
             encoded = 1;
         }
     } else if (!useOpus && (_settings.codec == MKCodecFormatCELT || _settings.codec == MKCodecFormatOpus)) {
-        CELTEncoder *encoder = _celtEncoder;
-        if (encoder == NULL) {
-            CELTMode *mode = celt_mode_create(SAMPLE_RATE, SAMPLE_RATE / 100, NULL);
-            _celtEncoder = celt_encoder_create(mode, 1, NULL);
-            encoder = _celtEncoder;
-        }
-        
-        // Make sure our messageType is set up correctly....
-        {
-            BOOL update = NO;
-            NSUInteger ourCodec = 0x8000000b;
-            NSUInteger alpha, beta;
-            BOOL preferAlpha;
-            @synchronized(self) {
-                if ([_connection connected]) {
-                    alpha = [_connection alphaCodec];
-                    beta = [_connection betaCodec];
-                    preferAlpha = [_connection preferAlphaCodec];
-                    update = YES;
-                }
-            }
-            if (update) {
-                NSInteger newCodec = preferAlpha ? alpha : beta;
-                NSInteger msgType = preferAlpha ? UDPVoiceCELTAlphaMessage : UDPVoiceCELTBetaMessage;
-                
-                if (newCodec != ourCodec) {
-                    newCodec = preferAlpha ? beta : alpha;
-                    msgType = preferAlpha ? UDPVoiceCELTBetaMessage : UDPVoiceCELTAlphaMessage;
-                }
-                if (msgType != udpMessageType) {
-                    udpMessageType = (MKUDPMessageType)msgType;
-                }
-            }
-        }
-
-        if (!_lastTransmit) {
-            celt_encoder_ctl(encoder, CELT_RESET_STATE);
-        }
-        
-        celt_encoder_ctl(encoder, CELT_SET_PREDICTION(0));
-        celt_encoder_ctl(encoder, CELT_SET_VBR_RATE(_settings.quality));
-        len = celt_encode(encoder, resampled ? psOut : psMic, NULL, encbuf, MIN(_settings.quality / 800, 127));
-        _bufferedFrames++;
-        bitrate = len * 100 * 8;
+        __builtin_trap(); // CELT is no longer supported
     } else if (_settings.codec == MKCodecFormatSpeex) {
         int vbr = 0;
         speex_encoder_ctl(_speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
