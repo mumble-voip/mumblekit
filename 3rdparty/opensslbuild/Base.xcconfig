@@ -10,7 +10,7 @@ IPHONEOS_DEPLOYMENT_TARGET = 12.0
 
 SKIP_INSTALL = YES
 
-HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../openssl" "$(PROJECT_DIR)/../openssl/include" "$(PROJECT_DIR)/../openssl/crypto" "$(PROJECT_DIR)/../openssl/crypto/asn1" "$(PROJECT_DIR)/../openssl/crypto/evp"
+HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../openssl" "$(PROJECT_DIR)/../openssl/include" "$(PROJECT_DIR)/../openssl/crypto" "$(PROJECT_DIR)/../openssl/crypto/asn1" "$(PROJECT_DIR)/../openssl/crypto/evp" "$(PROJECT_DIR)/../openssl/crypto/modes"
 ALWAYS_SEARCH_USER_PATHS = NO
 
 GCC_WARN_INHIBIT_ALL_WARNINGS = YES
