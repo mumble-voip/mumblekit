@@ -3148,6 +3148,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28F58C50132AF1070053C348 /* Build configuration list for PBXNativeTarget "OpenSSL (iOS)" */;
 			buildPhases = (
+				0E217B992DA2C78D00028D7F /* ShellScript */,
 				28F58C42132AF1070053C348 /* Sources */,
 				28F58C43132AF1070053C348 /* Frameworks */,
 				28F58C44132AF1070053C348 /* Headers */,
@@ -3205,6 +3206,27 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0E217B992DA2C78D00028D7F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}/../openssl\"\n\"${SRCROOT}/../openssl/Configure\" dist\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		28F58C42132AF1070053C348 /* Sources */ = {
