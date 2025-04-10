@@ -73,7 +73,6 @@
 		2812F218132D842F006511AC /* dh_key.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F207132D842F006511AC /* dh_key.c */; };
 		2812F219132D842F006511AC /* dh_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F208132D842F006511AC /* dh_lib.c */; };
 		2812F21A132D842F006511AC /* dh_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F208132D842F006511AC /* dh_lib.c */; };
-		2812F21B132D842F006511AC /* dh_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F209132D842F006511AC /* dh_pmeth.c */; };
 		2812F21C132D842F006511AC /* dh_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F209132D842F006511AC /* dh_pmeth.c */; };
 		2812F21D132D842F006511AC /* dh_prn.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F20A132D842F006511AC /* dh_prn.c */; };
 		2812F21E132D842F006511AC /* dh_prn.c in Sources */ = {isa = PBXBuildFile; fileRef = 2812F20A132D842F006511AC /* dh_prn.c */; };
@@ -3504,7 +3503,6 @@
 				2812F215132D842F006511AC /* dh_gen.c in Sources */,
 				2812F217132D842F006511AC /* dh_key.c in Sources */,
 				2812F219132D842F006511AC /* dh_lib.c in Sources */,
-				2812F21B132D842F006511AC /* dh_pmeth.c in Sources */,
 				0E217B832DA2C59400028D7F /* cm_pmeth.c in Sources */,
 				2812F21D132D842F006511AC /* dh_prn.c in Sources */,
 				2812F22C132D8467006511AC /* dsa_ameth.c in Sources */,
