@@ -523,11 +523,20 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
 // Must also be called from the MKConnection thread, because
 // the function adds the UDP socket to the thread's runloop.
 - (void) _setupUdpSock {
+    // Get the peer address of the TCP socket (i.e. the host)
+    struct sockaddr_storage sa;
+
+    socklen_t sl = sizeof(sa);
+    if (getpeername(_socket, (struct sockaddr *) &sa, &sl) == -1) {
+        NSLog(@"MKConnection: Unable to query TCP socket for address.");
+        return;
+    }
+
     CFSocketContext udpctx;
     memset(&udpctx, 0, sizeof(CFSocketContext));
     udpctx.info = self;
 
-    _udpSock = CFSocketCreate(NULL, PF_INET, SOCK_DGRAM, IPPROTO_UDP,
+    _udpSock = CFSocketCreate(NULL, sa.ss_family, SOCK_DGRAM, IPPROTO_UDP,
                                   kCFSocketDataCallBack, MKConnectionUDPCallback,
                                   &udpctx);
     if (! _udpSock) {
@@ -539,14 +548,6 @@ static void MKConnectionUDPCallback(CFSocketRef sock, CFSocketCallBackType type,
     CFRunLoopSourceRef src = CFSocketCreateRunLoopSource(NULL, _udpSock, 0);
     CFRunLoopAddSource(CFRunLoopGetCurrent(), src, kCFRunLoopDefaultMode);
     CFRelease(src);
-
-    // Get the peer address of the TCP socket (i.e. the host)
-    struct sockaddr sa;
-    socklen_t sl = sizeof(struct sockaddr);
-    if (getpeername(_socket, &sa, &sl) == -1) {
-        NSLog(@"MKConnection: Unable to query TCP socket for address.");
-        return;
-    }
 
     NSData *_udpAddr = [[[NSData alloc] initWithBytes:&sa length:(NSUInteger)sl] autorelease];
     CFSocketError err = CFSocketConnectToAddress(_udpSock, (CFDataRef)_udpAddr, -1);
