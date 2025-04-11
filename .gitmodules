@@ -4,9 +4,9 @@
 [submodule "3rdparty/protobuf"]
 	path = 3rdparty/protobuf
 	url = https://github.com/booyah/protobuf-objc.git
-[submodule "3rdparty/openssl"]
-	path = 3rdparty/openssl
-	url = https://github.com/mkrautz/openssl-mirror.git
 [submodule "3rdparty/opus"]
 	path = 3rdparty/opus
 	url = https://github.com/xiph/opus.git
+[submodule "3rdparty/openssl"]
+	path = 3rdparty/openssl
+	url = https://github.com/openssl/openssl.git
