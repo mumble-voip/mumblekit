@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+#import <Foundation/Foundation.h>
+
 /// @class MKVersion MKVersion.h MumbleKit/MKVersion.h
 @interface MKVersion : NSObject
 + (MKVersion *) sharedVersion;
