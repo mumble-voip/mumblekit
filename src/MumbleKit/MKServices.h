@@ -6,6 +6,8 @@
 ///
 /// MKServices implements convenience methods for accessing publicly available
 /// Mumble services.
+#import <Foundation/Foundation.h>
+
 @interface MKServices : NSObject
 
 /// Get the hostname of the closest regional services host.

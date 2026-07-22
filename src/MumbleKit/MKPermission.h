@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+#import <Foundation/Foundation.h>
+
 typedef enum {
     MKPermissionNone             = 0x00000,
     MKPermissionWrite            = 0x00001,

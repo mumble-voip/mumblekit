@@ -10,7 +10,6 @@
 #import "MKAudioOutputSidetone.h"
 #import "MKAudioDevice.h"
 
-#include <speex/speex.h>
 #include <speex/speex_preprocess.h>
 #include <speex/speex_echo.h>
 #include <speex/speex_resampler.h>
@@ -29,8 +28,6 @@
 
     SpeexPreprocessState   *_preprocessorState;
     SpeexResamplerState    *_micResampler;
-    SpeexBits              _speexBits;
-    void                   *_speexEncoder;
     OpusEncoder            *_opusEncoder;
 
     int                    frameSize;
@@ -92,7 +89,6 @@
     
     _preprocessorState = NULL;
     _micResampler = NULL;
-    _speexEncoder = NULL;
     frameCounter = 0;
     _bufferedFrames = 0;
     
@@ -100,48 +96,11 @@
     _vadGateTimeSeconds = _settings.vadGateTimeSeconds;
     _vadOpenLastTime = [[NSDate date] timeIntervalSince1970];
 
-    // Fall back to CELT if Opus is not enabled.
-    if (![[MKVersion sharedVersion] isOpusEnabled] && _settings.codec == MKCodecFormatOpus) {
-        _settings.codec = MKCodecFormatCELT;
-        NSLog(@"Falling back to CELT");
-    }
-
-    if (_settings.codec == MKCodecFormatOpus) {
-        sampleRate = SAMPLE_RATE;
-        frameSize = SAMPLE_RATE / 100;
-        _opusEncoder = opus_encoder_create(SAMPLE_RATE, 1, OPUS_APPLICATION_VOIP, NULL);
-        opus_encoder_ctl(_opusEncoder, OPUS_SET_VBR(0)); // CBR
-        NSLog(@"MKAudioInput: %i bits/s, %d Hz, %d sample Opus", _settings.quality, sampleRate, frameSize);
-    } else if (_settings.codec == MKCodecFormatCELT) {
-        sampleRate = SAMPLE_RATE;
-        frameSize = SAMPLE_RATE / 100;
-        NSLog(@"MKAudioInput: %i bits/s, %d Hz, %d sample CELT", _settings.quality, sampleRate, frameSize);
-    } else if (_settings.codec == MKCodecFormatSpeex) {
-        sampleRate = 32000;
-
-        speex_bits_init(&_speexBits);
-        speex_bits_reset(&_speexBits);
-        _speexEncoder = speex_encoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
-        speex_encoder_ctl(_speexEncoder, SPEEX_GET_FRAME_SIZE, &frameSize);
-        speex_encoder_ctl(_speexEncoder, SPEEX_GET_SAMPLING_RATE, &sampleRate);
-
-        int iArg = 1;
-        speex_encoder_ctl(_speexEncoder, SPEEX_SET_VBR, &iArg);
-
-        iArg = 0;
-        speex_encoder_ctl(_speexEncoder, SPEEX_SET_VAD, &iArg);
-        speex_encoder_ctl(_speexEncoder, SPEEX_SET_DTX, &iArg);
-
-        float fArg = 8.0;
-        speex_encoder_ctl(_speexEncoder, SPEEX_SET_VBR_QUALITY, &fArg);
-
-        iArg = _settings.quality;
-        speex_encoder_ctl(_speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &iArg);
-
-        iArg = 5;
-        speex_encoder_ctl(_speexEncoder, SPEEX_SET_COMPLEXITY, &iArg);
-        NSLog(@"MKAudioInput: %d bits/s, %d Hz, %d sample Speex-UWB", _settings.quality, sampleRate, frameSize);
-    }
+    sampleRate = SAMPLE_RATE;
+    frameSize = SAMPLE_RATE / 100;
+    _opusEncoder = opus_encoder_create(SAMPLE_RATE, 1, OPUS_APPLICATION_VOIP, NULL);
+    opus_encoder_ctl(_opusEncoder, OPUS_SET_VBR(0)); // CBR
+    NSLog(@"MKAudioInput: %i bits/s, %d Hz, %d sample Opus", _settings.quality, sampleRate, frameSize);
 
     doResetPreprocessor = YES;
     _lastTransmit = NO;
@@ -184,8 +143,6 @@
     if (psOut)
         free(psOut);
 
-    if (_speexEncoder)
-        speex_encoder_destroy(_speexEncoder);
     if (_micResampler)
         speex_resampler_destroy(_micResampler);
     if (_preprocessorState)
@@ -295,12 +252,14 @@
     speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_DENOISE, &iArg);
     speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_DEREVERB, &iArg);
 
-    iArg = 30000;
+    // AGC target scaled by micBoost (0.0–1.0). 8000 is a moderate level (~25% of max).
+    iArg = (spx_int32_t)(_settings.micBoost * 8000.0f);
+    if (iArg < 100) iArg = 100;
     speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_TARGET, &iArg);
 
-    //float v = 30000.0f / (float) 0.0f; // iMinLoudness
-    //iArg = iroundf(floorf(20.0f * log10f(v)));
-    //speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_MAX_GAIN, &iArg);
+    // Limit AGC max gain to 12 dB to prevent extreme boosting in quiet environments.
+    iArg = 12;
+    speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_AGC_MAX_GAIN, &iArg);
 
     iArg = _settings.noiseSuppression;
     speex_preprocess_ctl(state, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &iArg);
@@ -314,18 +273,7 @@
     if (max < 500)
         return -1;
 
-    BOOL useOpus = YES;
-    if (_lastTransmit) {
-        useOpus = udpMessageType == UDPVoiceOpusMessage;
-    } else if ([[MKVersion sharedVersion] isOpusEnabled]) {
-        @synchronized(self) {
-            if (_connection) {
-                useOpus = [_connection shouldUseOpus];
-            }
-        }
-    }
-    
-    if (useOpus && (_settings.codec == MKCodecFormatOpus || _settings.codec == MKCodecFormatCELT)) {
+    if (YES) {
         encoded = 0;
         udpMessageType = UDPVoiceOpusMessage;
         if (_opusBuffer == nil)
@@ -363,23 +311,6 @@
             bitrate = (len * 100 * 8) / _bufferedFrames;
             encoded = 1;
         }
-    } else if (!useOpus && (_settings.codec == MKCodecFormatCELT || _settings.codec == MKCodecFormatOpus)) {
-        __builtin_trap(); // CELT is no longer supported
-    } else if (_settings.codec == MKCodecFormatSpeex) {
-        int vbr = 0;
-        speex_encoder_ctl(_speexEncoder, SPEEX_GET_VBR_MAX_BITRATE, &vbr);
-        if (vbr != _settings.quality) {
-            vbr = _settings.quality;
-            speex_encoder_ctl(_speexEncoder, SPEEX_SET_VBR_MAX_BITRATE, &vbr);
-        }
-        if (!_lastTransmit)
-            speex_encoder_ctl(_speexEncoder, SPEEX_RESET_STATE, NULL);
-        speex_encode_int(_speexEncoder, psOut, &_speexBits);
-        len = speex_bits_write(&_speexBits, (char *)encbuf, 127);
-        speex_bits_reset(&_speexBits);
-        _bufferedFrames++;
-        bitrate = len * 50 * 8;
-        udpMessageType = UDPVoiceSpeexMessage;
     }
     
     return encoded ? len : -1;

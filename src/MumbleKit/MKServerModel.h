@@ -2,12 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-#import <MumbleKit/MKUser.h>
-#import <MumbleKit/MKChannel.h>
-#import <MumbleKit/MKConnection.h>
-#import <MumbleKit/MKTextMessage.h>
-#import <MumbleKit/MKPermission.h>
-#import <MumbleKit/MKAccessControl.h>
+#import <Foundation/Foundation.h>
+
+#import "MKUser.h"
+#import "MKChannel.h"
+#import "MKConnection.h"
+#import "MKTextMessage.h"
+#import "MKPermission.h"
+#import "MKAccessControl.h"
 
 @class MulticastDelegate;
 @class MKServerModel;
@@ -602,5 +604,21 @@
 
 /// Registers the currently connected user with the server.
 - (void) registerConnectedUser;
+
+///---------------------
+/// @name User Moderation
+///---------------------
+
+/// Mute or unmute another user on the server (requires Mute permission).
+- (void) setMuted:(BOOL)muted forUser:(MKUser *)user;
+
+/// Kick a user from the server (requires Kick permission).
+- (void) kickUser:(MKUser *)user withReason:(NSString *)reason;
+
+/// Kick and ban a user from the server (requires Ban permission).
+- (void) banUser:(MKUser *)user withReason:(NSString *)reason;
+
+/// Move another user to a channel (requires Move permission).
+- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)channel;
 
 @end

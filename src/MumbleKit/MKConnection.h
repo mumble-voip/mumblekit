@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+#import <Foundation/Foundation.h>
+
 #import <Security/Security.h>
 
 /// @constant The default MKConnection ping interval.
@@ -13,10 +15,10 @@
 @class MKCertificate;
 
 typedef enum {
-    UDPVoiceCELTAlphaMessage = 0,
+    UDPVoiceCELTAlphaMessage = 0,  // legacy, unused
     UDPPingMessage,
-    UDPVoiceSpeexMessage,
-    UDPVoiceCELTBetaMessage,
+    UDPVoiceSpeexMessage,           // legacy, unused
+    UDPVoiceCELTBetaMessage,        // legacy, unused
     UDPVoiceOpusMessage,
 } MKUDPMessageType;
 
@@ -46,6 +48,8 @@ typedef enum {
     UserStatsMessage,
     RequestBlobMessage,
     ServerConfigMessage,
+    // Mumble 1.4+ features
+    ChannelListenerMessage = 30,
 } MKMessageType;
 
 /// MKRejectReason is an integer describing the reason for a
@@ -395,6 +399,25 @@ typedef enum {
 /// @returns Returns YES if all UDP trafic to and from the remote server
 ///          is being tunelled through a TCP connection. Returns NO otherwise.
 - (BOOL) forceTCP;
+
+///-------------------------
+/// @name Connection Statistics
+///-------------------------
+
+/// Whether UDP is available (a UDP packet has been received from the server).
+@property (nonatomic, readonly) BOOL udpAvailable;
+
+/// Average TCP ping in milliseconds as reported by the server.
+@property (nonatomic, readonly) float tcpPingAvgMs;
+
+/// Average UDP ping in milliseconds as reported by the server.
+@property (nonatomic, readonly) float udpPingAvgMs;
+
+/// Number of good UDP packets received (from server stats).
+@property (nonatomic, readonly) uint32_t udpGoodPackets;
+
+/// Number of lost UDP packets (from server stats).
+@property (nonatomic, readonly) uint32_t udpLostPackets;
 
 ///----------------------------------------
 /// @name Sending data to the remote server

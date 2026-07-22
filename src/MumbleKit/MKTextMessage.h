@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 /// @class MKTextMessage MKTestMessage.h MumbleKit/MKTextMessage.h
+#import <Foundation/Foundation.h>
+
 @interface MKTextMessage : NSObject
 
 /// Create a new MKTextMessage with the plain text representation given in

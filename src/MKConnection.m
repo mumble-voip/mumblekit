@@ -67,6 +67,13 @@
     NSUInteger     _betaCodec;
     BOOL           _preferAlpha;
     BOOL           _shouldUseOpus;
+
+    // Ping/stats (populated from server ping responses)
+    float          _tcpPingAvgMs;
+    float          _udpPingAvgMs;
+    uint32_t       _udpGoodPackets;
+    uint32_t       _udpLostPackets;
+    CFAbsoluteTime _lastTCPPingSentAt;
     
     // Server info.
     NSString       *_serverVersion;
@@ -858,6 +865,8 @@ out:
     }
     [pds release];
         
+    _lastTCPPingSentAt = CFAbsoluteTimeGetCurrent();
+
     // Then the TCP ping...
     MPPing_Builder *ping = [MPPing builder];
 
@@ -882,8 +891,22 @@ out:
 }
 
 - (void) _pingResponseFromServer:(MPPing *)pingMessage {
-    NSLog(@"MKConnection: pingResponseFromServer");
+    // Client-side round-trip time is more accurate than server-reported averages
+    if (_lastTCPPingSentAt > 0)
+        _tcpPingAvgMs = (float)((CFAbsoluteTimeGetCurrent() - _lastTCPPingSentAt) * 1000.0);
+    if ([pingMessage hasUdpPingAvg])
+        _udpPingAvgMs = [pingMessage udpPingAvg];
+    if ([pingMessage hasGood])
+        _udpGoodPackets = [pingMessage good];
+    if ([pingMessage hasLost])
+        _udpLostPackets = [pingMessage lost];
 }
+
+- (BOOL) udpAvailable { return _udpAvailable; }
+- (float) tcpPingAvgMs { return _tcpPingAvgMs; }
+- (float) udpPingAvgMs { return _udpPingAvgMs; }
+- (uint32_t) udpGoodPackets { return _udpGoodPackets; }
+- (uint32_t) udpLostPackets { return _udpLostPackets; }
 
 // The server rejected our connection.
 - (void) _connectionRejected:(MPReject *)rejectMessage {
@@ -956,8 +979,7 @@ out:
     }
 
     if (_shouldUseOpus == NO) {
-        NSLog(@"MKConnection: Server asks for CELT, but we do not support it. Please upgrade your mumble server. TODO: fail gracefully here");
-        __builtin_trap(); // CELT is no longer an option
+        NSLog(@"MKConnection: Server does not offer Opus. Only Opus is supported — consider upgrading the server.");
     }
 }
 
@@ -1043,11 +1065,9 @@ out:
         case UDPVoiceCELTAlphaMessage:
         case UDPVoiceCELTBetaMessage:
         case UDPVoiceSpeexMessage:
+            NSLog(@"MKConnection: Received legacy CELT/Speex voice packet. Discarding.");
+            break;
         case UDPVoiceOpusMessage: {
-            if (messageType == UDPVoiceOpusMessage && ![[MKVersion sharedVersion] isOpusEnabled]) {
-                NSLog(@"MKConnection: Received Opus voice packet in no-Opus mode. Discarding.");
-                break;
-            }
             NSUInteger session = [pds getUnsignedInt];
             NSUInteger seq = [pds getUnsignedInt];
             NSMutableData *voicePacketData = [[NSMutableData alloc] initWithCapacity:[pds left]+1];

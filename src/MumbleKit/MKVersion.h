@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 
 /// @class MKVersion MKVersion.h MumbleKit/MKVersion.h
+#import <Foundation/Foundation.h>
+
 @interface MKVersion : NSObject
 + (MKVersion *) sharedVersion;
 - (NSUInteger) hexVersion;

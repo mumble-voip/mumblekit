@@ -41,3 +41,11 @@ Debug
 Release
 
 MumbleKitCMake.xcodeproj
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode user data (App)
+App/MumbleApp/MumbleApp.xcodeproj/xcuserdata/
+App/MumbleApp/MumbleApp.xcodeproj/project.xcworkspace/xcuserdata/

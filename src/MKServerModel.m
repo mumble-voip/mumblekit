@@ -1075,7 +1075,43 @@
     MPUserState_Builder *mpus = [MPUserState builder];
     [mpus setSession:(uint32_t)[_connectedUser session]];
     [mpus setUserId:0];
-    
+
+    NSData *data = [[mpus build] data];
+    [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
+#pragma mark -
+#pragma mark User moderation
+
+- (void) setMuted:(BOOL)muted forUser:(MKUser *)user {
+    MPUserState_Builder *mpus = [MPUserState builder];
+    [mpus setSession:(uint32_t)[user session]];
+    [mpus setMute:muted];
+    NSData *data = [[mpus build] data];
+    [_connection sendMessageWithType:UserStateMessage data:data];
+}
+
+- (void) kickUser:(MKUser *)user withReason:(NSString *)reason {
+    MPUserRemove_Builder *mprem = [MPUserRemove builder];
+    [mprem setSession:(uint32_t)[user session]];
+    if ([reason length] > 0) [mprem setReason:reason];
+    NSData *data = [[mprem build] data];
+    [_connection sendMessageWithType:UserRemoveMessage data:data];
+}
+
+- (void) banUser:(MKUser *)user withReason:(NSString *)reason {
+    MPUserRemove_Builder *mprem = [MPUserRemove builder];
+    [mprem setSession:(uint32_t)[user session]];
+    [mprem setBan:YES];
+    if ([reason length] > 0) [mprem setReason:reason];
+    NSData *data = [[mprem build] data];
+    [_connection sendMessageWithType:UserRemoveMessage data:data];
+}
+
+- (void) moveUser:(MKUser *)user toChannel:(MKChannel *)channel {
+    MPUserState_Builder *mpus = [MPUserState builder];
+    [mpus setSession:(uint32_t)[user session]];
+    [mpus setChannelId:(uint32_t)[channel channelId]];
     NSData *data = [[mpus build] data];
     [_connection sendMessageWithType:UserStateMessage data:data];
 }

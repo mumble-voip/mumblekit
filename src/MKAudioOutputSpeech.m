@@ -7,7 +7,6 @@
 #import "MKAudioOutputSpeech.h"
 #import "MKAudioOutputUserPrivate.h"
 
-#include <speex/speex.h>
 #include <speex/speex_preprocess.h>
 #include <speex/speex_echo.h>
 #include <speex/speex_resampler.h>
@@ -17,9 +16,6 @@
 
 @interface MKAudioOutputSpeech () {
     OpusDecoder          *_opusDecoder;
-
-    void                 *_speexDecoder;
-    SpeexBits             _speexBits;
 
     NSLock               *_jitterLock;
     JitterBuffer         *_jitter;
@@ -64,7 +60,7 @@
 - (id) initWithSession:(NSUInteger)session sampleRate:(NSUInteger)freq messageType:(MKUDPMessageType)type {
     if ((self = [super init])) {
         _jitter = NULL;
-        _speexDecoder = NULL;
+        _opusDecoder = NULL;
         _resampler = NULL;
 
         _useStereo = NO;
@@ -74,23 +70,10 @@
         _msgType = type;
         _freq = freq;
 
-        if (_msgType == UDPVoiceOpusMessage) {
-            _sampleRate = SAMPLE_RATE;
-            _frameSize = _sampleRate / 100;
-            _audioBufferSize = 12 * _frameSize;
-            _opusDecoder = opus_decoder_create((opus_int32)_sampleRate, _useStereo ? 2 : 1, NULL);
-        } else if (type == UDPVoiceSpeexMessage) {
-            _sampleRate = 32000;
-            speex_bits_init(&_speexBits);
-            _speexDecoder = speex_decoder_init(speex_lib_get_mode(SPEEX_MODEID_UWB));
-            int iArg = 1;
-            speex_decoder_ctl(_speexDecoder, SPEEX_SET_ENH, &iArg);
-            speex_decoder_ctl(_speexDecoder, SPEEX_GET_FRAME_SIZE, &_frameSize);
-            speex_decoder_ctl(_speexDecoder, SPEEX_GET_SAMPLING_RATE, &_sampleRate);
-            _audioBufferSize = _frameSize;
-        } else {
-            __builtin_trap(); // CELT is no longer supported
-        }
+        _sampleRate = SAMPLE_RATE;
+        _frameSize = _sampleRate / 100;
+        _audioBufferSize = 12 * _frameSize;
+        _opusDecoder = opus_decoder_create((opus_int32)_sampleRate, _useStereo ? 2 : 1, NULL);
 
         _outputSize = (int)(ceilf((float)_audioBufferSize * _freq) / (float)_sampleRate);
         if (_useStereo) {
@@ -137,10 +120,6 @@
 }
 
 - (void) dealloc {
-    if (_speexDecoder) {
-        speex_decoder_destroy(_speexDecoder);
-        speex_bits_destroy(&_speexBits);
-    }
     if (_resampler)
         speex_resampler_destroy(_resampler);
     if (_jitter)
@@ -356,29 +335,15 @@
             if ([_frames count] > 0) {
                 NSData *frameData = [_frames objectAtIndex:0];
 
-                if (_msgType == UDPVoiceOpusMessage) {
-                    if ([frameData length] <= INT_MAX) {
-                        decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], (int)[frameData length], output, (int)_audioBufferSize, 0);
-                        if (decodedSamples < 0) {
-                            decodedSamples = (int)_frameSize;
-                            memset(output, 0, _frameSize * sizeof(float));
-                        }
-                    } else {
+                if ([frameData length] <= INT_MAX) {
+                    decodedSamples = opus_decode_float(_opusDecoder, [frameData bytes], (int)[frameData length], output, (int)_audioBufferSize, 0);
+                    if (decodedSamples < 0) {
                         decodedSamples = (int)_frameSize;
                         memset(output, 0, _frameSize * sizeof(float));
                     }
-                } else if (_msgType == UDPVoiceSpeexMessage) {
-                    if ([frameData length] > 0 && [frameData length] <= INT_MAX) {
-                        speex_bits_read_from(&_speexBits, [frameData bytes], (int)[frameData length]);
-                        speex_decode(_speexDecoder, &_speexBits, output);
-                    } else {
-                        speex_decode(_speexDecoder, NULL, output);
-                    }
-                    for (unsigned int i=0; i < _frameSize; i++) {
-                        output[i] *= (1.0f / 32767.0f);
-                    }
                 } else {
-                    __builtin_trap(); // CELT is no longer supported
+                    decodedSamples = (int)_frameSize;
+                    memset(output, 0, _frameSize * sizeof(float));
                 }
 
                 [_frames removeObjectAtIndex:0];
@@ -413,15 +378,7 @@
                     nextAlive = NO;
                 }
             } else {
-                if (_msgType == UDPVoiceOpusMessage) {
-                    decodedSamples = opus_decode_float(_opusDecoder, NULL, 0, output, (int)_frameSize, 0);
-                } else if (_msgType == UDPVoiceSpeexMessage) {
-                    speex_decode(_speexDecoder, NULL, output);
-                    for (unsigned int i = 0; i < _frameSize; i++)
-                        output[i] *= (1.0f / 32767.0f);
-                } else {
-                    __builtin_trap(); // CELT is no longer supported
-                }
+                decodedSamples = opus_decode_float(_opusDecoder, NULL, 0, output, (int)_frameSize, 0);
             }
 
             if (! nextAlive) {

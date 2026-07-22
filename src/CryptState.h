@@ -5,7 +5,11 @@
 #ifndef _CRYPTSTATE_H
 #define _CRYPTSTATE_H
 
-#include <openssl/aes.h>
+#include <CommonCrypto/CommonCryptor.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#define AES_BLOCK_SIZE kCCBlockSizeAES128
 
 namespace MumbleClient {
 
@@ -26,12 +30,13 @@ class CryptState {
         unsigned int uiRemoteLost;
         unsigned int uiRemoteResync;
 
-        AES_KEY encrypt_key;
-        AES_KEY decrypt_key;
+        CCCryptorRef _encryptCryptor;
+        CCCryptorRef _decryptCryptor;
         bool bInit;
 
     public:
         CryptState();
+        ~CryptState();
 
         bool isValid() const;
         void genKey();

@@ -2,8 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-#import <MumbleKit/MKUser.h>
-#import <MumbleKit/MKConnection.h>
+#import <Foundation/Foundation.h>
+
+#import "MKUser.h"
+#import "MKConnection.h"
 
 @class MKAudio;
 @class MKAudioInput;
@@ -15,9 +17,7 @@
 extern NSString *MKAudioDidRestartNotification;
 
 typedef enum _MKCodecFormat {
-    MKCodecFormatSpeex,
-    MKCodecFormatCELT,
-    MKCodecFormatOpus,
+    MKCodecFormatOpus = 0,
 } MKCodecFormat;
 
 typedef enum _MKTransmitType {
