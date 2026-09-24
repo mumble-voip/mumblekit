@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 #import <MumbleKit/MKVersion.h>
+#import <MumbleKit/MKAudio.h>
 #import "MKPacketDataStream.h"
 #import "MKAudioOutputSpeech.h"
 #import "MKAudioOutputUserPrivate.h"
